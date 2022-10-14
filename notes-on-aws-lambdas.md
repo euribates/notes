@@ -69,14 +69,10 @@ processed, another instance is provisioned, increasing the function's
 concurrency. 
 
 
-### Trigger
+### Triggers
 
 A trigger is a resource or configuration that invokes a Lambda function. This
 includes AWS services that can be configured to invoke a function, applications
 that you develop, and event source mappings. An event source mapping is a
 resource in Lambda that reads items from a stream or queue and invokes a
 function.
-
-
-
-
