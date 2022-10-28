@@ -1,16 +1,53 @@
 ---
-title: Notes on Git / GitHub
+title: Notas sobre Git / GitHub
 ---
 
-### How to learn GIT
+### Cómo aprender Git. Recursos e información adicional
 
-- [Learn Git brnaching](https://learngitbranching.js.org/)
+- [Learn Git branching](https://learngitbranching.js.org/)
 
 - [Julia Evans: Oh shit, git!](https://wizardzines.com/zines/oh-shit-git/)
 
 - [CISCO: Introduction to Version Control – Git and GitHub](https://learningnetwork.cisco.com/s/article/introduction-to-version-control-git-and-github)
 
 - [OH my git! An open source game about learning Git!](https://ohmygit.org/)
+
+- [Pro Git](https://git-scm.com/book/en/v2): This book (available
+  online and in print) covers all the fundamentals of how Git works
+  and how to use it. Refer to it if you want to learn more about the
+  subjects that we cover throughout the course.
+
+- [Git tutorial](https://git-scm.com/docs/gittutorial): This tutorial
+  includes a very brief reference of all Git commands available. You
+  can use it to quickly review the commands that you need to use.
+
+- [Five useful tips for a better commit message](https://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message):
+  5 Useful Tips For A Better Commit Message.
+
+
+### Cómo actualizar una rama, tanto en local como en remoto
+
+Para actualizar una etiqueta en el repo local, primero tenemos que localizar el
+nuevo _commit_ al que queremos que apunte. Para esto es muy útil el comando
+`git log --online` que mostrará el _hash code_ de cada _commit_ y las etiquetas
+que hubiera.
+
+Cuando hayamos localizado el _commit_, haremos:
+
+```shell
+git tag -f <tag_name_to_update> <hash_code_new_commit>
+```
+
+Para actualizar la rama remota:
+
+```shell
+git push origin <tag> -f
+```
+
+La opción `-f` fuerza a redefinir el tag en el origin, si ya estuviera
+definido.
+
+Fuente: [Toolsqs - Git Delete Tag and Git Update Tag](https://www.toolsqa.com/git/git-delete-tag/)
 
 
 ### How to Configure Git to handle line endings
@@ -54,11 +91,14 @@ $ git config --global core.autocrlf input
 
 ### How to show differences
 
-- `git diff` shows unstaged changes.
+- `git diff` muestra las diferencias entre los ficheros locales y lo que haya
+  en el _stage_.
 
-- `git diff --cached` shows staged changes.
+- `git diff --cached` muestra las diferencias entres los ficheros en el _stage_
+  y la versión previa en el repositorio.
 
-- `git diff HEAD` shows all changes (both staged and unstaged).
+- `git diff HEAD` muestra todas las diferencias, tanto de ficheros modificados
+  como de ficheros en el _stage_.
 
 
 ### Hot to draw a clear log graph, showing branchs
@@ -71,25 +111,6 @@ git log --oneline --all --graph --decorate=full
 
 - Source: [Git branch name - case sensitive or insensitive?](https://stackoverflow.com/questions/38493543/git-branch-name-case-sensitive-or-insensitive)
 
-### Delete a local and a remote GIT branch
-
-To delete a remote branch you can use the following command:
-
-```shell
-git push <remote_name> --delete <branch_name>
-```
-
-To delete the local GIT branch we can try one of the following commands:
-
-```shell
-git branch -d branch_name
-```
-
-Using `-d` only will delete the branch if there are no reference to a
-remote, so delete the remote first.
-
-If you just want to delete the local branch but still maintain the
-branch in source, use `-D` instead.
 
 ### Special Files (mark some files as binary files)
 
@@ -99,44 +120,49 @@ ignore them and **doesn't produce lengthy diffs**. Git has a
 you may want to add your `yarn-lock.json` or `package-lock.json` so that
 Git doesn't try to diff them every time you make a change.
 
-### Checkout by date (Get code as it was in a point of time)
+### Obtener una versión del histórico basándose en la fecha:
 
-You can checkout a commit by a specific date using `rev-parse` like
-this:
+Hay dos métodos:
 
-```shell
-git checkout 'master@{1979-02-26 18:30:00}'
-```
+#### Checkout por fecha usando _reflog_
 
-More details on the available options can be found in the
-[git-rev-parse](http://linux.die.net/man/1/git-rev-parse/) page.
-
-As noted in the comments this method uses the reflog to find the commit
-in your history. By default **these entries expire after 90 days**.
-Although the syntax for using the reflog is less verbose you can only go
-back 90 days.
-
-### Checkout out by date using rev-list
-
-The other option, which doesn't use the reflog, is to use `rev-list` to
-get the commit at a particular point in time with:
+Se puede hacer un _checkout_ a un _commit_ específico en un momento
+determinado usando este formato, usando `rev_parse`:
 
 ```shell
-git checkout `git rev-list -n 1 --first-parent --before="2009-07-27 13:37" master`
+git checkout 'master@{2021-02-26 13:37:00}'
 ```
 
-Note the `--first-parent` if you want only your history and not versions
-brought in by a merge. That's what you usually want.
+Más detalles en [git-rev-parse](http://linux.die.net/man/1/git-rev-parse/).
 
-### How to get a list of the deleted files
+!!! Solo para cambios enteriores a 90 días
 
-This is the way:
+    Esta operación usa el método _reflog_ para encontrar el commit que cumpla
+    la condicion en la historia local del repositorio. Pero por defecto estas
+    entradas caducan a los **90 días**, asi que está técnica solo puede
+    retroceder ese tiempo.
+
+#### Checkout por fecha usando _rev-list_
+
+La otra opción, que no usa _reflog_ y por tanto no tiene la limitación de los
+90 días, es `rev-list`, que es un poco más prolija:
+
+```shell
+git checkout `git rev-list -n 1 --first-parent --before="2021-02-26 13:37" master`
+```
+
+Atención al flag `--first-parent`, que trabajara solo con tu historial sin prestar atención a otras versiones incorporadas por `merge`; esto es normalmente lo que se quiere.
+
+
+### Cómo obtener un listado de ficheros borrados
+
+Este es el camino:
 
 ```shell
 git log --diff-filter=D --summary | grep delete
 ```
 
-If you are looking for a particular file:
+Si estás buscando un fichero en concreto:
 
 ```shell
 git log --diff-filter=D --summary | grep delete | grep <filename>
@@ -176,6 +202,7 @@ git checkout <SHA>^ -- <path-to-file>
     identified**, because at the moment of commit the file is deleted, we need
     to look at the previous commit to get the deleted file's contents.
 
+
 ### Make Git branch command do NOT behaves like 'less' (Do not paginate results)
 
 This is a default behavior change introduced in Git 2.16.
@@ -189,7 +216,7 @@ git config --global pager.branch false
 
 ### Cómo revisar de forma interactiva los cambios antes de ser confirmados 
 
-COn el comando `git add -p` podemos revisar los cambios producidos antes de cada
+Con el comando `git add -p` podemos revisar los cambios producidos antes de cada
 fichero, y aprovar o no la incorporación de los mismos al _commit_ actual.
 
 
@@ -224,6 +251,7 @@ fichero, y aprovar o no la incorporación de los mismos al _commit_ actual.
 
 - `git branch -r` Lists remote branches; can be combined with other
   branch arguments to manage remote branches
+
 
 ### How to rename a branch in Git
 
@@ -268,19 +296,19 @@ git push origin :old_branch                 # Delete the old branch
 git push --set-upstream origin new_branch   # Push the new branch, set local branch to track the new remote
 ```
 
-### Get changes from master into branch in Git
+### Cómo incorporar cambios realizados en otra rama (Por ejemplo, `master` a `dev`)
 
-You should be able to just git merge origin/master when you are on your
-aq branch:
+La forma más sencilla es cambiarse a la rama de destino y realizar un merge con
+la rama que tiene los cambios que queremos incorporar:
 
 ```shell
-git checkout sandbox
-git merge origin/develop
+git switch develop
+git merge origin/master
 ```
 
-### List git branches that can safely be deleted
+### Cómo listar las ramas que se pueden borrar de forma segura
 
-This is the way:
+Este es el camino:
 
 ```shell
 git checkout master # or whatever branch you might compare against
@@ -288,13 +316,14 @@ git branch --no-merged
 git branch --merged
 ```
 
-From git branch documentation:
+De la documentaión de Git sobre ramas:
 
 > With `--merged`, only branches merged into the named commit (i.e. the
 > branches whose tip commits are reachable from the named commit) will
 > be listed. With `--no-merged`, only branches not merged into the named
 > commit will be listed. If the argument is missing it defaults to HEAD
 > (i.e. the tip of the current branch).
+
 
 ### Stashing
 
@@ -383,27 +412,32 @@ in your work tree and you don't want to see the diffs for them.
 - Source: [StackOverflow - git: How to diff changed files versus previous
   versions after a pull?]https://stackoverflow.com/questions/2428270/git-how-to-diff-changed-files-versus-previous-versions-after-a-pull)
 
-### How to delete branches in Git
+### Cómo borrar ramas en Git
 
-- Deleting local branches in Git:
+#### Cómo borrar una rama local
 
-    ```shell
-    git branch -d feature/login
-    ```
+```shell
+git branch -d pruebas
+```
 
-    Using the `-d` flag, you tell \"git branch\" which item you want to
-    delete. Note that you might also need the `-f` flag if you're trying
-    to delete a branch that contains unmerged changes. Use this option
-    with care because it makes losing data very easy.
+Con el indicador `-d` indicamos el nombre de la rama a borrar.  Si la rama
+tuviera ficheros modificas no nos dejará borrarla, a no ser que lo forzemos con
+el indicador `-f`. Onbiamente esto hay que hacerlo con cuidado porque implica
+la posibilidad de perder información.
 
--   Deleting remote branches in Git:
+Tampoco nos dejará borrarla si existe referencias a ella, por lo que si la
+rama también existe en el remoto, es recomendable borrarla primero en el remoto
+y luego borrar la local con `-d`. Si por lo que fuera se quiere mantener la
+rama remota pero borrar la local, se puede hacer usando el flag `-D`.
 
-    To delete a remote branch, we do not use the `git branch` command
-    -but instead `git push` with the `--delete` flag:
+#### Cómo borrar una rama remota
 
-    ```shell
-        git push origin –delete feature/login
-    ```
+Para borrar una rama remota se usa el comando _push_ con el indicador
+`--delete`:
+
+```shell
+git push origin –delete pruebas
+```
 
 ### To learn more about code review
 
@@ -427,7 +461,7 @@ Check out the following links for more information:
 - <https://docs.travis-ci.com/user/tutorial/>
 - <https://docs.travis-ci.com/user/build-stages/>
 
-### Working with tags
+### Como usar las etiquetas en Git
 
 Like most VCSs, Git has the ability to tag specific points in a
 repository's history as being important. Typically, people use this
@@ -473,7 +507,8 @@ v1.8.5.5
     If, however, you're supplying a wildcard pattern to match tag names, the
     use of `-l` or `--list is mandatory`.  :::
 
-#### Creating Tags
+
+#### Cómo crear etiquetas en Git
 
 Git supports two types of tags: **lightweight** and **annotated**.
 
@@ -604,16 +639,3 @@ $ git push origin --delete <tagname>
 Source: [Git Basics - Tagging](https://git-scm.com/book/en/v2/Git-Basics-Tagging)
 
 
-### Resources and more information
-
-- [Pro Git](https://git-scm.com/book/en/v2): This book (available
-  online and in print) covers all the fundamentals of how Git works
-  and how to use it. Refer to it if you want to learn more about the
-  subjects that we cover throughout the course.
-
-- [Git tutorial](https://git-scm.com/docs/gittutorial): This tutorial
-  includes a very brief reference of all Git commands available. You
-  can use it to quickly review the commands that you need to use.
-
-- [Five useful tips for a better commit message](https://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message):
-  5 Useful Tips For A Better Commit Message.
