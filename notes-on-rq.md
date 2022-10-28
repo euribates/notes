@@ -11,7 +11,7 @@ similar --pero no tan potente-- a otros como
 [Amazon SQS](https://aws.amazon.com/es/sqs/) o [MQTT](https://mqtt.org/) entre
 otros.
 
-Para nosotros es interesante porque el único requerimento es Redis, que nosostros
+Para nosotros es interesante porque el único requerimiento es Redis, que nosotros
 ya estamos usando, y al ser mucho más sencillo que las alternativas, la barrera
 de entrada es muy baja.
 
@@ -31,9 +31,9 @@ entre **2 y 7 segundos**, y que puede fallar un **20%** de las veces:
 La función `tarea_pesada_y_falible` simula una función que tarda un tiempo
 variable y considerable en ejecutarse, y que, como todas, está sujeta a error.
 En este caso simulamos un 20% de posibilidades de que, por la razón que sea, no
-pueda terminar correctamamente.
+pueda terminar correctamente.
 
-Hagomos un primer intento de ejecutar este código 10 veces, para ello definimos
+Hagamos un primer intento de ejecutar este código 10 veces, para ello definimos
 este primer ejemplo, `rq-demo-01.py`:
 
 ```
@@ -81,8 +81,17 @@ función. Esto lo que hace es, en vez de ejecutarla, ponerla en la cola que
 digamos (Si no especificamos ninguna cola se usará la cola por defecto,
 `default`)
 
+
+Es decir, en vez de
+
+```python
+tarea_pesada_y_falible(3)
 ```
-result = q.enqueue(heavy_and_flawed_function, 3)
+
+Haremos:
+
+```python
+result = q.enqueue(tarea_pesada_y_falible, 3)
 ```
 
 Nuestra versión 2 del programa encola ahora estas llamadas a la función, en vez
@@ -128,8 +137,21 @@ low: 0
 high: 0
 ```
 
+
+<section data-markdown>
+<textarea data-template>
 Muy bien ahora nuestro programa es asombrosamente rápido, las tareas están en
 una cola, pero el caso es que siguen sin ejecutarse. Pero esto es muy
+fácil de resolver, solo tenemos que arrancar uno o más **workers** que se ocupen
+de hacer el trabajo sucio. Con `rq` es muy sencilla, solo hay que ejecutar:
+</textarea> 
+</section>
+
+
+Muy bien ahora nuestro programa es muy rápido, las tareas están en
+una cola, pero el caso es que siguen sin ejecutarse.
+
+Pero esto es muy
 fácil de resolver, solo tenemos que arrancar uno o más **workers** que se ocupen
 de hacer el trabajo sucio. Con `rq` es muy sencilla, solo hay que ejecutar:
 
@@ -143,21 +165,25 @@ O, si es la cola por defecto, simplemente:
 rq worker
 ```
 
-En nuestro caso, vamos a decirle al worker que procese trabajos en todas las
-colas que tenomos definidas ahora mismo, para estar preparados:
+En nuestro caso, vamos a decirle al _worker_ que procese trabajos en todas las
+colas que tenemos definidas ahora mismo, para estar preparados:
 
 ```
 rq worker high default low
 ```
 
-Los _workers_ leeran los trabajos de las colas indicadas, en el orden indicado.
+Los _workers_ leen los trabajos de las colas indicadas, en el orden indicado.
+
 En nuestro caso, se ejecutaran siempre primero las tareas en la cola `high`,
 si no hubiera ninguna se encargará de las tareas en la cola `default`, y solo en
 el caso de que las dos anteriores estén vacias se encargará de trabajos en la
 cola `low`.
 
+Los nombres de las colas en si no son significativos, lo que importa
+es el orden en que se le pasan al _worker_.
+
 Cada _worker_ se encargará de **un único trabajo** cada vez. Dentro del _worker_
-no hay procesamiento concurrente, ni threads. Si se quiere ejecutar más trabajos
+no hay procesamiento concurrente, ni _threads_. Si se quiere ejecutar más trabajos
 simultaneamente, simplemente hay que arrancar más _workers_.
 
 En producción, obviamente, debemos usar sistemas como **supervisor** o
@@ -173,28 +199,9 @@ Vamos entonces a ejecutar el _worker_ y veamos que pasa:
 15:09:00 *** Listening on high, default, low...
 15:09:00 default: tareas.tarea_pesada_y_falible(4) (9dca76a2-488b-487c-b176-f74413d6aae6)
 tarea_pesada_y_falible (4) .... [OK]
-15:09:04 default: Job OK (9dca76a2-488b-487c-b176-f74413d6aae6)
-15:09:04 Result is kept for 500 seconds
-15:09:04 default: tareas.tarea_pesada_y_falible(6) (23a46523-6870-4416-97af-96f1915469c5)
-tarea_pesada_y_falible (6) ...... [OK]
-15:09:10 default: Job OK (23a46523-6870-4416-97af-96f1915469c5)
-15:09:10 Result is kept for 500 seconds
-15:09:10 default: tareas.tarea_pesada_y_falible(2) (b6194437-a741-4fd9-9d52-43712ae5c30e)
-tarea_pesada_y_falible (2) .. [OK]
-15:09:12 default: Job OK (b6194437-a741-4fd9-9d52-43712ae5c30e)
-15:09:12 Result is kept for 500 seconds
-15:09:12 default: tareas.tarea_pesada_y_falible(4) (407ff77d-60cf-4cae-abbc-9d4b96c37bc8)
-tarea_pesada_y_falible (4) .... [OK]
-15:09:16 default: Job OK (407ff77d-60cf-4cae-abbc-9d4b96c37bc8)
-15:09:16 Result is kept for 500 seconds
-15:09:16 default: tareas.tarea_pesada_y_falible(2) (2279178c-7630-4684-8cbd-02d806549a2e)
-tarea_pesada_y_falible (2) .. [OK]
-15:09:18 default: Job OK (2279178c-7630-4684-8cbd-02d806549a2e)
-15:09:18 Result is kept for 500 seconds
-15:09:18 default: tareas.tarea_pesada_y_falible(6) (dbfd9dc6-6535-40f8-acb2-f10c03a298b4)
-tarea_pesada_y_falible (6) ...... [OK]
-15:09:24 default: Job OK (dbfd9dc6-6535-40f8-acb2-f10c03a298b4)
-15:09:24 Result is kept for 500 seconds
+
+[... Omitido por claridad ...]
+
 15:09:24 default: tareas.tarea_pesada_y_falible(6) (a9079de4-33c9-4f2d-b1ec-a11314cca9d5)
 tarea_pesada_y_falible (6) 15:09:24 Traceback (most recent call last):
   File "/usr/local/lib/python3.10/dist-packages/rq/worker.py", line 1075, in perform_job
@@ -224,11 +231,67 @@ tarea_pesada_y_falible (5) ..... [OK]
 tarea_pesada_y_falible (6) ...... [OK]
 15:09:35 default: Job OK (10ffd599-c63c-4867-851a-900f6875d405)
 15:09:35 Result is kept for 500 seconds
-15:09:35 default: tareas.tarea_pesada_y_falible(4) (166f5bba-1f2b-47c9-b590-be3e20fc2096)
-tarea_pesada_y_falible (4) .... [OK]
-15:09:39 default: Job OK (166f5bba-1f2b-47c9-b590-be3e20fc2096)
-15:09:39 Result is kept for 500 seconds
+
+[... Omitido por claridad ...]
 ```
+
+### Parámetros que podemos usar al encolar una tarea
+
+Además de especificar la cola, se pueden añadir otros parámetros
+para especificar el comportamiento. Todos estos valores seran extraidos
+con `pop` de los parámetros por nombre (`kwargs`) de la función que queremos
+encolar:
+
+- `job_timeout` especifica el tiempo maximo de ejecución de una tarea hasta que
+  se la de por fallada. Las unidades por defecto son segundos, y se puede usar o
+  bien un entero o una cadena de texto en la que se indique la cantidad y la
+  unidad a usar, por ejemplo `'1h'`, `'3m'` o `'5s'`.
+
+- `result_ttl` espedicifica cuanto tiempo se mantendran el estado y los
+  resultados de las tareas ejecutadas con éxito. De nuevo la unidad por defecto
+  son segundos. El valor por defecto es de **500** segundos. Trascurrido ese
+  tiempo los trabajos terminados serán eliminados.
+
+- `ttl` especifica el tiempo máximo que se mantendrá esperando un trabajo en la
+  cola. Pasada esa cantidad de tiempo, si el trabajo no se ha ejecutado, se
+  descarta. El valor por defecto es `None`, que se interpreta como _para
+  siempre_.
+
+
+- `failure_ttl` es el tiempo máximo durante el cual se mentienen las tareas
+  fallidas. El valor por defecto es un año. 
+
+- `depends_on`  especifica uno o más tareas que se deben ejecutar antes de
+  encolar esta tarea.
+
+- `job_id` permite especificar manualmente el identificador de la tarea.
+
+- `at_front` pondrá esta tarea en la primera posición de la cola
+
+- `description` añade una descripcion textual de la tarea.
+
+- `on_success` permite ejecutar una función después de que la tarea termine con
+  éxito
+
+- `on_failure` permite ejecutar una función después de que la tarea termine con un fallo.
+
+- `args` y `kwargs`: Esto nos permite pasar parámetros por posición y por nombre
+  directamente a la función subyacente. Normalmente se usa para pasar algún
+  parametro a la función cuyo nombre entrara en conflicto con los parámetros de
+  `rq`, como por ejemplo `descriptio` o `ttl`.
+
+### Métodos de las colas
+
+Las colas en si tienen algunos métodos, por ejemplo, vimos que usando la funcion
+`len` sobre una cola nos devuelve el número de trabajos en la misma.
+
+Accediendo al atributo `job_ids` obtenemos una lista de los identificadores de
+las tareas que están en la cola. Con `jobs` accedes a una lista de las tareas en
+si. Se puede usar el método `fetch_job(job_id)` para obtener un trabajo en concreto (por
+ejemplo para obtener su resultado) si conocemos su identificador.
+
+El método `empty` nos permite borrar todo el contenido de una cola, mientras que
+`delete(job_id)` nos permite borrar una tarea, si conocemos su identificador.
 
 
 ## Como empezar a usar rq y django-rq

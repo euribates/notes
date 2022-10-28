@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
 
+
+import random, datetime
 from redis import Redis
 from rq import Queue
+from tareas import tarea_pesada_y_falible
+from constantes.parlamento import *
 
-def main():
-    REDIS_SERVER = 'localhost'
-    redis_server = Redis(REDIS_SERVER)
-    for queue_name in ['default', 'low', 'high']:
-        queue = Queue(queue_name, connection=redis_server)
-        print(f"{queue_name}: {len(queue)}")
+def get_queue(queue_name):
+    return Queue(queue_name, connection=Redis(
+        host=REDIS_SERVER,
+        password=REDIS_PASSWORD,
+        port=REDIS_PORT,
+        db=REDIS_DB,
+    ))
 
-
-if __name__ == "__main__":
-    main()
+for queue_name in ['default', 'low', 'high', 'enrique', 'default_dya', 'alex']:
+    queue = get_queue(queue_name)
+    print(f"{queue_name}: {len(queue)}")

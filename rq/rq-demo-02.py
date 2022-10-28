@@ -1,22 +1,27 @@
 import random
 import datetime
-
 from redis import Redis
 from rq import Queue
-
-from tareas import tarea_pesada_y_falible
-
-
-def main():
-    REDIS_SERVER = 'localhost'
-    queue = Queue(connection=Redis(REDIS_SERVER))
-    start = datetime.datetime.now()
-    for _ in range(10):
-        task_size = random.randrange(2, 7)
-        queue.enqueue(tarea_pesada_y_falible, task_size)
-    delta = datetime.datetime.now() - start
-    print(f"He tardado {delta.seconds} segundos en total")
+from constantes.parlamento import (
+    REDIS_SERVER, REDIS_PASSWORD, REDIS_PORT, REDIS_DB
+    )
+import tareas
 
 
-if __name__ == "__main__":
-    main()
+q = Queue('default', connection=Redis(
+    host=REDIS_SERVER,
+    password=REDIS_PASSWORD,
+    port=REDIS_PORT,
+    db=REDIS_DB,
+    ))
+
+print(f"q length: {len(q)}")
+start = datetime.datetime.now()
+for i in range(10):
+    task_size = random.randrange(2, 7)
+    job = q.enqueue(tareas.tarea_pesada_y_falible, task_size)
+    print(f"q length: {len(q)}")
+    print(i, job.id, 'queued')
+delta = datetime.datetime.now() - start
+print(f"He tardado {delta.seconds} segundos en total")
+print(f"q length: {len(q)}")
