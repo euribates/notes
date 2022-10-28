@@ -1,10 +1,15 @@
-```
+---
 title: Notas sobre rsync
-```
+description: rsync es una aplicación libre que ofrece transmisión eficiente de ficheros
+---
 
 ## Introducción a rsync
 
-**rsync** es una aplicación libre que ofrece transmisión eficiente de datos incrementales, que opera también con datos comprimidos y cifrados. Mediante una técnica de _delta encoding_, permite sincronizar archivos y directorios entre dos máquinas de una red o entre dos ubicaciones en una misma máquina, minimizando el volumen de datos transferidos.
+**rsync** es una aplicación libre que ofrece transmisión eficiente de ficheros
+de forma incremental, que puede trabajar también con datos comprimidos y cifrados.
+Mediante una técnica de _delta encoding_, permite sincronizar archivos y
+directorios entre dos máquinas de una red o entre dos ubicaciones en una misma
+máquina, minimizando el volumen de datos transferidos.
 
 ## Cómo obligar a rsync a sincronizar solo los ficheros nuevos
 
