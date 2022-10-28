@@ -1,4 +1,8 @@
-## Notes on ANSI Term
+---
+title: Notas sobre códigos ANSI
+---
+
+## Introducción a los códigos ANSI
 
 The most basic Ansi escape codes are those involved in rendering text.
 These let you add decorations like **colors**, **background colors** or
@@ -7,7 +11,7 @@ The text you print will still end up at the bottom of the terminal, and
 still make your terminal scroll, just now it will be colored text
 instead of the default black/white color scheme your terminal has.
 
-### (Foreground) Colors
+## Cómo usar distintos colores para el texto
 
 The most basic thing you can do to your text is to color it. The Ansi
 colors all look like
@@ -90,7 +94,7 @@ for i in range(16):
 
 ![ANSI extended color  codes](ansi-extended-color-codes.png)
 
-### Background Colors
+## Como usar distintos colores para el fondo
 
 The Ansi escape codes let you set the color of the text-background the same way
 it lets you set the color of the foregrond. For example, the 8 background
@@ -121,7 +125,7 @@ With the bright versions being:
 | Background Bright White   | `\u001b[47;1m` |
 
 
-### Decorations
+## Cómo usar efectos decorativos (Negrita, subrayado, inverso)
 
 Apart from colors, and background-colors, Ansi escape codes also allow
 decorations on the text:
@@ -140,7 +144,7 @@ print("\u001b[1m BOLD \u001b[0m\u001b[4m Underline \u001b[0m\u001b[7m Reversed \
 
 ![ANSI Decorations](ansi-decorations.png)
 
-### Progress Indicator
+## Cómo haer un indicador de progreso fácil usando ANSI
 
 The easiest thing we can do with our cursor-navigation Ansi escape codes
 is to make a loading prompt:
@@ -164,9 +168,7 @@ characters\") thus letting the new percentage that gets printed
 over-write the old one. We need to go back three caharacters because we
 are using two for the digits and one for the percent sign `%`.
 
-### ASCII Progress Bar
-
-Now that we know how to make a self-updating progress bar using Ansi
+Now that we know how to make a self-updating progress bar using ANSI
 escape codes to control the terminal, it becomes relatively easy to
 modify it to be fancier, e.g. having a ASCII bar that goes across the
 screen:
@@ -182,17 +184,24 @@ def progress_bar():
     print(" \u001b[32m[OK]\u001b[0m")
 ```
 
-### Cambiar el título de la terminal
+## Cómo cambiar el título de la terminal
 
 Con `xterm` podemos cambiar el título de la ventana de la termina con la
 siguiente secuencia: `\x1b]0;this is the window title\x07`:
 
 ```python
-def set_term_title(title):
+def term_title(title):
     print(f"\033]0;{title}\007")
 ```
 
-### Fuentes:
+Podemos incorporar una función _bash_ para lo mismo:
+
+```bash
+# function to set terminal title
+function term_title() { echo -en "\033]0;$1\007"; }
+```
+
+## Fuentes:
 
 - [Haoyi\'s Programming Blog - Build your own Command Line with ANSI
   escape
