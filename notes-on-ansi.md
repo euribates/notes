@@ -92,7 +92,7 @@ for i in range(16):
     print("\u001b[0m")
 ```
 
-![ANSI extended color  codes](ansi-extended-color-codes.png)
+![ANSI extended color  codes](ansi/ansi-extended-color-codes.png)
 
 ## Como usar distintos colores para el fondo
 
@@ -142,7 +142,7 @@ Which can be used individually:
 print("\u001b[1m BOLD \u001b[0m\u001b[4m Underline \u001b[0m\u001b[7m Reversed \u001b[0m")
 ```
 
-![ANSI Decorations](ansi-decorations.png)
+![ANSI Decorations](ansi/ansi-decorations.png)
 
 ## Cómo haer un indicador de progreso fácil usando ANSI
 
