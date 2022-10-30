@@ -16,6 +16,7 @@
 - [eBooks](notes-on-ebooks.md)
 - [Elastic search](notes-on-elasticsearch.md)
 - [English](notes-on-english.md)
+- [Flask](notes-on-flask.md)
 - [Font-awesome](notes-on-font-awesome.md)
 - [Freelance](notes-on-freelance.md)
 - [Gcloud](notes-on-gcloud.md)
@@ -72,6 +73,7 @@
 - [Tmux](notes-on-tmux.md)
 - [TOTP](notes-on-totp.md)
 - [Unicode](notes-on-unicode.md)
+- [Ultisnips](notes-on-ultisnips.md]
 - [Uwsgi](notes-on-uwsgi.md)
 - [Videgames-development](notes-on-videogames-development.md)
 - [Vim](notes-on-vim.md)
