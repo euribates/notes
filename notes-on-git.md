@@ -2,7 +2,7 @@
 title: Notas sobre Git / GitHub
 ---
 
-### Cómo aprender Git. Recursos e información adicional
+## Cómo aprender Git. Recursos e información adicional
 
 - [Learn Git branching](https://learngitbranching.js.org/)
 
@@ -25,7 +25,7 @@ title: Notas sobre Git / GitHub
   5 Useful Tips For A Better Commit Message.
 
 
-### Cómo actualizar una rama, tanto en local como en remoto
+## Cómo actualizar una rama, tanto en local como en remoto
 
 Para actualizar una etiqueta en el repo local, primero tenemos que localizar el
 nuevo _commit_ al que queremos que apunte. Para esto es muy útil el comando
@@ -50,7 +50,7 @@ definido.
 Fuente: [Toolsqs - Git Delete Tag and Git Update Tag](https://www.toolsqa.com/git/git-delete-tag/)
 
 
-### How to Configure Git to handle line endings
+## How to Configure Git to handle line endings
 
 Every time you press return on your keyboard you insert an invisible
 character called a line ending. Different operating systems handle line
@@ -89,7 +89,7 @@ $ git config --global core.autocrlf input
 - Source: [Configurinf git to handle line encodings](https://docs.github.com/en/github/using-git/configuring-git-to-handle-line-endings)
 
 
-### How to show differences
+## Cómo mostrar diferencias
 
 - `git diff` muestra las diferencias entre los ficheros locales y lo que haya
   en el _stage_.
@@ -101,7 +101,7 @@ $ git config --global core.autocrlf input
   como de ficheros en el _stage_.
 
 
-### Hot to draw a clear log graph, showing branchs
+## Hot to draw a clear log graph, showing branchs
 
 This is the way:
 
@@ -112,7 +112,7 @@ git log --oneline --all --graph --decorate=full
 - Source: [Git branch name - case sensitive or insensitive?](https://stackoverflow.com/questions/38493543/git-branch-name-case-sensitive-or-insensitive)
 
 
-### Special Files (mark some files as binary files)
+## Special Files (mark some files as binary files)
 
 You may need to mark certain files as binary files so that git knows to
 ignore them and **doesn't produce lengthy diffs**. Git has a
@@ -120,11 +120,11 @@ ignore them and **doesn't produce lengthy diffs**. Git has a
 you may want to add your `yarn-lock.json` or `package-lock.json` so that
 Git doesn't try to diff them every time you make a change.
 
-### Obtener una versión del histórico basándose en la fecha:
+## Obtener una versión del histórico basándose en la fecha:
 
 Hay dos métodos:
 
-#### Checkout por fecha usando _reflog_
+### Checkout por fecha usando _reflog_
 
 Se puede hacer un _checkout_ a un _commit_ específico en un momento
 determinado usando este formato, usando `rev_parse`:
@@ -142,7 +142,7 @@ Más detalles en [git-rev-parse](http://linux.die.net/man/1/git-rev-parse/).
     entradas caducan a los **90 días**, asi que está técnica solo puede
     retroceder ese tiempo.
 
-#### Checkout por fecha usando _rev-list_
+### Checkout por fecha usando _rev-list_
 
 La otra opción, que no usa _reflog_ y por tanto no tiene la limitación de los
 90 días, es `rev-list`, que es un poco más prolija:
@@ -154,7 +154,7 @@ git checkout `git rev-list -n 1 --first-parent --before="2021-02-26 13:37" maste
 Atención al flag `--first-parent`, que trabajara solo con tu historial sin prestar atención a otras versiones incorporadas por `merge`; esto es normalmente lo que se quiere.
 
 
-### Cómo obtener un listado de ficheros borrados
+## Cómo obtener un listado de ficheros borrados
 
 Este es el camino:
 
@@ -168,7 +168,7 @@ Si estás buscando un fichero en concreto:
 git log --diff-filter=D --summary | grep delete | grep <filename>
 ```
 
-### How to find a deleted file in the project commit history
+## How to find a deleted file in the project commit history
 
 If you do not know the exact path you may use:
 
@@ -203,7 +203,7 @@ git checkout <SHA>^ -- <path-to-file>
     to look at the previous commit to get the deleted file's contents.
 
 
-### Make Git branch command do NOT behaves like 'less' (Do not paginate results)
+## Make Git branch command do NOT behaves like 'less' (Do not paginate results)
 
 This is a default behavior change introduced in Git 2.16.
 
@@ -214,13 +214,13 @@ You can turn paged output for git branch back off by default with the
 git config --global pager.branch false
 ```
 
-### Cómo revisar de forma interactiva los cambios antes de ser confirmados 
+## Cómo revisar de forma interactiva los cambios antes de ser confirmados 
 
 Con el comando `git add -p` podemos revisar los cambios producidos antes de cada
 fichero, y aprovar o no la incorporación de los mismos al _commit_ actual.
 
 
-### Some useful commands
+## Some useful commands
 
 - `git commit -a` Stages files automatically.
 
@@ -253,13 +253,13 @@ fichero, y aprovar o no la incorporación de los mismos al _commit_ actual.
   branch arguments to manage remote branches
 
 
-### How to rename a branch in Git
+## How to rename a branch in Git
 
 If you have named a branch incorrectly **AND** pushed this to the remote
 repository, follow these steps before any other developers get a chance to jump
 on you and give you shit for not correctly following naming conventions.
 
-#### Step 1. Rename your local branch.
+### Step 1. Rename your local branch.
 
 If you are on the branch you want to rename:
 
@@ -273,13 +273,13 @@ If you are on a different branch:
 git branch -m old-name new-name
 ```
 
-#### Step 2. Delete the old-name remote branch / push the new-name local branch
+### Step 2. Delete the old-name remote branch / push the new-name local branch
 
 ```shell
 git push origin :old-name new-name
 ```
 
-#### Step 3. Reset the upstream branch for the new-name local branch.
+### Step 3. Reset the upstream branch for the new-name local branch.
 
 Switch to the branch and then:
 
@@ -296,7 +296,7 @@ git push origin :old_branch                 # Delete the old branch
 git push --set-upstream origin new_branch   # Push the new branch, set local branch to track the new remote
 ```
 
-### Cómo incorporar cambios realizados en otra rama (Por ejemplo, `master` a `dev`)
+## Cómo incorporar cambios realizados en otra rama (Por ejemplo, `master` a `dev`)
 
 La forma más sencilla es cambiarse a la rama de destino y realizar un merge con
 la rama que tiene los cambios que queremos incorporar:
@@ -306,7 +306,7 @@ git switch develop
 git merge origin/master
 ```
 
-### Cómo listar las ramas que se pueden borrar de forma segura
+## Cómo listar las ramas que se pueden borrar de forma segura
 
 Este es el camino:
 
@@ -325,7 +325,7 @@ De la documentaión de Git sobre ramas:
 > (i.e. the tip of the current branch).
 
 
-### Stashing
+## Stashing
 
 Often, when you've been working on part of your project, things are in a
 messy state and you want to switch branches for a bit to work on
@@ -337,7 +337,7 @@ Stashing takes the dirty state of your working directory -that is, your
 modified tracked files and staged changes- and saves it on a stack of
 unfinished changes that you can reapply at any time.
 
-### Forget the local changes and get the last repository version of file
+## Forget the local changes and get the last repository version of file
 
 It depends if you have made commit or not:
 
@@ -388,7 +388,7 @@ way to just temporary store the changes without committing them using
 `git stash`. This command resets the changes to all files, but it also
 saves them in case you would like to apply them at some later time.
 
-### Make git diff with previous version of a file
+## Make git diff with previous version of a file
 
 This is the way:
 
@@ -412,9 +412,9 @@ in your work tree and you don't want to see the diffs for them.
 - Source: [StackOverflow - git: How to diff changed files versus previous
   versions after a pull?]https://stackoverflow.com/questions/2428270/git-how-to-diff-changed-files-versus-previous-versions-after-a-pull)
 
-### Cómo borrar ramas en Git
+## Cómo borrar ramas en Git
 
-#### Cómo borrar una rama local
+### Cómo borrar una rama local
 
 ```shell
 git branch -d pruebas
@@ -430,7 +430,7 @@ rama también existe en el remoto, es recomendable borrarla primero en el remoto
 y luego borrar la local con `-d`. Si por lo que fuera se quiere mantener la
 rama remota pero borrar la local, se puede hacer usando el flag `-D`.
 
-#### Cómo borrar una rama remota
+### Cómo borrar una rama remota
 
 Para borrar una rama remota se usa el comando _push_ con el indicador
 `--delete`:
@@ -439,7 +439,7 @@ Para borrar una rama remota se usa el comando _push_ con el indicador
 git push origin –delete pruebas
 ```
 
-### To learn more about code review
+## To learn more about code review
 
 - [GitHub style guide](http://google.github.io/styleguide/)
 - [About Pull Request
@@ -452,7 +452,7 @@ git push origin –delete pruebas
 - <https://help.github.com/en/articles/closing-issues-using-keywords>
 - <https://help.github.com/en/articles/setting-guidelines-for-repository-contributors>
 
-### To learn about CI/CD
+## How to learn about CI/CD
 
 Check out the following links for more information:
 
@@ -461,7 +461,7 @@ Check out the following links for more information:
 - <https://docs.travis-ci.com/user/tutorial/>
 - <https://docs.travis-ci.com/user/build-stages/>
 
-### Como usar las etiquetas en Git
+## Como usar las etiquetas en Git
 
 Like most VCSs, Git has the ability to tag specific points in a
 repository's history as being important. Typically, people use this
@@ -508,7 +508,7 @@ v1.8.5.5
     use of `-l` or `--list is mandatory`.  :::
 
 
-#### Cómo crear etiquetas en Git
+### Cómo crear etiquetas en Git
 
 Git supports two types of tags: **lightweight** and **annotated**.
 
@@ -637,5 +637,3 @@ $ git push origin --delete <tagname>
 ```
 
 Source: [Git Basics - Tagging](https://git-scm.com/book/en/v2/Git-Basics-Tagging)
-
-

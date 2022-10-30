@@ -1,6 +1,8 @@
-## Notes on GitHub Actions
+---
+title: Notes on GitHub Actions
+---
 
-### Introduction
+## Introducción a GitHub Actions
 
 You can write individual tasks, called **actions**, and combine them to create a
 custom workflow.  Workflows are custom automated processes that you can set up
@@ -23,7 +25,7 @@ share with the GitHub community. Discovering actions in the [GitHub community
 GitHub Marketplace](https://github.com/marketplace?type=actions) is a central
 location for you to find, share, and use actions built by t
 
-### Usage limits
+## Límites de uso
 
 There are some limits on GitHub Actions usage, and will vary depending on
 whether you use GitHub-hosted or self-hosted runners. Here we only consider
@@ -49,8 +51,6 @@ depends on your GitHub plan, as indicated in the following table.
 
 - **Job matrix**: A job matrix can generate a maximum of **256 jobs per 
   workflow run**.
-
-### Glossary
 
 
 
