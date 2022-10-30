@@ -203,10 +203,6 @@ function term_title() { echo -en "\033]0;$1\007"; }
 
 ## Fuentes:
 
-- [Haoyi\'s Programming Blog - Build your own Command Line with ANSI
-  escape
-  codes](https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html#decorations)
-- [Stackoverflow - How to change Gnome-Terminal
-  title](https://askubuntu.com/questions/22413/how-to-change-gnome-terminal-title)
-- [Wikipedia - ANSI escape
-  codes](https://en.wikipedia.org/wiki/ANSI_escape_code)
+- [Haoyi's Programming Blog - Build your own Command Line with ANSI escape codes](https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html#decorations)
+- [Stackoverflow - How to change Gnome-Terminal title](https://askubuntu.com/questions/22413/how-to-change-gnome-terminal-title)
+- [Wikipedia - ANSI escape codes](https://en.wikipedia.org/wiki/ANSI_escape_code)
