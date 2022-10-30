@@ -70,6 +70,7 @@
 - [Teaching-python](notes-on-teaching-python.md)
 - [Telegram](notes-on-telegram.md)
 - [Tmux](notes-on-tmux.md)
+- [TOTP](notes-on-totp.md)
 - [Unicode](notes-on-unicode.md)
 - [Uwsgi](notes-on-uwsgi.md)
 - [Videgames-development](notes-on-videogames-development.md)
