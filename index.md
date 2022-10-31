@@ -73,7 +73,7 @@
 - [Tmux](notes-on-tmux.md)
 - [TOTP](notes-on-totp.md)
 - [Unicode](notes-on-unicode.md)
-- [Ultisnips](notes-on-ultisnips.md]
+- [Ultisnips](notes-on-ultisnips.md)
 - [Uwsgi](notes-on-uwsgi.md)
 - [Videgames-development](notes-on-videogames-development.md)
 - [Vim](notes-on-vim.md)
