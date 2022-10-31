@@ -78,5 +78,6 @@
 - [Videgames-development](notes-on-videogames-development.md)
 - [Vim](notes-on-vim.md)
 - [Vscode](notes-on-vscode.md)
+- [WSL](notes-on-wsl.md)
 - [Vue](notes-on-vue.md)
 - [Writting](notes-on-writting.md)
