@@ -4,7 +4,7 @@ title: Notas sobre bash
 
 ## Introducción a bash
 
-**Bash** (_Bourne-again shell)) es una interfaz de usuario de línea de comandos, específicamente un _shell_ de Unix; así como un lenguaje de scripting. Fue escrito originalmente por Brian Fox para el sistema operativo GNU, y pretendía ser el reemplazo de software libre del shell Bourne.
+**Bash** (_Bourne-again shell_) es una interfaz de usuario de línea de comandos, específicamente un _shell_ de Unix; así como un lenguaje de scripting. Fue escrito originalmente por Brian Fox para el sistema operativo GNU, y pretendía ser el reemplazo de software libre del shell Bourne.
 
 ## Recomendaciones para scripts en bash
 
