@@ -90,6 +90,14 @@ main "$@"
 
 Fuente: [Shell Script Best Practices — The Sharat's](https://sharats.me/posts/shell-script-best-practices/)
 
+## Cómo borrar una variable de entorno 
+
+Con la orden `unset`:
+
+```shell
+$ unset AUTH_TOKEN
+```
+
 ## How do I clear Bash's cache of paths to executables?
 
 The ``bash`` shell does cache the full path to a command. You can verify that
