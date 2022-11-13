@@ -8,7 +8,7 @@
 - [Bash](notes-on-bash.md)
 - [Black](notes-on-black.md)
 - [Blender](notes-on-blender.md)
-- [Bulma CSS](notes-on-bulma.css)
+- [Bulma CSS](notes-on-bulma.md)
 - [CSS](notes-on-css.md)
 - [Django](notes-on-django.md)
 - [Django-crispy-forms](notes-on-django-crispy-forms.md)

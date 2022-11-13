@@ -59,11 +59,11 @@ This variable can now be used by its children:
 }
 ```
 
-A big advantage of CSS Variables is that **they have access to the DOM**. This
-isn’t the case with LESS or SASS as their variables are compiled down to regular
-CSS. In practice this means that you can, for example, change the variables
-based upon the width of the screen:
-
+Una ventaja de las variables/propiedades es que tienen **acceso al DOM**, algo
+que losp rocesadores como LESS o SASS no pueden hacer. Por ejemplo, podemos
+cambiar el valor de una variable basándonos en el ancho de la ventana, por
+ejemplo:
+ 
 ```css
 :root {  
   --main-font-size: 16px;  
@@ -76,12 +76,13 @@ media all and (max-width: 600px) {
 }
 ```
 
-With four lines of code you have updated the main font size across your entire
-app when viewed on small screens.
+EL código CSS anterior actualiza el tamaño principal de las fuentes en caso de
+que el área de visualización sea pequeña (600 _pixels_ o menos, para ser
+precisos).
 
-Another advantage of living in the DOM is that you can access the variables with
-JavaScript, and even update them. Grabbing a CSS Variable in JavaScript takes
-three lines of code.
+Otra gran ventaja es que podemos acceder e incluso modificar estas
+variables/propiedades desde Javascript. Para leer una variable CSS desde
+Javascript hacen falta estas tres líneas de código:
 
 ```js
 var root = document.querySelector(':root');  
@@ -89,19 +90,15 @@ var rootStyles = getComputedStyle(root);
 var mainColor = rootStyles.getPropertyValue('--main-color');
 ```
 
-To update the CSS Variable simply call the `setProperty` method on the element
-in which the variables have been declared on and pass in the variable name as
-the first parameter and the new value as the second.
+Para actualizar, se usa el método `setProperty` del elemento dentro del cual
+está defininida la variable, y se le pasan como parámetros el nombre de la
+variable y el nuevo valor:
 
 ```js
 root.style.setProperty('--main-color', '#88d8b0')
 ```
 
-Currently, **77 per cent** of global website traffic supports CSS Variables,
-with almost 90 per cent in the US.
-
-Fuente:
-[Learn CSS Variables in 5 minutes - A tutorial for beginners](https://www.freecodecamp.org/news/learn-css-variables-in-5-minutes-80cf63b4025d)
+Fuente: [Learn CSS Variables in 5 minutes - A tutorial for beginners](https://www.freecodecamp.org/news/learn-css-variables-in-5-minutes-80cf63b4025d)
 
 
 
