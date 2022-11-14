@@ -4,7 +4,7 @@ title: Notas sobre Bulma CSS
 
 ## Bulma CSS
 
-Bulma es un framework **CSS**, as que en resumidas cuentas el resultado es un nico fichero `.css`:  
+**[Bulma.css](https://bulma.io/)** es un framework **CSS**, as que en resumidas cuentas el resultado es un nico fichero `.css`:  
 [https://github.com/jgthms/bulma/blob/master/css/bulma.css](https://github.com/jgthms/bulma/blob/master/css/bulma.css)
 
 Generalmente, Bulma define clases que debemos aplicar para los elementos básicos de Html. Por ejemplo, una tabla en html no recibirá ningún trato por parte de Bulma excepto si le añadimos la clase `table`:
