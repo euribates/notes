@@ -1,0 +1,28 @@
+site_name: Notes
+docs_dir: ./docs
+theme:
+  name: material
+
+plugins:
+    - search
+    - table-reader
+    - tags:
+        tags_file: tags.md
+
+markdown_extensions:
+    - admonition
+    - pymdownx.details
+    - pymdownx.arithmatex:
+        generic: true
+    - mdx_math:
+        enable_dollar_delimiter: True #for use of inline $..$
+    - pymdownx.highlight
+    - pymdownx.superfences
+    - pymdownx.snippets
+    - pymdownx.keys
+    - footnotes
+
+extra_javascript:
+
+  - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML    
+  - javascripts/config.js

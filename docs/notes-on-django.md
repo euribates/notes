@@ -1,41 +1,59 @@
 ---
-title: Notes on Django
+title: Notas sobre Django
 ---
 
-## Default error handlers
+## Como representar numeros con comas, por ejemplo, dineros, en Django
 
-It's worth reading the documentation of the default error handlers,
-`page_not_found`, `server_error`, `permission_denied` and `bad_request`. By
-default, they use these templates if they can find them, respectively:
-`404.html`, `500.html`, `403.html`, and `400.html`.
+La librería nativa de django `django.contrib.humanize` tiene filtros para esto:
 
-So if all you want to do is make pretty error pages, just create those files in
-a `TEMPLATE_DIRS` directory, you don't need to edit URLConf at all. [Read the
-documentation](https://docs.djangoproject.com/en/4.1/topics/http/views/#customizing-error-views) to see which context variables are available.
+```
+{% load humanize %}
+{{ my_num|intcomma }}
+```
 
-In Django 1.10 and later, the default CSRF error view uses the template
+Si no funciona, verifica que `django.contrib.humanize` este en la variable
+`INSTALLED_APPS` del `settings.py`.
+
+- Fuente:
+[python - Format numbers in django templates - Stack Overflow](https://stackoverflow.com/questions/346467/format-numbers-in-django-templates)
+
+
+## Manejador de error por defecto
+
+Merece la pena leer la documentación sobre los manejadores de error
+predefinidos: `page_not_found`, `server_error`, `permission_denied` y
+`bad_request`. Estas funciones usan por defecto las siguientes plantillas,
+respectivamente: `404.html`, `500.html`, `403.html`, y `400.html`.
+
+Si simplemente queremos páginas de error molonas, solo hay que crear plantillas
+con estos nombres en alguno de los sitios que Django usa para buscar
+plantillas, es decir, lo que haya definido en la variable `TEMPLATE_DIRS`. No
+hay necesidad de tocar la configuración de URL. Hay más documentación en
+[Customizing Error Views](https://docs.djangoproject.com/en/4.3/topics/http/views/#customizing-error-views),
+especialmente para saber que variables de contexto están disponibles.
+
+Desde Django 1.10, los errores por defecto de tipo CSRF usan la plantilla
 `403_csrf.html`.
 
-Note: Don't forget that `DEBUG`` must be set to `False` for these to work,
-otherwise, the normal debug handlers will be used.
+!!! warning: Solo se verán estas plantillas en modo de desarrollo (`DEBUG=False`)
 
-## How to make a Form dynamically
+    Si la variable `DEBUG` está a `True`, no se muestras estas plantillas, sino
+    la plantilla gerenal de errores de Django.
 
-TL/DR: Add or change fields during initialization of the form using the
-`fields` attribute.
 
-Forms are usually defined in a declarative style, with form fields listed as
-class fields. However, sometimes we do not know the number or type of these
-fields in advance. This calls for the form to be dynamically generated. This
-pattern is sometimes called dynamic form or runtime form generation.
+## Cómo hacer una formulario dinámicamente
 
-Every form instance has an attribute called `fields`, which is a dictionary
-that holds all the form fields. This can be modified at runtime. Adding or
-changing the fields can be done during form initialization itself.
+TL/DR: Añadir o cambiar los campos definidos en el formulario durante la
+inicialización del mismo, usando el atributo `fields`.
 
-For example, if we need to add a checkbox to a user-details form only if a
-keyword argument named "upgrade" is true upon form initialization, then we can
-implement it as follows:
+Cada instancia  de `Form` tiene este atributo `fields`, que es un diccionario
+que mantiene referencias a todos los campos definidos en la declaración de la
+clase. Al ser un diccionario, puede ser modificado sin problemas en la llamada
+a `__init__`.
+
+Por ejemplo, supongamos que queremos añadir un campo de tipo `Checkbox` pero
+solo si al crear el formulario usamos un parámetro por nombre `upgrade` a
+`True`:
 
 ```python
 class PersonDetailsForm(forms.Form): 
@@ -49,44 +67,50 @@ class PersonDetailsForm(forms.Form):
         # Show first class option? 
         if upgrade: 
             self.fields["first_class"] = forms.BooleanField( 
-                label="Fly First Class?") 
+                label="Fly First Class?",
+                ) 
 ```
 
-Now, we just need to pass the `PersonDetailsForm(upgrade=True)` keyword argument to
-make an additional Boolean input field (a checkbox) appear.
 
-!!! warning
-    A newly introduced keyword argument has to be removed or popped before we
-    call super to avoid the unexpected keyword error.
+!!! warning "El parámetro nuevo debe ser eliminado de `kwargs`"
 
-!!! warning
-    If we use a `FormView` class for this example, then we need to pass the
-    keyword argument by overriding the `get_form_kwargs` method of the View
-    class.
+    El nuevo parámetro por nombre debe ser eliminado del diccionario `kwargs`
+    antes de llamar a `super().__init__`.
 
-This pattern can be used to change any attribute of a field at runtime, such as
-its widget or help text. It works for model forms as well.
+!!! note "Si usamos la clase `FormView`"
 
-Source: Book [Django Design Patterns and Best
+    si usamos la CBV `FormView`, pasaríamos el parámetro sobreescribiendo
+    el método `get_form_kwargs`. 
+
+Puede usarse tambien para modificar los atributos delos campos predefindos,
+como el _widget_ a usar o el texto de ayuda.
+
+Fuente: El libro [Django Design Patterns and Best
 Practice](https://www.packtpub.com/product/django-design-patterns-and-best-practices-second-edition/9781788831345)
 
-## How to Migrate to 3.1.1
+
+## Cómo migrar a 3.1.1
 
 - **NullBooleanField** is obsolete, replace it by
   `BooleanField(null=True)`.
+
 - **load staticfiles** and **load admin\_static** are obsoletes since
   Django 2.1, deprecated in Django 3.0.
 
-   Change this references in the templates from:
-```django
-{% load staticfiles %}
-{% load static from staticfiles %}
-{% load admin_static %}
-```
-   to just:
-```django
-{% load static %}
-```
+  Cambiar este tipo de referencias en las plantilla:
+
+  ```django
+  {% load staticfiles %}
+  {% load static from staticfiles %}
+  {% load admin_static %}
+  ```
+
+  a:
+
+  ```django
+  {% load static %}
+  ```
+
 
 ## Set VIM to handle Django template files
 
@@ -98,6 +122,7 @@ template tags, built-in filters, arguments and comments.
 Source: [Syntax highlighting for django templates](https://www.vim.org/scripts/script.php?script_id=1487) 
 
 Tags: vim, django, editor
+
 
 ## What are the possible values of `on_delete` in a model field
 
@@ -179,6 +204,7 @@ Source: [Best practices working with Django models](https://steelkiwi.com/blog/b
 
 Tags: Databases
 
+
 ## How to make a multiple form, this is, a form across several pages
 
 Use the external app
@@ -188,15 +214,16 @@ This use to be in the django main distribution, but was split as a
 separated app sinde Django 1.8. For this functionality, you'll need the
 Form Wizard class, as explained here: [Form wizard](https://django-formtools.readthedocs.io/en/latest/wizard.html).
 
+
 ## Como usar el método `extra` de los queryset para consultas avanzadas
 
-El método `extra` de los queryset nos permite realizar algunas
-modificaciones en las sentencias sql que ejecuta. En concreto nos
-permite añadir campos a la cláusula `SELECT`, o tablas y joins a la
-cláusula `FROM`, o condiciones a la cláusula `ORDER BY`.
+El método `extra` de los `queryset` nos permite realizar algunas
+modificaciones en las sentencias SQL que ejecuta. En concreto nos
+permite añadir campos a la cláusula `SELECT`, o tablas 
+y joins a la cláusula `FROM`, o condiciones a la
+cláusula `ORDER BY`.
 
-Supongamos, por ejemplo, que tenemos una tabla de productos a la venta,
-algo como esto:
+Supongamos, por ejemplo, que tenemos una tabla de productos a la venta:
 
 ```python
 class Item(Model):
@@ -208,15 +235,15 @@ class Item(Model):
 
 Podemos añadir un campo calculado que nos indique si los precios son
 inferiores a 5.0 (quizá queremos marcar estos productos en la página con
-un icono de `_low-price_`, por ejemplo). Para ello, podemos añadir un
-campo calculado al _select_ de la query usando `extra`, como en el siguiente
+un icono `low-price`, por ejemplo). Para ello, podemos añadir un
+campo calculado al `SELECT` de la query usando `extra`, como en el siguiente
 ejemplo:
 
 ```python
 Item.objects.extra(select={'low_price':'pvp < 5.0'}).all()
 ```
 
-Source: [Best practices working with Django models](https://steelkiwi.com/blog/best-practices-working-django-models-python/)
+Fuentes: [Best practices working with Django models](https://steelkiwi.com/blog/best-practices-working-django-models-python/)
 
 Lo que estamos haciendo es que la sentencia SQL generada por Django pase
 de esto:
@@ -226,7 +253,7 @@ SELECT app_item.*
   FROM app_item;
 ```
 
-a esto:
+a:
 
 ```sql
 SELECT app_item.*, (pvp < 5.0) AS low_price
@@ -234,7 +261,7 @@ SELECT app_item.*, (pvp < 5.0) AS low_price
 ```
 
 Podemos pasar varios campos calculados en el diccionario especificado
-por el parámetro select, o hacer varias llamadas a extra. Por ejemplo,
+por el parámetro `SELECT`, o hacer varias llamadas a extra. Por ejemplo,
 si queremos clasificar los precios en tres bandas, (baratos, por debajo
 de 5 euros; medios, entre 5 y 100 euros y caros, por encima de 100
 euros), podemos hacerlos así:
@@ -247,7 +274,7 @@ Item.objects.extra(select={
     }).all()
 ```
 
-O así:
+O:
 
 ```sql
 Item.objects  \
@@ -296,8 +323,8 @@ puntuaciones de un artículo, y luego calcular la media.
 Si lo hacemos para una consulta cuyo resultado final fueran 10 artículos, por
 ejemplo, se ejecutan 11 consultas SQL a la base de datos, teniendo además que
 hacer el cálculo nosotros, contra una sola consulta, y los cálculos los realiza
-el SGBD. La diferencia en rendimiento puede ser considerable a medida que se
-incremente el número de artículos.
+el gestor de la base de datos por nosotros. La diferencia en rendimiento puede
+ser considerable a medida que se incremente el número de artículos.
 
 Estás prácticas también tienen un cierto riesgo: hemos vinculado más nuestro
 código al gestor de base de datos que estamos usando, con las dependencias y
@@ -314,13 +341,14 @@ nosotros si queremos emplearla o no. Recuerda solo estos tres consejos:
 - Explícito mejor que implícito (Tim Peters)
 
 - Los casos especiales no son tan especiales como para romper las
-  reglas ... pero lo práctico vence a lo ideal (Tim Peters)
+  reglas... Pero lo práctico vence a lo ideal (Tim Peters)
 
 - Un gran poder conlleva también una gran responsabilidad (Stan Lee)
 
 Nota: El uso de extra para modificar las cláusulas `FROM` y `WHERE` está
 explicado, junto con muchas otras cosas interesantes, en la
 documentación oficial: [Django Query Set API reference - extra](https://docs.djangoproject.com/en/3.1/ref/models/querysets/#extra).
+
 
 ## How to modify the queryset used in the admin forms to get a Foreign Model
 
@@ -353,15 +381,15 @@ class MyModelAdmin(admin.ModelAdmin):
         )
 ```
 
-## How to use different forms (for update or insert) in admin
 
-Use the `get_form` method from class `ModelAdmin`, and return the form
-you need in every case; you can decide if it's an update of an existing
-object or the addition of a new one looking at the `obj` parameter. If
-`obj` is `None`, then is an `INSERT` on the database, else, `obj` is the
-same object being modified.
+## Cómo usar forumarios diferentes en el admin para insertar y modificar
 
-Look at this example:
+Usa el método `get_form` de la clase `ModelAdmin`, y devuelve el formulario que
+necesites en cada caso. Puedes discriminar si es un `UPDATE` o un `INSERT`
+mirando el parámetro `obj`: Si es `None` se trata de un alta, si no, se trata
+de una modificación y `obj` es el modelo modificado.
+
+Un ejemplo:
 
 ```python
 class AdminBiografia(admin.ModelAdmin):
@@ -375,6 +403,7 @@ class AdminBiografia(admin.ModelAdmin):
             kwargs['form'] = NuevaBiografiaAdminForm
         return super().get_form(request, obj, **kwargs)§
 ```
+
 
 ## How to make a CASE statement using the django ORM
 
@@ -495,7 +524,9 @@ The AdminSite provides the following named URL patterns:
 | Application index page    | `app_list` | `app_label`             |
 | Redirect to object's page | `view_on_site` | `content_type_id`, `object_id` |
 
+
 Each ModelAdmin instance provides an additional set of named URLs:
+
 
 | Page       | URL name                              | Parameters  |
 |------------|---------------------------------------|-------------|
@@ -514,15 +545,14 @@ admin:biblioteca_libro_change
 
 - Source: [Reversing admin URLs](https://docs.djangoproject.com/en/dev/ref/contrib/admin/#reversing-admin-urls)
 
-## Correct Model Naming
 
-It is generally recommended to use **singular nouns** for model naming, for
-example: `User`, `Post`, `Article`. That is, the last component of the name
-should be a noun, e.g.: Some New Shiny Item. It is correct to use singular
-numbers when one unit of a model does not contain information about several
-objects.
+## nomenclatura correcta de los modelos
 
-## Relationship Field Naming
+En general se recomienda usar **nombres en singular para los modelos**, como
+`Project`, `Task`, `Place`.
+
+
+### Relationship Field Naming
 
 For relationships such as `ForeignKey`, `OneToOneKey`, `ManyToMany` it is
 sometimes better to specify a name. Imagine there is a model called `Article`,
@@ -530,7 +560,7 @@ sometimes better to specify a name. Imagine there is a model called `Article`,
 field contains information about the author of the article, then `author` will
 be a more appropriate name than user.
 
-## Correct Related-Name
+### Correct Related-Name
 
 It is reasonable to indicate a related-name in plural as related-name
 addressing returns queryset. Please, do set adequate related-names. In
@@ -545,10 +575,10 @@ class Item(models.Model):
     owner = models.ForeignKey(Owner, related_name='items')
 ```
 
-## Do not use ForeignKey with unique=True
+## Nunca usar una `ForeignKey` con `unique=True`
 
-There is no point in using ForeignKey with unique=Trueas there exists
-`OneToOneField` for such cases.
+No tiene sentido usar esta combinación, ya que existe `OneToOneField`
+precisamente para estos casos.
 
 
 ## Attributes and Methods Order in a Model
@@ -678,7 +708,7 @@ can cause an exception `DoesNotExist`. Therefore,
 `order_by('created').first()` is the most useful variant.
 
 
-## Never make len(queryset)
+## Nunca caocular el tamaño de un `queryset` con `len`
 
 Do not use `len` to get queryset's objects amount. The `count` method can be
 used for this purpose. Reason is: if you made `len(ModelName.objects.all())`,
@@ -692,7 +722,7 @@ carried out in that database and fewer resources will be required for python
 code performance.
 
 
-## Do not use `if queryset`, is a bad idea
+## No usar munca `if queryset`, es una mala idea
 
 Never use a `queryset` as a boolean value: instead of `if queryset:` do
 something like `if queryset.exists():`. Remember querysets are lazy, and
@@ -791,6 +821,7 @@ posts[0].comments_count
 Source:
 <https://steelkiwi.com/blog/best-practices-working-django-models-python/>
 
+
 ### Writing a custom storage system¶
 
 Source:
@@ -864,9 +895,10 @@ The length of the filename will not exceed max_length, if provided. If a free un
 
 If a file with name already exists, get_alternative_name() is called to obtain an alternative name.
 
+
 ## Como hacer migraciones propias
 
-Crteamos una migracion vacia (_empty_):
+Crearamos una migracion vacia (_empty_):
 
 ```shell
 ./manage.py makemigrations --empty --name nombre_que_quieras_para_la_migracion <app>
