@@ -18,7 +18,7 @@
   - [Migrating-django](notes-on-migrating-django.md)
 - [Docker](notes-on-docker.md)
   - [Docker Compose](notes-on-docker-compose.md)
-- [Documenting](notes-on -documenting.md)
+- [Documenting](notes-on-documenting.md)
 
 - [eBooks](notes-on-ebooks.md)
 - [Elastic search](notes-on-elasticsearch.md)

@@ -1,4 +1,12 @@
-## Notes on Vue.js
+---
+title: Notas sobre Vue.js
+tags:
+  - javascript
+  - framework
+  - frontend
+---
+
+## Notas sobre Vue.js
 
 ### React for Vue developers
 

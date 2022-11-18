@@ -1,3 +1,9 @@
+---
+title: Notas sobre enseñanaza
+tags:
+  - python
+---
+
 ## Notes on teaching
 
 ### Exercices

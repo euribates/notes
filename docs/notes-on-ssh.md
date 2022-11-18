@@ -1,4 +1,13 @@
-## Notes on SSH
+---
+title: Notas sobre SSH
+tags:
+  - unix
+---
+
+## Sobreo SSH
+
+**SSH** (_Secure SHell_) es un protocolo y programa cuya principal función es el acceso remoto a un servidor por medio de un canal seguro en el que toda la información está cifrada.
+
 
 ## Use Your SSH Agent in a Crontab
 

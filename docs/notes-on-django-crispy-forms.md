@@ -1,6 +1,19 @@
-## Notes on django-crispy-forms
+---
+title: Notas sobre formularios con django-crispy-forms
+tags:
+  - python
+  - django
+  - patterns
+---
 
-### Form Helpers
+## Sobre django-crispy-forms
+
+**django-crispy-forms** propociona filtros y etiquetas adicionales para las plantillas
+Django que permiten controlar la presentación  de formularios Django de forma
+elegante y respetnado el principio DRY.
+
+
+## Form Helpers
 
 Let’s see how helpers works step by step, with some examples explained. First you will need to import FormHelper:
 
@@ -39,6 +52,3 @@ Notice that the `{% crispy %}` tags expects **two parameters**: first **the form
 ```python
 {% crispy form %}
 ```
-
-
-

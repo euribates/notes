@@ -1,8 +1,9 @@
 ---
-title: Notes on Pandas
+title: Notes sobre Pandas
 tags:
    - python
    - pandas
+   - math
 ---
 
 ## Notes on Pandas

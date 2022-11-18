@@ -1,5 +1,10 @@
 ---
 title: Notas sobre Pycharm
+tags:
+  - docker
+  - docker-compose
+  - python
+  - ide
 ---
 
 ## How to do Remote Debugging with PyCharm
