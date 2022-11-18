@@ -90,7 +90,7 @@ Often times you will find yourself in need for a menu with dynamic content. Use 
 You can use the `header_buttons` and `footer_buttons` lists to put buttons in the first or last row
 respectively.
 
-![Menu](./art/telegram-menu.png)
+![Menu](./telegram/telegram-menu.png)
 
 Or, if you need a dynamic version, use list comprehension to generate your button_list dynamically from a list of strings:
 
