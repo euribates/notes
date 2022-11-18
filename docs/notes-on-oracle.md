@@ -1,6 +1,8 @@
 ---
-title: Notes on Oracle
+title: Notas sobre Oracle
 ---
+
+## Sobre Oracle
 
 **[Oracle](https://en.wikipedia.org/wiki/Oracle_Database)** es un gestor de bases de datos, propiedad de 
 _Oracle Corporation_.
@@ -25,7 +27,7 @@ Fuentes:
 - [Administering SQL*Plus](https://docs.oracle.com/cd/E11882_01/server.112/e10839/admn_sqlpls.htm#UNXAR156)
 
 
-## Editar lineas e histórico usando sqlplus
+## Cómo editar lineas e histórico usando sqlplus
 
 Hay que instalar una utilidad de terceros llamada [rlwrap](https://oracle-base.com/articles/linux/rlwrap). Si no está instalada:
 
@@ -49,7 +51,7 @@ Fuentes:
 - [sqlplus command line editing — oracle-tech](https://community.oracle.com/tech/developers/discussion/2184333/sqlplus-command-line-editing)
 
 
-## Ajustar el ancho de las columnas en la salida de sqlplus
+## Cómo ajustar el ancho de las columnas en la salida de sqlplus
 
 Se usa el comando `COLUMN`
 
@@ -65,14 +67,14 @@ Fuentes:
 
 - [Formatting SQL*Plus Reports](https://docs.oracle.com/cd/B19306_01/server.102/b14357/ch6.htm)
 
-## Crear una base de datos (usuario y tablespace) en Oracle
+## Cómo Crear una base de datos (usuario y tablespace) en Oracle
 
 Para preparar una nueva base de datos hay que realizar los siguientes pasos: crear un
 usuario por defecto, crear un tablespace para almacenar los objetos propios de la base de
 datos (tablas, índices, secuencias, etc..) y asignar el tablespace creado como tablespace
 por defecto del nuevo usuario:
 
-#### Crear un nuevo usuario
+### Cómo Crear un nuevo usuario
 
 La sentencia SQL es:
 
@@ -104,7 +106,7 @@ ALTER USER jarjar IDENTIFIED BY istinks;
 ```
 
 
-#### Crear y asignar un nuevo ''tablespace''
+### Cómo Crear y asignar un nuevo ''tablespace''
 
 Para crear un nuevo tablespace, hay que indicar, al menos, el nombre del fichero de
 almacenamiento y un tamaño inicial. Se pueden el sufijo `K` para
@@ -131,7 +133,7 @@ ALTER USER jarjar DEFAULT TABLESPACE naboo;
 ```
 
 
-### Para ver el código de creación de una tabla
+## Cómo ver el código de creación de una tabla
 
 Este es el camino:
 
@@ -148,7 +150,7 @@ select DBMS_METADATA.GET_DDL('TABLE','TABLE NAME'[,'SCHEMA']) from DUAL
 Por ejemplo para ver la tabla `tareas.tarea_proyectos`:
 
 ```
-select dbms_metadata.get_ddl('TABLE', 'TAREAS_PROYECTO', 'TAREAS') FROM DUAL;
+SELECT dbms_metadata.get_ddl('TABLE', 'TAREAS_PROYECTO', 'TAREAS') FROM DUAL;
 ```
 
 - Fuente: [Stackoverflow: How can I generate or get a DDL script on an existing table in Oracle](<https://stackoverflow.com/questions/26249892/how-can-i-generate-or-get-a-ddl-script-on-an-existing-table-in-oracle-i-have)
@@ -158,23 +160,21 @@ select dbms_metadata.get_ddl('TABLE', 'TAREAS_PROYECTO', 'TAREAS') FROM DUAL;
 This is the way:
 
 ```sql
-    SELECT 
-        tablespace_name, 
-        file_name, 
-        bytes / 1024/ 1024  MB
-    FROM
-        dba_data_files
-    WHERE tablespace_name like 'A%'
-    ORDER BY tablespace_name;
+SELECT tablespace_name, 
+       file_name, 
+       bytes / 1024/ 1024  MB
+  FROM dba_data_files
+ WHERE tablespace_name like 'A%'
+ ORDER BY tablespace_name;
 ```
 
-### Como listar las tablas definidas en la base de datos
+## Como listar las tablas definidas en la base de datos
 
 This is the way:
 
 ```sql
-    SELECT owner, table_name
-      FROM dba_tables
+SELECT owner, table_name
+  FROM dba_tables
 ```
 
 Assuming that you have access to the `DBA_TABLES` data dictionary view.  If you do not have
@@ -188,8 +188,8 @@ Alternatively, if you do not have access to `DBA_TABLES`, you can see all the ta
 your account has access to through the `ALL_TABLES` view:
 
 ```sql
-    SELECT owner, table_name
-      FROM all_tables
+SELECT owner, table_name
+  FROM all_tables
 ```
 
 although that may be a subset of the tables available in the database (`ALL_TABLES` shows
@@ -199,14 +199,14 @@ If you are only concerned with the tables that you own, not those that you have 
 you could use `USER_TABLES`:
 
 ```sql
-    SELECT table_name
-      FROM user_tables
+SELECT table_name
+  FROM user_tables
 ```
 
 Since `USER_TABLES` only has information about the tables that you own,
 it does not have an `OWNER` column --the owner, by definition, is you.
 
-### Cómo usar la codificación UTF-8 en Oracle
+## Cómo usar la codificación UTF-8 en Oracle
 
 Definiendo la variable de entorno `NLS_LANG` con este valor:
 
@@ -214,7 +214,7 @@ Definiendo la variable de entorno `NLS_LANG` con este valor:
 export NLS_LANG=SPANISH_SPAIN.UTF8
 ```
 
-### Cómo desbloquear (UNLOCK) una cuenta de usuario de ORACLE
+## Cómo desbloquear (UNLOCK) una cuenta de usuario de ORACLE
 
 Podemos comprobar el estado de la cuenta de un usuario, por ejemplo
 `WEBPUBLIC` con:
@@ -239,7 +239,7 @@ Para volver a habilitar la cuenta:
     ALTER USER webpublic ACCOUNT UNLOCK;
 ```
 
-### Salvar la salida de sqlplus (oracle) a fichero
+## Cómo salvar la salida de sqlplus (oracle) a fichero
 
 Usar la orden `spool`:
 
@@ -263,8 +263,7 @@ SET PAGES 0
 
 Para que no pagine los resultados
 
-Como Instalar cxOracle en Linux
--------------------------------
+## Cómo Instalar cxOracle en Linux
 
 Primero: Instalar las dependencias de Oracle Instant CLient:
 
@@ -327,7 +326,7 @@ ORACLE =
         (ADDRESS = (PROTOCOL = TCP)(HOST = <hostname>)(PORT = <port:1521>))
     (CONNECT_DATA =
         (SERVER = DEDICATED)
-        (SERVICE_NAME = orcl.parcan.es)
+        (SERVICE_NAME = srv-oracle)
         )
     )
 ```

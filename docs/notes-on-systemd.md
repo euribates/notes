@@ -2,7 +2,7 @@
 title: Notas sobre Systemd
 ---
 
-### Qué es Systemd
+## Qué es Systemd
 
 **[Systemd](https://es.wikipedia.org/wiki/Systemd)** es un sistema de
 inicialización (_init_) usado por varias distribuciones de Linux. El sistema de
@@ -19,7 +19,7 @@ habilitarlo para que se arranque automáticamente al inicio, o no (`enable` y
 `disable`).
 
 
-### Unidades
+## Unidades
 
 En _Systemd_, el objetivo de la mayoría de las acciones es conocido como
 **unidades** o **units**, que son recursos que el sistema conoce y sabe como
@@ -34,7 +34,7 @@ terminación por defecto. Por ejemplo, para gestionar el _deamon_ `nginx` no hac
 falta escribir `nginx.service`, aunque se puede hacer; basta con `ngigx`.
 
 
-### Como listar todos los servicios en ejecución
+## Como listar todos los servicios en ejecución
 
 Si ejecutamos el comando `systemctl` sin ningún parámetro, el programa listará
 **todas** las unidades que conozca, incluyendo los servicios, mostrando además
@@ -63,7 +63,7 @@ systemctl list-units --type=service --state=active,failed
 Fuente: [TecMint - How to List All Running Services Under Systemd in Linux](https://www.tecmint.com/list-all-running-services-under-systemd-in-linux/)
 
 
-### Arrancando y parando servicios
+## Arrancando y parando servicios
 
 Para arrancar un servicio, cuyas instrucciones de ejecución están detalladas en
 el fichero de unidad, se usa el comando `**start**`. Hacen falta privilegios
@@ -85,7 +85,7 @@ Para pararlo, usaremos el subcomando `**stop**`:
 sudo systemctl stop servicio
 ```
 
-### Rearranque y recarga
+## Rearranque y recarga
 
 Para arrancar de nuevo un servicio, es decir, para pararlo y volverlo a
 arrancar, podemos usar el comando `**restart*`:
@@ -109,11 +109,5 @@ estamos seguros de si el servicio lo soporta, podemos usar la orden
 ```shell
 sudo systemctl reload-or-restart servicio
 ```
-
-
-
-
-
-
 
 - Source: [How To Use Systemctl to Manage Systemd Services and Units  | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units)

@@ -265,14 +265,16 @@ Los componente parcados como `box` solo son contendores con un fondo blanco, un 
   I'm in a box.
 </div>
 ```
-Como contendor que es, resulta muy util para englobal otros componentes, como por ejemplo, un formulario.
+
+Como contendor que es, resulta muy util para englobal otros componentes, como
+por ejemplo, un formulario.
 
 ```html
 <form class="box">
   <div class="field">
     <label class="label">Email</label>
     <div class="control">
-      <input class="input" type="email" placeholder="e.g. alex@example.com">
+      <input class="input" type="email" placeholder="menganito@invented-email.com">
     </div>
   </div>
 
@@ -286,6 +288,7 @@ Como contendor que es, resulta muy util para englobal otros componentes, como po
   <button class="button is-primary">Sign in</button>
 </form>
 ```
+
 o un `media`:
 
 ```html

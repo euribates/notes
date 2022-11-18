@@ -312,7 +312,7 @@ Next we\'ll create a Docker image based on Ubuntu 16.04 and Python 3.X:
 
 ```dockerfile
 FROM ubuntu:16.04
-MAINTAINER Madhuri Koushik "madhuri@koushik.com"
+MAINTAINER Tu Menganito "menganito@invented-email.com"
 RUN apt-get update -y && \  
     apt-get install -y python3-pip python3-dev
 COPY ./requirements.txt /requirements.txt

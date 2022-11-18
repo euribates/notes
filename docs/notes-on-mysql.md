@@ -62,7 +62,7 @@ mysqldump -u root -p --opt [database_name] > /tmp/[database_name].sql
 You can use rsync, scp or ftp, I will show you how to do it with scp:
 
 ```bash
-scp /tmp/[database_name].sql user@newserver.com:/tmp/
+scp /tmp/[database_name].sql menganito@server.com:/tmp/
 ```
 
 #### Create the database in the new server:

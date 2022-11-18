@@ -39,12 +39,12 @@ keystroks:
 
 ```
     snippet sig "Email signature" b
-    Saludos desde las Islas Canarias
     Juan Ignacio Rodríguez de León
 
     --
-    email: euribates@gmail.com
-    twitter: @jileon
+    Saludos desde las Islas Canarias
+    email: menganito@invented-email.com
+    phone: xxx-xxx-xxx
     endsnippet
 ```
 
@@ -87,10 +87,10 @@ several times some `user` entries like this:
 
 ```
 jileon = {
-    "login": "jileon",
+    "login": "fulanito",
     "uid": 115,
     "gid": 15,
-    "email": "jileon@parcan.es",
+    "email": "fulanito@invented-email.com",
 }
 ```
 
@@ -102,7 +102,7 @@ $1 = {
     "login": "$1",
     "uid": $2,
     "gid": $3,
-    "email": "$1@parcan.es",
+    "email": "$1@invented-email.com",
 }
 endsnippet
 ```
@@ -111,17 +111,19 @@ This `$1`, `$2`, `$3`\... codes have a special meaning in UltiSnips,
 they are called **TabStops**. We can trigger the snippets and start
 filling this value:
 
-    jileon = {
-        "login": "jileon",
-        "uid": ,
-        "gid": ,
-        "email": "jileon@parcan.es",
-    }
+```
+jileon = {
+    "login": "menganito",
+    "uid": ,
+    "gid": ,
+    "email": "menganito@invented-email.com",
+}
+```
 
-Note that the `$1` Tabstop is used several times. The first time it
-appears is marking the place where ew want to insert some text. Next
-occurencies are named **Mirrors** and they just reflect the text typed
-in the first one.
+La marca `$1` se ha usado en varios sitios. La primera ocurrencia marca el sitio
+donde se posiciona el cursor para empezar a escribir. El resto de las
+ocurrencias se llaman **espejos** o **Mirrors** porque reflejan los cambios
+realizados en la primera marca.
 
 Lets look at another, more interesting example. Lets write a snippet to
 turn any URL as a HTML a tag, like this:
@@ -130,18 +132,13 @@ turn any URL as a HTML a tag, like this:
 
 Si this is a \<a href=\"htt\"\>htt\</a\>
 
-::: {.note}
-::: {.admonition-title}
-Note
-:::
+!!! note 'Asociación de los snippets por tipo de fichero`
 
-`UltiSnipsEdit` opens or creates your private snippet definition file
-for the current filetype. You can easily open them manually of course,
-this is just a shortcut. There is also a variable called:
-`g:UltiSnipsEditSplit` which can be set to `normal` (default),
-`horizontal` or `vertical` that defines if a new window should be opened
-for the edit.my notes
-:::
+    `UltiSnipsEdit` opens or creates your private snippet definition file for
+    the current filetype. You can easily open them manually of course, this is
+    just a shortcut. There is also a variable called: `g:UltiSnipsEditSplit`
+    which can be set to `normal` (default), `horizontal` or `vertical` that
+    defines if a new window should be opened.
 
 ### The options part
 
@@ -203,7 +200,7 @@ Las opciones actualmente soportadas son:
   `UltiSnips-autotrigger` for more info.
 
 
-## Sources and additional information
+## Fuentes e información adicional
 
 -   Silver\'s Castle UltiSnips screencast
     -   [UltiSnips Screencast Episode

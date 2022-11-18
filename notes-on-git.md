@@ -546,13 +546,13 @@ the git show command:
 ```shell
 $ git show v1.4
 tag v1.4
-Tagger: Ben Straub <ben@straub.cc>
+Tagger: Menganito <menganito@invent-email.com>
 Date:   Sat May 3 20:19:12 2014 -0700
 
 my version 1.4
 
 commit ca82a6dff817ec66f44342007202690a93763949
-Author: Scott Chacon <schacon@gee-mail.com>
+Author: Fulanito <fulanito@invent-email.com>
 Date:   Mon Mar 17 21:52:11 2008 -0700
 
 Change version number
