@@ -1,0 +1,5 @@
+REDIS_SERVER = 'localhost'
+REDIS_PASSWORD = ''
+REDIS_PORT = 6379
+REDIS_DB = 0
+
