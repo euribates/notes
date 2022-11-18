@@ -1,9 +1,10 @@
 ---
 title: Notes on Linux
 ---
+
 ## Notes on Linux
 
-### Cómo reiniciar Cinnamon
+## Cómo reiniciar Cinnamon
 
 Se puede hacer de diversas formas:
 
@@ -17,7 +18,7 @@ Se puede hacer de diversas formas:
 Fuente: [How do I restart Cinnamon from the tty](https://askubuntu.com/questions/143838/how-do-i-restart-cinnamon-from-the-tty)
 
 
-### Cómo usar xargs para convertir varios ficheros con convert/magick
+## Cómo usar xargs para convertir varios ficheros con convert/magick
 
 Ejemplo: 
 
@@ -50,7 +51,8 @@ Fuentes:
 - [12 Practical Examples of Linux Xargs Command for Beginners](https://www.tecmint.com/xargs-command-examples/)
 - [basename](https://linux.die.net/man/1/basename)
 
-### Cómo copiar la salida de un comando al portapapeles o _clipboard_
+
+## Cómo copiar la salida de un comando al portapapeles o _clipboard_
 
 Se puede usar el comando **`xclip`**, que interactúa con el porta papeles. Por ejemplo,
 el siguiente código copia el texto "Hola, Mundo" al porta papeles de Linux:
@@ -85,7 +87,7 @@ Fuentes:
 - [How To Copy Command Output To Linux Clipboard Directly](https://www.cyberciti.biz/faq/xclip-linux-insert-files-command-output-intoclipboard/)
 
 
-### How to display images in the terminal using Viu
+## How to display images in the terminal using Viu
 
 **[Viu](https://github.com/atanunq/viu)** is yet another command line application to view images from the Terminal.
 It is free, open source CLI image viewer written using Rust programming
@@ -111,7 +113,7 @@ $ viu image.jpg
 
 Sample output:
 
-![Ejemplo viu](viu-sample.png)
+![Ejemplo viu](./linux/viu-sample.png)
 
 You can even display custom dimension image using `-h` (Height) or `-w` (Width)
 flags like below.
