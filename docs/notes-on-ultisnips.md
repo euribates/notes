@@ -1,77 +1,110 @@
 ---
 title: Notes on Ultisnips
+tags:
+  - vim
+  - python
 ---
 
-## UltiSnips
+## UltiSnips y Python
 
-To use **UltiSnips**, you need a python enabled Vim version 7 or
-greater. You have python if either `:echo has("python")` or
-`:echo has("python3")` yields `1`. Recent versions have been tested with
-python 2.7 and python 3.2, theoretically, UltiSnips should work with all
-versions \>= python 2.6.
+Para usar **UltiSnips** hay que tener Python activo y usar vim desde la versión
+7 en adelante. Para saber si Python está activo podemos usar:
 
-UltiSnips tries to autodetect which Vim Python command to use (there are
-two: :py and :py3). Unfortunately, some Vim versions choke when you test
-for both versions. In this case you have to tell UltiSnips which version
-to use:
+```
+:echo has("python")
+```
+
+o
+
+```
+:echo has("python3")
+``` 
+
+Alguno de los dos debería retornar un $1$. UltiSnips intenta determinar
+automáticamente la versión de Python que debe usar, pero si por la que sea
+queremos forsarla podemos hacer:
 
 ```
 let g:UltiSnipsUsePythonVersion = 2   " or 3
 ```
 
-You can use the order `:UltiSnipsEdit` to create or edit a custom
-UltiSnips file for the file type being currently edited. When you seve
-the snippets file, the conntent is automcatically updated.
+## Cómo crear tus propios _snippets_
 
-This will create a directory [\$HOME/.vim/UltiSnips]{.title-ref}. You
-can create this directory manually, if you want. (Be careful **DO NOT**
-create a directory named [snippets]{.title-ref}, this name is used
-internally on the source code of UltiSnips).
+Puedes usar `:UltiSnipsEdit` para crear o editar un fichero
+personalizado, basandose en el tipo de fichero que estés editando
+en ese momento. Cuando salves el fichero de snippets, los cambios
+estarán disponibles de inmediato.
+
+Los _snippets_ personalizados se almacenan en la carpeta
+`$HOME/.vim/UltiSnips`, con el nombre `{language}.snippets`, por ejemplo los
+_snippets_ personales para javascript se encuentran en:
+
+`$HOME/.vim/UltiSnips/javascript.snippets`
 
 
-## What are snippets
+## Qué son los spippets
 
-**Snippets** are portions of text you can include in your editor using only
-a few kwystrokes
+Los **Snippets** son pequeñas plantillas de texto que se pueden incluir en el
+texto que estés editando usando solo un par de pulsaciones de teclas.
 
-Lets write a snippet to include my email signature with only four
-keystroks:
+Vamos a escribir un pequeño _snippet_ para incluir mi firma de correo electrónico usando solo cuatro pulsaciones:
 
 ```
-    snippet sig "Email signature" b
-    Juan Ignacio Rodríguez de León
+snippet sig "Email signature" b
+Juan Ignacio Rodríguez de León
 
-    --
-    Saludos desde las Islas Canarias
-    email: menganito@invented-email.com
-    phone: xxx-xxx-xxx
-    endsnippet
+--
+Saludos desde las Islas Canarias
+email: menganito@invented-email.com
+phone: xxx-xxx-xxx
+endsnippet
 ```
 
-The text to be inserted is all the text included betwwen `snippet` and
-`endsnippet`. The initial `snippet` has also three parameters:
+El texto a ser insertado es todo lo incluido desde la palabra `snippet` hasta
+`endsnipet`. La palabra clave inicial, `snippet`, tiene además tres parámetros:
 
-1) First one is the **trigger**, the sequece of caracters that will
-execute the snippet. In this example it is `sig`, so I can activate this
-triggers just writting `sig` followed by the `tab` key.
+1) El primero es lo que se conoce como el **disparador** o **trigger**, es la
+secuencia de caracteres que provocarán la ejecución del _snippet_. En este caso
+es la secuencia de caracteres `sig`, de forma que para activar la secuencia
+escribiré `sig` y luego pulsare la tecla ++tab++.
 
-Generally a single word is used but the trigger can include spaces. If
-you wish to include spaces, you must wrap the tab trigger in quotes.
+Generalmente solo se usa una palabra como disparador, pero se pueden usar
+varias separadas por espacios, pero en ese caso hay que entrecomillar todo el
+disparador.
 
-2) The second argument is just a text that describes the trigger. Is
-optional but is a good practice to put something here that could help us
-to tell apart one snippet from others. Also it would be used to
-distinguishing it from other snippets with the same tab trigger. When a
-snippet is activated and more than one tab trigger match, UltiSnips
-displays a list of the matching snippets with their descriptions. The
-user then selects the snippet they want.
+2) El segundo parámetro es simplemente una descripción textual del _snippet_.
+Es opcional, pero resulta una buena práctica usar un texto corto pero
+descriptivo que nos sirva para diferenciar los _snippets_ entre si. También
+resulta muy útil si tenemos varios _snippets_ que comparte un mismo disparador;
+en estos casos, Ultisnips nos mostrará una lista de los posibles _snippets_
+disponibles, usando sus descripciones, para que el usuario pueda seleccionar el
+que quiere usar.
 
-3) Third and last parameter is the options. We will see the options
-later, but for this simple example, the `b` option means this trigger
-will only be activated if it is written at the *begining* of the line.
+Ejemplo: Escribir dos _snippets_ con el mismo _trigger_. Intentar dispararlo y
+comprobar que te muestra las opciones disponibles.
 
-Exercise: Write your own signature trigger. Check it only works at the
-beginign of a sentence.
+```
+snippet sig "Email personal" b
+Juan Ignacio Rodríguez de León
+
+--
+Saludos desde las Islas Canarias
+email: menganito@invented-email.com
+phone: xxx-xxx-xxx
+endsnippet
+
+snippet sig "Email trabajo" b
+D. Juan Ignacio Rodríguez de León
+--
+email: mira.que.serio@invented-email.com
+web: http://megaempresa.com/
+endsnippet
+```
+
+3) El tercer y último parámetro son las opciones. Se verán con más detalle en
+otra sección, pero para este ejemplo, solo aclarar que la opción `b` (de
+_begin_) significa que esta regla solo se disparará si el _snippet_ está
+escrito **al principio de la línea**.
 
 
 ### Static and dinamic snippets

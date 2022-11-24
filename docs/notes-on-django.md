@@ -1,10 +1,15 @@
 ---
 title: Notas sobre Django
+tags:
+    - vim
+    - django
+    - editor
+    - database
 ---
 
-## Como representar numeros con comas, por ejemplo, dineros, en Django
+## Como representar números con comas, por ejemplo, dineros, en Django
 
-La librería nativa de django `django.contrib.humanize` tiene filtros para esto:
+La librería nativa de Django `django.contrib.humanize` tiene filtros para esto:
 
 ```
 {% load humanize %}
@@ -14,8 +19,7 @@ La librería nativa de django `django.contrib.humanize` tiene filtros para esto:
 Si no funciona, verifica que `django.contrib.humanize` este en la variable
 `INSTALLED_APPS` del `settings.py`.
 
-- Fuente:
-[python - Format numbers in django templates - Stack Overflow](https://stackoverflow.com/questions/346467/format-numbers-in-django-templates)
+Fuente: [python - Format numbers in django templates - Stack Overflow](https://stackoverflow.com/questions/346467/format-numbers-in-django-templates)
 
 
 ## Manejador de error por defecto
@@ -82,7 +86,7 @@ class PersonDetailsForm(forms.Form):
     si usamos la CBV `FormView`, pasaríamos el parámetro sobreescribiendo
     el método `get_form_kwargs`. 
 
-Puede usarse tambien para modificar los atributos delos campos predefindos,
+Puede usarse también para modificar los atributos delos campos predefinidos,
 como el _widget_ a usar o el texto de ayuda.
 
 Fuente: El libro [Django Design Patterns and Best
@@ -91,11 +95,10 @@ Practice](https://www.packtpub.com/product/django-design-patterns-and-best-pract
 
 ## Cómo migrar a 3.1.1
 
-- **NullBooleanField** is obsolete, replace it by
-  `BooleanField(null=True)`.
+- **NullBooleanField** está obsoleto, ha sido reemplazado por `BooleanField(null=True)`
 
-- **load staticfiles** and **load admin\_static** are obsoletes since
-  Django 2.1, deprecated in Django 3.0.
+- `load staticfiles` y `load admin_static` están obsoletos desde
+  Django 2.1, deprecado en Django 3.0
 
   Cambiar este tipo de referencias en las plantilla:
 
@@ -112,103 +115,76 @@ Practice](https://www.packtpub.com/product/django-design-patterns-and-best-pract
   ```
 
 
-## Set VIM to handle Django template files
+## Configurar VIM para trabajar con plantillas de Django
 
-Type `:setfiletype htmldjango` from within Vim to select highlighting for
-Django HTML templates. If you desire Django template highlighting but not HTML
-highlighting, type `:setfiletype django` instead. Items highlighted include
-template tags, built-in filters, arguments and comments.
+Escribir `:setfiletype htmldjango` para que Vim resalte automáticamente
+las plantillas Django. Si solo se quiere reasltado de las etiquetas y tags de
+Django pero no de HTML, hay que usar `:setfiletype django`.
 
-Source: [Syntax highlighting for django templates](https://www.vim.org/scripts/script.php?script_id=1487) 
-
-Tags: vim, django, editor
+Fuente: [Syntax highlighting for django templates](https://www.vim.org/scripts/script.php?script_id=1487) 
 
 
-## What are the possible values of `on_delete` in a model field
 
-This is the behaviour to adopt when the referenced object is deleted. It
-is not specific to django, this is an SQL standard.
+## Cuáles son los posibles valores del parámetro `on_delete` en los campos de modelos
 
-There are 6 possible actions to take when such event occurs:
+Este es el comportamiento a adoptar cuando se borra un objeto de la base de datos
+que está referenciado desde otra parte. Esto es parte del estándar SQL, no de
+Django.
 
-- `CASCADE`: When the referenced object is deleted, also delete the
-  objects that have references to it (When you remove a blog post for
-  instance, you might want to delete comments as well). SQL
-  equivalent: CASCADE.
+Hay 6 acciones posibles que se pueden tomar:
 
-- `PROTECT`: Forbid the deletion of the referenced object. To delete
-  it you will have to delete all objects that reference it manually.
-  SQL equivalent: RESTRICT.
-  
-- `SET_NULL`: Set the reference to NULL (requires the field to be
-  nullable). For instance, when you delete a User, you might want to
-  keep the comments he posted on blog posts, but say it was posted by
-  an anonymous (or deleted) user. SQL equivalent: SET NULL.
+- `CASCADE`: Cuando se borra el objeto referenciado, también se borran todos
+  los objetos que tienen una referencia a él. Por ejemplo, al borrar un
+  artículo de un _Blog_, se borrarían también todos los comentarios del mismo.
+  En SQL se usa la misma palabra clave, `CASCADE`.
 
-- `SET_DEFAULT`: Set the default value. SQL equivalent: SET DEFAULT.
+- `PROTECT`: Impide el borrado, mientras existan objetos
+  que lo referencien. Habría que borrar a mano los comentarios para poder
+  borrar el articulo, si seguimos con el ejemplo anterior. La palabra
+  clave SQL es `RESTRICT`.
 
-- `SET(...)`: Set a given value. This one is not part of the SQL
-standard and is entirely handled by Django.
+- `SET_NULL`: Pone a nulo las referencias externas (Lo que exige que el campo
+  acepte el valor nulo). Por ejemplo, al borrar a un usuario del _Blog_, dejar
+  los comentarios hechos por él pero como comentarios anónimos o hechos por un
+  usuario borrado. En SQL es igual, `SET NULL`.
 
-- `DO_NOTHING`: Probably a very bad idea since this would create
-  integrity issues in your database (referencing an object that
-  actually doesn't exist). SQL equivalent: NO ACTION.
+- `SET_DEFAULT`: Similar al anterior, pero en vez de nulo se usa el valor por
+  defecto, si está definido. En SQL es igual, `SET DEFAULT`.
 
-See also the documentation of PostGreSQL for instance.
+- `SET(...)`: Similar a los dos anteriores, pero se define el valor a usar. Este modo no
+  existe en el estándar SQL, es gestionado enteramente por Django.
 
-In most cases, `CASCADE` is the expected behaviour, but for every
-`ForeignKey`, you should always ask yourself what is the expected
-behaviour in this situation. `PROTECT` and `SET_NULL` are often useful.
-Setting `CASCADE` where it should not, can potentially **delete all your
-database in cascade**, by simply deleting a single user.
+- `DO_NOTHING`: Probablemente una muy mala idea, ya que romperá la integridad
+  referencial en la base de datos. En SQL se usa `NO ACTION`.
 
-Additional note to clarify cascade direction
+En la mayoría de los casos se podría usar `CASCADE`, pero siempre es
+recomendable pensar que caso nos viene mejor para cada clave foránea. Las
+opciones `PROTECT` y `SET NULL` son las dos siguientes más usadas. El problema
+de `CASCADE` es que puede ocasionar un borrado masivo en cascada con un solo
+`DELETE`, si hemos cometido un error en el diseñó.
 
-It's funny to notice that the direction of the `CASCADE` action is not
-clear to many people. Actually, it's funny to notice that only the
-`CASCADE` action is not clear. I understand the cascade behavior might
-be confusing, however you must think that it is the same direction as
-any other action. Thus, if you feel that `CASCADE` direction is not
-clear to you, it actually means that `on_delete` behavior is not clear
-to you.
+A modo de explicación adicional para el caso más complicado, el `CASCADE`:
 
-In your database, a foreign key is basically represented by an integer
-field which value is the primary key of the foreign object. Let's say
-you have an entry `comment_A`, which has a foreign key to an entry
-`article_B`. If you delete the entry `comment_A`, everything is fine,
-`article_B` used to live without `comment_A` and don't bother if it's
-deleted. However, if you delete `article_B`, then `comment_A` panics! It
-never lived without `article_B` and needs it, it's part of its
-attributes (`article=article_B`, but what is *article\_B*?). This is
-where `on_delete` steps in, to determine how to resolve this integrity
-error, either by saying:
+- "¡No, por favor! ¡No lo hagas, te necesito!" (Que se correspondería con la
+  opción `PROTECT`.
 
-- "No! Please! Don't! I can't live without you!" (which is said
-  `PROTECT` in SQL language)
+- "¡Pues muy bien, si no soy tuyo, no soy de nadie!" (Que se corresponde con
+  `SET_NULL`.
 
-- "Alright, if I'm not yours, then I'm nobody's" (which is said
-  `SET_NULL`)
+- "¡Adiós, mundo cruel, si tu te vas, me voy contigo!" y a continuación se
+  suicida. Corresponde con el borrado en cascada `DELETE`.
 
-- "Good bye world, I can't live without `article_B`" and commit
-  suicide (this is the `CASCADE` behavior).
+- "¡Pues pírate, me iré con Menganito/a!". Equivale a `SET_DEFAULT`, o `SET(...)`.
 
-- "It's OK, I've got spare lover, I'll reference `article_C` from now"
-  (`SET_DEFAULT`, or even `SET(...)`).
+- "¡Me niego a aceptar la realidad! ¡Seguirá hablando contigo y actuando
+  como si no hubiera pasado nada!". Claro ejemplo de `DO_NOTHING`.
 
-- "I can't face reality, I'll keep calling your name even if that's
-  the only thing left to me!" (`DO_NOTHING`)
-
-I hope it makes cascade direction clearer. :)
-
-Source: [Best practices working with Django models](https://steelkiwi.com/blog/best-practices-working-django-models-python/)
-
-Tags: Databases
+Fuente: [Best practices working with Django models](https://steelkiwi.com/blog/best-practices-working-django-models-python/)
 
 
 ## How to make a multiple form, this is, a form across several pages
 
-Use the external app
-[django-formtools](https://github.com/django/django-formtools/).
+Use the external app [django-formtools](https://github.com/django/django-formtools/).
 
 This use to be in the django main distribution, but was split as a
 separated app sinde Django 1.8. For this functionality, you'll need the
@@ -217,10 +193,9 @@ Form Wizard class, as explained here: [Form wizard](https://django-formtools.rea
 
 ## Como usar el método `extra` de los queryset para consultas avanzadas
 
-El método `extra` de los `queryset` nos permite realizar algunas
-modificaciones en las sentencias SQL que ejecuta. En concreto nos
-permite añadir campos a la cláusula `SELECT`, o tablas 
-y joins a la cláusula `FROM`, o condiciones a la
+El método `extra` de los `queryset` nos permite realizar algunas modificaciones
+en las sentencias SQL que ejecuta. En concreto nos permite añadir campos a la
+cláusula `SELECT`, o tablas y _joins_ a la cláusula `FROM`, o condiciones a la
 cláusula `ORDER BY`.
 
 Supongamos, por ejemplo, que tenemos una tabla de productos a la venta:
@@ -236,14 +211,14 @@ class Item(Model):
 Podemos añadir un campo calculado que nos indique si los precios son
 inferiores a 5.0 (quizá queremos marcar estos productos en la página con
 un icono `low-price`, por ejemplo). Para ello, podemos añadir un
-campo calculado al `SELECT` de la query usando `extra`, como en el siguiente
+campo calculado al `SELECT` de la _query_ usando `extra`, como en el siguiente
 ejemplo:
 
 ```python
 Item.objects.extra(select={'low_price':'pvp < 5.0'}).all()
 ```
 
-Fuentes: [Best practices working with Django models](https://steelkiwi.com/blog/best-practices-working-django-models-python/)
+Fuente: [Best practices working with Django models](https://steelkiwi.com/blog/best-practices-working-django-models-python/)
 
 Lo que estamos haciendo es que la sentencia SQL generada por Django pase
 de esto:
@@ -286,8 +261,8 @@ Item.objects  \
 
 El resultado debería ser el mismo en los dos casos.
 
-Es verdad que podemos realizar este calculo de bandas de precios en un simple
-método de la clase `Item`, pero en ocasiones puede ser útil o necesario que
+Es verdad que podemos realizar este calculo de bandas de precios en un método
+de la clase `Item`, pero en ocasiones puede ser útil o necesario que
 determinadas operaciones las haga la base de datos por nosotros.
 
 Obviamente también podemos pasar subconsultas como campo añadido al select, que
@@ -340,14 +315,14 @@ nosotros si queremos emplearla o no. Recuerda solo estos tres consejos:
 
 - Explícito mejor que implícito (Tim Peters)
 
-- Los casos especiales no son tan especiales como para romper las
-  reglas... Pero lo práctico vence a lo ideal (Tim Peters)
+- Los casos especiales no son tan especiales como para romper las reglas...
+  Pero lo práctico vence a lo ideal (Tim Peters)
 
 - Un gran poder conlleva también una gran responsabilidad (Stan Lee)
 
 Nota: El uso de extra para modificar las cláusulas `FROM` y `WHERE` está
-explicado, junto con muchas otras cosas interesantes, en la
-documentación oficial: [Django Query Set API reference - extra](https://docs.djangoproject.com/en/3.1/ref/models/querysets/#extra).
+explicado, junto con muchas otras cosas interesantes, en la documentación
+oficial: [Django Query Set API reference - extra](https://docs.djangoproject.com/en/3.1/ref/models/querysets/#extra).
 
 
 ## How to modify the queryset used in the admin forms to get a Foreign Model
@@ -364,7 +339,7 @@ ModelAdmin.formfield_for_foreignkey(self, db_field, request, **kwargs):
     user:'''
 ```
 
-Lets see an example:
+Veámoslo con un ejemplo:
 
 ```python
 class MyModelAdmin(admin.ModelAdmin):
@@ -382,7 +357,7 @@ class MyModelAdmin(admin.ModelAdmin):
 ```
 
 
-## Cómo usar forumarios diferentes en el admin para insertar y modificar
+## Cómo usar formularios diferentes en el _admin_ para insertar y modificar
 
 Usa el método `get_form` de la clase `ModelAdmin`, y devuelve el formulario que
 necesites en cada caso. Puedes discriminar si es un `UPDATE` o un `INSERT`
@@ -537,7 +512,7 @@ Each ModelAdmin instance provides an additional set of named URLs:
 | Change     | `<app_label>_<model_name>_change`     | `object_id` |
 
 Por ejemplo, para enlazar con la página de edición (*change*) del modelo
-`Libro` dentro de la app `biblioteca`, sería:
+`Libro` dentro de la _app_ `biblioteca`, sería:
 
 ```
 admin:biblioteca_libro_change
@@ -737,11 +712,12 @@ definitely facilitate the understanding of the data structure by you,
 your colleagues, and admin users.
 
 
-## Use `DecimalField` for Money Information Storage
+## Usar `DecimalField` para almacenar cantidades de dinero
 
-**Never use `FloatField` to store information about a quantity of money**.
-Instead, use `DecimalField` . Other common option in to keep this information
-in cents, pence, etc.
+**Nunca se debe usar un campo `FloatField` para almacenar información sobre
+cantidades de dinero**. Usa `DecimalField` mejor. Otras opciones habituales
+para evitar perdidas por redondeo es usar enteros y almacenar las cantidades
+como céntimos, centavos, peniques, etc.
 
 
 ## Don't use `null=true` if you don't need it
@@ -757,7 +733,7 @@ you'll get only one possible value for columns without data.
 
 ## Leer los valores pasados como parámetros en una URL
 
-Se usa el pseudo-diccionario `GET`. Por ejemplo, si la url era
+Se usa el pseudo-diccionario `GET`. Por ejemplo, si la URL era
 `/search/?q=haha`, entonces se puede obtener el valor con:
 
 ```python
@@ -822,7 +798,7 @@ Source:
 <https://steelkiwi.com/blog/best-practices-working-django-models-python/>
 
 
-### Writing a custom storage system¶
+### Cómo escribir un sistema de almacenamiento propio
 
 Source:
 [https://docs.djangoproject.com/en/3.2/howto/custom-file-storage/](https://docs.djangoproject.com/en/3.2/howto/custom-file-storage/)
@@ -904,7 +880,7 @@ Crearamos una migracion vacia (_empty_):
 ./manage.py makemigrations --empty --name nombre_que_quieras_para_la_migracion <app>
 ```
 
-Esto creara un fichero de migración vacio, con un contenido similar a este:
+Esto creará un fichero de migración vacío, con un contenido similar a este:
 
 ```python
 # Generated by Django 3.2.12 on 2022-03-22 09:04
@@ -915,7 +891,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('agora', '0003_asunto_bop_cargo_claseiniciativa_composicion_diputado_diputadogrupo_ds_dsc_dsdp_fotodiputado_grupopa'),
+        ('agora', '0003_alter_table_add_field_flag'),
     ]
 
     operations = [
@@ -923,15 +899,18 @@ class Migration(migrations.Migration):
 ```
 
 Como vemos, solo se define el campo de dependencias, las operaciones a realizar
-en esta migracion estam vacias. Vamos a incluir codigo SQL para crear la
-sequencia:
+en esta migración están vacías. Vamos a incluir código SQL para crear la
+secuencia:
 
 ```sql
 CREATE SEQUENCE Agora.seq_foto_diputado START WITH 1 INCREMENT BY 1;
 ```
 
-Para ello haremos uso de la clase [migration.RunSQL](https://docs.djangoproject.com/en/1.10/ref/migration-operations/#runsql), que nos permite definir la migración tante en una dirección como en otra, es decir, crearemos
-este objeto con dos sentencias SQL, una para definir como aplicar la migración, y otra para desacerla. En nuestro caso, quedaria asi:
+Para ello haremos uso de la clase
+[migration.RunSQL](https://docs.djangoproject.com/en/1.10/ref/migration-operations/#runsql),
+que nos permite definir la migración tanto en una dirección como en otra, es
+decir, crearemos este objeto con dos sentencias SQL, una para definir como
+aplicar la migración, y otra para deshacerla. En nuestro caso, quedaría así:
 
 ```python
 # Generated by Django 3.2.12 on 2022-03-22 09:04
@@ -1013,4 +992,25 @@ Si examinamos este fichero, descubriremos dos cosas interesantes:
 Fuentes:
 
  - [How to Squash and Merge Django Migrations &middot; Coderbook](https://coderbook.com/@marcus/how-to-squash-and-merge-django-migrations/)
+
+## Cómo saber que base de datos se corresponde con cada modelo
+
+Si usamos _routers_ para trabajar con múltiples bases de datos, hay una forma
+de preguntar, para un modelo dado y con la configuración definida en
+`settings.DATABASE_ROUTERS`, qué base de datos le corresponde. Además, la base
+de datos puede ser diferente según queramos leer o escribir en ella.
+
+Llamando a `django.db.router.db_for_read` y pasándole el modelo, nos devuelve
+la entrada en `settings.DATABASES` a usar para leer. De forma equivalente,
+llamando a `django.db.router.db_for_write` con el modelo nos dirá la entrada
+correspondiente a la base de datos a usar para escribir ese modelo.
+
+```python
+from django.db import router
+
+from app.models import ModelAlfa
+
+assert router.db_for_read(ModelAlfa) == 'default'
+assert router.db_for_write(ModelAlfa) == 'default'
+```
 
