@@ -8,6 +8,8 @@ import re
 from rich.console import Console
 from rich.markdown import Markdown
 from rich.table import Table
+from rich.panel import Panel
+from rich.progress import track
 import typer
 
 
@@ -56,9 +58,46 @@ def topics():
     console.print(table)
 
 
+def read_all_lines(filename: str) -> list:
+    if filename.exists():
+        with open(filename, 'r', encoding='utf-8') as f_in:
+            return [line.strip() for line in f_in.readlines()]
+    return []
+
+
+
 @app.command()
-def search(query: str):
-    print('Search')
+def search(topic_name:str, query: str):
+    '''Búsqueda de términos en un determinado tema.
+    '''
+    console = Console()
+    filename = DOCS / f'notes-on-{topic_name.lower()}.md'
+    console.print(f"Buscando «[b][green]{query}[/green][/b]» en {filename}")
+    if filename.exists():
+        pat = re.compile(query, re.IGNORECASE)
+        entry_name = None
+        parrafo = []
+        lines = read_all_lines(filename)
+        while lines:
+            line = lines.pop(0)
+            if line.startswith('##'):
+                parrafo = []
+                level, entry_name = line.strip().split(' ', 1)
+            else:
+                if line == '':
+                    parrafo = []
+                else:
+                    parrafo.append(line)
+            if pat.search(line):
+                console.print('Encontrado!')
+                if entry_name:
+                    console.print(entry_name, style="b")
+                next_line = lines.pop(0)
+                while next_line:
+                    parrafo.append(next_line)
+                    next_line = lines.pop(0)
+                console.print(Panel(Markdown("\n".join(parrafo))))
+
 
 
 @app.command()
