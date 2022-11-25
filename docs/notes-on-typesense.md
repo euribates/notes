@@ -1,9 +1,9 @@
 ---
 title: Notas sobre Typesense
 tags:
-    systemd
-    linux
-    docker
+  - systemd
+  - linux
+  - docker
 ---
 
 ## Sobre Typesense

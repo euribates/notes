@@ -52,6 +52,7 @@
 - [Learn-to-draw](notes-on-learn-to-draw.md)
 - [Linux](notes-on-linux.md)
 - [Logging](notes-on-logging.md)
+
 - [Mac](notes-on-mac.md)
 - [Make](notes-on-make.md)
 - [Marshmallow](notes-on-marshmallow.md)
@@ -59,10 +60,13 @@
 - [Meilisearch](notes-on-meilisearch.md)
 - [Migrating-from-mercurial-to-git](notes-on-migrating-from-mercurial-to-git.md)
 - [MySQL](notes-on-mysql.md)
+
 - [Neo4j](notes-on-neo4j.md)
 - [NFS](notes-on-nfs.md)
+
 - [Oauth2](notes-on-oauth2.md)
 - [Oracle](notes-on-oracle.md)
+
 - [Pandas](notes-on-pandas.md)
 - [Postgresql](notes-on-postgresql.md)
   - [pgsql](notes-on-pgsql.md)
@@ -104,6 +108,7 @@
 - [Telegram](notes-on-telegram.md)
 - [Tmux](notes-on-tmux.md)
 - [TOTP](notes-on-totp.md)
+- [Typesense](notes-on-typesense.md)
 
 - [Ultisnips](notes-on-ultisnips.md)
 - [Unicode](notes-on-unicode.md)
