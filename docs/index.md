@@ -108,6 +108,7 @@
 - [Telegram](notes-on-telegram.md)
 - [Tmux](notes-on-tmux.md)
 - [TOTP](notes-on-totp.md)
+- [Typer](notes-on-typer.md)
 - [Typesense](notes-on-typesense.md)
 
 - [Ultisnips](notes-on-ultisnips.md)
