@@ -93,6 +93,32 @@ Fuente: El libro [Django Design Patterns and Best
 Practice](https://www.packtpub.com/product/django-design-patterns-and-best-practices-second-edition/9781788831345)
 
 
+## Como resolver el problema de conflicto de nombres entre _apps_
+
+Con los cambios en Django 1.7, es obligatorio que cada `app` 
+tenga una etiqueta o _label_ **única**. El valor por defecto de
+esta etiqueta es el nombre del paquete, así que si tienes dos _apps_
+con el mismo nombre en diferentes ramas del sistema de ficheros, dará
+un error (_Application labels aren't unique_, etc.)
+
+La solución es sobreescribir la etiqueta por defecto, en el modelo
+derivado de `AppConfig`, en el fichero `apps.py`:
+
+```
+# foo/apps.py
+
+from django.apps import AppConfig
+
+class FooConfig(AppConfig):
+    name = 'full.python.path.to.your.app.foo'
+    label = 'my.foo'  # Esta es la línea importante. POr defecto sería `foo`
+```
+
+Fuente: [StackOverflow - How to resolve
+"django.core.exceptions.ImproperlyConfigured: Application labels aren't unique,
+duplicates: foo" in Django 1.7?](https://stackoverflow.com/questions/24319558/how-to-resolve-django-core-exceptions-improperlyconfigured-application-labels)
+
+
 ## Cómo migrar a 3.1.1
 
 - **NullBooleanField** está obsoleto, ha sido reemplazado por `BooleanField(null=True)`
