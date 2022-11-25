@@ -5,7 +5,7 @@ tags:
     - django
     - editor
     - database
----
+--_name-
 
 ## Como representar números con comas, por ejemplo, dineros, en Django
 
@@ -217,7 +217,7 @@ separated app sinde Django 1.8. For this functionality, you'll need the
 Form Wizard class, as explained here: [Form wizard](https://django-formtools.readthedocs.io/en/latest/wizard.html).
 
 
-## Como usar el método `extra` de los queryset para consultas avanzadas
+## Cómo usar el método `extra` de los queryset para consultas avanzadas
 
 El método `extra` de los `queryset` nos permite realizar algunas modificaciones
 en las sentencias SQL que ejecuta. En concreto nos permite añadir campos a la
@@ -619,33 +619,34 @@ does not require denormalisation, which cannot be avoided, think about a
 relational base with JsonField to store some data.
 
 
-## BooleanField
+## Nunca usar BooleanField con `null` o `black`
 
-Do not use `null=True` or `blank=True` for `BooleanField`. It should
-also be pointed out that it is better to specify default values for such
-fields. If you realise that the field can remain empty, you need
-`NullBooleanField`.
+Nunca usar `null=True` o `blank=True` para campos `BooleanField`. En general es
+mejor especificar un valor por defecto que sea razonable. Si no es posible o si
+fuera necesario dejar el valor vacio, usar `NullBooleanField`.
 
 
-## Use of choices
+## Cómo usar el parámetro `choices`
 
-While using choices, it is recommended to:
+Recomendaciones al usar el parámetro `choices`:
 
-- keep strings instead of numbers in the database (although this is not the
-  best option from the point of optional database use, it is more convenient in
-  practise as strings are more demonstrable, which allows the use of clear
-  filters with get options from the box in REST frameworks).
+- Usar cadenas de texto como valores, en vez de números. Aunque quizá no sea la
+  mejor opción desde el punto de vista de la eficiencia de la base de datos, por lo
+  general facilita el desarrollo al tener opciones identificables a simple
+  vista, por ejemplo a la hora de usar filtros.
 
-- Variables for variants storage are constants. That is why they must
-  be indicated in uppercase.
+- Los valores no deberían cambiar, así que se deberían representar como
+  constantes, por lo tanto, se recomienda escribirlos en mayúsculas.
 
-- Indicate the variants before the fields lists.
+- Especificar las variantes antes de usarlas en el campo, ya sea como constantes
+  externas o como constantes de la clase.
 
-- If it is a list of the statuses, indicate it in chronological order
-  (e.g. `new`, `in_progress`, `completed`).
+- Si es una lista de estados, puede ayudar listarlos en orden cronológico:
+  (Por ejemplo `nuevo`, `en_proceso`, `terminado`).
 
-you can use `Choices` from the `model_utils` library. Take model
-`Article`, for instance:
+Puedes usar la clase `Choices` definida en la librería externa
+[model_utils](https://django-model-utils.readthedocs.io/), o si estás en Django
+a partir de la versión $3+$, usar enumeraciones:
 
 ```python
 from model_utils import Choices
@@ -653,14 +654,15 @@ from model_utils import Choices
 class Article(models.Model):
     STATUSES = Choices(
         (0, 'draft', _('draft')),
-        (1, 'published', _('published'))   )
+        (1, 'published', _('published'))
+    )
     status = models.IntegerField(choices=STATUSES, default=STATUSES.draft)
 ```
 
-## Many flags in a model?
+## ¿Demasiadas valores booleanos en un modelo?
 
-If it is justified, replace several `BooleanFields` with one field,
-status-like:
+Puede ser aconsejable reemplazar un conjuto de valores booleanos
+por un campo de estado. Vesmoa el siguiente ejemplo:
 
 ```python
 class Article(models.Model):`
@@ -668,14 +670,16 @@ class Article(models.Model):`
     is_verified = models.BooleanField(default=False)
 ```
 
-Assume the logic of our application presupposes that the article is not
-published and checked initially, then it is checked and marked as verified and
-then it is published. You can notice that article cannot be published without
-being checked. So there are 3 conditions in total, but with 2 boolean fields we
-do not have **4 possible variants**, and you should make sure there are no articles
-with wrong boolean fields conditions combinations (You can have wrong states).
-That is why using one status field instead of two boolean fields is a better
-option:
+Si asumimos que la lógica de la aplicación presupone que un articulo
+empieza su vida como no publicado y no verificado, luego es comprobado 
+por un revisor, por ejemplo, y se marca como verificado. Tras eso, el editor
+puede publicar los artículos verificados, pasando a publicado. El problema de
+este enfoque es que permite los llamados **estasos imposibles**, ya que solo hay
+tres estados, pero cuatro posibles combinaciones de dos valores booleanos. 
+
+En este caso concreto, existe la posibilidad de tener un artículo publicado pero
+no comprobado. En este caso, parece una mejor opción tener un campo que acepte
+solo uno de los tres posibles estados:
 
 ```python
 class Article(models.Model):
@@ -685,11 +689,45 @@ class Article(models.Model):
     status = models.IntegerField(choices=STATUSES, default=STATUSES.draft)
 ```
 
-## Do not add redundant model name in a field name
+Observese que es trivial implementar una propiedades que funciones como en el
+modelo anterior, derivando su valor del estado, si tuviéramos código que hiciera
+referencia a los atributos anteriores (Este ejemplo usa el soporte para `enum`
+disponible desde Django 3.0):
 
-Do not add model names to fields if there is no need to do so, e.g. if table
-`User` has a field `user_status` - you should rename the field into `status`,
-as long as there are no other statuses in this model.
+```python
+from django.db import models
+
+
+class Article(models.Model):
+
+    class STATUS(models.TextChoices):
+        NEW = ('N', 'Nuevo)
+        VERIFIED = ('V', 'Verificado')
+        PUBLISHED = ('P', 'Publicado')
+
+    status = models.IntegerField(choices=STATUS, default=STATUS.NEW)
+
+    @property
+    def is_published(self):
+        return self.status == self.STATUS.PUBLISHED
+
+    @property
+    def is_verified(self):
+        return self.status in {
+            self.STATUS.VERIFIED,
+            self.STATUS.PUBLISHED,
+        }
+```
+
+
+## No añadir nombres redundantes en los campos de un modelo
+
+A no ser que haya una buena razón, no se debe incluir información redundante en
+el nombre de los campos del modelo. Por ejemplo, una tabla `Usuario` no debería
+tener un campo `Usuario.usuario_estado`, basta con `Usuario.estado`. Muy rara
+vez vamos a referirnos a un campo de un modelo sin que esté cualificado por la
+clase o por la instancia.
+
 
 
 ## Dirty data should not be found in a base
@@ -709,7 +747,7 @@ can cause an exception `DoesNotExist`. Therefore,
 `order_by('created').first()` is the most useful variant.
 
 
-## Nunca caocular el tamaño de un `queryset` con `len`
+## Nunca cacular el tamaño de un `queryset` con `len`
 
 Do not use `len` to get queryset's objects amount. The `count` method can be
 used for this purpose. Reason is: if you made `len(ModelName.objects.all())`,

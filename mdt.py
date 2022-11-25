@@ -1,16 +1,19 @@
 #!/usr/bin/env python
 
+from pathlib import Path
+from typing import Optional
 import os
 import re
-from typing import Optional
-from pathlib import Path
 
-import click
 from rich.console import Console
+from rich.markdown import Markdown
 from rich.table import Table
+import typer
 
 
 DOCS = Path('./docs')
+
+app = typer.Typer()
 
 
 def get_title(filename: str) -> Optional[str]:
@@ -29,23 +32,21 @@ def is_note(filename: str|Path) -> bool:
     return name.startswith('notes-on-') and name.endswith('.md')
 
 
-def main_topic(filename:str|Path):
+def main_topic(filename: str|Path) -> str:
     if not isinstance(filename, Path):
         filename = Path(filename)
     assert is_note(filename)
     name = filename.name
     return name.removeprefix("notes-on-").removesuffix('.md')
 
-@click.group()
-def mdt():
-    pass
 
-
-@click.command()
-def notes():
+@app.command()
+def topics():
+    '''Muestra un listado de todos las temas disponibles.
+    '''
     console = Console()
     table = Table(show_header=True, header_style="bold green")
-    table.add_column("Topic", style="dim", width=24)
+    table.add_column("Topic", style="dim")
     table.add_column("Title")
     for filename in DOCS.iterdir():
         if is_note(filename):
@@ -55,12 +56,28 @@ def notes():
     console.print(table)
 
 
-@click.command()
-def search():
-    click.echo('Search')
+@app.command()
+def search(query: str):
+    print('Search')
+
+
+@app.command()
+def topic(topic_name: str):
+    '''Muestra un listado de .
+    '''
+    filename = DOCS / f'notes-on-{topic_name.lower()}.md'
+    if filename.exists():
+        console = Console()
+        table = Table(show_header=True, header_style="bold green")
+        table.add_column("Topic", style="dim")
+        table.add_column("Note")
+        with open(filename, 'r', encoding='utf-8') as f_in:
+            for line in f_in.readlines():
+                if line.startswith('##'):
+                    level, entry_name = line.strip().split(' ', 1)
+                    table.add_row(topic_name, Markdown(entry_name))
+        console.print(table)
 
 
 if __name__ == '__main__':
-    mdt.add_command(notes)
-    mdt.add_command(search)
-    mdt()
+    app()

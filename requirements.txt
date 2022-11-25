@@ -3,5 +3,4 @@ mkdocs-material
 pygments
 requests
 mkdocs-table-reader-plugin
-click
-rich
+typer[all]
