@@ -1,13 +1,19 @@
 ---
 title: Notas sobre Bulma CSS
+tags:
+  - css
+  - web
 ---
 
 ## Bulma CSS
 
-**[Bulma.css](https://bulma.io/)** es un framework **CSS**, as que en resumidas cuentas el resultado es un nico fichero `.css`:  
+**[Bulma.css](https://bulma.io/)** es un framework **CSS**, relativamente pequeño, que en resumidas
+cuentas resulta en un único fichero `.css`:
 [https://github.com/jgthms/bulma/blob/master/css/bulma.css](https://github.com/jgthms/bulma/blob/master/css/bulma.css)
 
-Generalmente, Bulma define clases que debemos aplicar para los elementos básicos de Html. Por ejemplo, una tabla en html no recibirá ningún trato por parte de Bulma excepto si le añadimos la clase `table`:
+Generalmente, Bulma define clases que debemos aplicar para los elementos
+básicos de Html. Por ejemplo, una tabla en html no recibirá ningún trato por
+parte de Bulma excepto si le añadimos la clase `table`:
 
 ```html
 <table class="table">
@@ -17,55 +23,41 @@ Generalmente, Bulma define clases que debemos aplicar para los elementos básico
 
 ## Modificadores
 
-La mayoría de los elementos de Bulma tienes estilos alternativos. Para aplicarlos, se usan lo que ellos llaman clases modificadoras. Todas las clases modificadoras empiezan con `is-` p `has-`.
+La mayoría de los elementos de Bulma tienes estilos alternativos. Para
+aplicarlos, se usan lo que ellos llaman clases modificadoras. Todas las clases
+modificadoras empiezan con `is-` p `has-`.
 
-Por ejemplo, un botón sencillo solo necesita que le pongamos la clase 
-`button`.
+Por ejemplo, un botón sencillo solo necesita que le pongamos la clase `button`.
 
-```html
-<button class="button">Botón</button>
-```
-![Button](./bulma/button.png)
-Pero luego tenemos varias clases alternativas que nos darán diferentes colores, `is-primary`, `is-link`, `is-info`, `is-success`, `is-warning` y `is-danger`: 
+```html <button class="button">Botón</button> ``` ![Button](./bulma/button.png)
+Pero luego tenemos varias clases alternativas que nos darán diferentes colores,
+`is-primary`, `is-link`, `is-info`, `is-success`, `is-warning` y `is-danger`: 
 
-```html
-<button class="button is-primary">
-  Button
-</button>
-<button class="button is-link">
-  Button
-</button>
-<button class="button is-info">
-  Button
-</button>
-<button class="button is-success">
-  Button
-</button>
-<button class="button is-warning">
-  Button
-</button>
-<button class="button is-danger">
-  Button
-</button>
-```
+```html <button class="button is-primary"> Button </button> <button
+class="button is-link"> Button </button> <button class="button is-info"> Button
+</button> <button class="button is-success"> Button </button> <button
+class="button is-warning"> Button </button> <button class="button is-danger">
+Button </button> ```
 
 ![Buttons](./bulma/buttons.png)
 
-Tambien tenemos modificadores para el tamaño: `is-small`, `is-medium`, `is-large`, y para el estilo:  `is-outline`, `is-loading` y `[disabled]`. Por supuesto, estos modificadores se pueden combinar sin problema, para tener por ejemplo un botón grande, de tipo `danger` y bordeado:
+Tambien tenemos modificadores para el tamaño: `is-small`, `is-medium`,
+`is-large`, y para el estilo:  `is-outline`, `is-loading` y `[disabled]`. Por
+supuesto, estos modificadores se pueden combinar sin problema, para tener por
+ejemplo un botón grande, de tipo `danger` y bordeado:
 
-```html
-<button class="button is-danger is-outlined is-large">
-  Button
-</button>
+```html <button class="button is-danger is-outlined is-large"> Button </button>
 ```
 
 ## Modularidad en Bulma
 
-Podemos recompilar el fuente de Bulma, en `sass`, para incorporar solo los módulos que nos interensen. Bula define internamente **39** módulos
+Podemos recompilar el fuente de Bulma, en `sass`, para incorporar solo los
+módulos que nos interensen. Bula define internamente **39** módulos
 
 ## Vertical por defecto
 
-Bulma aplica la idea de **mobile first**, y optimiza la lectura vertical. Por defecto:
+Bulma aplica la idea de **mobile first**, y optimiza la lectura vertical. Por
+defecto:
 
 - Las columnas (`columns`) se pilan verticalmente
 - El componente `level` tambien apila sus contenidos veticalmente
@@ -89,11 +81,14 @@ Bulam define las siguientes clases para formularios:
 -   `.input`
 -   `.select`
 -   `.file-cta` `.file-name`
--   `.pagination-previous` `.pagination-next` `.pagination-link` `.pagination-ellipsis`
+-   `.pagination-previous` `.pagination-next` `.pagination-link`
+    `.pagination-ellipsis`
 
 ## Columnas
 
-Usar columnas en Bulma es fácil, usaremos un contenedor de la clases `columns`, y dentro tantos elementos de la clase `column` como queramos. Por defecto todas las columnas tendran el mismo ancho.
+Usar columnas en Bulma es fácil, usaremos un contenedor de la clases `columns`,
+y dentro tantos elementos de la clase `column` como queramos. Por defecto todas
+las columnas tendran el mismo ancho.
 
 Si queremos cambiar el tamaño relativo de las columnas, se definen estos tipos:
 
@@ -113,42 +108,44 @@ o usar multiplos del 20%:
 
 Las demás columnas se ajustarán automáticamente al resto del espacio.
 
-Si queremos teren varias filas podemos cerrar un contendor `columns` y abir otro inmediatamente debajo. Pero también existe la posibilidad de usar el
-modificador `is-multiline`,  que hace que las columnas que sobrepasen el espacio disponible pasan a otra fila.
+Si queremos teren varias filas podemos cerrar un contendor `columns` y abir
+otro inmediatamente debajo. Pero también existe la posibilidad de usar el
+modificador `is-multiline`,  que hace que las columnas que sobrepasen el
+espacio disponible pasan a otra fila.
 
 ## GRID de 12 columnas
 
-Tambien podemos usar el sistema de rejilla. En este sistema, tenemos 12 columnas predefinidas y definimos cuantas de estas columnas usaremos para el ancho.
+Tambien podemos usar el sistema de rejilla. En este sistema, tenemos 12
+columnas predefinidas y definimos cuantas de estas columnas usaremos para el
+ancho.
 
--   `is-1`
--   `is-2`
--   `is-3`
--   `is-4`
--   `is-5`
--   `is-6`
--   `is-7`
--   `is-8`
--   `is-9`
--   `is-10`
--   `is-11`
--   `is-12`
+- `is-1`
+- `is-2`
+- `is-3`
+- `is-4`
+- `is-5`
+- `is-6`
+- `is-7`
+- `is-8`
+- `is-9`
+- `is-10`
+- `is-11`
+- `is-12`
 
-Cada una de estas clases define cuantas columnas base usará de ancho. Por ejemplo `is-7` ocupará 7 columnas base de ancho.
+Cada una de estas clases define cuantas columnas base usará de ancho. Por
+ejemplo `is-7` ocupará 7 columnas base de ancho.
 
 Por ejemplo:
 
-```html
-<div class="columns">
-  <div class="column is-3">3 columnas básicas de ancho</div>
-  <div class="column is-7">7 columnas básicas de ancho</div>
-</div>
+```html <div class="columns"> <div class="column is-3">3 columnas básicas de
+ancho</div> <div class="column is-7">7 columnas básicas de ancho</div> </div>
 ```
 
-Tambien se definen clases `is-offset-x` que nos dejarian columns base vacias antes de la actual.
+Tambien se definen clases `is-offset-x` que nos dejarian columns base vacias
+antes de la actual.
 
-```html
-<div class="column is-half is-offset-one-quarter">Centrado y con un cuarto del espacio a cada lado</div>
-```
+```html <div class="column is-half is-offset-one-quarter">Centrado y con un
+cuarto del espacio a cada lado</div> ```
 
 La clase `is-narrow` hace que la columna sea lo más estrecha posible, y el resto del espacio es ocupado por las demas columnas. Se puede combinar con los _breakpoints_ que vimos antes:
 
@@ -228,7 +225,8 @@ Se puede especificar como se alinean veticalmente las columnas. Por ejemplo, si 
 
 ## Cómo centrar columnas
 
-Aunqe podemos usar el truco de definir un `offset`, es más sencillo usar `is-centered` en el contendor:
+Aunqe podemos usar el truco de definir un `offset`, es más sencillo usar
+`is-centered` en el contendor:
 
 ```html
 <div class="columns is-mobile is-centered">
@@ -239,9 +237,14 @@ Aunqe podemos usar el truco de definir un `offset`, es más sencillo usar `is-ce
   </div>
 </div>
 ```
+
 ## Bloques
 
-La clase `block` es una herramienta de espaciado. FAcilita ue los elementos que están al mismo nivel tengan un pespaciado consistente. Aplica un margen inferior a todos los elementos excepto al último. En realidad la mayoría de los componentes de bulma incluyen las propiedades de este componente, asi que al usar los siguientes componentes ya heredamos este comportamiento:
+La clase `block` es una herramienta de espaciado. Facilita ue los elementos que
+están al mismo nivel tengan un espaciado consistente. Aplica un margen
+inferior a todos los elementos excepto al último. En realidad la mayoría de los
+componentes de bulma incluyen las propiedades de este componente, asi que al
+usar los siguientes componentes heredamos este comportamiento:
 
 -   `breadcrumb`
 -   `level`
@@ -258,7 +261,7 @@ La clase `block` es una herramienta de espaciado. FAcilita ue los elementos que 
 
 ## Cómo usar el componente Box
 
-Los componente parcados como `box` solo son contendores con un fondo blanco, un padding y un efecto de sombra.
+Los componente `box` solo son contendores con un fondo blanco, un _padding_ y un efecto de sombra.
 
 ```html
 <div class="box">
@@ -330,9 +333,12 @@ o un `media`:
   </article>
 </div>
 ```
+
+
 ## Cómo usar los botones
 
-La clase a usar es `button`, y se puede aplicar a elemtos `a`, `button` `<input type="submit">`. Como ya se vio, tenemos opciones para los colores básicos:
+La clase a usar es `button`, y se puede aplicar a elemtos `a`, `button` `<input
+type="submit">`. Como ya se vio, tenemos opciones para los colores básicos:
 
 ```html
 <button class="button is-white">White</button>
@@ -350,6 +356,7 @@ La clase a usar es `button`, y se puede aplicar a elemtos `a`, `button` `<input 
 <button class="button is-warning">Warning</button>
 <button class="button is-danger">Danger</button>
 ```
+
 Además, todos vienen con unas version _light_ o pastel, añadiendo el modificador `iis-light`.
 
 También tenemos diferentes tamaños:
@@ -361,15 +368,19 @@ También tenemos diferentes tamaños:
 
 Siendo el tamaño por defecto, lógicamente,  `normal`.
 
-Se puede cambiar el tamaño de varios botones a la vez, poniendolos dentro de un contenedor con la clase `buttons` y una los tres modificadores siguientes:
+Se puede cambiar el tamaño de varios botones a la vez, poniendolos dentro de un
+contenedor con la clase `buttons` y una los tres modificadores siguientes:
 
 -   `buttons are-small`
 -   `buttons are-medium`
 -   `buttons are-large`
 
-Tambien se puede tener tamaños distintos dependiendo de los _breakpoints_, usando el modificador `is-reponsive`.
+Tambien se puede tener tamaños distintos dependiendo de los _breakpoints_,
+usando el modificador `is-reponsive`.
 
-Con el modificador `is-outlined` el botón se representa con un borde, en vez de usar un color para el fondo. Con `is-rounded` los bordes de los botones están redondeados.
+Con el modificador `is-outlined` el botón se representa con un borde, en vez de
+usar un color para el fondo. Con `is-rounded` los bordes de los botones están
+redondeados.
 
 ```html
 <button class="button is-primary is-rounded">Rounded</button>
@@ -380,7 +391,8 @@ Con el modificador `is-outlined` el botón se representa con un borde, en vez de
 
 ## Grupos de botones
 
-Podemos asegurar que una serie de botones permanencen en una sola línea con el modificado `is-grouped` dentro de un contendor de clase `field`.
+Podemos asegurar que una serie de botones permanencen en una sola línea con el
+modificado `is-grouped` dentro de un contendor de clase `field`.
 
  ```html
 <div class="field is-grouped">
@@ -402,16 +414,20 @@ Podemos asegurar que una serie de botones permanencen en una sola línea con el 
 </div>
 ```
 
-Otra forma es crear un contendor con la clase `buttons`. Si la lista es demasiado laraga, la dispondrá en múltiples líneas, pero mantenindo los botones separados de forma consistente. También podemos añadir las clases `is-centered` o `is-right` para modificar la alineacin de los botones.
+Otra forma es crear un contendor con la clase `buttons`. Si la lista es
+demasiado larga, la dispondrá en múltiples líneas, pero manteniendo los botones
+separados de forma consistente. También podemos añadir las clases `is-centered`
+o `is-right` para modificar la alineación de los botones.
 
 ## Cómo incluir código HTML que no usa las clases de Bulma
 
 Simplemente incluirlo dentro de un contendor con la clase `content`.
 
 
-## Como obtener un ocono de cierre o _close_
+## Como obtener un icono de cierre o _close_
 
-Bulma define una clase `delete` especificamente para obtener un boton pequeño, circular, con una X dentro:
+Bulma define una clase `delete` especificamente para obtener un boton pequeño,
+circular, con una X dentro:
 
 ```html
 <button class="delete"></button>
