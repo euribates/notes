@@ -20,7 +20,7 @@ app = typer.Typer()
 
 def get_title(filename: str) -> Optional[str]:
     pat_title = re.compile('^title: (.+)$')
-    with open(filename, 'r') as f_in:
+    with open(filename, 'r', encoding="utf-8") as f_in:
         for line in f_in:
             if _match := pat_title.match(line):
                 return _match.group(1)
