@@ -12,14 +12,33 @@ tags:
 
 - <https://sebastiandedeyne.com/react-for-vue-developers/>
 
-### How to change the delimiters
+## Cómo cambiar los delimitares
 
-To change delimiters in vue.js, use like this
+Por ejemplo, para evitar interferir con las _tags_ de las plantillas de Django o
+Jinja2:
 
-    new Vue({
-        delimiters: ['{%', '%}'],
-    }
-    
+```javascript
+let app = new Vue.createApp({
+    delimiters: ['{%', '%}'],
+    ...
+}
+```
+
+## Cómo ejecutar una función nada más cargado Vue
+
+Hay que definir la propiedad `created` con la función que queramos
+
+```javascript
+let app = new Vue.createApp({
+  ...
+  created: function() {
+    // props are exposed on `this`
+    console.log(this.foo)
+  }
+}
+```
+
+
 ### Vue.js Intro
 
 At the core of Vue.js is a system that enables us to declaratively render data

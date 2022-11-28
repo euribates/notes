@@ -4,3 +4,4 @@ pygments
 requests
 mkdocs-table-reader-plugin
 typer[all]
+python-markdown-math
