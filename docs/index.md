@@ -49,6 +49,8 @@
 - [Jwt](notes-on-jwt.md)
 
 - [Kafka](notes-on-kafka.md)
+- [Kivy](notes-on-kivy.md)
+
 - [Learn-to-draw](notes-on-learn-to-draw.md)
 - [Linux](notes-on-linux.md)
 - [Logging](notes-on-logging.md)

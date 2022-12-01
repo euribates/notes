@@ -1,4 +1,8 @@
-## Notes on Puppet
+---
+title: Notas sobre Puppet
+---
+
+## Sobre Puppet
 
 ### More info
 
