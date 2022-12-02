@@ -1,5 +1,8 @@
 ---
 title: Notas sobre VS Code
+tags:
+  - editor
+  - python
 ---
 
 
@@ -7,17 +10,58 @@ title: Notas sobre VS Code
 
 **Vs Code** es un IDE multipropósito de Microsoft.
 
+## Cómo definir _snippets_ personalizados
 
-## Work with Python interpreters
+Abrir el menú **File** -> **Preferences** -> **User snippets** y seleccionar el lenguaje (o la opción `New Global Snippets File` si quremos crear un snippet para cualquier tipo de fichero).
 
-By default, the Python extension looks for and uses the first Python
-interpreter it finds in the system path. To select a specific environment, use
-the Python: Select Interpreter command from the Command Palette
-(++ctrl+shift+p++).
+Los _snippets_ se escriben en formato JSON. Soportan la sintaxis del
+editor TextMate. Se pueden usar las variables `$1`, `$2`, ... `%n`
+para indicar puntos de parada del tabulador, y `$0` para indicar la posición final del cursor. También se pueden usar _placeholders_, con la forma `{1:id}`, estando conectados los que usen el mismo valor de `id`.
 
+Este es un ejemplo de _snippet_ para un bucle `for` de Javascript:
+
+```json
+// in file 'Code/User/snippets/javascript.json'
+{
+  "For Loop": {
+    "prefix": ["for", "for-const"],
+    "body": [
+      "for (const ${2:element} of ${1:array}) {",
+      "    $0",
+      "}"
+    ],
+    "description": "A for loop."
+  }
+}
 ```
-Python: Select Interpreter command
+
+- `For Loop` es el nombre/descripción del _snippet_
+- `prefix` el o los disparadores
+- `body`: La lista de cadenas de texto que forman el cuero
+  del _snippet_. Los saltos de línea y tabulaciones respetarán
+  el contexto donde se expandan.
+- `description`: Campo opcional con la descripción a mostrar
+  por inteliSense
+
+Otro ejemplo, para Python:
+
+```json
+{
+	"Main if call": {
+		"prefix": "ifmain",
+		"body": [
+			"if __name__ == '__main__':",
+			"    main($0)",
+		],
+		"description": "Call to main if applicable",
+	}
+}
 ```
+
+## Trabajar con diferentes intérpretes
+
+Por defecto, la extensión de Pyton usurá el primer imterprete que encuentre en el `PATH`. Para seleccionar un entorno específico hay que seleccionar `Python: Select Interpreter command` desde la paleta do comandos ++ctrl+shift+p++.
+
 
 Sources:
 
