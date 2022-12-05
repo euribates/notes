@@ -4,6 +4,32 @@ title: Notes on Meilisearch
 
 ## Sobre Meilisearch
 
+## Instalar Meilisearch un Ubuntu
+
+Bajamos el script de instalación:
+
+```shell
+sudo wget -qO /usr/local/bin/meilisearch
+https://github.com/meilisearch/meilisearch/releases/latest/download/meilisearch-linux-amd64
+sudo chmod a+x /usr/local/bin/meilisearch
+```
+
+Comprobemos la versión con:
+
+```
+meilisearch --version
+```
+
+debería producir:
+
+```
+meilisearch-http 0.30.0
+```
+
+Ver ahora [Como pasar Meilisearch a producción](#como-pasar-meilisearch-a-produccion)
+
+
+
 ## Primeros pasos
 
 ### Crear un índice y actualizar documentos

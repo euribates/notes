@@ -13,6 +13,7 @@
 
 - [CSS](notes-on-css.md)
 
+- [Discord](notes-on-discord.md)
 - [Django](notes-on-django.md)
   - [Django-crispy-forms](notes-on-django-crispy-forms.md)
   - [Migrating-django](notes-on-migrating-django.md)
