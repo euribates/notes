@@ -9,8 +9,7 @@ title: Notes on Meilisearch
 Bajamos el script de instalación:
 
 ```shell
-sudo wget -qO /usr/local/bin/meilisearch
-https://github.com/meilisearch/meilisearch/releases/latest/download/meilisearch-linux-amd64
+sudo wget -qO /usr/local/bin/meilisearch https://github.com/meilisearch/meilisearch/releases/latest/download/meilisearch-linux-amd64
 sudo chmod a+x /usr/local/bin/meilisearch
 ```
 
@@ -192,7 +191,7 @@ After=systemd-user-sessions.service
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/meilisearch --http-addr 127.0.0.1:7700 --env production --master-key Y0urVery-S3cureAp1K3y
+ExecStart=/usr/local/bin/meilisearch --http-addr 127.0.0.1:7700 --env production --master-key Y0urVery-S3cureAp1K3y
 
 [Install]
 WantedBy=default.target
