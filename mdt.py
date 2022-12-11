@@ -2,15 +2,16 @@
 
 from pathlib import Path
 from typing import Optional
-import os
 import re
+from enum import Enum
 
 from rich.console import Console
 from rich.markdown import Markdown
 from rich.table import Table
 from rich.panel import Panel
-from rich.progress import track
 import typer
+import yaml
+import json
 
 from models import load_note_from_file
 
@@ -102,26 +103,8 @@ def search(topic_name:str, query: str):
 
 
 @app.command()
-def topic(topic_name: str):
-    '''Muestra un listado de .
-    '''
-    filename = DOCS / f'notes-on-{topic_name.lower()}.md'
-    if filename.exists():
-        console = Console()
-        table = Table(show_header=True, header_style="bold green")
-        table.add_column("Topic", style="dim")
-        table.add_column("Note")
-        with open(filename, 'r', encoding='utf-8') as f_in:
-            for line in f_in.readlines():
-                if line.startswith('##'):
-                    level, entry_name = line.strip().split(' ', 1)
-                    table.add_row(topic_name, Markdown(entry_name))
-        console.print(table)
-
-
-@app.command()
 def ls(topic_name: str, index: Optional[int] = typer.Argument(None)):
-    '''Muestra un listado de notas sobre un tema.
+    '''Muestra las notas disponibles sobre un tema.
     '''
     filename = DOCS / f'notes-on-{topic_name.lower()}.md'
     if filename.exists():
@@ -138,6 +121,30 @@ def ls(topic_name: str, index: Optional[int] = typer.Argument(None)):
             for i, point in enumerate(note.content):
                 if i == index:
                     console.print(Panel(Markdown(str(point))))
+
+class Format(str, Enum):
+    JSON = 'json'
+    YAML = 'yaml'
+
+
+@app.command()
+def metadata(
+    topic_name: str,
+    format: Format = typer.Option(
+        help='Formato de salida',
+        default='yaml',
+        )
+    ):
+    '''Muestra metadatos asociados con un tema.
+    '''
+    filename = DOCS / f'notes-on-{topic_name.lower()}.md'
+    if filename.exists():
+        note = load_note_from_file(filename)
+        if format == Format.YAML:
+            print(yaml.dump(note.metadata, Dumper=yaml.Dumper))
+        elif format == Format.JSON:
+            print(json.dumps(note.metadata))
+
 
 
 if __name__ == '__main__':

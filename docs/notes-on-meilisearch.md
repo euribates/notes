@@ -1,5 +1,8 @@
 ---
 title: Notes on Meilisearch
+tags:
+  - Python
+  - Web
 ---
 
 ## Sobre Meilisearch
@@ -88,6 +91,19 @@ Produciría algo como:
   "processingTimeMs": 2
 }
 ```
+
+## Crear un índice con Python
+
+Para crear un índice en Meilisearch, hay que asignarle un nombre y decirle el
+atributo que debe usar como clave primaria. Por ejemplo:
+
+```
+import meilisearch
+
+client = meilisearch.Client('http://127.0.0.1:7700', 'masterKey')
+client.create_index('notes', {'primaryKey': 'id'})
+```
+
 
 ## Consultar un índice con Python
 
@@ -192,7 +208,7 @@ After=systemd-user-sessions.service
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/meilisearch --http-addr 127.0.0.1:7700 --env production --master-key Y0urVery-S3cureAp1K3y
+ExecStart=/usr/local/bin/meilisearch --http-addr 127.0.0.1:7700 --env production --master-key Y0urVery-S3cureAp1K3y
 
 [Install]
 WantedBy=default.target

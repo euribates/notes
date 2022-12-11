@@ -4,23 +4,54 @@ title: Notes on Tmux
 
 ## Sobre TMux
 
-## How to rename sessions
+Un buen artículo de introducción a Tmux: 
+[Getting started with tmux | ITTavern.com](https://ittavern.com/getting-started-with-tmux/)
 
-Use the Key Combination: ++ctrl+b++ y `$`.
+Conceptos básicos:
 
-Source: 
+- Sesiones / Ventanas / paneles. Las sesiones pueden estar en primer plano
+  (_attached_) o en segundo plano (_detached_). Aun estando en segundo plano,
+  los procesos ejecutándose en ellas siguen funcionando. Cada sesión puede tener
+  múltiples ventanas, y cada ventana puede tener múltiples paneles, que son
+  divisiones de la pantalla.
 
-## How to split, switch and resize panes
+- El prefijo o tecla de control o **_lead_** por defecto es ++ctrl-b++, y es la
+  secuencia que se usa casi siempre para darle ordenes a Tmux. En mucha
+  documentación se hará referencia a `Lead` o `Prefix`. Se puede cambiar
+  a otra configuración con el comando `set`. Por ejemplo, para cambiarlo a
+  ++ctrl+s++, habría que hacer:
 
-Here is a list of a few basic tmux commands:
+    ```
+    Prefix + `:set -g prefix C-s`
+    ```
 
-- `Ctrl+b` : split pane horizontally.
-- `Ctrl+b %` : split pane vertically.
-- `Ctrl+b arrow key` : switch pane.
-- Hold `Ctrl+b`, don’t release it and hold one of the arrow keys to **resize pane**.
-- `Ctrl+b c` : (c)reate a new window.
-- `Ctrl+b n` : move to the (n)ext window.
-- `Ctrl+b p` : move to the (p)revious window.
+  El cambio sera temporal, y  durará lo que la sesión en curso. Para hacerlo
+  fijo ver [Cómo configurar Tmux](#como_configurar_tmux).
+
+
+## Cómo renombrar las sesions de Tmux
+
+Usar la combinación de teclas: ++ctrl+b++ + `$`.
+
+
+## Cómo trabajar y modificar los paneles
+
+Estos son los comandos más usados:
+
+- `Ctrl+b` : Dividir en dos paneles horizontales.
+
+- `Ctrl+b %` : Dividor en dos panales verticales.
+
+- `Ctrl+b arrow key` : Cambiar a otro panel.
+
+- Pulsar `Ctrl+b` y, manteniendola pulsada, usar las flechas para cambier el
+  tamaño del panel actual.
+
+- `Ctrl+b c` : (C)rear una ventana nueva
+
+- `Ctrl+b n` : Pasar a la ventana siguiente (_Next_).
+
+- `Ctrl+b p` : Pasar a la ventana (P)revia.
 
 Other thing worth knowing is that **scrolling is enabled** by pressing `Ctrl+b
 PgUp/PgDown`. In fact, it enables the copy mode, which can also be done by
@@ -30,31 +61,41 @@ scroll through the terminal contents. To (q)uit the copy mode, simply press the
 
 Source: [tmux Tutorial — Split Terminal Windows Easily - Lukasz Wrobel](https://lukaszwrobel.pl/blog/tmux-tutorial-split-terminal-windows-easily/)
 
-## How to create Tmux sessions
+## Cómo crear una sesión en Tmux
 
-To create a new Tmux session and attach to it, run the following command
-from the Terminal:
+Para crear una nueva sesión y pasarla a primer plano, simplemente ejecutamos:
 
 ```shell
 tmux
 ```
 
-Or:
+O:
 
 ```shell
 tmux new
 ```
 
-Once you are inside the Tmux session, you will see **a green bar at the bottom**.
+Podemos asignarle un nombre a la sesión cuando la creamos, con el flag `-s`. El
+siguiente ejemplo crea una sesión llamada `webserver`:
 
-## How to recover a shell after a disconnection
+```shell
+tmux new -s webserver
+```
 
-There is no way, but to prevent this I like using tmux. I start tmux,
-start the operation and go on my way. If I return and find the
-connection has been broken, all I have to do is reconnect and type tmux
-attach.
+Aparte de eso, una vez creada siempre se le puede cambiar el nombre con
+[Prefix] - `$`.
 
-Here's an example:
+Una vez dentro de una sesión, veremos que aparece una barra verde en la última
+línea de la terminal.
+
+
+## Cómo recuperar una sesión despues de un corte de comunicación
+
+Una vez que la conexión se ha restablecido, volvemos a conectarnos
+y volvemos a activar o pasar a primer plano alguna de las sesiones
+que siguen activas:
+
+Caso de ejemplo:
 
 ```shell
 $ tmux
@@ -70,66 +111,57 @@ $ tmux attach -t 0
 Back in the tmux sesion
 ```
 
-## How to create named sessions
+## Cómo configurar Tmux
 
-If you use multiple sessions, you might get confused which programs are
-running on which sessions. In such cases, you can just create named
-sessions. For example if you wanted to perform some activities related
-to web server in a session, just create the Tmux session with a custom
-name, for example `webserver` (or any name of your choice):
+En Linux, el fichero de configuración está normalmente en `~/.tmux.conf`.
 
-```shell
-tmux new -s webserver
-```
+Después de hacer un cambio en la configuración, si estamos dentro de Tmux, no
+hace falta salir y volver a entrar para que los cambios se apliquen, podemos
+hacer [Prefix] + `:source-file ~/.tmux.conf`.
 
-## How to detach from Tmux sessions
 
-To detach from a current Tmux session, just press ++ctrl+b++ and ++d++
-(You don't need to press this both Keyboard shortcut at a time; first
-press ++ctrl+b++ and then press ++d++).
+## Cómo pasar una sesión Tmux a segundo plano. 
 
-Once you're detached from a session, you will see an output something
-like below:
+Hay que pulsar ++ctrl+b++ and ++d++. Volveremos a una terminal normal, 
+y nos mostrará un mensaje como:
 
 ```shell
 [detached (from session 0)]
 ```
 
-## How to list Tmux sessions
+Pero las sesiones en segundo plano siguen trabajando. Podemos obtener un listado
+de las sesiones con `tmux ls`. Para volver a la sesión, `tmux attach`.
 
-To view the list of open Tmux sessions, run:
+
+## Cómo listar las sesiones Tmux disponibles
+
+Solo hay que llamar al comando `tmux` con la orden `ls`:
 
 ```shell
 tmux ls
 ```
 
-## How to attach to Tmux sessions
+## Cómo volver a conectar con una sesión en segundo plano
 
-You can attach to the last created session by running this command:
+Usando la orden `attach` volvemos a la ultima sesión activa:
 
 ```shell
 tmux attach
 ```
 
-Or:
-
-```shell
-tmux a
-```
-
-If you want to attach to any specific named session, for example
-"webserver", run:
+O especificando el nombre de la sesión con `-t` para activar esa sesión en
+concreto:
 
 ```shell
 tmux attach -t webserver
 ```
 
-Or, shortly:
+La orden `attach` se puede abreviar a `a`:
 
 ```shell
 tmux a -t sebserver
 ```
 
-Sources:
+Fuente:
 
 - [Tmux Command Examples To Manage Multiple Terminal Sessions](https://ostechnix.com/tmux-command-examples-to-manage-multiple-terminal-sessions/)

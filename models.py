@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import yaml
 
 class Note:
 
@@ -36,17 +37,18 @@ def load_lines(filename):
 def load_note_from_file(filename):
     note = Note(filename)
     in_header = False
+    header_lines = []
     point = Point(filename)
     for line in load_lines(filename):
-        if line == '---' and not note.metadata:
+        if line == '---' and not header_lines:
             in_header = True
             continue
-        if line == '---' and note.metadata:
+        if line == '---' and header_lines:
             in_header = False
+            note.metadata = yaml.safe_load('\n'.join(header_lines))
             continue
         if in_header:
-            name, value = line.split(':')
-            note.metadata[name] = value
+            header_lines.append(line)
         else:
             if line.startswith('## '):
                 point = Point(line[3:])
