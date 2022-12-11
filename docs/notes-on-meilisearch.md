@@ -12,8 +12,7 @@ tags:
 Bajamos el script de instalación:
 
 ```shell
-sudo wget -qO /usr/local/bin/meilisearch
-https://github.com/meilisearch/meilisearch/releases/latest/download/meilisearch-linux-amd64
+sudo wget -qO /usr/local/bin/meilisearch https://github.com/meilisearch/meilisearch/releases/latest/download/meilisearch-linux-amd64
 sudo chmod a+x /usr/local/bin/meilisearch
 ```
 
