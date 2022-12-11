@@ -12,6 +12,7 @@ from rich.panel import Panel
 from rich.progress import track
 import typer
 
+from models import load_note_from_file
 
 DOCS = Path('./docs')
 
@@ -116,6 +117,27 @@ def topic(topic_name: str):
                     level, entry_name = line.strip().split(' ', 1)
                     table.add_row(topic_name, Markdown(entry_name))
         console.print(table)
+
+
+@app.command()
+def ls(topic_name: str, index: Optional[int] = typer.Argument(None)):
+    '''Muestra un listado de notas sobre un tema.
+    '''
+    filename = DOCS / f'notes-on-{topic_name.lower()}.md'
+    if filename.exists():
+        note = load_note_from_file(filename)
+        console = Console()
+        if index is None:
+            table = Table(show_header=True, header_style="bold green")
+            table.add_column("I", style="dim")
+            table.add_column("Note")
+            for i, point in enumerate(note.content):
+                table.add_row(f'{i}', point.title)
+            console.print(table)
+        else:
+            for i, point in enumerate(note.content):
+                if i == index:
+                    console.print(Panel(Markdown(str(point))))
 
 
 if __name__ == '__main__':
