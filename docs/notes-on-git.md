@@ -89,7 +89,7 @@ $ git config --global core.autocrlf input
 - Source: [Configurinf git to handle line encodings](https://docs.github.com/en/github/using-git/configuring-git-to-handle-line-endings)
 
 
-## Cómo mostrar diferencias
+## Cómo mostrar diferencias entre ficheros locales, el repo o el _stage_
 
 - `git diff` muestra las diferencias entre los ficheros locales y lo que haya
   en el _stage_.
@@ -101,15 +101,15 @@ $ git config --global core.autocrlf input
   como de ficheros en el _stage_.
 
 
-## Hot to draw a clear log graph, showing branchs
+## Cómo mostrar una versión gráfica del log que visualize las ramas
 
-This is the way:
+Este es el camino:
 
 ```shell
 git log --oneline --all --graph --decorate=full
 ```
 
-- Source: [Git branch name - case sensitive or insensitive?](https://stackoverflow.com/questions/38493543/git-branch-name-case-sensitive-or-insensitive)
+- Fuente: [Git branch name - case sensitive or insensitive?](https://stackoverflow.com/questions/38493543/git-branch-name-case-sensitive-or-insensitive)
 
 
 ## Special Files (mark some files as binary files)
@@ -217,10 +217,10 @@ git config --global pager.branch false
 ## Cómo revisar de forma interactiva los cambios antes de ser confirmados 
 
 Con el comando `git add -p` podemos revisar los cambios producidos antes de cada
-fichero, y aprovar o no la incorporación de los mismos al _commit_ actual.
+fichero, y aprobar o no la incorporación de los mismos al _commit_ actual.
 
 
-## Some useful commands
+## Algunos comandos git útiles
 
 - `git commit -a` Stages files automatically.
 
@@ -239,9 +239,9 @@ fichero, y aprovar o no la incorporación de los mismos al _commit_ actual.
 - `git rm` Similar to the Linux `rm` command, this deletes, or removes
   a file.
 
-- `git remote` Lists remote repos.
+- `git remote` lista los repositorios remotos
 
-- `git remote -v` List remote repos verbously.
+- `git remote -v` lista los repositorios remotos con información adicional
 
 - `git remote show <name>` Describes a single remote repo.
 
@@ -253,7 +253,7 @@ fichero, y aprovar o no la incorporación de los mismos al _commit_ actual.
   branch arguments to manage remote branches
 
 
-## How to rename a branch in Git
+## Cómo renombrar una rama en Git
 
 If you have named a branch incorrectly **AND** pushed this to the remote
 repository, follow these steps before any other developers get a chance to jump
