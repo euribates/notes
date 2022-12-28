@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
-import random, datetime, tareas
+import datetime
+import random
+
+import tareas
 
 
 start = datetime.datetime.now()
