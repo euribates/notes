@@ -1,15 +1,15 @@
 import random
 import datetime
+
 from redis import Redis
 from rq import Queue
-from constantes import (
-    REDIS_SERVER,
-    REDIS_PASSWORD,
-    REDIS_PORT,
-    REDIS_DB,
-    )
+
 import tareas
 
+REDIS_SERVER = 'localhost'
+REDIS_PASSWORD = None
+REDIS_PORT = 6379
+REDIS_DB = 0
 
 q = Queue('default', connection=Redis(
     host=REDIS_SERVER,
