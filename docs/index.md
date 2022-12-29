@@ -60,6 +60,7 @@
 - [Make](notes-on-make.md)
 - [Marshmallow](notes-on-marshmallow.md)
 - [Maths](notes-on-maths.md)
+- [Matomo](notes-on-matomo.md)
 - [Meilisearch](notes-on-meilisearch.md)
 - [Migrating-from-mercurial-to-git](notes-on-migrating-from-mercurial-to-git.md)
 - [MySQL](notes-on-mysql.md)
