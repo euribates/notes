@@ -2,7 +2,7 @@
 title: Notes on Python
 ---
 
-### Definir la versión por defecto a usar en Linux (Con apt)
+## Definir la versión por defecto a usar en Linux (Con apt)
 
 En los sistemas Linux basados en Debian, como Ubuntu, Mint, etc. se puede usar
 el programa `update-alternatives` para crear, borrar, editar y mostrar
@@ -38,8 +38,28 @@ Fuentes:
 - [Switch Java Version with update-alternatives](https://djangocas.dev/blog/linux/switch-java-version-with-update-alternatives/)
 - [linux - How to update-alternatives to Python 3 without breaking apt? - Stack Overflow](https://stackoverflow.com/questions/43062608/how-to-update-alternatives-to-python-3-without-breaking-apt)
 
+## Cómo obtener el directorio del usuario actual
 
-### Python type checking
+
+Ser puede usar `os.path.expanduser`, que funciona en todas las
+plataformas (`os.environ['HOME']` solo funciona en Unix/Linux):
+
+```
+from os.path import expanduser
+home = expanduser("~")
+```
+
+A partir de Python 3.5 también se puede usar
+`pathlib.Path.home()`:
+
+```
+from pathlib import Path
+home = str(Path.home())
+```
+
+- Fuente: [Stackoverflow: What is a Cross plateorm way to get the home directory](https://stackoverflow.com/questions/4028904/what-is-a-cross-platform-way-to-get-the-home-directory)
+
+## Python type checking
 
 Python will always remain a dynamically typed language. However, [PEP
 484](https://www.python.org/dev/peps/pep-0484/) introduced **type hints**,
@@ -196,7 +216,7 @@ Fuentes:
 - [Stack OVerflow: Debugging - Disable assertions in Python](https://stackoverflow.com/questions/1273211/disable-assertions-in-python)
 
 
-### Third party libraries
+## Third party libraries
 
 - [Pampy: The Pattern Matching for Python you always dreamed of](https://github.com/santinic/pampy) 
 
@@ -230,17 +250,17 @@ Fuentes:
 
 - [Fast, asynchronous and elegant Python web framework](https://github.com/vibora-io/vibora)
 
-### CPython internals: A ten-hour codewalk through the Python interpreter source code
+## CPython internals: A ten-hour codewalk through the Python interpreter source code
 
 - http://www.pgbovine.net/cpython-internals.htm
 
-### Allison Kaptur - Bytes in the Machine: Inside the CPython interpreter - PyCon 2015
+## Allison Kaptur - Bytes in the Machine: Inside the CPython interpreter - PyCon 2015
 
 - https://www.youtube.com/watch?v=HVUTjQzESeo
 
-### How to make the Singleton Pattern in Python, the right way
+## How to make the Singleton Pattern in Python, the right way
 
-Use a metaclass:
+### Use a metaclass:
 
 ```Python
 class Singleton(type):
@@ -251,23 +271,32 @@ class Singleton(type):
         if cls not in cls._instances:
             cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
         return cls._instances[cls]
+```
 
-# Use in Python2
+In Python2:
+
+```
 class MyClass(BaseClass):
     __metaclass__ = Singleton
     ...
+```
 
-# Use in Python3
+
+In Python3:
+
+```
 class MyClass(BaseClass, metaclass=Singleton):
     ...
+```
 
-# Use in both, with six
+Usar en ambas versiones, con `six`:
+
+```
 import six
 
 @six.add_metaclass(Singleton) 
 class MyClass(BaseClass):
     ...
-
 ```
 
 Pros of this method:
@@ -280,20 +309,24 @@ Pros of this method:
 
 Source from <https://stackoverflow.com/questions/6760685/creating-a-singleton-in-python>
 
-### How to make a chunk or batch, i.e. split a list or sequence into evenly sized chunks
+[TODO] Faltan más opciones
+
+## How to make a chunk or batch, i.e. split a list or sequence into evenly sized chunks
 
 An elegant way to do it is described by user
 [sanderle](https://stackoverflow.com/users/577088/senderle) in [Stack
 Overflow](https://stackoverflow.com/questions/312443/how-do-you-split-a-list-into-evenly-sized-chunks/22045226#22045226):
 
+```
     from itertools import islice
 
     def batch(it, size):
         it = iter(it)
         return iter(lambda: tuple(islice(it, size)), tuple())
+```
 
 The trick uses a relative unknown property of iter; it can be called with one or two parameters. In this second case, the second parameter is a _sentinel_ value. From the documentation
-of iter:
+of `iter`:
 
 > `iter(o, [sentinel])`: Return an iterator object. The first argument is interpreted very
 > differently depending on the presence of the second argument. Without a second argument, `o` must be
@@ -323,7 +356,7 @@ https://www.pygame.org/news/2019/3/1-9-5-released-into-the-wilds
 > removed.
 
 
-### OpenCV-Python Cheat Sheet
+## OpenCV-Python Cheat Sheet
 
 From Importing Images to Face Detection, Cropping, Resizing, Rotating,
 Thresholding, Blurring, Drawing & Writing on an image, Face Detection &
@@ -354,7 +387,7 @@ Table of Contents
  - Saving an Image
 
 
-### Working with PDFs in Python: Reading and Splitting
+## Working with PDFs in Python: Reading and Splitting
 
 https://stackabuse.com/working-with-pdfs-in-python-reading-and-splitting/
 
@@ -366,7 +399,7 @@ https://stackabuse.com/working-with-pdfs-in-python-reading-and-splitting/
 > single pages into a new document.
 
 
-### Creating a GUI Application for NASA’s API with wxPython
+## Creating a GUI Application for NASA’s API with wxPython
 
 https://www.blog.pythonlibrary.org/2019/04/18/creating-a-gui-application-for-nasas-api-with-wxpython/
 
@@ -377,7 +410,7 @@ https://www.blog.pythonlibrary.org/2019/04/18/creating-a-gui-application-for-nas
 > image library. 
 
 
-### PySnooper - Never use print for debugging again
+## PySnooper - Never use print for debugging again
 
 https://github.com/cool-RR/PySnooper
 
@@ -396,7 +429,7 @@ add one decorator line to the function you're interested in. You'll get a play-b
 function, including which lines ran and when, and exactly when local variables were changed.
 
 
-### Distributed notifications using websockets
+## Distributed notifications using websockets
 
 > Dino is a distributed notification service intended to push events to groups of clients. Example
 > use cases are chat server, real-time notifications for websites, push notifications for mobile
@@ -413,7 +446,7 @@ Fuentes:
 - [GitHub - thenetcircle/dino: Distributed notifications using websockets](https://github.com/thenetcircle/dino/)
 
 
-### Teaching a kid to code with Pygame Zero
+## Teaching a kid to code with Pygame Zero
 
 > How can you excite a kid about coding and computers? As a software developer and father of two
 > children, I think about this question often. A person with software skills can have big advantages
@@ -429,7 +462,7 @@ Fuentes:
 - [Teaching a kid to code with Pygame Zero - Matt Layman](https://www.mattlayman.com/blog/2019/teach-kid-code-pygame-zero/)
 
 
-### Getting to Know Python 3.7: Data Classes, async/await and More!
+## Getting to Know Python 3.7: Data Classes, async/await and More!
 
 https://blog.heroku.com/python37-dataclasses-async-await
 
@@ -440,7 +473,7 @@ https://blog.heroku.com/python37-dataclasses-async-await
 > upgrading to Python 3.7. Read on to learn more about some of the exciting features and
 > improvements.
 
-### Reproducing Images using a Genetic Algorithm with Python
+## Reproducing Images using a Genetic Algorithm with Python
 
 https://heartbeat.fritz.ai/reproducing-images-using-a-genetic-algorithm-with-python-91fc701ff84
 
@@ -451,7 +484,7 @@ Regarding the implementation of GA in Python, I also prepared a tutorial titled 
 
 https://www.linkedin.com/pulse/genetic-algorithm-implementation-python-ahmed-gad
 
-### Python at Netflix
+## Python at Netflix
 
 https://medium.com/netflix-techblog/python-at-netflix-bba45dae649e
 
@@ -462,14 +495,14 @@ https://medium.com/netflix-techblog/python-at-netflix-bba45dae649e
 > interests you, check out the jobs site or find us at PyCon. We have donated a few Netflix
 > Originals posters to the PyLadies Auction and look forward to seeing you all there.
 
-### Monkey Patching in Python: Explained with Examples
+## Monkey Patching in Python: Explained with Examples
 
 https://thecodebits.com/monkey-patching-in-python-explained-with-examples/
 
 > In this post, we will learn about monkey patching, i.e., how to dynamically update code behavior
 > at runtime. We will also see some useful examples of monkey patching in Python.
 
-### Python 3 at Mozilla
+## Python 3 at Mozilla
 
 https://ahal.ca/blog/2019/python-3-at-mozilla/
 
@@ -485,7 +518,7 @@ ask some questions. How far along has Mozilla come in the Python 3 migration? Wh
 lie on the critical path? And do we have a plan to get to a good state in time for Python 2’s EOL on
 January 1st, 2020?
 
-### Python INTRO
+## Python INTRO
 
 
 Some of the most popular online interpreters and codepads. Give them a go to find your favorite.
@@ -520,7 +553,7 @@ Python has recently been called the fastest growing programming language. If you
 - [Developer Survey Results 2018 (Stack Overflow)](https://insights.stackoverflow.com/survey/2018#technology)
 
 
-### keywords
+## Palabras reservadas en Python (keywords)
 
 Keywords are reserved words that are used to construct instructions. We briefly encountered for and in in our first Python example, and we'll use a bunch of other keywords as we go through the course. For reference, these are all the reserved keywords:
 
