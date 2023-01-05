@@ -38,10 +38,10 @@ Fuentes:
 - [Switch Java Version with update-alternatives](https://djangocas.dev/blog/linux/switch-java-version-with-update-alternatives/)
 - [linux - How to update-alternatives to Python 3 without breaking apt? - Stack Overflow](https://stackoverflow.com/questions/43062608/how-to-update-alternatives-to-python-3-without-breaking-apt)
 
-## Cómo obtener el directorio del usuario actual
+## Cómo obtener el directorio _home_ del usuario actual
 
 
-Ser puede usar `os.path.expanduser`, que funciona en todas las
+Se puede usar `os.path.expanduser`, que funciona en todas las
 plataformas (`os.environ['HOME']` solo funciona en Unix/Linux):
 
 ```
@@ -49,17 +49,16 @@ from os.path import expanduser
 home = expanduser("~")
 ```
 
-A partir de Python 3.5 también se puede usar
-`pathlib.Path.home()`:
+A partir de Python 3.5 también se puede usar `pathlib.Path.home()`:
 
 ```
 from pathlib import Path
 home = str(Path.home())
 ```
 
-- Fuente: [Stackoverflow: What is a Cross plateorm way to get the home directory](https://stackoverflow.com/questions/4028904/what-is-a-cross-platform-way-to-get-the-home-directory)
+- Fuente: [Stack Overflow: What is a Cross platform way to get the home directory](https://stackoverflow.com/questions/4028904/what-is-a-cross-platform-way-to-get-the-home-directory)
 
-## Python type checking
+## Validación de tipos (_type checking_) con Python
 
 Python will always remain a dynamically typed language. However, [PEP
 484](https://www.python.org/dev/peps/pep-0484/) introduced **type hints**,
@@ -80,26 +79,24 @@ def headline(text: str, align: bool = True) -> str:
     ...
 ```
 
-The `text: str` syntax says that the text argument should be of type str.
-Similarly, the optional align argument should have type `bool` with the default
-value `True`. Finally, the `->` str notation specifies that `headline()` will
-return a string.
+La sintaxis `text: str` define que el argumento `text` debería ser una cadena de texto, o sea, una instancia de `str`. De igual manera, el parámetro opcional
+`align` debería ser de tipo booleano, con el valor `True` por defecto. Por
+último, la notación `->` indica que la función `headline` debe devolver una
+cadena de texto.
 
-In terms of style, PEP 8 recommends the following:
+En lo que respecta a los estilos, PEP8 sugiere las siguientes reglas:
 
-- Use normal rules for colons, that is, no space before and one space after a
-  colon: `text: str`
+- Usar las reglas habituales para los dos puntos, es decir, sin espacios antes
+  y un espacio después: `text: str`
 
-- Use spaces around the `=` sign when combining an argument annotation with a
-  default value: `align: bool = True`
+- Usar espacios antes y después del símbolo `=` cuando asignemos un valor por
+  defecto: `align: bool = True`
 
-- Use spaces around the `->` arrow: `def headline(...) -> str`
+- Usar espacios antes y después de la flecha `->`: `def headline(...) -> str`
 
-Adding type hints like this has **no runtime effect**. To catch this kind of
-error you can use a static type checker. That is, a tool that checks the types
-of your code without actually running it in the traditional sense.
-
-The most common tool for doing type checking is [Mypy](http://mypy-lang.org/).
+Estas anotaciones **no tienen nigún efecto en la ejecución**. Para detectar
+posibles errores con estas anotaciones necesitamos herramientas de terceros.
+La herramienta más usada para esto en [Mypy](http://mypy-lang.org/).
 
 With composite types, you are allowed to do:
 
@@ -170,33 +167,33 @@ $ mypy play.py
 play.py:6: error: "play" does not return a value
 ```
 
-### How to disable assertions in Python?
+## Cómo desactivar los _assert_ en Python?
 
-There are multiple approaches that affect a single process, the environment, or
-a single line of code.
+Hay varias formas, según queramos afectar a un proceso, un entorno o una
+sección de código:
 
-- **For the whole process**
+### Para un proceso
 
-Using the `-O` flag (capital O) disables all assert statements in a process.
-You can also use `-OO`, this discard docstrings in addition to the -O
-optimizations.
+Usando el flag `-O` desactivamos todos los _assert_ del proceso. También se puede
+usar `-OO`, que además de los _assert_ descarta los _docstrings_.
 
-- **For the environment**
+### En un entorno
 
-You can use the `PYTHONOPTIMIZE` environment variable to set this flag as well.
-This will affect every process that uses or inherits the environment.
+Definiendo la variable de entorno `PYTHONOPTIMIZE` con los valores del _flag_
+anterior, aplicaremos este efecto a cualquier proceso que se arrancue en este
+entorno.
 
-- **Single point in code**
+### En una sección del código
 
-If you want the code that fails to be exercised, you can catch either ensure
-control flow does not reach the assertion, for example:
+La forma más sencilla sería usar un simple if para evitar la ejecución
+del _assert_:
 
 ```
 if False:
     assert False, "we know this fails, but we don't get here"
 ```
 
-or you can catch the assertion error:
+O atrapar la excepción:
 
 ```
 try:
@@ -205,15 +202,7 @@ except AssertionError as e:
     print(repr(e))
 ```
 
-which prints:
-
-```
-AssertionError('this code runs, fails, and the exception is caught')
-```
-
-Fuentes:
-
-- [Stack OVerflow: Debugging - Disable assertions in Python](https://stackoverflow.com/questions/1273211/disable-assertions-in-python)
+- Fuentes: [Stack OVerflow: Debugging - Disable assertions in Python](https://stackoverflow.com/questions/1273211/disable-assertions-in-python)
 
 
 ## Third party libraries
@@ -250,17 +239,79 @@ Fuentes:
 
 - [Fast, asynchronous and elegant Python web framework](https://github.com/vibora-io/vibora)
 
-## CPython internals: A ten-hour codewalk through the Python interpreter source code
+## Sobre el funcionamiento interno de Python
+
+### CPython internals: A ten-hour codewalk through the Python interpreter source code
 
 - http://www.pgbovine.net/cpython-internals.htm
 
-## Allison Kaptur - Bytes in the Machine: Inside the CPython interpreter - PyCon 2015
+### Allison Kaptur - Bytes in the Machine: Inside the CPython interpreter - PyCon 2015
 
 - https://www.youtube.com/watch?v=HVUTjQzESeo
 
-## How to make the Singleton Pattern in Python, the right way
 
-### Use a metaclass:
+## Cómo implementar el patrón `Singleton`, en Python
+
+### Método 1: Usando un decorador
+
+```
+def singleton(class_):
+    instances = {}
+    def getinstance(*args, **kwargs):
+        if class_ not in instances:
+            instances[class_] = class_(*args, **kwargs)
+        return instances[class_]
+    return getinstance
+
+@singleton
+class MyClass(BaseClass):
+    pass
+```
+
+Ventajas: Los decoradores son más intuitivos que las herencias múltiples o las
+metaclases.
+
+Contras: Aunque los objetos creados con `MyClass` son auténticos objetos
+_Singleton_, `MyClass` es sí es solo una función, no una clase, así que no
+se pueden usar métodos de clase, por ejemplo.
+
+Además, si tenemos:
+
+```
+x = MyClass();
+y = MyClass();
+t = type(x)();
+```
+
+Entonces `x == y` pero `x != t` e `y != t`.
+
+### Método 2: Usando una clase base
+
+```
+class Singleton(object):
+    _instance = None
+    def __new__(class_, *args, **kwargs):
+        if not isinstance(class_._instance, class_):
+            class_._instance = object.__new__(class_, *args, **kwargs)
+        return class_._instance
+
+class MyClass(Singleton, BaseClass):
+    pass
+```
+
+**Ventajas**
+
+- Es una clase de verdad.
+
+**Contras**
+
+- Herencia multiple: La llamada a `__new__` podria ser reescrita
+  mediante herencia en una clase derivada.
+
+- Más complicado de lo necesario
+
+
+### Método 3: Usando una metaclase:
 
 ```Python
 class Singleton(type):
@@ -273,7 +324,7 @@ class Singleton(type):
         return cls._instances[cls]
 ```
 
-In Python2:
+En Python2:
 
 ```
 class MyClass(BaseClass):
@@ -282,14 +333,14 @@ class MyClass(BaseClass):
 ```
 
 
-In Python3:
+En Python3:
 
 ```
 class MyClass(BaseClass, metaclass=Singleton):
     ...
 ```
 
-Usar en ambas versiones, con `six`:
+O para que funcione en ambas versiones, con `six`:
 
 ```
 import six
@@ -299,34 +350,52 @@ class MyClass(BaseClass):
     ...
 ```
 
-Pros of this method:
+Ventajas:
 
-- It's a true class
+- Es una autentica clase.
 
-- Auto-magically covers inheritance
+- Funciona perfectamente con herencias multiples.
 
-- Uses __metaclass__ for its proper purpose (and made me aware of it)
+- Usa las metaclases para lo que realmente debe utilizarse
 
-Source from <https://stackoverflow.com/questions/6760685/creating-a-singleton-in-python>
 
-[TODO] Faltan más opciones
+### Método 4: Con un módulo
 
-## How to make a chunk or batch, i.e. split a list or sequence into evenly sized chunks
+Un simple módulo `singleton.py`
 
-An elegant way to do it is described by user
-[sanderle](https://stackoverflow.com/users/577088/senderle) in [Stack
+Ventajas:
+
+ - Lo simple es mejor que lo complejo
+ - Parece la forma más _Pythonica_
+
+Contras:
+
+ - No es `lazy` (Aunque no es difícil de implementar)
+
+
+
+Fuente:
+[Creating a singleton in Python - Stack Overflow](https://stackoverflow.com/questions/6760685/creating-a-singleton-in-python)
+
+
+## Como dividir una secuencia en lotes de tamaño máximo (_batch_)
+
+Hay una forma muy elegante descrita por el usuario
+[sanderle](https://stackoverflow.com/users/577088/senderle) en [Stack
 Overflow](https://stackoverflow.com/questions/312443/how-do-you-split-a-list-into-evenly-sized-chunks/22045226#22045226):
 
 ```
-    from itertools import islice
+from itertools import islice
 
-    def batch(it, size):
-        it = iter(it)
-        return iter(lambda: tuple(islice(it, size)), tuple())
+def batch(it, size):
+    it = iter(it)
+    return iter(lambda: tuple(islice(it, size)), tuple())
 ```
 
-The trick uses a relative unknown property of iter; it can be called with one or two parameters. In this second case, the second parameter is a _sentinel_ value. From the documentation
-of `iter`:
+El truco usa una propiedad relativamente desconocida de la función `iter`:
+Puede ser llamada con uno o dos parámetros. Si se especifican dos parámetros, el segundo
+es un [centinela](https://en.wikipedia.org/wiki/Sentinel_value), por
+lo que será devuelto cuando la secuencia haya terminado. Según la documentación:
 
 > `iter(o, [sentinel])`: Return an iterator object. The first argument is interpreted very
 > differently depending on the presence of the second argument. Without a second argument, `o` must be
@@ -336,6 +405,9 @@ of `iter`:
 > `sentinel`, is given, then `o` must be a callable object. The iterator created in this case will call
 > `o` with no arguments for each call to its `next()` method; if the value returned is equal to
 > `sentinel`, `StopIteration` will be raised, otherwise the value will be returned.
+
+
+
 
 ## Libs and news
 
@@ -387,7 +459,7 @@ Table of Contents
  - Saving an Image
 
 
-## Working with PDFs in Python: Reading and Splitting
+### Working with PDFs in Python: Reading and Splitting
 
 https://stackabuse.com/working-with-pdfs-in-python-reading-and-splitting/
 
@@ -399,7 +471,7 @@ https://stackabuse.com/working-with-pdfs-in-python-reading-and-splitting/
 > single pages into a new document.
 
 
-## Creating a GUI Application for NASA’s API with wxPython
+### Creating a GUI Application for NASA’s API with wxPython
 
 https://www.blog.pythonlibrary.org/2019/04/18/creating-a-gui-application-for-nasas-api-with-wxpython/
 
@@ -410,7 +482,7 @@ https://www.blog.pythonlibrary.org/2019/04/18/creating-a-gui-application-for-nas
 > image library. 
 
 
-## PySnooper - Never use print for debugging again
+### PySnooper - Never use print for debugging again
 
 https://github.com/cool-RR/PySnooper
 
@@ -495,12 +567,6 @@ https://medium.com/netflix-techblog/python-at-netflix-bba45dae649e
 > interests you, check out the jobs site or find us at PyCon. We have donated a few Netflix
 > Originals posters to the PyLadies Auction and look forward to seeing you all there.
 
-## Monkey Patching in Python: Explained with Examples
-
-https://thecodebits.com/monkey-patching-in-python-explained-with-examples/
-
-> In this post, we will learn about monkey patching, i.e., how to dynamically update code behavior
-> at runtime. We will also see some useful examples of monkey patching in Python.
 
 ## Python 3 at Mozilla
 
@@ -523,44 +589,27 @@ January 1st, 2020?
 
 Some of the most popular online interpreters and codepads. Give them a go to find your favorite.
 
-https://www.python.org/shell/
-https://www.onlinegdb.com/online_python_interpreter
-https://repl.it/languages/python3
-https://www.tutorialspoint.com/execute_python3_online.php
-https://rextester.com/l/python3_online_compiler
-https://trinket.io/python3
+- https://www.python.org/shell/
 
-Additional Python resources
+- https://www.onlinegdb.com/online_python_interpreter
 
-While this course will give you information about how Python works and how to write scripts in
-Python, you’ll likely want to find out more about specific parts of the language. Here are some
-great ways to help you find additional info: 
+- https://repl.it/languages/python3
 
-Read the official Python documentation.
-Search for answers or ask a question on Stack Overflow. 
-Subscribe to the Python tutor mailing list, where you can ask questions and collaborate with other Python learners.
-Subscribe to the Python-announce mailing list to read about the latest updates in the language.
+- https://www.tutorialspoint.com/execute_python3_online.php
 
-Python history and current status
+- https://rextester.com/l/python3_online_compiler
 
-Python was released almost 30 years ago and has a rich history. You can read more about it on the History of Python Wikipedia page or in the section on the history of the software from the official Python documentation.
-
-Python has recently been called the fastest growing programming language. If you're interested in why this is and how it’s measured, you can find out more in these articles:
-
-- [The Incredible Growth of Python (Stack Overflow)](https://stackoverflow.blog/2017/09/06/incredible-growth-python/)
-- [Why is Python Growing So Quickly - Future Trends (Netguru)](https://www.netguru.com/blog/why-python-is-growing-so-quickly-future-trends)
-- [By the numbers: Python community trends in 2017/2018 (Opensource.com)](https://opensource.com/article/18/5/numbers-python-community-trends)
-- [Developer Survey Results 2018 (Stack Overflow)](https://insights.stackoverflow.com/survey/2018#technology)
+- [Your Python Trinket](https://trinket.io/python3)
 
 
 ## Palabras reservadas en Python (keywords)
 
-Keywords are reserved words that are used to construct instructions. We briefly encountered for and in in our first Python example, and we'll use a bunch of other keywords as we go through the course. For reference, these are all the reserved keywords:
-
-False	class	finally	is	return
-None	continue	for	lambda	try
-True	def	from	nonlocal	while
-and	del	global	not	with
-as	elif	if	or	yield
-assert	else	import	pass	
-break	except	in	raise
+| keyword  | keyword    | keyword   | keyword    | keyword  |
+|----------|------------|-----------|------------|----------|
+| `False`  | `class`    | `finally` | `is`       | `return` |
+| `None`   | `continue` | `for`     | `lambda`   | `try`    |
+| `True`   | `def`      | `from`    | `nonlocal` | `while`  |
+| `and`    | `del`      | `global`  | `not`      | `with`   |
+| `as`     | `elif`     | `if`      | `or`       | `yield`  |
+| `assert` | `else`     | `import`  | `pass`     |          |
+| `break`  | `except`   | `in`      | `raise`    |          |

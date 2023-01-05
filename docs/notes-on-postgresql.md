@@ -1,6 +1,11 @@
-## Notes on postgresql
+---
+title: Notas sobre postgresql
+tags:
+    - database
+    - python
+---
 
-### Cómo salir de psql
+## Cómo salir de psql
 
 This is the way:
 
@@ -8,7 +13,7 @@ This is the way:
 \q
 ```
 
-### Cómo crear una base de datos PostgreSQL
+## Cómo crear una base de datos PostgreSQL
 
 1) Suponiendo que el servidor de PostgreSQL esté activo, nos conectamos con
 un usuario con privilegios de administrador, normalmente `postgres`:
@@ -36,7 +41,7 @@ misma al usuario:
 GRANT ALL PRIVILEGES ON DATABASE epublisher to epublisher;
 ```
 
-### Cómo crear un esquema (Equivalente a un tablespace en Oracle)
+## Cómo crear un esquema (Equivalente a un tablespace en Oracle)
 
 Usando la sentencia `CREATE SCHEMA`:
 
@@ -57,7 +62,7 @@ ese nombre (Sin importar quien sea el propietario de ese esquema).
 Fuente: [PostgreSQL Documentation 9.3 CREATE
 SCHEMA](https://www.postgresql.org/docs/9.3/sql-createschema.html).
 
-### Como cambiar la contraseña de un usuario
+## Como cambiar la contraseña de un usuario
 
 Con una conexión establecida con el usuarios en cuestión, ejecutar
 la siguiente orden (En el ejemplo se supone que el usuario es `postgres`):
@@ -75,7 +80,7 @@ ALTER ROLE
 Fuente: [How to Set the Default User Password in PostgreSQL | Tutorial by Chartio](https://chartio.com/resources/tutorials/how-to-set-the-default-user-password-in-postgresql/)
 
 
-### Cómo cambiar la longitud de datos de una columna sin perder datos
+## Cómo cambiar la longitud de datos de una columna sin perder datos
 
 ```sql
 ALTER TABLE table_name ALTER COLUMN column_name TYPE CHARACTER VARCHAR(120);
@@ -84,7 +89,7 @@ ALTER TABLE table_name ALTER COLUMN column_name TYPE CHARACTER VARCHAR(120);
 - Fuente: [HOW TO INCREASE THE LENGTH OF A CHARACTER VARYING DATATYPE IN
   POSTGRES WITHOUT DATA LOSS](https://www.carnaghan.com/knowledge-base/how-to-increase-the-length-of-a-character-varying-datatype-in-postgres-without-data-loss/)
 
-### How to agregate string values in a comma-separated values
+## How to agregate string values in a comma-separated values
 
 You can use the `STRING_AGG()` function to generate a list of
 comma-separated values. Is an aggregate function that concatenates a
@@ -124,7 +129,7 @@ SELECT f.title,
 Source: [PostgreSQL STRING_AGG() Function By Practical
 Examples](https://www.postgresqltutorial.com/postgresql-aggregate-functions/postgresql-string_agg-function/)
 
-### How to switch Databases
+## How to switch Databases
 
 Most Postgres servers have three databases defined by default:
 `template0`, `template1` and `postgres`. Databases `template0` and
@@ -144,7 +149,7 @@ You are now connected to database "sales" as user "ubuntu".
 sales=#
 ```
 
-### How to see the schema / list Tables
+## How to see the schema / list Tables
 
 Tl/DR: Con la orden '\dt'.
 
@@ -166,7 +171,7 @@ Source: [Listing Databases and Tables in PostgreSQL Using
 psql](https://chartio.com/resources/tutorials/how-to-list-databases-and-tables-in-postgresql-using-psql/)
 
 
-### How do you describe a table in PostgreSQL
+## How do you describe a table in PostgreSQL
 
 Usa la orden `\d+`:
 
@@ -181,7 +186,7 @@ of the manual for more info.
 Source: [StackOVerflow Questions
 109325](https://stackoverflow.com/questions/109325/postgresql-describe-table)
 
-### How to change the User password
+## How to change the User password
 
 For most systems, the default Postgres user is `postgres` and a password
 is not required for authentication. Thus, to add a password, we must
@@ -204,7 +209,7 @@ seen above.
 Source: [How to set the default user password in
 PostgreSQL](https://chartio.com/resources/tutorials/how-to-set-the-default-user-password-in-postgresql/).
 
-### Never use upper case table or column names
+## Never use upper case table or column names
 
 PostgreSQL folds all names - of tables, columns, functions and everything else
 - to lower case unless they're "double quoted". So create table `Foo` will create a table called `foo`, while create table `"Bar"` will create a table called `Bar`.

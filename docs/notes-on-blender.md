@@ -1,5 +1,8 @@
 ---
 title: Notas sobre Blender
+tags:
+    - python
+    - games
 ---
 
 ## Introducción a Blender
@@ -9,6 +12,83 @@ modelado, iluminación, renderizado, la animación y creación de gráficos
 tridimensionales. También de composición digital utilizando la técnica procesal
 de nodos, edición de vídeo, escultura (incluye topología dinámica) y pintura
 digital. 
+
+## Ajustes iniciales para desarrollar con Blender/Python
+
+Activar, en `Preferencias` -> `Interfaz`, las opciones de `Developer extra` y
+`Python tooltips`. 
+
+![Preferencias -> Interfaz](./blender/developers-preference.png)
+
+Con estos cambios conseguiremos varias ventajas:
+
+- Completado automático en la consola Python
+
+- Los controles muestran un _tooltip_ con el nombre y parámetros de la
+  función asociada.
+
+- Igualmente, los menús emergentes enlazan con la web de documentación de la
+  API correspondiente.
+
+## Dónde encontrar ejemplos de Python/Blender
+
+Blender incorpora varios _scripts_ útiles para aprender:
+
+- `scripts/startup/bl_ui` para intarfaz de usuario.
+
+- `scripts/startup/bl_operators` para operadores.
+
+## Como ejecutar código Python en Blender
+
+Las dos formas máß habituales son o usar el editor incorporado, o mediante la
+consola. Las dos son tpos de ventanas que podemos seleccionar en cualquier
+espacio de BLender (Hay una configuración predeterminada para desarrollo
+con estas ventanas ya activas en el _workspace_ `Scripting`.
+
+En el editor de texto podemos cargar ficheros `.py` o pegar el código
+desde el portapapeles. La consola se usa más normalemente para pequeñas 
+pruebas o para cunsultar la documentación.
+
+Otra forma posible es al invocar a Blender desde la línea de comandos.
+
+## Conceptos claves para usar Python en Blender
+
+### Acceso a datos
+
+Se puede acceder desde Python a cualquier cosa que se pueda hacer con un botón
+en Blender. El acceso a los datos de la escena actual se realiza con el módulo
+`bpy.data`. Algunos ejemplos:
+
+En `bpy.data.objects` tenemos una colección de todos los objetos definidos en la
+escena. Si estamos en la escena inicial que carga Blender por defecto,
+tendremos tres objetos: El cubo, la cámara y una luz.
+
+```python
+>>> bpy.data.objects[0]
+bpy.data.objects['Camera']
+
+>>> bpy.data.objects[1]
+bpy.data.objects['Cube']
+
+>>> bpy.data.objects[2]
+bpy.data.objects['Light']
+```
+
+En `bpy.data.scenes`, tenemos una colección de escenas. Si acabamos de arrancar
+Blender, lo normal es que solo tengamos una escena, que será, logicamente, la
+activa.
+
+```python
+>>> for s in bpy.data.scenes:
+...     print(s)
+...     
+<bpy_struct, Scene("Scene") at 0x7fcc93211008>
+```
+
+En `bpy.data.materials` tenemos todos los materiales definidos en la escena.
+bpy.data.materials
+<bpy_collection[1], BlendDataMaterials>
+
 
 ## Cómo hacer niebla dinámica usando un _Volumetric Cube_
 
