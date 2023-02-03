@@ -5,7 +5,31 @@ tags:
     - django
     - editor
     - database
---_name-
+---
+
+## Cómo obtener la fecha o em timestamp en Django, con el timezone correcto
+
+Si en el `settings.py` tenemos definido la zone horarara (lo cual es totalmente
+recomendado, `USE_TZ = True`), esta es la forma correcta de obtener fechas y
+_timestamps_.
+
+Para obtener un timestamp:
+
+```
+from django.utils import timezone
+
+timezone.now()
+
+```
+
+Para obtener la fecha:
+
+```
+from django.utils import timezone
+
+timezone.now().date()
+```
+
 
 ## Como representar números con comas, por ejemplo, dineros, en Django
 

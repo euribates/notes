@@ -12,6 +12,7 @@
 - [Bulma CSS](notes-on-bulma.md)
 
 - [CSS](notes-on-css.md)
+- [CookieCutter](notes-on-cookiecutter.md)
 
 - [Discord](notes-on-discord.md)
 - [Django](notes-on-django.md)
