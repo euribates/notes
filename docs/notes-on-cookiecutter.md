@@ -62,12 +62,13 @@ saludar, así que nos valdría con este contenido:
     "app_name": "hola",
     "name": "<Tu nombre aqui>"
 }
+```
 
 Ahora tenemos que crear una carpeta cuyo nombre contenga alguno de los valores
 definidos en este fichero. Normalmente se usa la entrada `project-name`, pero
 cualquier clave que esté en este diccionario valdria. En nuestro caso, usaremos
 el
-valor en `app_name` para la carpeta que contendrá nuestrp programa, asi que
+valor en `app_name` para la carpeta que contendrá nuestro programa, así que
 tenenos que crear una carpeta que se llame:
 
 ```shell
@@ -79,16 +80,13 @@ y, dentro de esta carpeta (Todo lo que está fuera, se ignora, excepto el ficher
 fichero python:
 
 ```
-{{ raw }}
 $ touch "{{cookiecutter.app_name}}"/hola.py
 $ vim "{{cookiecutter.app_name}}"/hola.py
-{{ endraw }}
 ```
 
 Cuyo contendo podria ser:
 
 ```python
-{{ raw }}
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
@@ -98,7 +96,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-{{ endraw }}
 ```
 
 Dentro de la plantilla estamos inyectando la variable definida como `name`. Es
@@ -127,5 +124,10 @@ if __name__ == "__main__":
     main()
 ```
 
+También podemos saltarnos las parter de definir los valores con:
 
+```shell
+
+$ cookiecutter cookiecutter-hola app_name=hola name="Pepe Monagas"
+```
 
