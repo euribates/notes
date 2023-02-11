@@ -81,6 +81,7 @@
 - [Python](notes-on-python.md)
 
   - [Migration-to-python-3](notes-on-migration-to-python-3.md)
+  - [Pyenv](notes-on-pyenv.md)
   - [PyPI](notes-on-pypi.md)
   - [Pytest](notes-on-pytest.md)
   - [Python AST](notes-on-python-ast.md)

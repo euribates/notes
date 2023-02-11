@@ -36,17 +36,18 @@ Ver ahora [Como pasar Meilisearch a producción](#como-pasar-meilisearch-a-produ
 
 ### Crear un índice y actualizar documentos
 
-Si el servidor est ejecutandose, suponemos en el host local y en el puerto
-estándar, $7700$, podemos crear un indice y alimentarlo con datos usando `curl`.
-Vamos a usar la base de datos de películas que se puede descargar
+Si el servidor está ejecutándose, suponemos en el host local y en el puerto
+estándar, $7700$, podemos crear un índice y alimentarlo con datos usando
+`curl`.  Vamos a usar una base de datos de películas que se puede descargar
 desde aquí: [The movie
-database](https://www.notion.so/meilisearch/A-movies-dataset-to-test-Meili-1cbf7c9cfa4247249c40edfa22d7ca87#b5ae399b81834705ba5420ac70358a65). descargemos la base de datos en formato json al fichero `movies.json`.
+database](https://www.notion.so/meilisearch/A-movies-dataset-to-test-Meili-1cbf7c9cfa4247249c40edfa22d7ca87#b5ae399b81834705ba5420ac70358a65).
+descargamos la base de datos en formato json al fichero `movies.json`.
 
 ```shell
 curl -L https://docs.meilisearch.com/movies.json -o movies.json
 ```
 
-AHora, para crear el índice y alimentarlo:
+Ahora, para crear el índice y alimentarlo:
 
 ```shell
 curl -i -X POST 'http://127.0.0.1:7700/indexes/movies/documents' \

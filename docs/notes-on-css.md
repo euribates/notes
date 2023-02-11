@@ -2,7 +2,7 @@
 title: Notes on CSS
 ---
 
-### CSS Variables (Custom Properties)
+## CSS Variables (Custom Properties)
 
 This has indeed been possible with SASS and LESS variables for years. However,
 there are a few big benefits with CSS Variables.
@@ -102,8 +102,239 @@ Fuente: [Learn CSS Variables in 5 minutes - A tutorial for beginners](https://ww
 
 
 
-### Animations and transitions
+## Animaciones y transiciones
 
+CSS nos permite crear animaciones complejas y controlarlas de varias formas.
+Una animación se describe usando dos partes: un conjunto de **@keyframes** y
+los correspondientes parámetros animados. Este es un ejemplo:
+
+```
+@keyframes stretching {
+  0% {
+    width: 100px;
+  }
+  100% {
+    width: 200px;
+  }
+}
+```
+
+La animación de este ejemplo se llama `stretching` (Podriamos llamarla como
+queramos) y describe los cambios en los estilos desde un momento inicial hasta
+un momento final. Esta animación puede ser aplicada a cualquier elemento. Para
+ello, necesitamos definir el nombre de la animacion (Con `animation-name` y la
+duración (con `animation-duration`), como en el siguiente ejemplo:
+
+```css
+.button {
+  animation-name: stretching;
+  animation-duration: 1s;
+}
+```
+
+Para cada animación, necesitas asignarle un nombre y describir como mínimo un
+valor, aunque normalmente definiremos más. Podemos especificar (o no) los
+valores iniciales y finales de la animación. Esto se puede hacer usando los
+valores `0%` y `100%`, como ya vimos, o con las palabras reservadas `from` y
+`to`. Podemos definir valores intermedios usando cualquier valor comprendido
+entre el `0%` y el `100%`.
+
+Si omitimos el keyframe inicial, la animación se ejecuta desde el estilo
+inicial que tenga el elemento, siguiendo los pasos definidos.
+
+Si omitimos el valor final, la animación se ejecuta hasta el último paso, y
+luego retrocede hasta volver a su estado inicial.
+
+la duración de la animación puede espedificarse usando diferentes unidades,
+segundos, como en `2s`, o milisegundos: `250ms`.
+
+El siguiente ejemplo no define un estado inicial (No hay ningun paso definido
+en el valor `0%` o `from`), pero aplica una trasformacion que rota -90º
+a la mitad de la animación (`50%`) y finaliza con una rotación completa de 360º
+grados:
+
+```css
+@keyframes rotate {
+  50% {
+    transform: rotate(-90deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+```
+
+El estado inicial será el del objeto al que aplicamos la trasformación; si no
+ha sido modificado, será de 0º.
+
+El siguiente ejemplo define una animación del color de fondo (`background-color`) en 4 fases. Usamos
+`to` y `from`, pero podríamos haberla heccho exactamente igual con `0%` y
+`100%`:
+
+```css
+@keyframes coloring {
+  from { background-color: red; }
+  33%  { background-color: yellow; }
+  66%  { background-color: green; }
+  to   { background-color: blue; }
+}
+```
+
+Si borraramos el estado final, `to`, el color pasararia de rojo a amarillo,
+verde y azul y luego, retrocede volviendo a verde, amarillo y finalmente de
+nuevo al color rojo.
+
+La propiedad `transform` es muy interesante y potente, ya que permite realiza
+muchas transformaciones distintas. Hemos visto `rotate`, para girar sobre el
+eje Z, también podemos desplazar el objeto, con `translateY` o `translateX`:
+
+```
+@keyframes lift-up {
+  from {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-250px);
+    }
+  to {
+    transform: translateY(-300px);
+    }
+}
+```
+
+Los `keyframes` pueden ser agrupados simplemente usando comas. El siguiente
+ejemplo define una animación que mantendrá el ancho fijo a 100 pixels durante
+la primera mitad, y en la segunda se irá incrementado hasta el valor final de
+200 pixels:
+
+```css
+@keyframes stretching {
+  0%, 50% {
+    width: 100px;
+  }
+  100% {
+    width: 200px;
+  }
+}
+```
+
+### Animaciones complejas
+
+Se puede aplicar varias animaciónes diferentes al mismo elemento. Los cambios
+se realizarán simultaneamente.
+
+Para ello, se asignan varias animaciones, separadas com coma, en la propiedad
+`animation-name`. Si queremos que todas las animaciones duren lo mismo, podemos
+dejar un único valor en `animation-duration`, pero también podemos asignar
+diferentes duraciones para cada animación, de nuevo usando comas para separa
+cada posible valor.
+
+### Repetir animaciones
+
+Hasta ahora, las animaciones solo se han ejecutado una vez. Podemos usar la
+propiedad `animation-iteration-count` para especificar el número de
+repeticiones que queremos. Acepta números positivos (o incluso el cero, en ese
+caso no se ejecutará) o la palabra clave `infinite` para que se repita de forma
+cíclica sin fin.
+
+### Sentido de la animación
+
+Con el atributo `animation-direction` definimos el sentido de la animación; por
+defecto vale `normal`, que es ejecutar la animación desde el valor `from` hasta
+el valor `to`, pero si la cambiamos a `reverse`, la animación se ejecuta al
+contrario, desde `to` hasta `from`.
+
+Además de `normal` y `reverse`, hay otros dos posibles valores, que solo tiene
+sentido usar cuando el número de repeticiones de la animación
+(`animation-iteration-count`) es mayor que 1: Si usamos `alternate`, las
+animaciones impares se ejecutan en el orden normal, y las pares en orden
+inverso. Con el valor `alternate-reverse` es justo al contrario, las
+animaciones impares se ejecutan en orden inverso y las pares en orden normal.
+
+```css
+@keyframes clockwise {
+  to {
+    transform: rotate(180deg);
+  }
+}
+
+@keyframes counterclockwise {
+  to {
+    transform: rotate(-180deg);
+  }
+}
+
+.gear-big {
+  animation-name: clockwise;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate-reverse;
+}
+
+.gear-small {
+  animation-name: counterclockwise;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate-reverse;
+}
+```
+
+### Asigna un retraso o _delay_ a una animación
+
+Podemos asignara un retraso o _delay_ con la propiedad `animation-delay`. Eso
+nos permite encadenar animaciónes sin que se ejecuten simultaneamente, o
+solapándose. Admite las mismas unidades que `animation-duration`, esto es,
+segundos con `s` o milisegundos con `ms`.
+
+### definiendo el estado final de la animación
+
+Hasta ahora las animaciones volvian al estado original después de ejecutada la
+animación, pero definiendo la propieddad `animation-fill-mode` a `forwards`
+podemos hacer que el elemento se quede con los valores finales después de la
+animación.
+
+Otro valor posible es `backwards`. Este valor define el estado del elemento antes de la ejecución de la animacion; si un elemento tiene asignada una animación con un _delay_ y el parámetro 
+`animation-fill-mode` a `backwards`, los estilos descritos en el primer paso de
+la animación, ya sea usando `from` o `0%` serán aplicados al principio, entes
+de que la aplicación se ejecute.
+
+El tercer valor posible es `both`: Combina los dos anteriores, es decir, antes
+de la animación, el elemento adquiere los valores definidos en el primer paso,
+`from` o `0%`, y después de la animación, se queda con los valores definod en
+el último paso, `to` o `100%`.
+
+### Parar (pause) y continuar una animación
+
+Hay una propiedad `animation-play-state`, con dos posibles valores, `running` y
+`paused`, que nos permite pausar y continuar la animación
+
+
+### Definiendo la forma de la animación
+
+La propiedad más importante de la animación es `animation-timing-function`, y
+define la forma en que la animación es ejecutada; las aceleraciones y
+velocidades con las que se animan las propiedades. El valor por defecto es
+`ease`, que proporciona una animación suave, con una aceleración al principio y
+una desaceleración al final.  Otros posibles valore son: `linear` para realizar
+un movimiento lineal, sin ninguna aceleración ni al principio ni al final; el
+típico movimiento "robótico". Los valores `ease-in` y `ease-out` realizan una
+aceleración suave al principio o una desaceleracion suave al final,
+respectivamente. El valor `ease-in-out` es similar a `ease`, pero con cambios
+de velocidad algo más rápidos.
+
+Tambien podemos asignarle a esta propiedad una curva con la función
+`cubic-bezier`; de hecho todos los nombres `ease`, `ease-in`, etc. son solo
+alias para llamar a esa función con ciertos parámetros predefinidos.
+
+```css
+animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+```
+
+
+Usando las transiciones de CSS3, podemos aplicar estas animaciones a objetos
+cuando eston cambien de estado; por ejemplo cuando el ratón se situa encima,
+(`hovered over`), cuando adquiere el foco (`focused on`), cuando se activa
+(`active`) o se fija como objetivo (`targeted`)
 With CSS3 transitions you have the potential to alter the appearance and
 behavior of an element whenever a state change occurs, such as when it is
 **hovered over**, **focused on**, **active**, or **targeted**.
@@ -114,7 +345,7 @@ to another, while **animations** can set multiple points of transition upon
 different keyframes.
 
 
-### Transitions
+### Transiciones
 
 As mentioned, for a transition to take place, an element must have a change in
 state, and different styles must be identified for each state. The easiest way
@@ -413,3 +644,16 @@ Links:
 - [CSS cubic-bezier Builder](http://www.roblaplaca.com/examples/bezierBuilder/)
 
 - [Using CSS animations - CSS: Cascading Style Sheets | MDN](https://developer.mozilla.org/en-US/docs/CSS/Using_CSS_animations)
+
+
+## Cómo hacer un árbol expandible/colapsable con CSS
+
+Se puede hacer usando solo CSS, usando listas anidadas.
+
+Primero, a la lista más externa le ponemos la clase `tree`. Cada elemento de la
+lista estará compuesto por doe elementos,`details` y `summary`, y usaremos el
+atributo `open` de details para controlar cuando el contenido se espande o se
+colapsa.
+
+
+Fuente: [Tree views in CSS](https://iamkate.com/code/tree-views/)
