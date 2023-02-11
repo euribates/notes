@@ -1104,3 +1104,4 @@ else <BAR> set keywordprg=:help <BAR> endif <BAR> set keywordprg?<CR>
 ```
 
 Fuentes: [Reddit - Vim help and keyworddprg](https://www.reddit.com/r/vimdailytips/comments/iruu9s/vim_help_and_keywordprg/)
+

@@ -637,3 +637,23 @@ $ git push origin --delete <tagname>
 ```
 
 Source: [Git Basics - Tagging](https://git-scm.com/book/en/v2/Git-Basics-Tagging)
+
+
+## Ver un fichero tal y como está en otra rama
+
+Git puede mostrar la versión de un fichero que está en otra rama, sin necesidad
+de cambiar a esa rama, usando el comando `show`. Se le pasa como parámetro
+el nonbre de la rama, dos puntos y la ruta del fichero:
+
+```shell
+git show main:src/program.py
+```
+
+También podemos especificar un _commit_ o referencia, en vez del nombre de la rama.
+El siguiente ejemplo muestra la versión del fichero en el _commit_ anterior:
+
+```shell
+git show HEAD~1:src/program.py
+```
+
+- Fuente: [7 tips for improving your productivity with Git - DEV Community](https://dev.to/dgenezini/7-tips-for-improving-your-productivity-with-git-ajg) 
