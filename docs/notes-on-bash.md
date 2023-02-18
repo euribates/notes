@@ -125,35 +125,50 @@ For additional information, consult `help hash` and `man bash`.
 Source: [How do I clear Bash's cache of paths to executables? -
 Stackoverflow](https://unix.stackexchange.com/questions/5609/how-do-i-clear-bashs-cache-of-paths-to-executables)
 
+## Cómo exportar las funciones definidas en el fichero `.bashrc`
 
-## How to change to the Directory of the Script
+Podemos exportar las funciones para que puedan ser usadas por cualquiera,
+usando la formula `export -f <functionname>`:
 
-In general, there are two types of Bash scripts:
+```shell
+function hello() {
+   echo "Hello, $1!"
+}
 
-- System tools which operate from the current working directory
+export -f hello
+```
 
-- Project tools which modify files relative to their own place in the files system
 
+## Cómo cambiar el directorio actual al mismo del script
 
-For the second type of scripts, it is useful to change to the directory where
-the script is stored. This can be done with the following command:
+En general, hay dos tipos de script escritos en bash:
+
+- Herramientas o utilidades de sistema que deben trabajar sore el directorio
+  actual
+
+- Herramientas porpias de proyectos que modifican ficheros relativos
+  a la propia ubicación del proyecto.
+
+Para este segundo tipo, es útil cambiar al directorio donde está el script.
+Esto se puede conseguir con el siguiente comando:
 
 ```bash
 cd "$(dirname "$(readlink -f "$0")")"
 ```
 
-This command runs 3 commands:
+Esta orden está compuesta por tres:
 
-1) `readlink -f "$0"` determines the path to the current script (`$0`)
+1) `readlink -f "$0"` determina el _path_ del _script_ ejecutado (`$0`)
 
-2) `dirname` converts the path to script to the path to its directory
+2) `dirname` convierte el _path_ anterior (que apunta al script) a otro que
+apunta al directorio que contiene el _script_.
 
-3) `cd` changes the current work directory to the directory it receives from
-dirname
+3) `cd` cambia el directorio actual al directorio evaluado en el paso anterior.
 
-Source: [Getting started with bash: Change to the Directory of the Script](https://riptutorial.com/bash/example/30284/change-to-the-directory-of-the-script)
+Fuente: [Getting started with bash: Change to the Directory of the Script](https://riptutorial.com/bash/example/30284/change-to-the-directory-of-the-script)
 
-## Definir varriables de entorno en un fichero bash a partir de un fichero `.env`
+
+## Definir variables de entorno en un fichero bash a partir de un fichero `.env`
 
 This is the way:
 
@@ -161,8 +176,8 @@ This is the way:
 set -o allexport; source .env; set +o allexport
 ```
 
-Now you can get the values defined in the `.env`, and set a default value
-with:
+Ahora se puede leer un valor definido en ese fichero `.env`, e incluso utilizar
+un valor por defecto si no estuviera definido:
 
 ```bash
 # Activar el entorno virtual
@@ -170,7 +185,7 @@ VIRTUAL_ENV="${VIRTUAL_ENV:-acl}"
 echo "Working on $VIRTUAL_ENV"
 ```
 
-Source: [Load environment variables from dotenv/.env file in
+Fuente: [Load environment variables from dotenv/.env file in
 Bash](https://gist.github.com/mihow/9c7f559807069a03e302605691f85572)
 
 
@@ -193,20 +208,19 @@ FOO="${VARIABLE:=default}"  # If variable not set or null, set it to default.
 - Source: [Stack Overflow - Assigning default values to shell variables with a single command in bash](https://stackoverflow.com/questions/2013547/assigning-default-values-to-shell-variables-with-a-single-command-in-bash)
 
 
-## Customize bash
+## Cómo personalizar bash
 
-In order to customize your shell with aliases, colors, and set a custom
-prompt, start by adding a `.bashrc` and a `.bash_profile` file.
+In order to customize your shell with aliases, colors, and set a custom prompt,
+start by adding a `.bashrc` and a `.bash_profile` file.
 
-The `.bash_profile` is executed for **login shells** and the `.bashrc`
-is executed for **interactive non-login shells**. When you login using a
-username and password to a server/virtual machine (vm) via ssh or
-directly on a machine, the `.bash_profile` is executed to configure the
-shell before the initial command prompt appears. If you have already
-logged into the server/vm and open a new terminal window, then the
-`.bashrc` is executed before the command prompt appears. The `.bashrc`
-is also run when you switch back from another shell (i.e ksh or zsh)
-into bash.
+The `.bash_profile` is executed for **login shells** and the `.bashrc` is
+executed for **interactive non-login shells**. When you login using a username
+and password to a server/virtual machine (vm) via ssh or directly on a machine,
+the `.bash_profile` is executed to configure the shell before the initial
+command prompt appears. If you have already logged into the server/vm and open
+a new terminal window, then the `.bashrc` is executed before the command prompt
+appears. The `.bashrc` is also run when you switch back from another shell (i.e
+ksh or zsh) into bash.
 
 Check out the following links for more information:
 

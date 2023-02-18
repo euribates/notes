@@ -37,8 +37,8 @@ gracias a la opción `--null`. Usamos la utilidad
 fichero sin separadores de directorios. Además, usamos la opción `-s` de
 `basename` para eliminar el sufijo (_suffix_) `.png`.
 
-La tercera parte ejecuta `convert` para pasar las imágenes PNG a documentos
-PDF.  La opción `-I` la indica a `xargs` que debe ejecutar tantas ordenes
+La tercera parte ejecuta `convert` para pasar las imágenes _PNG_ a documentos
+_PDF_.  La opción `-I` la indica a `xargs` que debe ejecutar tantas ordenes
 `convert` como líneas haya en la entrada (El comportamiento por defecto es
 invocar el programa una vez y pasarle la lista de parámetros). También le
 pedimos que sustituya cada valor de entrada por el nombre que le hemos
@@ -87,59 +87,59 @@ Fuentes:
 - [How To Copy Command Output To Linux Clipboard Directly](https://www.cyberciti.biz/faq/xclip-linux-insert-files-command-output-intoclipboard/)
 
 
-## How to display images in the terminal using Viu
+## Cómo mostrar imágenes en la terminal con Viu
 
-**[Viu](https://github.com/atanunq/viu)** is yet another command line application to view images from the Terminal.
-It is free, open source CLI image viewer written using Rust programming
-language. Using Viu we can;
+**[Viu](https://github.com/atanunq/viu)** es unaaplicación de línea de comandos que permite visualizar imágenes en
+la consola. Es libre y está escrito en Rust.
 
-- Display popular type of image, including .jpg, .png, igif etc.
-- Display images in custom dimensions.
-- Display images directly from the image hosting platforms, for example giphy.
+Con Viu pdemos:
 
-Since Viu is written in Rust, we can install it using Cargo package manager.
-After installing Rust in your Linux box, run the following command to install
-Viu.
+- Mostrar tipos de imágenes muy usadas, como .jpg, .png, igif etc.
+- Mostrar las imágenes con unas dimensiones ajustadas.
+- Mostrat imágenes directamente desde una web, como por ejemplo giphy.
+
+Como está escrito en Rust, podemos instalarlo usando cargo:
 
 ```shell
 $ cargo install viu
 ```
 
-Viu usage is trivial. Just type viu followed by the image path and hit ENTER key.
+El uso es trivial:
 
 ```shell
 $ viu image.jpg
 ```
 
-Sample output:
-
 ![Ejemplo viu](./linux/viu-sample.png)
 
-You can even display custom dimension image using `-h` (Height) or `-w` (Width)
-flags like below.
+Para modificar las dimensiones, se pueden usar los parámetros `-h` (_Height_) o
+`-w` (_Width_):
 
 ```shell
 $ viu image.jpg -w 40
 ```
 
-To display multiple images one after another in a folder, use wildcard characters like below.
+Podemos mostrar todas las imágenes dentro de una carpetas, usando comodines:
 
 ```shell
 $ viu Desktop/pic*
 ```
 
-Like I already mentioned, Viu is capable of displaying different format images. For example, the following command will display an animated gif image using Viu:
+Entre los formatos que reconoce, se encuantran los gifs animados. Para salir de
+la visualización, bastya con pulsar ++ctrl+c++.
 
+```shell
 $ viu animated.gif
-Display animated images using viu
-Display animated images
+```
 
-To exit, just press ++ctrl+c++.
 
-Source:
-[3 CLI Image Viewers To Display Images In The Termina](https://ostechnix.com/how-to-display-images-in-the-terminal/)
+Fuente: [3 CLI Image Viewers To Display Images In The Termina](https://ostechnix.com/how-to-display-images-in-the-terminal/)
 
-tags: rust, terminal
+tags:
+  - rust
+  - terminal
+  - cli
+
 
 ### Cómo ejecutar comandos con sudo sin tener que especificar la contraseña
 

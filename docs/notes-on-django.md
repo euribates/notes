@@ -7,9 +7,9 @@ tags:
     - database
 ---
 
-## Cómo obtener la fecha o em timestamp en Django, con el timezone correcto
+## Cómo obtener la fecha o _timestamp_ en Django, con el _timezone_ correcto
 
-Si en el `settings.py` tenemos definido la zone horarara (lo cual es totalmente
+Si en el `settings.py` tenemos definido la zona horaria (lo cual es totalmente
 recomendado, `USE_TZ = True`), esta es la forma correcta de obtener fechas y
 _timestamps_.
 
@@ -31,7 +31,7 @@ timezone.now().date()
 ```
 
 
-## Como representar números con comas, por ejemplo, dineros, en Django
+## Como representar números con comas, por ejemplo, dineritos, en Django
 
 La librería nativa de Django `django.contrib.humanize` tiene filtros para esto:
 
@@ -42,6 +42,7 @@ La librería nativa de Django `django.contrib.humanize` tiene filtros para esto:
 
 Si no funciona, verifica que `django.contrib.humanize` este en la variable
 `INSTALLED_APPS` del `settings.py`.
+
 
 Fuente: [python - Format numbers in django templates - Stack Overflow](https://stackoverflow.com/questions/346467/format-numbers-in-django-templates)
 
@@ -57,7 +58,8 @@ Si simplemente queremos páginas de error molonas, solo hay que crear plantillas
 con estos nombres en alguno de los sitios que Django usa para buscar
 plantillas, es decir, lo que haya definido en la variable `TEMPLATE_DIRS`. No
 hay necesidad de tocar la configuración de URL. Hay más documentación en
-[Customizing Error Views](https://docs.djangoproject.com/en/4.3/topics/http/views/#customizing-error-views),
+[Customizing Error
+Views](https://docs.djangoproject.com/en/4.3/topics/http/views/#customizing-error-views),
 especialmente para saber que variables de contexto están disponibles.
 
 Desde Django 1.10, los errores por defecto de tipo CSRF usan la plantilla
@@ -66,7 +68,7 @@ Desde Django 1.10, los errores por defecto de tipo CSRF usan la plantilla
 !!! warning: Solo se verán estas plantillas en modo de desarrollo (`DEBUG=False`)
 
     Si la variable `DEBUG` está a `True`, no se muestras estas plantillas, sino
-    la plantilla gerenal de errores de Django.
+    la plantilla general de errores de Django.
 
 
 ## Cómo hacer una formulario dinámicamente
@@ -571,7 +573,7 @@ admin:biblioteca_libro_change
 - Source: [Reversing admin URLs](https://docs.djangoproject.com/en/dev/ref/contrib/admin/#reversing-admin-urls)
 
 
-## nomenclatura correcta de los modelos
+## Nomenclatura correcta de los modelos
 
 En general se recomienda usar **nombres en singular para los modelos**, como
 `Project`, `Task`, `Place`.
@@ -753,13 +755,13 @@ vez vamos a referirnos a un campo de un modelo sin que esté cualificado por la
 clase o por la instancia.
 
 
+## Los datos incorrectos de deberían poder almacenarse en la base de datos
 
-## Dirty data should not be found in a base
-
-Always use `PositiveIntegerField` instead of `IntegerField` if it
-is not senseless, because **bad data must not go to the database**.  For the
-same reason you should always use `unique` for logically unique data and never
-use `required=False` in every field.
+Si tiene sentido, es preferible usar `PositiveIntegerField` en vez de
+`IntegerField`, porque así prevenimos que **datos incorrectos se almacenen
+en la base de datos**. Ver Impedir estados imposibles. Por la misma razón, hay
+que especificar siempre `unique` a `True` si tiene sentido, y eliminar o
+reducir al mínimo los campos con `required` a `False`.
 
 
 ## Getting the earliest/latest object
@@ -773,24 +775,23 @@ can cause an exception `DoesNotExist`. Therefore,
 
 ## Nunca cacular el tamaño de un `queryset` con `len`
 
-Do not use `len` to get queryset's objects amount. The `count` method can be
-used for this purpose. Reason is: if you made `len(ModelName.objects.all())`,
-firstly the query for selecting all data from the table will be carried out,
-then this data will be transformed into a Python object, and the length of this
-object will be found with the help of `len`.
+Nunca hay que usar `len` para calcular el numero de resultados de un
+_queryset_; es preferible usar el método `count`. El primer método funciona,
+pero es mucho más costoso, porque implica ejecutar la consulta, traerse
+**todos** los datos de la base de datos a memoria, transformarlos a instancias
+de la clase apropiado, y luego contarlos. El segundo método simplenmte realiza
+la misma consulta a la base de datos pero con `SELECT COUNT(*) ...`, con lo que
+la base de datos hace todo el trabajo por nosotros.
 
-It is highly recommended not to use this method as `count` will address to a
-corresponding SQL function `COUNT()`.  With `count`, an easier query will be
-carried out in that database and fewer resources will be required for python
-code performance.
-
+Si el número de elementos del _queryset_ es elevado, la diferencia en tiempo
+puede ser de varios ordenes de magnitud.
 
 ## No usar munca `if queryset`, es una mala idea
 
-Never use a `queryset` as a boolean value: instead of `if queryset:` do
-something like `if queryset.exists():`. Remember querysets are lazy, and
-if you use `queryset` as a boolean value, an inappropriate query to a
-database will be carried out.
+Nunca hay que usar una variable de tipo `queryset` como un booleano
+directemante, es preferible usar `queryset.exists()`. La razón es más o menos
+la misma que en la nota enterior, es preferible que la base de datos realice la
+consulta usando la sentencia `EXISTS`, mucho más rápico y más barato.
 
 
 ## Please use `help_text` as documentation
@@ -819,7 +820,7 @@ In text-based fields, it's better to keep default value. `''`, this way
 you'll get only one possible value for columns without data.
 
 
-## Leer los valores pasados como parámetros en una URL
+## Cómo leer los valores pasados como parámetros en una URL
 
 Se usa el pseudo-diccionario `GET`. Por ejemplo, si la URL era
 `/search/?q=haha`, entonces se puede obtener el valor con:
@@ -897,12 +898,16 @@ these steps:
 
 Your custom storage system must be a subclass of django.core.files.storage.Storage:
 
+```
 from django.core.files.storage import Storage
 
 class MyStorage(Storage):
     ...
+```
+
 Django must be able to instantiate your storage system without any arguments. This means that any settings should be taken from django.conf.settings:
 
+```
 from django.conf import settings
 from django.core.files.storage import Storage
 
@@ -911,56 +916,111 @@ class MyStorage(Storage):
         if not option:
             option = settings.CUSTOM_STORAGE_OPTIONS
         ...
-Your storage class must implement the _open() and _save() methods, along with any other methods appropriate to your storage class. See below for more on these methods.
+```
 
-In addition, if your class provides local file storage, it must override the path() method.
+Your storage class must implement the `_open()` and `_save()` methods, along
+with any other methods appropriate to your storage class. See below for more on
+these methods.
 
-Your storage class must be deconstructible so it can be serialized when it’s used on a field in a migration. As long as your field has arguments that are themselves serializable, you can use the django.utils.deconstruct.deconstructible class decorator for this (that’s what Django uses on FileSystemStorage).
+In addition, if your class provides local file storage, it must override the
+`path()` method.
 
-By default, the following methods raise NotImplementedError and will typically have to be overridden:
+Your storage class must be **deconstructible** so it can be serialized when
+it’s used on a field in a migration. As long as your field has arguments that
+are themselves serializable, you can use the
+django.utils.deconstruct.deconstructible class decorator for this (that’s what
+Django uses on FileSystemStorage).
 
+By default, the following methods raise `NotImplementedError` and will
+typically have to be overridden:
+
+```
 Storage.delete()
 Storage.exists()
 Storage.listdir()
 Storage.size()
 Storage.url()
-Note however that not all these methods are required and may be deliberately omitted. As it happens, it is possible to leave each method unimplemented and still have a working Storage.
+```
 
-By way of example, if listing the contents of certain storage backends turns out to be expensive, you might decide not to implement Storage.listdir().
+Note however that not all these methods are required and may be deliberately
+omitted. As it happens, it is possible to leave each method unimplemented and
+still have a working Storage.
 
-Another example would be a backend that only handles writing to files. In this case, you would not need to implement any of the above methods.
+By way of example, if listing the contents of certain storage backends turns
+out to be expensive, you might decide not to implement `Storage.listdir()`.
 
-Ultimately, which of these methods are implemented is up to you. Leaving some methods unimplemented will result in a partial (possibly broken) interface.
+Another example would be a backend that only handles writing to files. In this
+case, you would not need to implement any of the above methods.
+
+Ultimately, which of these methods are implemented is up to you. Leaving some
+methods unimplemented will result in a partial (possibly broken) interface.
 
 You’ll also usually want to use hooks specifically designed for custom storage objects. These are:
 
-_open(name, mode='rb')¶
+```
+_open(name, mode='rb')
+```
+
 Required.
 
-Called by Storage.open(), this is the actual mechanism the storage class uses to open the file. This must return a File object, though in most cases, you’ll want to return some subclass here that implements logic specific to the backend storage system.
+Called by `Storage.open()`, this is the actual mechanism the storage class uses
+to open the file. This must return a File object, though in most cases, you’ll
+want to return some subclass here that implements logic specific to the backend
+storage system.
 
-_save(name, content)¶
-Called by Storage.save(). The name will already have gone through get_valid_name() and get_available_name(), and the content will be a File object itself.
+```
+_save(name, content)
+```
 
-Should return the actual name of name of the file saved (usually the name passed in, but if the storage needs to change the file name return the new name instead).
+Called by `Storage.save()`. The name will already have gone through
+`get_valid_name()` and `get_available_name()`, and the content will be a File
+object itself.
 
-get_valid_name(name)¶
-Returns a filename suitable for use with the underlying storage system. The name argument passed to this method is either the original filename sent to the server or, if upload_to is a callable, the filename returned by that method after any path information is removed. Override this to customize how non-standard characters are converted to safe filenames.
+Should return the actual name of name of the file saved (usually the name
+passed in, but if the storage needs to change the file name return the new name
+instead).
 
-The code provided on Storage retains only alpha-numeric characters, periods and underscores from the original filename, removing everything else.
+```
+get_valid_name(name)
+```
 
-get_alternative_name(file_root, file_ext)¶
-Returns an alternative filename based on the file_root and file_ext parameters. By default, an underscore plus a random 7 character alphanumeric string is appended to the filename before the extension.
+Returns a filename suitable for use with the underlying storage system. The
+name argument passed to this method is either the original filename sent to the
+server or, if `upload_to` is a callable, the filename returned by that method
+after any path information is removed. Override this to customize how
+non-standard characters are converted to safe filenames.
 
-get_available_name(name, max_length=None)¶
-Returns a filename that is available in the storage mechanism, possibly taking the provided filename into account. The name argument passed to this method will have already cleaned to a filename valid for the storage system, according to the get_valid_name() method described above.
+The code provided on Storage retains only alpha-numeric characters, periods and
+underscores from the original filename, removing everything else.
 
-The length of the filename will not exceed max_length, if provided. If a free unique filename cannot be found, a SuspiciousFileOperation exception is raised.
+```
+get_alternative_name(file_root, file_ext)
+```
 
-If a file with name already exists, get_alternative_name() is called to obtain an alternative name.
+Returns an alternative filename based on the `file_root` and `file_ext`
+parameters. By default, an underscore plus a random 7 character alphanumeric
+string is appended to the filename before the extension.
+
+```
+get_available_name(name, max_length=None)
+```
+
+Returns a filename that is available in the storage mechanism, possibly taking
+the provided filename into account. The name argument passed to this method
+will have already cleaned to a filename valid for the storage system, according
+to the `get_valid_name()` method described above.
+
+The length of the filename will not exceed `max_length`, if provided. If a free
+unique filename cannot be found, a `SuspiciousFileOperation` exception is raised.
+
+If a file with name already exists, `get_alternative_name()` is called to obtain
+an alternative name.
 
 
 ## Como hacer migraciones propias
+
+Podemos crear nuestras propias migraciones. Este es realmente útil para
+cambios en las bases de datos que ya estén en producción.
 
 Crearamos una migracion vacia (_empty_):
 
@@ -1018,7 +1078,7 @@ class Migration(migrations.Migration):
             'DROP SEQUENCE Agora.seq_foto_diputado',
         )
     ]
-
+```
 
 ## Como condensar /simplificar (_squash_) las migraciones en Django
 
@@ -1031,15 +1091,14 @@ sobrescritos por migraciones posteriores.
 Por ejemplo, si tenemos una accion de tipo `CreateModel()` y más tarde aparece
 otra de tipo `DeleteModel()` para el mismo modelo, se pueden eliminar no solo
 las dos acciones indicadas, sino también cualquier acción intermedia que
-modificar al modelo.
+modifique al modelo.
 
 Igualmente, acciones como `AlterField()` o `AddField()` son transladadas a la
 versión final de la acción `CreateModel`.
 
-La versión final condensada también mantiene referencias al conjuto de
-migraciones que reemplaza. De esa forma Django puede saber si tiene que
-mirgaciones tiene que usar para entender cosas como el histórico de grabaciones
-o las dependencias entre migraciones.
+La versión final condensada también mantiene referencias al conjunto de
+migraciones que reemplaza. De esa forma Django puede entender cosas como
+el histórico de grabaciones o las dependencias entre migraciones.
 
 Django enumera de forma automática los ficheros de migraciones, partiendo de
 `0001_initial.py`. De esa forma puede determinar el orden de aplicación de las
@@ -1081,6 +1140,7 @@ Fuentes:
 
  - [How to Squash and Merge Django Migrations &middot; Coderbook](https://coderbook.com/@marcus/how-to-squash-and-merge-django-migrations/)
 
+
 ## Cómo saber que base de datos se corresponde con cada modelo
 
 Si usamos _routers_ para trabajar con múltiples bases de datos, hay una forma
@@ -1101,4 +1161,18 @@ from app.models import ModelAlfa
 assert router.db_for_read(ModelAlfa) == 'default'
 assert router.db_for_write(ModelAlfa) == 'default'
 ```
+
+## Cómo prevenir que el método `save` de un ModelForm modifique la BD
+
+A veces queremos hacer un tratamiento previo a una instancia de un modelo y
+necesitamos hacerlo **antes** de que se almacene en la base de datos.  La
+solución es llamar al método `save` del formulario con el parámetro con el
+parámetro opcinonal `commit`, un valor booleano que por defecto vale `True`.
+Con un valor de `False`, sin embargo, el formulario crea una instancia del
+modelo en memoria, pero **no la salva en la base de datos**.
+
+Obviamente, es importante que en algún momento posterior salvemos nosotros
+la instancia en la base de datos.
+
+Fuente: [Creating forms from models | Django documentation](https://docs.djangoproject.com/en/4.1/topics/forms/modelforms/#the-save-method)
 

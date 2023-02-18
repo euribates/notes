@@ -91,6 +91,18 @@ Usaremos el comando `unnistall` de pyenv:
 pyenv uninstall <name>
 ```
 
+## Cómo instalar versiones de Python adicionales en pyenv
+
+Usamos el subcomando `install`. Por ejemplo, para descargar y poner como
+disponible la version de Python 3.11.2, gacemos:
+
+```bash
+pyenv install 3.11.2
+```
+
+Ejecutando `pyenv install -l` devuelve un listado de toas las versiones
+disponibles.
+
 ## Cómo actualizar la lista de versiones de Python conocidas por pyenv
 
 Con el comando **`pyenv update`**. 
@@ -102,5 +114,5 @@ O si estás en un Mac, **`brew upgrade pyenv`**.
 Con la orden `install`, usando el flag `--list` o `-l`:
 
 ```shell
-pyenv install --list
+    pyenv install --list
 ```
