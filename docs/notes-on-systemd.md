@@ -112,6 +112,17 @@ sudo systemctl reload-or-restart servicio
 
 - Source: [How To Use Systemctl to Manage Systemd Services and Units  | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units)
 
+## Cómo listar todas las unidades activas gestionadas por systemd
+
+Ejecutamos el comando:
+
+```
+sudo systemctl list-units
+```
+
+- [Cómo listar todas las unidades de servicios de systemd - Foro Vozidea.com](https://foro.vozidea.com/d/13-como-listar-todas-las-unidades-de-servicios-de-systemd)
+
+
 ## How to see full log from systemctl status service?
 
 Just use the journalctl command, as in:
