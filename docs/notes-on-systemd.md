@@ -111,3 +111,19 @@ sudo systemctl reload-or-restart servicio
 ```
 
 - Source: [How To Use Systemctl to Manage Systemd Services and Units  | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units)
+
+## How to see full log from systemctl status service?
+
+Just use the journalctl command, as in:
+
+```shell
+journalctl -u service-name.service
+```
+
+Or, to see only log messages for the current boot:
+
+```shell
+journalctl -u service-name.service -b
+```
+
+

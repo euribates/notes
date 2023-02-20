@@ -166,6 +166,29 @@ duplicates: foo" in Django 1.7?](https://stackoverflow.com/questions/24319558/ho
   {% load static %}
   ```
 
+## Como migrar a 4.xx
+
+- ya no se puede usar la funcion `url`  para especificar patrones, hay que
+  usar obligatoriamente `path` o `path_re`.
+
+- Si da problemas con CSRF, hay que añadir la siguiente varialble al `settings.py`:
+
+```
+CSRF_TRUSTED_ORIGINS = [
+        'https://subdomain.example.com',
+        'https://*.blob.com',
+        ...
+    ]
+```
+
+    Por defecto es la lista vacia. Los valores en las versiones anteriores
+    a la 4 puede que estuvieran sin el esquema, y seguramente sin poder
+    usar asteriscos.
+
+    - Fuente: [CSRF_TRUSTED_ORIGINS - Django settings](https://docs.djangoproject.com/en/4.0/ref/settings/#csrf-trusted-origins) 
+
+
+
 
 ## Configurar VIM para trabajar con plantillas de Django
 
