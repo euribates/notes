@@ -141,8 +141,8 @@ class FormSomething(...):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.form_tag = False
-        self.disable_csrf = True
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
 ```
 
 ## Cómo marcarlos campos obligatorios usando crispy forms
