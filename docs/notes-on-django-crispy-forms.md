@@ -176,5 +176,106 @@ CRISPY_FAIL_SILENTLY = not DEBUG
 ```
 
 
+## Cómo usar Layouts
 
+Exite en crispy-forms una clase `Layout`, que nos permite definir la forma
+en que se visualiza el formulario. Podemos por ejemplo definir el orden
+en que queremos visualizar los campos, y si queremos dividirlos / organizarlos
+en grupos de `divs`, por ejemplo, sin tener que tocas las plantillas.
 
+Los _Layouts_ son opcionales, pero seguramente es la parte más potente de
+`django-crispy-forms`.
+
+Los layouts se construyen como un àrbol, veamos un ejemplo (Los _imports_ se
+han omitido, pero la clase `Layout` y derivadas, como `FieldSet` o `Submit` en
+el ejemplo, están en `crispy_forms.layout`):
+
+```python
+class ExampleForm(forms.Form):
+    [...]
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(
+                'first arg is the legend of the fieldset',
+                'like_website',
+                'favorite_number',
+                'favorite_color',
+                'favorite_food',
+                'notes'
+            ),
+            Submit('submit', 'Submit', css_class='button white'),
+        )
+```
+
+Si usamos el tag `crispy` para mostrar este formulario, veremos que
+agrupa dentro de cada fieldset los campos que le hemos indicado. Atentos a que
+el primer valor usado cuando definimos el Fieldset no es un campo, sino la
+descripción textual o encabezado quu se muestra para cada sección. Además,
+incluye el botón de _submit_ que hemos incluido en el layout.
+
+## Cómo incluir contenido extra en el formulario
+
+Usando _layouts_, Podemos incluir dentro del `FieldSet`, en cualquier posición,
+el contenido que queramos, usando `HTML`, `Div`, `Multifield`, `SubmiyButton` o
+`Button` entre otros (Todos estas clases están definidcas en
+`crispy_forms.layout`.
+
+Todos estos objetos de tipo _layout_ pueden ser creado con atributos por
+nombre, que serán luego representados como atributos del _tag_ Html. Hay tres
+excepciones, sin embargo:
+
+- Para atributos que tengan un guión en su nombre, como por ejemplo
+  `data-name`, como Python no considera el guión un símbolo apto para nombres
+  de variables, hay que usar el mismo nombre que queremos pero sustituyendo el
+  guión por el carácter subrayado `_`. Por ejemplo:
+ 
+  ```python
+  Field('field_name', data_name="whatever")
+  ```
+
+- Para especificar la clase, como `class` es una palabra reservada en Python,
+  usaremos `css_class` como nombre del parámetro. Por ejemplo:
+
+  ```python
+  Field('field_name', css_class="black-fields")
+  ```
+
+- Igualmente para el identificador `id`. En este caso no es una palabra
+  reservada, sino una de las funciones básicas incluidas en el intérprete, (Ver
+  [función id en
+  Python](https://docs.python.org/es/3/library/functions.html#id). Para este
+  caso usaremos el atributo `css_id`. Por ejemplo:
+ 
+   ```python
+   Field('field_name', css_id="custom_field_id")
+   ```
+
+Nota: `Field` se puede utilizar cuando queremos un control
+más completo, si no es el caso, a funciones como `Div` o `Fieldset`
+basta con pasarle el nombre del campo, y el propio componente crea
+el valor `Field` necesario.
+
+Los elementos que podemos usar para formar el Layout son:
+
+- **Div**: Para incluir los componentes en un elemento `div`
+
+- **HTML**: Html genérico: Lo bueno es que podemos usar etiquetas
+  y filtro del sistema de plantillas, teniendo acceso a todo el contexto
+  de la página. Este componente no acepta atributos. Podemos incluso
+  cargar extensiones con `load`.
+
+- **FIeld**
+
+- **Submit**
+
+- **Button**
+
+- **Hidden**
+
+- **Reset**
+
+- **Fieldset**
+
+- **MultiField**
