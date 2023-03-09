@@ -13,6 +13,7 @@
 
 - [CSS](notes-on-css.md)
 - [CookieCutter](notes-on-cookiecutter.md)
+- [cURL](notes-on-curl.md)
 
 - [Discord](notes-on-discord.md)
 - [Django](notes-on-django.md)

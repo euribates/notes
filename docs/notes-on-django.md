@@ -1199,3 +1199,28 @@ la instancia en la base de datos.
 
 Fuente: [Creating forms from models | Django documentation](https://docs.djangoproject.com/en/4.1/topics/forms/modelforms/#the-save-method)
 
+## Cómo serializar un queryset
+
+Los _QuerySets_ se pueden serializar con
+[pickle](https://docs.python.org/3/library/pickle.html), y esto conlleva que la
+consulta es ejecutada y todos los resultados son almacenados también en la
+serializacion. Esto puede ser útil a efectos de _cachear_ el _queryset_.
+Obviamente, al deserializar el resultado, los registros obtenidos pueden diferir
+de los almacenados en ese momento en la base de datos.
+
+Si quieres almacenar solo la información necesaria para recrear el _queryset_,
+podemos serializar solo la propiedad `query`. Para recrear el _queryset_,
+hariamos algo como esto:
+
+```python
+import pickle
+
+qs = MyModel.objects.all()
+qs.query = pickle.loads(s)     # Assuming 's' is the pickled string.
+```
+
+!!! Nota: Como todo lo que se serializa con pickle, no se puede compartir
+    entre versiones de Python, pero además, este truco con las queries
+    serializadas es aun más estricto: **No se puede compartir entre
+    versiones diferentes de Django.
+
