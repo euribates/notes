@@ -1221,10 +1221,12 @@ qs = MyModel.objects.all()
 qs.query = pickle.loads(s)     # Assuming 's' is the pickled string.
 ```
 
-!!! Nota: Como todo lo que se serializa con pickle, no se puede compartir
-    entre versiones de Python, pero además, este truco con las queries
-    serializadas es aun más estricto: **No se puede compartir entre
-    versiones diferentes de Django.
+!!! warning "Atención a las versiones"
+
+    Como todo lo que se serializa con pickle, no se puede compartir entre
+    versiones de Python, pero este truco con las queries serializadas es aun
+    más estricto: **No se puede compartir estos datos entre
+    versiones diferentes de Django**.
 
 
 ## Cómo usar las validaciones en los formularios
