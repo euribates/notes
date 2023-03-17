@@ -521,12 +521,11 @@ non_unique_account_type = Client.objects.filter(
 When(Exists(non_unique_account_type), then=Value('non unique'))
 ```
 
-A **Case** expression use multiples `When()` objects. Each condition in
-the provided `When()` objects is evaluated in order, until one evaluates
-to a truthful value. The result expression from the matching `When()`
-object is returned.
+Una expresión **Case** usa varios objetos `When()`, que son evaluados por orden.
+Cuando uno de ellos se evaluea a un valor verdadero, se devolverá el
+valor correspondiente.
 
-An example:
+Un ejemplo:
 
 ```python
 from datetime import date, timedelta
@@ -544,13 +543,13 @@ Client.objects.annotate(
 <QuerySet [('Jane Doe', '0%'), ('James Smith', '5%'), ('Jack Black', '10%')]>
 ```
 
-the `Case()` class accepts any number of `When()` objects as individual
-arguments. Other options are provided using keyword arguments. If none
-of the conditions evaluate to `True`, then the expression given with the
-`default` keyword argument is returned. If a default argument isn't
-provided, `None` is used.
+La clase `Case()` acepta cualquier número de objetos de tipo 
+`When()` como parámetros posicionales. También existen parámettros por
+nombre para determinadas facilidades. Por ejemplo, `default` para definir
+el valor a usar si ninguna de las condiciones `When()` evalua a verdadero.
+Si no se proporciona un valor por defecto, se devuelve `None`.
 
-Sources: 
+Fuentes: 
 
 - [Conditional expressions](https://docs.djangoproject.com/en/3.1/ref/models/conditional-expressions/)
 - [Best practices working with Django models](https://steelkiwi.com/blog/best-practices-working-django-models-python/)
@@ -575,7 +574,8 @@ The AdminSite provides the following named URL patterns:
 | Redirect to object's page | `view_on_site` | `content_type_id`, `object_id` |
 
 
-Each ModelAdmin instance provides an additional set of named URLs:
+Cada instancia de `ModelAdmin` proporciona un conjunto adicional
+de URLs:
 
 
 | Page       | URL name                              | Parameters  |
@@ -593,7 +593,9 @@ Por ejemplo, para enlazar con la página de edición (*change*) del modelo
 admin:biblioteca_libro_change
 ```
 
-- Source: [Reversing admin URLs](https://docs.djangoproject.com/en/dev/ref/contrib/admin/#reversing-admin-urls)
+Fuentes:
+
+- [Reversing admin URLs](https://docs.djangoproject.com/en/dev/ref/contrib/admin/#reversing-admin-urls)
 
 
 ## Nomenclatura correcta de los modelos
@@ -1190,7 +1192,7 @@ assert router.db_for_write(ModelAlfa) == 'default'
 A veces queremos hacer un tratamiento previo a una instancia de un modelo y
 necesitamos hacerlo **antes** de que se almacene en la base de datos.  La
 solución es llamar al método `save` del formulario con el parámetro con el
-parámetro opcinonal `commit`, un valor booleano que por defecto vale `True`.
+parámetro opcional `commit`, un valor booleano que por defecto vale `True`.
 Con un valor de `False`, sin embargo, el formulario crea una instancia del
 modelo en memoria, pero **no la salva en la base de datos**.
 
@@ -1219,8 +1221,119 @@ qs = MyModel.objects.all()
 qs.query = pickle.loads(s)     # Assuming 's' is the pickled string.
 ```
 
-!!! Nota: Como todo lo que se serializa con pickle, no se puede compartir
-    entre versiones de Python, pero además, este truco con las queries
-    serializadas es aun más estricto: **No se puede compartir entre
-    versiones diferentes de Django.
+!!! warning "Atención a las versiones"
 
+    Como todo lo que se serializa con pickle, no se puede compartir entre
+    versiones de Python, pero este truco con las queries serializadas es aun
+    más estricto: **No se puede compartir estos datos entre
+    versiones diferentes de Django**.
+
+
+## Cómo usar las validaciones en los formularios
+
+Los formularios de Django soportan el uso de unas funciones/clases de
+validación, que en la documentación se denominan `validators`, en español,
+validadores. Un **validador** es simplemente una función (o un objeto
+_callable_) que acepta un parámetro de entrada y cuyo comportamiento es:
+
+- No devuelve nada, si el dato es correcto
+
+- Eleva la excepción `ValidationError` si no es correcto. La excepción
+  está definida en `django.core.exceptions`.
+
+Podemos asignar varias validadores a un solo campo. La forma más fácil es usar
+el parámetro `validators`, que acepta una lista de validadores a aplicar.
+
+El siguiente validador solo acepta valores pares:
+
+```python
+from django.core.exceptions import ValidationError
+
+def validate_is_even(value):
+    if value % 2 != 0:
+        raise ValidationError(f'{value} is not an even number')
+```
+
+El siguiente ejemplo muestra como se añade este validador a un campo
+de un formulario:
+
+```python
+from django import forms
+
+class MyForm(forms.Form):
+    even_field = forms.IntegerField(validators=[validate_is_even])
+```
+
+Los validadores también se pueden aplicar a los modelos:
+
+```
+from django.db import models
+
+class MyModel(models.Model):
+    even_field = models.IntegerField(validators=[validate_is_even])
+```
+
+La mayor parte de las clases de campos de formularios tienen una serie de
+validadores predefinidos. Por ejemplo `SlugField` viene de serie con el
+validador `validate_slug`.
+
+En Django se define la clase `RegexValidator`, que nos permite crear
+un validador a partir de una expresión regular. Para ello
+instanciaremos un objeto desde la clase `RegexValidator`, cuyo constructor
+acepta los siguientes parámetros:
+
+- `regex`: La expresión regular. Puede ser una cadena de texto o un expresión
+  regular ya compilada. El valor por defecto es la cadena vacía, lo que no
+  tiene mucha utilidad porque casaría con cualquier cosa.
+
+- `message`: El mensaje con el que se creara la excepción, en caso de ser
+  necesario. Si no se especifica, el valor por defecto es
+  `"Enter a valid value"`.
+
+- `code`: El código de error usado en la excepción en caso de fallo. El valor
+  por defecto es `'invalid'`.
+
+- `flags`: Los valores opcionales para la definición de patrón, si lo
+  hemos definido con una cadena de texto.
+
+Otras clases generadoras de validadores predefinidas en Django son:
+
+- `EmailValidator`. Permite definir opcionalmente una lista de dominios
+  válidos con el parámetro `allowlist`.
+
+- `URLValidator`. Permite definir opcionalmente los esquemas (`http`/`https`)
+  aceptados.
+
+- `MaxValueValidator`
+
+- `MinValueValidator`
+
+- `MaxLengthVaidator`
+
+- `MinLengthVaidator`
+
+- `DecimalValidator`
+
+- `FileExtensionValidator`
+
+
+Django tiene varios validadores predefinidos, normalmente usado por determinados campos
+que los necesitan por defecto:
+
+- `validate_email` (Una instancia sin parametrizar de `EmailValidator`)
+
+- `validate_slug`
+
+- `validate_unicode_slug`
+
+- `validate_ipv4_address`
+
+- `validate_ipv6_address`
+
+- `validate_ipv46_address`
+
+- `validate_comma_separated_integer_list`
+
+- `int_list_validator`
+
+- `validate_image_file_extension`
