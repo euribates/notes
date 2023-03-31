@@ -37,7 +37,7 @@
 - [Git](notes-on-git.md)
 
   - [Git-actions](notes-on-git-actions.md)
-  - [Git-hub](notes-on-git-hub.md)
+  - [Git-hub](notes-on-github.md)
 
 - [Gmail](notes-on-gmail.md)
 - [Godot](notes-on-godot.md)
