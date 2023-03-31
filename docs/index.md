@@ -34,8 +34,11 @@
 
 - [Gcloud](notes-on-gcloud.md)
 - [Migrating-django](notes-on-migrating-django.md)
-- [Git-actions](notes-on-git-actions.md)
 - [Git](notes-on-git.md)
+
+  - [Git-actions](notes-on-git-actions.md)
+  - [Git-hub](notes-on-git-hub.md)
+
 - [Gmail](notes-on-gmail.md)
 - [Godot](notes-on-godot.md)
 - [Google-flexible-environment](notes-on-google-flexible-environment.md)
