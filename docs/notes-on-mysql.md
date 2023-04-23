@@ -263,3 +263,91 @@ Id   U s Host   d b Com   T i State         Info
 ```
 
 Source: <https://www.electrictoolbox.com/show-running-queries-mysql/>
+
+
+## Como solucionar "Error: SET PASSWORD has no significance for user 'root'@'localhost' as ..."
+
+Resulta que al instalar MySQL, incluso en una versión recién instalada de tu
+sistema operativo Linux preferido puedes encontrarte con un error similar al
+siguiente (usualmente al correr el comando `mysql_secure_installation`):
+
+```
+Failed! Error: SET PASSWORD has no significance for user 'root'@'localhost' as the authentication method used doesn't store authentication data in the MySQL server. Please consider using ALTER USER instead if you want to change authentication parameters
+```
+
+La solución a este error es bastante sencilla, entra a mysql de la siguiente manera:
+
+```
+sudo mysql
+```
+
+Una vez logueado se debe cambiar la clave del usuario root con el siguiente comando.
+
+```
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password by 'mynewpassword';
+```
+
+Si el nivel de seguridad es medio, tendrás que poner una contraseña que
+incluya mayúsculas y minúsculas, de al menos 8 caracteres, debe incluir al
+menos un número y al menos un simbolo. Si el nivel es alto, se validará
+también contra un fichero diccionario.
+
+- Fuente: [Solución al error SET PASSWORD has no significance for user "root"@&"localhost" ...](https://blog.pleets.org/article/soluciworkarea/notes/docs/notes-on-mysql.mdC3workarea/notes/docs/notes-on-mysql.mdB3n-al-error-set-password-has-no-significance-for-user)
+
+
+## Cómo arreglar "MySQL ERROR 1819 (HY000): Your password does not satisfy the current policy requirements"
+
+There are three levels of password validation policy enforced when Validate Password plugin is enabled:
+
+- `LOW` Length >= 8 characters.
+
+- `MEDIUM` Length >= 8, numeric, mixed case, and special characters.
+
+- `STRONG` Length >= 8, numeric, mixed case, special characters and dictionary file.
+
+Based on these policy levels, you need to set an appropriate password.
+To find the current password policy level, run the following command:
+
+```
+mysql> SHOW VARIABLES LIKE 'validate_password%';
+```
+
+Sample output:
+
+```
++--------------------------------------+--------+
+| Variable_name                        | Value  |
++--------------------------------------+--------+
+| validate_password.check_user_name    | ON     |
+| validate_password.dictionary_file    |        |
+| validate_password.length             | 8      |
+| validate_password.mixed_case_count   | 1      |
+| validate_password.number_count       | 1      |
+| validate_password.policy             | MEDIUM |
+| validate_password.special_char_count | 1      |
++--------------------------------------+--------+
+7 rows in set (0.09 sec)
+```
+
+Hot to Change password validation policy in MySQL
+
+You can also solve the "ERROR 1819 (HY000)..." by setting up a lower level password policy.
+To do so, run the following command from the mysql prompt:
+
+```
+mysql> SET GLOBAL validate_password.policy = 0;
+```
+
+O:
+
+```
+mysql> SET GLOBAL validate_password.policy=LOW;
+```
+
+Then check if the password validation policy has been changed to low:
+
+```
+mysql> SHOW VARIABLES LIKE 'validate_password%';
+```
+
+- Fuente: [Fix - MySQL ERROR 1819 (HY000): Your password does not satisfy the current policy requirements - OSTechNix](https://ostechnix.com/fix-mysql-error-1819-hy000-your-password-does-not-satisfy-the-current-policy-requirements/)

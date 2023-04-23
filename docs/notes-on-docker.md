@@ -12,7 +12,7 @@ advantage of Docker’s methodologies for shipping, testing, and deploying code
 quickly, you can significantly reduce the delay between writing code and
 running it in production.
 
-### How to dockerize Python
+## How to dockerize Python
 
 - Use python:3.7.3-stretch as the base image, to pin the version and
   OS. Or, python:3.7-stretch if you're feeling less worried about
@@ -58,7 +58,7 @@ Sources:
 
 tags: python
 
-### How to install ps command
+## How to install ps command
 
 This is the way:
 
@@ -66,7 +66,7 @@ This is the way:
 apt-get update && apt-get install -y procps
 ```
 
-### Get process stats with the top command
+## Get process stats with the top command
 
 The docker `top` command is exactly what it sounds like: top that runs
 in the container:
@@ -83,7 +83,7 @@ root 26370 … 00:00:00 sleep 2
 Some columns removed to make it fit here. There is also a docker `stats`
 command that is basically top for all the containers running on a host.
 
-### View container details (including env vars) with the inspect command
+## View container details (including env vars) with the inspect command
 
 The `inspect` command returns information about a container or an image.
 Here's an example of running it on the toptest container from the last
@@ -126,7 +126,7 @@ commands like inspect can be a quick cure.
 Source: [Ten Tips for Debugging Docker Contaniers](https://medium.com/@betz.mark/ten-tips-for-debugging-docker-containers-cde4da841a1d)
 
 
-### How to copy a file from host machine to docker container (or vice versa)
+## How to copy a file from host machine to docker container (or vice versa)
 
 The docker `cp` utility copies the contents of `SRC_PATH` to the `DEST_PATH`.
 You can copy from the container's file system to the local machine or the
@@ -145,7 +145,7 @@ docker cp mycontainer:/foo.txt foo.txt
 More info: [Docker cp command](https://docs.docker.com/engine/reference/commandline/cp/)
 
 
-### How to run an image changing the entrypoint
+## How to run an image changing the entrypoint
 
 Just use the `--entrypoint` option of the `run` command.
 
@@ -155,7 +155,7 @@ Ejample:
 docker run -it --entry-point python colend_app
 ```
 
-### How to Purge all unused or dangling Images, Containers, Volumes, and Networks
+## How to Purge all unused or dangling Images, Containers, Volumes, and Networks
 
 Docker provides a single command that will clean up any resources ---
 images, containers, volumes, and networks --- that are dangling (not
@@ -172,7 +172,7 @@ just dangling images), add the -a flag to the command:
 docker system prune -a
 ```
 
-### How to add a environment variable to a docker
+## How to add a environment variable to a docker
 
 Use the `--env` parameter in `docker run`:
 
@@ -183,27 +183,35 @@ docker run <image> --env COLEND_ENV=test
 or use the `ENV` dockerfile command to define the variable inside the
 dockerfile.
 
-### Differences between Docker RUN, CMD and ENTRYPOINT
+## Diferencias entre las ordenes RUN, CMD y ENTRYPOINT
 
-Some Docker instructions look similar and cause confusion among
-developers who just started using Docker or do it irregularly. In a
-nutshell:
+Aunque hacen cosas parecidas, (ejecutar un programa), existen diferencias
+importantes:
 
-- `RUN` executes command(s) **in a new layer** and creates a new
-  image. E.g., it is often used for installing software packages.
+- `RUN` ejecuta el programa a la hora de crear la imagen, lo que produce una
+  nueva capa _layer_. El uso habitual es, por ejemplo, instalar librerias o
+  dependencias. Es posible, y habitual, tener varias ordenes RUN en un
+  dockerfile.
 
-- `CMD` sets default command and/or parameters, which can be
-  overwritten from command line when docker container runs.
+- `CMD` define el comando a ejecutar por defecto cuando se arranca el
+  contenedor a partir de una imagen, aunque puede ser sobreescrito mediante los
+  parámetros de docker. En principio solo puede haber una entrada de tipo `CMD`
+  en un dockerfile. Si ponemos más de uno, solo hará caso de la última. Si le
+  pasamos un comando especifico cuando ejecutamos el contenedor, esta orden por
+  defecto no será ejecutada, sino lo que hemos suministrado.
 
-- `ENTRYPOINT` configures a container that will run as an executable.
+- `ENTRYPOINT` configura el punto de entrada al ejecutar la imagen creada a
+  partir del contenedor. Si definimos esta entrada, podemos usar `CMD` par
+  definir los parámetros por defecto. Podemos modificarlo con el parámetro
+  opcions `--entrypoint`. Solo debe haber una entrada `ENTRYPOINT` en un
+  fichero dockerfile, normalmente en la última línea.
 
-`RUN` instruction allows you to install your application and packages
-requited for it. It executes any commands on top of the current image
-and creates a new layer by committing the results. Often you will find
-multiple `RUN` instructions in a Dockerfile.
+  La orden `ENTRYPOINT` es muy similar a `CMD`, la diferencia radica en que el
+  valor en `ENTRYPOINT` **no es ignorado** cuando ejecutamos la imagen
+  pasándole parámetros.
 
-A good illustration of `RUN` instruction would be to install multiple
-version control systems packages:
+El siguiente ejemplo muestra el uso de `RUN` para instalar diferentes sistemas
+de control de versiones:
 
 ```dockerfile
 RUN apt-get update && apt-get install -y \
@@ -214,29 +222,18 @@ RUN apt-get update && apt-get install -y \
     subversion
 ```
 
-Note that `apt-get update` and `apt-get install` are executed **in a
-single** `RUN` **instruction**. This is done to make sure that the
-latest packages will be installed. If `apt-get install` were in a
-separate `RUN` instruction, then it would reuse a layer added by
-`apt-get update`, which could had been created a long time ago.
+Un punto interesante a observar es que las llamadas a `apt-get update` y
+`apt-get install` son ejecutadas **en una única línea**. Esto es necesario si
+queremos garantizar que siempre estamos instalando las últimas versiones
+disponibles. Si estos comandos estuvieran en dos sentencias `RUN`, el comando
+`install` podría ejecutarse basandose en la capa anterior generada por el
+`update`, pero esa capa podría ser antigua.
 
-`CMD` instruction allows you to set a default command, which will be
-executed **only when you run container without specifying a command**.
-If Docker container runs with a command, the default command will be
-ignored. If Dockerfile has more than one `CMD` instruction, **only
-the last one** is executed.
-
-`ENTRYPOINT` instruction allows you to configure a container that will
-run as an executable. It looks similar to `CMD`, because it also allows
-you to specify a command with parameters. The difference is `ENTRYPOINT`
-command and parameters are **not ignored when Docker container runs with
-command line parameters** (There is a way to ignore `ENTTRYPOINT`,
-thought, if you really need that).
 
 Source: [Yury Pitsishin blog - Docker RUN vs CMD vs ENTRYPOINT](https://goinbigdata.com/docker-run-vs-cmd-vs-entrypoint/)
 
 
-### Differences between `COPY` and `ADD`
+## Diferencias entre `COPY` y `ADD`
 
 `COPY` and `ADD` are both Dockerfile instructions that serve similar purposes.
 They let you copy files from a specific location into a Docker image.
@@ -249,18 +246,19 @@ the Docker image itself.
 can use a URL instead of a local file / directory**. Secondly, you can
 **extract a tar file from the source directly into the destination**.
 
-### Como ejecutar un servidor Apache
+
+## Como ejecutar un servidor Apache
 
 Se puede usar la imagen [httpd](https://hub.docker.com/_/httpd) para arrancar
 un servidor web apache. En esta imagen no se incluye interprete de PHP, pero
 nodebería ser dificl de instalar, aunque para eso quiza mejor usar directamente
 una imagen con PHP ya instalado y que incluya su servido web.
 
-La forma más senclla de usar esta imagen es crear un fichero `dockerfile`
+La forma más sencilla de usar esta imagen es crear un fichero `dockerfile`
 sencillo y copiar en la carpeta `public-html/` de la imagen los ficheros
 html a publicar.
 
-Un `Dockerfile` sencillo podría ser:
+Unejemplo sencillo podría ser:
 
 ```docker
 FROM httpd:2.4
@@ -293,22 +291,22 @@ Abre un navegador apuntando a `http://localhost:8080` y comprueba que funciona.
   Apache está esperando las peticiones.
 
 
+## Cómo ejecutar un shell dentro de una inagen y conectarse con él
 
-
-### How to run a shell inside an image and log in
-
-If the container is running:
+Si el contenedor está en marcha:
 
 ```
 docker exec -it <Container ID or name> bash
 ```
 
-### How to create a Dockerfile
+## Cómo crear un dockerfile
 
-A Dockerfile is essentially a **text file** with clearly defined
-instructions on how to build a Docker image for our project.
+Un fichero **dockerfile** solo es un fichero de texto que
+contiene instrucciones detalladas que le permiten a docker crear una
+imagen, normalmente basándonos en una imagen previa.
 
-Next we\'ll create a Docker image based on Ubuntu 16.04 and Python 3.X:
+Veamos un ejemplo donde crearemos una imagen basándodos es la imagen base
+de Ubuntu 16.04 y Python 3.X:
 
 ```dockerfile
 FROM ubuntu:16.04
@@ -323,32 +321,38 @@ ENTRYPOINT [ "python3" ]
 CMD [ "app/app.py" ]  
 ```
 
-There are a few commands here which deserve a proper explanation:
+Vamos a explicar cada uno de estoas instrucciones:
 
-- `FROM` - Every Dockerfile starts with a FROM keyword. It\'s used to
-  specify the base image from which the image is built. The following
-  line provides metadata about the maintainer of the image.
+- Todo fichero dockerfile empieza con `FROM` en la primera instrucción, ya
+  que se usa para indicar la imagen base sobre la cual se construirá nuestra
+  nueva imagen. 
 
-- `RUN` - We can add additional content to the image by running
-  installation tasks and storing the results of these commands. Here,
-  we simply update the package information, install python3 and pip.
-  We use pip in the second RUN command to install all packages in the
-  requirements.txt file.
+- La orden `MAINTAINER` nos permite añadir metadatos sobre la persona
+  que mantiene la imagen, normalmente nombre y email. No es obligatoria, pero
+  si se recomienda su uso.
 
-- `COPY` - The COPY command is used to copy files/directories from the
-  host machine to the container during the build process. In this
-  case, we are copying the application files including
-  requirements.txt.
+- Con `RUN` podemos ejecutar comandos en la imagen que nos permiten
+  actualizar contenidos y preparar el contexto necesario para la ejecución del
+  contenedor. Las ordendes especificadas con `RUN` se ejecutan **solo cuando se
+  crear o recrea** la imagen. Podemos ejecutar todos los comandos `RUN` que
+  queramos.
 
-- `WORKDIR` - sets the working directory in the container which is
-  used by RUN, COPY, etc\...
+- La orden `COPY` se utiliza pra añadir ficheros locales a la imagen
+  durante la construcción de la imagen. Un caso típico es copiar el 
+  fichero `requirements.txt` para, en un paso posterior, ejecutar con `RUN`
+  un `pip install -r requirements.txt`.
 
-- `ENTRYPOINT` - Defines the entry point of the application
+- Con `WORKDIR` definimos el directorio de trabajo, es decir, la carpeta
+  que se usará por defecto con las ordenis `RUN`, `COPY`, etc.
 
-- `CMD` - Runs the app.py file in the app directory.
+- La orden `ENTRYPOINT` define el punto de entrada, es decir, el comando
+  a ejecutar cuando se cree el contenedor. Solo puede haber un `ENTRYPOINT`
+  en el fichero.
+
+- `CMD` define comandos a ejecutar cuando se arranque el contendor.
 
 
-### How Docker Images are Built
+## How Docker Images are Built
 
 Docker images are built using the docker `build` command. When building an
 image, Docker creates so-called **layers**. Each layer records the changes
@@ -370,10 +374,10 @@ the rest of the app. This results in a Docker layer containing all the
 dependencies. This layer need not be re-built even if other files in the
 app change as long as there are no new dependencies.
 
-(Si lo hicieramos al contrario, copiar el codigo fuente y luego copiar
+Si lo hicieramos al contrario, copiar el codigo fuente y luego copiar
 el `requirements.txt` y actualizar, cada vez que cambiamos el código fuente
 tiene que descartar todas las imagenes generadas a partir de esta, asi
-que tendra que copiar de nuevo los requerimientos y volver a instalar).
+que tendra que copiar de nuevo los requerimientos y volver a instalar.
 
 Thus we optimize the build process for our container by separating the
 pip install from the deployment of the rest of our app.
@@ -385,11 +389,14 @@ works, let\'s go ahead and create the Docker image for our app:
 $ docker build -t docker-flask:latest .
 ```
 
-the `-t` flags is used to tag we will use for this new container. The
-dot means to use the file `Dockerfile` in the current directory.
+La opción `-t` se usa para espcificar la etiqueta o _tag_ que se
+asignará a esta imagen. 
+
+El punto `.` indica el directorio donde se buscará el fichero de construccion
+`dockerfile`.
 
 
-### How to Run an Application in Debug Mode with Auto-Restart
+## How to Run an Application in Debug Mode with Auto-Restart
 
 Due to the advantages of containerization described earlier, it makes sense to
 develop applications that will be deployed in containers within the container
@@ -436,7 +443,7 @@ Now the application can be accessed at `http://localhost:5000`
 or `http://0.0.0.0:5000/`.
 
 
-### How to log inside a docker container image running
+## How to log inside a docker container image running
 
 - First, use `docker ps` to get the name of the existing container, if you
   don't know it.
@@ -453,15 +460,16 @@ Meaning of the flags:
 - `-t`, `--tty` : Allocate a pseudo-TTY
 
 
-### How to know if a docker image is running
+## Cómo saber si una imagen de docker está en ejecución
 
-If you know the name of te container:
+Es decir, que hay algún contenedor activo basedo en esta imagen.
+Es fácil si sabes el nombre:
 
 ```
 docker inspect -f '{{.State.Running}}' $container_name
 ```
 
-### How to delete the `exited()` images on several runs
+## Cómo borrar las imagens terminadas (`exited()`) ejecutadas previamente
 
 This is the way:
 
@@ -469,20 +477,20 @@ This is the way:
 docker rm $(docker ps -qa --filter status=exited )
 ```
 
-### How to stop one or more running containers
+## Como parar uno (o varios) contenedores que están en ejecucion
 
-You can stop one or several containers:
+Con el siguiente comando podemos parar uno o varios contenedores:
 
 ```shell
 docker stop [OPTIONS] CONTAINER [CONTAINER...]
 ```
 
-Where options can be:
+Las opciones pueden ser:
 
-- `--time`, `-t` 10 :  Seconds to wait for stop before killing it
+- `--time`, `-t` 10 : Segundos a esperar antes de parar el contenedor
 
 
-### How to remove all images and containers
+## How to remove all images and containers
 
 You use Docker, but working with it created lots of images and
 containers. You want to remove all of them to save disk space.
@@ -502,7 +510,7 @@ Options:
 - `--force` , `-f` : Do not prompt for confirmation
 
 
-### Why it is recommended to run only one process in a container?
+## Why it is recommended to run only one process in a container?
 
 > In many blog posts, and general opinion, there is a saying that goes "one
 > process per container". Why does this rule exist? Why not run ntp, nginx,
@@ -548,7 +556,7 @@ Note that I'm saying function, not process. That language is outdated.  The
 official docker documentation has moved away from saying "one process" to
 instead recommending "one concern" per container.
 
-### What is a Docker volume?
+## What is a Docker volume?
 
 > tldr: The simplest way to describe a Docker volume is this: a Docker volume
 > is a folder that exists on the Docker host and is mounted and accessible
@@ -584,9 +592,9 @@ When the container goes away, either by design or by a catastrophic event, the
 Docker volume stays behind and is available to use by other containers. The
 Docker volume can be used by more than one container at the same time.
 
-### How to fix some common kwnow problems
+## How to fix some common kwnow problems
 
-#### Every docker command fails with "Error response from daemon: grpc: the connection is unavailable"
+### Every docker command fails with "Error response from daemon: grpc: the connection is unavailable"
 
 The docker daemon is corrupt. Run this command:
 
@@ -598,16 +606,26 @@ Maybe you'll need to use `sudo` for this.
 
 - Source: <https://forums.docker.com/t/solved-docker-error-response-from-daemon-grpc-the-connection-is-unavailable/32510>
 
+## Como montar un volumen en un contenedor
 
-### Learning resources
+Hay que usar la opción `-v` y pasarle un mapeo desde un
+directorio local a uno dentro de la máquina. Siempre hay
+que usar **rutas absolutas**.
 
-#### Play with Docker
+```
+docker run -t sandbox -v $(pwd)/sandbox:/sandbox
+```
+
+
+## Learning resources
+
+### Play with Docker
 
 A simple, interactive and fun playground to learn Docker
 
 - <https://labs.play-with-docker.com/>
 
-#### Play with Docker Classroom
+### Play with Docker Classroom
 
 The Play with Docker classroom brings you labs and tutorials that help
 you get hands-on experience using Docker. In this classroom you will
