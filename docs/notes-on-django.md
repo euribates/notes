@@ -1337,3 +1337,34 @@ que los necesitan por defecto:
 - `int_list_validator`
 
 - `validate_image_file_extension`
+
+
+## Cómo tener dos aplicaciones con el mismo nombre
+
+Desde Django 1.7, es obligatorio que las aplicaciones tengan una **etiqueta
+única** para identificarlos. Por defecto la etiqueta es el nombre del módulo,
+así que si tenemos dos módulos con el mismo nombre, `foo`, aunque están
+obviamente en ramas diferentes, tendremos un error.
+
+La solución es **sobreescribir** la etiqueta por defecto. Podemos hacerlo
+añadiendo el siguiente código al fichero `apps.py` de la aplicación (Ojo, que el
+valor importante es `label`, no `name`):
+
+
+```python
+# foo/apps.py
+
+from django.apps import AppConfig
+
+class FooConfig(AppConfig):
+    name = 'full.python.path.to.your.app.foo'
+    label = 'my.foo'  # <-- this is the important line - change it to anything oth
+```
+
+La finalidad del fichero `apps.py` es permitir configurar y definir determinados
+parámetros o atributos de la aplicación. Según la documentación:
+
+> Los objetos de tipo `AppConfig` almacenan _metadatos_ relativos a una
+> aplicación. Algunos de estos valores pueden ser modificados definiendo
+> una subclase de `AppConfig`, mientras que otros se definen
+> por Django y son de solo lectura.
