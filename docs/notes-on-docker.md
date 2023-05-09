@@ -251,14 +251,14 @@ can use a URL instead of a local file / directory**. Secondly, you can
 
 Se puede usar la imagen [httpd](https://hub.docker.com/_/httpd) para arrancar
 un servidor web apache. En esta imagen no se incluye interprete de PHP, pero
-nodebería ser dificl de instalar, aunque para eso quiza mejor usar directamente
+no debería ser dificil de instalar, aunque para eso quizá mejor usar directamente
 una imagen con PHP ya instalado y que incluya su servido web.
 
 La forma más sencilla de usar esta imagen es crear un fichero `dockerfile`
 sencillo y copiar en la carpeta `public-html/` de la imagen los ficheros
 html a publicar.
 
-Unejemplo sencillo podría ser:
+Un ejemplo sencillo podría ser:
 
 ```docker
 FROM httpd:2.4
@@ -305,7 +305,7 @@ Un fichero **dockerfile** solo es un fichero de texto que
 contiene instrucciones detalladas que le permiten a docker crear una
 imagen, normalmente basándonos en una imagen previa.
 
-Veamos un ejemplo donde crearemos una imagen basándodos es la imagen base
+Veamos un ejemplo donde crearemos una imagen basándonos es la imagen base
 de Ubuntu 16.04 y Python 3.X:
 
 ```dockerfile
@@ -321,29 +321,29 @@ ENTRYPOINT [ "python3" ]
 CMD [ "app/app.py" ]  
 ```
 
-Vamos a explicar cada uno de estoas instrucciones:
+Vamos a explicar cada uno de estas instrucciones:
 
-- Todo fichero dockerfile empieza con `FROM` en la primera instrucción, ya
+- Todo fichero `Dockerfile` empieza con `FROM` en la primera instrucción, ya
   que se usa para indicar la imagen base sobre la cual se construirá nuestra
   nueva imagen. 
 
-- La orden `MAINTAINER` nos permite añadir metadatos sobre la persona
-  que mantiene la imagen, normalmente nombre y email. No es obligatoria, pero
-  si se recomienda su uso.
+- La orden `MAINTAINER` nos permite añadir metadatos sobre la persona que
+  mantiene la imagen, normalmente nombre y email. Su uso no es obligatoria, pero
+  si recomendable.
 
 - Con `RUN` podemos ejecutar comandos en la imagen que nos permiten
   actualizar contenidos y preparar el contexto necesario para la ejecución del
-  contenedor. Las ordendes especificadas con `RUN` se ejecutan **solo cuando se
+  contenedor. Las ordedes especificadas con `RUN` se ejecutan **solo cuando se
   crear o recrea** la imagen. Podemos ejecutar todos los comandos `RUN` que
   queramos.
 
-- La orden `COPY` se utiliza pra añadir ficheros locales a la imagen
+- La orden `COPY` se utiliza para añadir ficheros locales a la imagen
   durante la construcción de la imagen. Un caso típico es copiar el 
   fichero `requirements.txt` para, en un paso posterior, ejecutar con `RUN`
   un `pip install -r requirements.txt`.
 
 - Con `WORKDIR` definimos el directorio de trabajo, es decir, la carpeta
-  que se usará por defecto con las ordenis `RUN`, `COPY`, etc.
+  que se usará por defecto con las ordenes `RUN`, `COPY`, etc.
 
 - La orden `ENTRYPOINT` define el punto de entrada, es decir, el comando
   a ejecutar cuando se cree el contenedor. Solo puede haber un `ENTRYPOINT`
@@ -352,47 +352,46 @@ Vamos a explicar cada uno de estoas instrucciones:
 - `CMD` define comandos a ejecutar cuando se arranque el contendor.
 
 
-## How Docker Images are Built
+## Cómo crear una imagen de Docker
 
-Docker images are built using the docker `build` command. When building an
-image, Docker creates so-called **layers**. Each layer records the changes
-resulting from a command in the Dockerfile and the state of the image after
-running the command.
+Las imágenes de Docker se construyen con el comando `build`. Las imágenes se
+hacen creando varias capas o **layers**, como las llama Docker. Cada uno de las
+capas es una nueva imagen, que se crea incorporando los cambios definidos en
+cada línea del `Dockerfile` a la imagen generada por la línea anterior.
 
-Docker internally _caches_ these layers so that when re-building images it
-needs to re-create only those layers that have changed. For example, once it
-loads the base image for `ubuntu:16.04`, all subsequent builds of the same
-container can re-use this since this will not change.  However, during every
-re-build, the contents of the app directory will likely be different and thus
-this layer will be rebuilt every time.
+Todas estas capas son _cacheadas_ internamente, para que al re-crear una imagen,
+solo haga falta modificar los niveles que hayan cambiado. Por ejemplo, si la
+primera línea declara como base la imagen de `Ubuntu:16.04`, cada vez que
+vayamos a recrear la imagen final se puede usar la imagen cacheada como base. Si
+no tuviéramos esta cache, habría que descargar de nuevo la imagen base.
 
-Whenever any layer is re-built all the layers that follow it in the
-Dockerfile need to be rebuilt too. It's important to keep this fact in
-mind while creating Dockerfiles. For example, we `COPY` the
-`requirements.txt` file first and install dependencies before COPYing
-the rest of the app. This results in a Docker layer containing all the
-dependencies. This layer need not be re-built even if other files in the
-app change as long as there are no new dependencies.
+Si cambiamos la imagen base, por ejemplo a `Ubutu:22.10`, entonces todos los
+contenidos cacheados son inservibles, y habría que descargar (y cachear) la
+nueva imagen base.
 
-Si lo hicieramos al contrario, copiar el codigo fuente y luego copiar
-el `requirements.txt` y actualizar, cada vez que cambiamos el código fuente
-tiene que descartar todas las imagenes generadas a partir de esta, asi
-que tendra que copiar de nuevo los requerimientos y volver a instalar.
+Esto es importante a la hora de crear ficheros `Dockerfile`. Si queremos que la
+caché sea efectiva, debemos tener en cuenta el orden en que realizamos los
+pasos. Por ejemplo, si primero copiamos con `COPY` el fichero `requirements.txt`
+e instalamos todas las dependencias, y luego copiamos los ficheros propios de
+nuestra aplicación, tendremos en la cache una imagen con todas las dependencias
+instaladas que no necesita ser reescrita cuando cambiemos nuestra aplicación,
+solo será reescribirlo cuando se modifique el fichero `requiremets.txt`.
 
-Thus we optimize the build process for our container by separating the
-pip install from the deployment of the rest of our app.
+Si lo hiciéramos al contrario, copiar el código fuente y luego copiar el
+`requirements.txt` y actualizar, cada vez que cambiamos el código fuente tiene
+que descartar todas las imágenes generadas previamente y empezar a partir de
+esta, así que tendría que copiar de nuevo los requerimientos y volver a instalar.
 
-Now that our Dockerfile is ready and we understand how the build process
-works, let\'s go ahead and create the Docker image for our app:
+Con esto explicado, vamos el proceso para crear una imagen:
 
 ```shell
 $ docker build -t docker-flask:latest .
 ```
 
-La opción `-t` se usa para espcificar la etiqueta o _tag_ que se
+La opción `-t` se usa para especificar la etiqueta o _tag_ que se
 asignará a esta imagen. 
 
-El punto `.` indica el directorio donde se buscará el fichero de construccion
+El punto `.` indica el directorio donde se buscará el fichero de construcción
 `dockerfile`.
 
 

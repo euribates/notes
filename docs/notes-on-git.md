@@ -27,9 +27,9 @@ title: Notas sobre Git / GitHub
 
 ## Cómo actualizar una rama, tanto en local como en remoto
 
-Para actualizar una etiqueta en el repo local, primero tenemos que localizar el
+Para actualizar una etiqueta en el repositorio local, primero tenemos que localizar el
 nuevo _commit_ al que queremos que apunte. Para esto es muy útil el comando
-`git log --online` que mostrará el _hash code_ de cada _commit_ y las etiquetas
+`git log --oneline` que mostrará el _hash code_ de cada _commit_ y las etiquetas
 que hubiera.
 
 Cuando hayamos localizado el _commit_, haremos:
@@ -44,7 +44,7 @@ Para actualizar la rama remota:
 git push origin <tag> -f
 ```
 
-La opción `-f` fuerza a redefinir el tag en el origin, si ya estuviera
+La opción `-f` fuerza a redefinir el _tag_ en el origin, si ya estuviera
 definido.
 
 Fuente: [Toolsqs - Git Delete Tag and Git Update Tag](https://www.toolsqa.com/git/git-delete-tag/)
@@ -630,7 +630,8 @@ The way to interpret the above is to read it as the null value before
 the colon is being pushed to the remote tag name, effectively deleting
 it.
 
-The second (and more intuitive) way to delete a remote tag is with:
+No obstante, la forma más sencilla e intuitiva de borrar un _tag_ remoto es:
+
 
 ```shell
 $ git push origin --delete <tagname>
@@ -657,3 +658,40 @@ git show HEAD~1:src/program.py
 ```
 
 - Fuente: [7 tips for improving your productivity with Git - DEV Community](https://dev.to/dgenezini/7-tips-for-improving-your-productivity-with-git-ajg) 
+
+## Cual es la diferencia entre un repositorio _bare_ y otro normal
+
+Cuando clonamos o creamos un proyecto, Git normalmente crea un directorio de
+primer nivel para los ficheros del proyecto en si, y los ficheros de
+administración del repositorio se ponen en otra carpeta, dentro de la principal,
+normalmente llamada `.git`. Tenemos tanto el repositorio como el árbol de
+trabajo, es decir, una copia de todas las carpetas y ficheros del proyecto.
+
+Si creamos una repositorio _bare_, ya sea con `git init --bare` o `git clone
+--bare`, el directorio que se crea es directamente el directorio del
+repositorio, es decir, no se crea el directorio donde normalmente se generan los
+ficheros del proyecto. Usar `--bare` incluye implícitamente la opción
+`--no-checkout`, ya que no existe directorio alguno donde desplegar el árbol de
+trabajo del proyecto. Además, las ramas del repositorio remoto se crean como
+ramas locales equivalentes, vinculadas directamente con las ramas remotas.
+
+La distinción entre estos dos tipos de repositorios es un poco inconsistente, y
+puede llevar a confusión, ya que el árbol de trabajo del proyecto no tienen que
+incluir obligatoriamente el repositorio, y un repositorio no tiene que incluir
+obligatoriamente una árbol de trabajo de los ficheros del proyecto. 
+
+La variable de entorno `$GIT_DIR` enlaza el árbol de trabajo con el repositorio
+que lo originó. Normalmente no tiene valor, y en este caso Git busca en el
+directorio actual una carpeta llamada `.git`. Si no lo encuentra, va subiendo
+por el árbol de trabajo hasta que lo encuentre o hasta que llegue al directorio
+`$HOME` del usuario. Sin embargo, en el caso de usar un repositorio _bare_, lo
+más probable es que tengamos que definir esta variable de entorno para indicar
+donde está el repositorio.
+
+
+Fuentes:
+
+- [Git - git clone documentation](https://git-scm.com/docs/git-clone)
+- [Stack Overflow - What's the practical difference between a Bare and non-Bare
+  repository?](https://stackoverflow.com/questions/5540883/whats-the-practical-difference-between-a-bare-and-non-bare-repository)
+

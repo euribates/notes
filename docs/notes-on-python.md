@@ -613,3 +613,45 @@ Some of the most popular online interpreters and codepads. Give them a go to fin
 | `as`     | `elif`     | `if`      | `or`       | `yield`  |
 | `assert` | `else`     | `import`  | `pass`     |          |
 | `break`  | `except`   | `in`      | `raise`    |          |
+
+
+## Cómo definir un objeto/clase para que sea iterable, en PY2 y PY3
+
+Hay que definir en la clase los métodos `__iter__` y `__next__`. Para que sea
+compatible con Python 2.x, hay que definir también un método `next` que sea un
+alias a `__next__`:
+
+```py
+class Trio:
+
+    def __init__(self, a=1, b=2, c=3):
+        self.a = a
+        self.b = b
+        self.c = c
+
+    def __iter__(self):
+        self._index = -1
+        return self
+
+    def __next__(self):
+        self._index += 1
+        if self._index == 0:
+            return self.a
+        elif self._index == 1:
+            return self.b
+        elif self._index == 2:
+            return self.c
+        raise StopIteration
+
+    next = __next__  # For Python 2.x
+
+trio = Trio()
+assert list(trio) == [1, 2, 3]
+```
+
+El método `__next__` tiene que elevar la excepción `StopIteration` cuando llegue al
+final de la secuencia.
+
+Fuente:
+
+- [python - How to make an object both a Python2 and Python3 iterator? - Stack Overflow](https://stackoverflow.com/questions/29578469/how-to-make-an-object-both-a-python2-and-python3-iterator)

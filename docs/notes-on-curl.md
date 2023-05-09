@@ -1,9 +1,9 @@
 ---
 title: Notas sobre CURL
 tags:
-    shell
-    linux
-    web
+    - shell
+    - linux
+    - web
 ---
 
 
