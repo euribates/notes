@@ -19,7 +19,6 @@ Para obtener un timestamp:
 from django.utils import timezone
 
 timezone.now()
-
 ```
 
 Para obtener la fecha:
@@ -54,21 +53,36 @@ predefinidos: `page_not_found`, `server_error`, `permission_denied` y
 `bad_request`. Estas funciones usan por defecto las siguientes plantillas,
 respectivamente: `404.html`, `500.html`, `403.html`, y `400.html`.
 
+!!! warning: Solo se verán estas plantillas en modo de desarrollo (`DEBUG=False`)
+
+    Si la variable `DEBUG` está a `True`, no se muestras estas plantillas, sino
+    la plantilla general de errores de Django.
+
 Si simplemente queremos páginas de error molonas, solo hay que crear plantillas
 con estos nombres en alguno de los sitios que Django usa para buscar
 plantillas, es decir, lo que haya definido en la variable `TEMPLATE_DIRS`. No
 hay necesidad de tocar la configuración de URL. Hay más documentación en
 [Customizing Error
-Views](https://docs.djangoproject.com/en/4.3/topics/http/views/#customizing-error-views),
+Views](https://docs.djangoproject.com/en/4.2/topics/http/views/#customizing-error-views),
 especialmente para saber que variables de contexto están disponibles.
 
-Desde Django 1.10, los errores por defecto de tipo CSRF usan la plantilla
+Para errores 404, la vista por defecto es `page_not_found()`, definida en
+`django.views.defaults`, que carga la plantilla `404.html`. A la plantilla se
+le pasan dos valores, `request_path`, que es la URL en la que se produjo el
+error, y `exception`, que es una representación de la Excepción original que
+produjo el error, por lo que contiene el mensaje que se uso para crearla.
+
+Aparte de esas variables, la plantilla tiene acceso al objeto `request`, así
+como a cualquier valor definido en los procesadores de contexto.
+
+Desde Django 1.10, los errores por defecto de tipo _CSRF_ usan la plantilla
 `403_csrf.html`.
 
-!!! warning: Solo se verán estas plantillas en modo de desarrollo (`DEBUG=False`)
-
-    Si la variable `DEBUG` está a `True`, no se muestras estas plantillas, sino
-    la plantilla general de errores de Django.
+Los errores de tipo 500, _server error_, se gestionan por defecto en la vista
+`server_error()`, definida también en `django.views.defaults`.  Usa por defecto
+la plantilla `500.html`. A diferencia de los errores `4xx`, aquí no se pasa
+ningún parámetro, y el contexto está vacío, para minimizar la posibilidad de un
+nuevo error. 
 
 
 ## Cómo hacer una formulario dinámicamente
@@ -112,7 +126,7 @@ class PersonDetailsForm(forms.Form):
     si usamos la CBV `FormView`, pasaríamos el parámetro sobreescribiendo
     el método `get_form_kwargs`. 
 
-Puede usarse también para modificar los atributos delos campos predefinidos,
+Puede usarse también para modificar los atributos de los campos predefinidos,
 como el _widget_ a usar o el texto de ayuda.
 
 Fuente: El libro [Django Design Patterns and Best
@@ -144,6 +158,50 @@ Fuente: [StackOverflow - How to resolve
 "django.core.exceptions.ImproperlyConfigured: Application labels aren't unique,
 duplicates: foo" in Django 1.7?](https://stackoverflow.com/questions/24319558/how-to-resolve-django-core-exceptions-improperlyconfigured-application-labels)
 
+## Cómo hacer que un método booleano se vea bonito en el admin
+
+Esta documentado, pero a menudo resulta complicado de encontrar. Si escribimos
+un método de un modelo que devuelve solo `True` o `False`, y lo consultamos en el
+admin, este nos muestra texto. Sin embargo, para campos definidos como
+booleanos (`BooleanField`) nos muestra un icono. Podemos hacer que utilice esos
+mismos iconos si **añadimos un atributo `boolean` al método**.  por ejemplo:
+
+```python
+def nacio_en_bisiesto(self):
+    year = self.birthday.year
+    return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
+
+nacio_en_bisiesto.boolean = True
+```
+
+Fuente:
+
+- [El Ornitorrinco Enmascarado: Recetas Habituales en Django (Que siempre se me olvidan)](http://elornitorrincoenmascarado.blogspot.com/2015/10/recetas-habituales-en-django-que.html)
+
+
+## ¿Cómo mostrar contenido html en el admin?
+
+Para que el admin interprete cualquier texto producido por un método como HTML,
+sin escaparlo, debemos **asignarle al método en cuestión el atributo `allow_tag` a
+`True`**. Es recomendable que nos escudemos de posibles fallos de seguridad **usando
+la función `format_html()`** siempre que incluyamos en la salida texto generado por
+el usuario final. Por ejemplo:
+
+```python
+def colored_name(self):
+    return format_html('<span style="color: #{};">{} {}</span>',
+        self.color_code,
+        self.first_name,
+        self.last_name,
+        )
+
+colored_name.allow_tags = True
+```
+
+Fuente:
+
+- [El Ornitorrinco Enmascarado: Recetas Habituales en Django (Que siempre se me olvidan)](http://elornitorrincoenmascarado.blogspot.com/2015/10/recetas-habituales-en-django-que.html)
+
 
 ## Cómo migrar a 3.1.1
 
@@ -173,27 +231,25 @@ duplicates: foo" in Django 1.7?](https://stackoverflow.com/questions/24319558/ho
 
 - Si da problemas con CSRF, hay que añadir la siguiente varialble al `settings.py`:
 
-```
-CSRF_TRUSTED_ORIGINS = [
-        'https://subdomain.example.com',
-        'https://*.blob.com',
-        ...
-    ]
-```
+    ```python
+    CSRF_TRUSTED_ORIGINS = [
+            'https://subdomain.example.com',
+            'https://*.blob.com',
+            ...
+        ]
+    ```
 
     Por defecto es la lista vacia. Los valores en las versiones anteriores
     a la 4 puede que estuvieran sin el esquema, y seguramente sin poder
     usar asteriscos.
 
-    - Fuente: [CSRF_TRUSTED_ORIGINS - Django settings](https://docs.djangoproject.com/en/4.0/ref/settings/#csrf-trusted-origins) 
-
-
+- Fuente: [CSRF_TRUSTED_ORIGINS - Django settings](https://docs.djangoproject.com/en/4.0/ref/settings/#csrf-trusted-origins) 
 
 
 ## Configurar VIM para trabajar con plantillas de Django
 
 Escribir `:setfiletype htmldjango` para que Vim resalte automáticamente
-las plantillas Django. Si solo se quiere reasltado de las etiquetas y tags de
+las plantillas Django. Si solo se quiere resaltado de las etiquetas de
 Django pero no de HTML, hay que usar `:setfiletype django`.
 
 Fuente: [Syntax highlighting for django templates](https://www.vim.org/scripts/script.php?script_id=1487) 
@@ -202,9 +258,9 @@ Fuente: [Syntax highlighting for django templates](https://www.vim.org/scripts/s
 
 ## Cuáles son los posibles valores del parámetro `on_delete` en los campos de modelos
 
-Este es el comportamiento a adoptar cuando se borra un objeto de la base de datos
-que está referenciado desde otra parte. Esto es parte del estándar SQL, no de
-Django.
+Este es el comportamiento a adoptar cuando se borra un objeto de la base de
+datos que está referenciado desde otra parte. Esto es parte del estándar SQL,
+no de Django.
 
 Hay 6 acciones posibles que se pueden tomar:
 
@@ -213,10 +269,9 @@ Hay 6 acciones posibles que se pueden tomar:
   artículo de un _Blog_, se borrarían también todos los comentarios del mismo.
   En SQL se usa la misma palabra clave, `CASCADE`.
 
-- `PROTECT`: Impide el borrado, mientras existan objetos
-  que lo referencien. Habría que borrar a mano los comentarios para poder
-  borrar el articulo, si seguimos con el ejemplo anterior. La palabra
-  clave SQL es `RESTRICT`.
+- `PROTECT`: Impide el borrado, mientras existan objetos que lo referencien.
+  Habría que borrar a mano los comentarios para poder borrar el articulo, si
+  seguimos con el ejemplo anterior. La palabra clave SQL es `RESTRICT`.
 
 - `SET_NULL`: Pone a nulo las referencias externas (Lo que exige que el campo
   acepte el valor nulo). Por ejemplo, al borrar a un usuario del _Blog_, dejar
@@ -226,8 +281,8 @@ Hay 6 acciones posibles que se pueden tomar:
 - `SET_DEFAULT`: Similar al anterior, pero en vez de nulo se usa el valor por
   defecto, si está definido. En SQL es igual, `SET DEFAULT`.
 
-- `SET(...)`: Similar a los dos anteriores, pero se define el valor a usar. Este modo no
-  existe en el estándar SQL, es gestionado enteramente por Django.
+- `SET(...)`: Similar a los dos anteriores, pero se define el valor a usar.
+  Este modo no existe en el estándar SQL, es gestionado enteramente por Django.
 
 - `DO_NOTHING`: Probablemente una muy mala idea, ya que romperá la integridad
   referencial en la base de datos. En SQL se usa `NO ACTION`.
@@ -257,13 +312,30 @@ A modo de explicación adicional para el caso más complicado, el `CASCADE`:
 Fuente: [Best practices working with Django models](https://steelkiwi.com/blog/best-practices-working-django-models-python/)
 
 
-## How to make a multiple form, this is, a form across several pages
+## Cómo hacer formularios múltiples, divididos en varias páginas
 
-Use the external app [django-formtools](https://github.com/django/django-formtools/).
+Hay que usar una _app_ externa, [django-formtools](https://github.com/django/django-formtools/).
 
-This use to be in the django main distribution, but was split as a
-separated app sinde Django 1.8. For this functionality, you'll need the
-Form Wizard class, as explained here: [Form wizard](https://django-formtools.readthedocs.io/en/latest/wizard.html).
+Esta _app_ solía ser parte de la distribución estándar de Django, pero a partir
+de Django 1.8 se distribuye como una _app_ separada. Usa la clase
+[`WizardView`](https://django-formtools.readthedocs.io/en/latest/wizard.html),
+y el mecanismo de uso es:
+
+- Añadir `formtools` a la variable `INSTALLED_APPS`.
+
+- Definimos una serie de formularios, instancias de `Form`, uno para cada
+  página del wizard.
+
+- Creamos una subclase de `WizardView`, que especifica lo que tenemos que
+  hacer cuando **todos** los formularios anteriores hayan sido presentados y
+  validados.
+
+- Creamos plantillas para presentar los formularios. Se puede usar una única
+  plantilla genérica para todos los formularios o usar plantillas especificas
+  para cada uno de los formularios.
+
+- Apuntar la ruta que queremos para el formulario inicial al método `as_view()`
+  de la clase derivada de `WizardView`.
 
 
 ## Cómo usar el método `extra` de los queryset para consultas avanzadas
@@ -338,7 +410,7 @@ El resultado debería ser el mismo en los dos casos.
 
 Es verdad que podemos realizar este calculo de bandas de precios en un método
 de la clase `Item`, pero en ocasiones puede ser útil o necesario que
-determinadas operaciones las haga la base de datos por nosotros.
+**determinadas operaciones las haga la base de datos por nosotros**.
 
 Obviamente también podemos pasar subconsultas como campo añadido al select, que
 nos da aun más posibilidades. Por ejemplo, supongamos que en nuestra aplicación
@@ -402,17 +474,18 @@ oficial: [Django Query Set API reference - extra](https://docs.djangoproject.com
 
 ## How to modify the queryset used in the admin forms to get a Foreign Model
 
-You don't need to specify this in a form class, but can do it directly
-in the ModelAdmin, as Django already includes this built-in method on
-the ModelAdmin. From the docs:
+No hay que modificar el formumario en si, sino modificar la
+clase derivada de ModelAdmin. Django incluye un método específico
+par esto en la clase madre, `formfield_for_foreignkey`.
 
-```python
-ModelAdmin.formfield_for_foreignkey(self, db_field, request, **kwargs):
-'''The formfield_for_foreignkey method on a ModelAdmin allows you to
-    override the default formfield for a foreign keys field. For example,
-    to return a subset of objects for this foreign key field based on the
-    user:'''
-```
+De la documentación:
+
+> ModelAdmin.formfield_for_foreignkey(self, db_field, request, \*\*kwargs):
+>
+> The formfield_for_foreignkey method on a ModelAdmin allows you to
+> override the default formfield for a foreign keys field. For example,
+> to return a subset of objects for this foreign key field based on the
+> user
 
 Veámoslo con un ejemplo:
 
@@ -432,7 +505,7 @@ class MyModelAdmin(admin.ModelAdmin):
 ```
 
 
-## Cómo usar formularios diferentes en el _admin_ para insertar y modificar
+## Cómo usar formularios diferentes en el admin para insertar y modificar
 
 Usa el método `get_form` de la clase `ModelAdmin`, y devuelve el formulario que
 necesites en cada caso. Puedes discriminar si es un `UPDATE` o un `INSERT`
@@ -455,7 +528,7 @@ class AdminBiografia(admin.ModelAdmin):
 ```
 
 
-## How to make a CASE statement using the django ORM
+## Como hacer un CASE de base de datos usando el ORM de Django
 
 First thing is know to use the conditional expressions. Conditional expressions
 let you use `if ... elif ... else` logic within filters, annotations,
@@ -505,6 +578,7 @@ When(account_type=Client.GOLD, then=F('name'))
 
 # You can use field lookups in the condition
 from datetime import date
+
 When(registered_on__gt=date(2014, 1, 1),
         registered_on__lt=date(2015, 1, 1),
         then='account_type')
@@ -521,9 +595,9 @@ non_unique_account_type = Client.objects.filter(
 When(Exists(non_unique_account_type), then=Value('non unique'))
 ```
 
-Una expresión **Case** usa varios objetos `When()`, que son evaluados por orden.
-Cuando uno de ellos se evaluea a un valor verdadero, se devolverá el
-valor correspondiente.
+Una expresión **Case** usa varios objetos `When()`, que son evaluados por
+orden.  Cuando uno de ellos se evalúa como verdadero, se devolverá el valor
+correspondiente.
 
 Un ejemplo:
 
@@ -557,10 +631,7 @@ Fuentes:
 
 ## Cómo enlazar a una página dentro del admin
 
-When an AdminSite is deployed, the views provided by that site are accessible
-using Django's URL reversing system.
-
-The AdminSite provides the following named URL patterns:
+La _app_ `admin` proporciona los siguientes patrones de enlace:
 
 | Page                      | URL name | Parameters                 |
 |---------------------------|----------|----------------------------|
@@ -590,7 +661,7 @@ Por ejemplo, para enlazar con la página de edición (*change*) del modelo
 `Libro` dentro de la _app_ `biblioteca`, sería:
 
 ```
-admin:biblioteca_libro_change
+admin:biblioteca_libro_change <object_id>
 ```
 
 Fuentes:
@@ -674,7 +745,7 @@ relational base with JsonField to store some data.
 
 Nunca usar `null=True` o `blank=True` para campos `BooleanField`. En general es
 mejor especificar un valor por defecto que sea razonable. Si no es posible o si
-fuera necesario dejar el valor vacio, usar `NullBooleanField`.
+fuera necesario dejar el valor vacío, usar `NullBooleanField`.
 
 
 ## Cómo usar el parámetro `choices`
@@ -692,12 +763,13 @@ Recomendaciones al usar el parámetro `choices`:
 - Especificar las variantes antes de usarlas en el campo, ya sea como constantes
   externas o como constantes de la clase.
 
-- Si es una lista de estados, puede ayudar listarlos en orden cronológico:
+- Si es una lista de estados, puede ayudar presentarlos en orden cronológico:
   (Por ejemplo `nuevo`, `en_proceso`, `terminado`).
 
 Puedes usar la clase `Choices` definida en la librería externa
 [model_utils](https://django-model-utils.readthedocs.io/), o si estás en Django
 a partir de la versión $3+$, usar enumeraciones:
+
 
 ```python
 from model_utils import Choices
@@ -712,8 +784,8 @@ class Article(models.Model):
 
 ## ¿Demasiadas valores booleanos en un modelo?
 
-Puede ser aconsejable reemplazar un conjuto de valores booleanos
-por un campo de estado. Vesmoa el siguiente ejemplo:
+Puede ser aconsejable reemplazar un conjunto de valores booleanos
+por un campo de estado. Veamos el siguiente ejemplo:
 
 ```python
 class Article(models.Model):`
@@ -721,11 +793,11 @@ class Article(models.Model):`
     is_verified = models.BooleanField(default=False)
 ```
 
-Si asumimos que la lógica de la aplicación presupone que un articulo
+Si asumimos que la lógica de la aplicación es que un articulo
 empieza su vida como no publicado y no verificado, luego es comprobado 
-por un revisor, por ejemplo, y se marca como verificado. Tras eso, el editor
+por un revisor, y se marca como verificado si le da el visto bueno. Tras eso, el editor
 puede publicar los artículos verificados, pasando a publicado. El problema de
-este enfoque es que permite los llamados **estasos imposibles**, ya que solo hay
+este enfoque es que permite los llamados **estados imposibles**, ya que solo hay
 tres estados, pero cuatro posibles combinaciones de dos valores booleanos. 
 
 En este caso concreto, existe la posibilidad de tener un artículo publicado pero
@@ -798,25 +870,26 @@ can cause an exception `DoesNotExist`. Therefore,
 `order_by('created').first()` is the most useful variant.
 
 
-## Nunca cacular el tamaño de un `queryset` con `len`
+## Nunca calcular el tamaño de un `queryset` con `len`
 
 Nunca hay que usar `len` para calcular el numero de resultados de un
 _queryset_; es preferible usar el método `count`. El primer método funciona,
 pero es mucho más costoso, porque implica ejecutar la consulta, traerse
 **todos** los datos de la base de datos a memoria, transformarlos a instancias
-de la clase apropiado, y luego contarlos. El segundo método simplenmte realiza
+de la clase apropiado, y luego contarlos. El segundo método simplemente realiza
 la misma consulta a la base de datos pero con `SELECT COUNT(*) ...`, con lo que
 la base de datos hace todo el trabajo por nosotros.
 
 Si el número de elementos del _queryset_ es elevado, la diferencia en tiempo
 puede ser de varios ordenes de magnitud.
 
+
 ## No usar munca `if queryset`, es una mala idea
 
 Nunca hay que usar una variable de tipo `queryset` como un booleano
-directemante, es preferible usar `queryset.exists()`. La razón es más o menos
-la misma que en la nota enterior, es preferible que la base de datos realice la
-consulta usando la sentencia `EXISTS`, mucho más rápico y más barato.
+directamente, es preferible usar `queryset.exists()`. La razón es más o menos
+la misma que en la nota anterior, es preferible que la base de datos realice la
+consulta usando la sentencia `EXISTS`, mucho más rápido y más barato.
 
 
 ## Please use `help_text` as documentation
@@ -828,7 +901,7 @@ your colleagues, and admin users.
 
 ## Usar `DecimalField` para almacenar cantidades de dinero
 
-**Nunca se debe usar un campo `FloatField` para almacenar información sobre
+**Nunca usar un campo `FloatField` para almacenar información sobre
 cantidades de dinero**. Usa `DecimalField` mejor. Otras opciones habituales
 para evitar perdidas por redondeo es usar enteros y almacenar las cantidades
 como céntimos, centavos, peniques, etc.
@@ -1047,13 +1120,13 @@ an alternative name.
 Podemos crear nuestras propias migraciones. Este es realmente útil para
 cambios en las bases de datos que ya estén en producción.
 
-Crearamos una migracion vacia (_empty_):
+Primero creamos una migración vacía (_empty_):
 
 ```shell
 ./manage.py makemigrations --empty --name nombre_que_quieras_para_la_migracion <app>
 ```
 
-Esto creará un fichero de migración vacío, con un contenido similar a este:
+Esto creará un fichero de migración, que no hace nada, con un contenido similar a este:
 
 ```python
 # Generated by Django 3.2.12 on 2022-03-22 09:04
@@ -1113,12 +1186,12 @@ de forma que se sustituyan por una única migración. Además, intenta optimizar
 las migraciones al mezclarlas, de forma que se eliminan los cambios que son
 sobrescritos por migraciones posteriores.
 
-Por ejemplo, si tenemos una accion de tipo `CreateModel()` y más tarde aparece
+Por ejemplo, si tenemos una acción de tipo `CreateModel()` y más tarde aparece
 otra de tipo `DeleteModel()` para el mismo modelo, se pueden eliminar no solo
 las dos acciones indicadas, sino también cualquier acción intermedia que
 modifique al modelo.
 
-Igualmente, acciones como `AlterField()` o `AddField()` son transladadas a la
+Igualmente, acciones como `AlterField()` o `AddField()` son trasladadas a la
 versión final de la acción `CreateModel`.
 
 La versión final condensada también mantiene referencias al conjunto de
@@ -1141,7 +1214,7 @@ Por ejemplo, supongamos que tenemos la siguiente lista de migraciones:
         0004_auto_20190101_0123.py
 ```
 
-En la mayoría de los casos estarémos interesados en condensarlas todas en un
+En la mayoría de los casos, querríamos condensarlas todas en un
 único fichero. Para ello, ejecutamos la siguiente orden:
 
 ```shell
@@ -1191,13 +1264,16 @@ assert router.db_for_write(ModelAlfa) == 'default'
 
 A veces queremos hacer un tratamiento previo a una instancia de un modelo y
 necesitamos hacerlo **antes** de que se almacene en la base de datos.  La
-solución es llamar al método `save` del formulario con el parámetro con el
-parámetro opcional `commit`, un valor booleano que por defecto vale `True`.
-Con un valor de `False`, sin embargo, el formulario crea una instancia del
-modelo en memoria, pero **no la salva en la base de datos**.
+solución es llamar al método `save` del formulario usando el parámetro opcional
+`commit`. El parámetro `commit` es un valor booleano que por defecto vale
+`True`.
 
-Obviamente, es importante que en algún momento posterior salvemos nosotros
-la instancia en la base de datos.
+Si llamamos a `save` con `commit` a `False`, el formulario crea una instancia
+del modelo en memoria, pero **no la salva en la base de datos**.
+
+Obviamente, es importante que en algún momento posterior salvemos nosotros la
+instancia en la base de datos, lo que implica llamar a `save` con `commit` a
+`True`.
 
 Fuente: [Creating forms from models | Django documentation](https://docs.djangoproject.com/en/4.1/topics/forms/modelforms/#the-save-method)
 
@@ -1207,12 +1283,13 @@ Los _QuerySets_ se pueden serializar con
 [pickle](https://docs.python.org/3/library/pickle.html), y esto conlleva que la
 consulta es ejecutada y todos los resultados son almacenados también en la
 serializacion. Esto puede ser útil a efectos de _cachear_ el _queryset_.
-Obviamente, al deserializar el resultado, los registros obtenidos pueden diferir
-de los almacenados en ese momento en la base de datos.
+
+Obviamente, al recuperar el resultado, los registros obtenidos pueden
+diferir de los almacenados en ese momento en la base de datos.
 
 Si quieres almacenar solo la información necesaria para recrear el _queryset_,
 podemos serializar solo la propiedad `query`. Para recrear el _queryset_,
-hariamos algo como esto:
+haríamos algo como esto:
 
 ```python
 import pickle

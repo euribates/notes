@@ -1,5 +1,5 @@
 ---
-title: Notas sobre pyenv
+title: Notas sobre pyen establev
 tags:
   - python
   - virtualization
@@ -56,7 +56,7 @@ virtualenv:
 pyenv virtualenv 3.11.2 newacl
 ```
 
-Si no se especifica la versión, se instlara la última version conocida por
+Si no se especifica la versión, se instalará la última versión estable conocida por
 pyenv.
 
 ## Listando los virtualenvs existentes
@@ -67,7 +67,7 @@ Con el comando `pyenv virtualenvs`.
 ## Activando/Desactivando los entornos virtuales con pyenv
 
 Si en una carpeta existe un fichero `.python-version` cuyo contenido case con
-el nombre de un entorno virtual, y si hemos ejecutado previmente en la shell:
+el nombre de un entorno virtual, y si hemos ejecutado previamente en la _shell_:
 
 `eval "$(pyenv virtualenv-init -)"`
 
