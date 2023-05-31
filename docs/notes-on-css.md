@@ -652,8 +652,84 @@ Se puede hacer usando solo CSS, usando listas anidadas.
 
 Primero, a la lista más externa le ponemos la clase `tree`. Cada elemento de la
 lista estará compuesto por doe elementos,`details` y `summary`, y usaremos el
-atributo `open` de details para controlar cuando el contenido se espande o se
+atributo `open` de details para controlar cuando el contenido se expande o se
 colapsa.
 
 
 Fuente: [Tree views in CSS](https://iamkate.com/code/tree-views/)
+
+
+## El modelo Flax en CSS
+
+El modelo **flexbox** es un modelo de composición unidimensional (Es decir, que
+funciona o en modo columna o en modo fila, pero no en ambos a la vez. Para eso
+usaríamos el _Grid Layout_.
+
+Para trabajar con flex, lo primero es definir el **eje principal**, eso se hace
+con la propiedad `flex-direction`. Los valores posibles son: `row`,
+`row-reverse`, `column` y `column-reverse'. Los valores `row` o `row-reverse`
+definen como eje principal el horizontal, `column` y `column-reverse` definen el
+eje vertical como eje principal. El valor por defecto es `row`.
+
+El **eje perpendicular** también es importante, pero no hace falta definirlo, ya
+que es, como su nombre indica, perpendicular al eje principal.
+
+Flex permite alinear y justificar tanto el en eje principal como en el eje
+perpendicular, así que tenemos que tener claros cuales son.
+
+Otro concepto relacionado con los ejes son los de de **inicio** y **fin**. Como
+se quiere que el modelo sea agnóstico con respecto a los hábitos de escritura
+de diferentes culturas, no se habla nunca de izquierda/derecha ni arriba/abajo,
+sino de inicio y fin. Si `flex-direction` es `row`, entonces el margen inicial
+del eje principal quedará a la izquierda, y el margen final a la derecha.
+
+
+```
+flex-direction: row
+
+╭────────────────────────────╮
+│                            │
+│ [A] [B] [C]                │   
+│                            │
+╰────────────────────────────╯
+```
+
+Si fuera a trabajar en árabe, usaría `row-reverse` y entonces el margen inicial
+del eje principal queda a la derecha y el margen final a la izquierda.
+
+```
+flex-direction: row-reverse
+
+╭────────────────────────────╮
+│                            │
+│                [C] [B] [A] │   
+│                            │
+╰────────────────────────────╯
+```
+
+
+Un área del documento que contiene un _flexbox_ es llamada **contenedor flex**.
+Para crear un contenedor flex, establecemos la propiedad del área del contenedor
+display como `flex` o `inline-flex`. Tan pronto como hacemos esto, los hijos
+directos de este contenedor se vuelven **ítems flex**. Como con todas las
+propiedades de CSS, se definen algunos valores iniciales, así que cuando creemos
+un contenedor flex todos los ítems flex contenidos se comportarán de la
+siguiente manera.
+
+- Los ítems se despliegan sobre una fila (la propiedad flex-direction por defecto es row)
+
+- Los ítems empiezan desde el margen inicial sobre el eje principal
+
+- Los ítems no se ajustan en la dimensión principal, pero se pueden contraer
+
+- Los ítems se ajustarán para llenar el tamaño del eje cruzado
+
+- La propiedad `flex-basis` es definida como `auto`
+
+- La propiedad `flex-wrap` es definida como `nowrap`.
+
+El resultado es que todos los ítems se alinearán en una solo fila, usando el
+tamaño del contenedor como su tamaño en el eje principal. Si hay más ítems de
+los que caben en el contenedor, estos no pasarán más abajo si no que
+sobrepasarán el margen. Si hay ítems más altos que otros, todos los ítems serán
+ajustados en el eje cruzado para alcanzar al mayor.
