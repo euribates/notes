@@ -658,6 +658,72 @@ colapsa.
 
 Fuente: [Tree views in CSS](https://iamkate.com/code/tree-views/)
 
+## Como posicionar texto sobre una imagen
+
+Ponemos en un contendor comun las imagen y el texto:
+
+```html
+ <div class="container">
+  <img src="img_snow_wide.jpg" alt="Snow" style="width:100%;">
+  <div class="bottom-left">Bottom Left</div>
+  <div class="top-left">Top Left</div>
+  <div class="top-right">Top Right</div>
+  <div class="bottom-right">Bottom Right</div>
+  <div class="centered">Centered</div>
+</div>
+```
+
+Hacemos que el contendor tenga `position` a `relative`:
+
+```css
+.container {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+```
+
+Y para posicionar el texto en las esquinas o en el centro:
+
+```
+.bottom-left {
+  position: absolute;
+  bottom: 8px;
+  left: 16px;
+}
+
+/* Top left text */
+.top-left {
+  position: absolute;
+  top: 8px;
+  left: 16px;
+}
+
+/* Top right text */
+.top-right {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+}
+
+/* Bottom right text */
+.bottom-right {
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+}
+
+/* Centered text */
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+```
+
+
+Fuente: [How To Position Text Over an Image](https://www.w3schools.com/howto/howto_css_image_text.asp)
 
 ## El modelo Flax en CSS
 
@@ -731,5 +797,168 @@ siguiente manera.
 El resultado es que todos los ítems se alinearán en una solo fila, usando el
 tamaño del contenedor como su tamaño en el eje principal. Si hay más ítems de
 los que caben en el contenedor, estos no pasarán más abajo si no que
-sobrepasarán el margen. Si hay ítems más altos que otros, todos los ítems serán
+sobrepasarán el margen. Si los ítems tienen diferentes alturas, todos serán
 ajustados en el eje cruzado para alcanzar al mayor.
+
+```css
+box {
+    display: flex;
+}
+```
+
+```html
+<div class="box">
+  <div>One</div>
+  <div>Two</div>
+  <div>Three
+      <br>has
+      <br>extra
+      <br>text
+  </div>
+</div>
+```
+
+El resultado será:
+
+```
+╭─────────────────────────────────────────╮
+│ ╭─────╮ ╭─────╮ ╭───────╮               │   
+│ │ One │ │ Two │ │ Three │               │   
+│ │     │ │     │ │ has   │               │   
+│ │     │ │     │ │ extra │               │   
+│ │     │ │     │ │ text  │               │   
+│ ╰─────╯ ╰─────╯ ╰───────╯               │
+╰─────────────────────────────────────────╯
+```
+
+Como se comento antes, si los elementos exeden el tamaño del contenedor en el
+eje principal, por defecto sequiran en la misma línea (o columna), pero podemos
+hacer que se repartan en varias líneas/columnas usando la propiedad `flex-wrap`
+con el valor `wrap` (El valor por defecto es `nowrap`).
+
+### La abreviatura flex-flow
+
+Se pueden combinar las propiedades `flex-direction` y `flex-wrap` en la
+abreviatura `flex-flow` . El primer valor especificado es `flex-direction` y el
+segundo, `flex-wrap`.
+
+
+### Propiedades aplicadas a los ítems flex
+
+Para obtener más control sobre los ítems flex disponemos de tres propiedades:
+
+- `flex-grow`
+
+- `flex-shrink`
+
+- `flex-basis`
+
+Antes de darle sentido a estas propiedades debemos considerar el concepto de
+**espacio disponible**. Lo que hacemos cuando cambiamos el valor de alguna de
+estas propiedades es cambiar la forma que se distribuye el espacio disponible
+entre nuestros ítems. Este concepto de espacio disponible es también importante
+cuando veamos la alineación de ítems.
+
+Si tenemos tres ítems con un ancho de 100 pixeles en un contenedor de 500
+pixeles de ancho, entonces el espacio que se necesita para colocar nuestros
+ítems es de 300 pixeles. Esto deja 200 pixeles de espacio disponible. Si no
+cambiamos los valores iniciales, flexbox colocará ese espacio después
+del último ítem.
+
+```
+╭──────────────────────────────────────────╮
+│ ╭──────╮ ╭──────╮ ╭──────╮               │   
+│ │ A    │ │ B    │ │ C    │               │   
+│ ╰──────╯ ╰──────╯ ╰──────╯               │
+╰──────────────────────────────────────────╯
+```
+
+La propiedad **flex-basis** define el tamaño de un ítem en términos del espacio
+que deja como espacio disponible. El valor inicial de esta propiedad es `auto`; en
+este caso el navegador revisa si los ítems definen un tamaño. En el ejemplo anterior,
+todos los ítems tienen un ancho de 100 pixeles así que este es usado como `flex-basis`.
+Si los ítems no tiene un tamaño entonces el **tamaño de su contenido** es usado como
+`flex-basis`. 
+
+
+Con la propiedad `flex-grow` definida como un entero positivo, los ítems flex pueden
+crecer en el eje principal a partir de `flex-basis`. Esto hará que el ítem se ajuste
+y tome todo el espacio disponible del eje, o una proporción del espacio disponible
+si otro ítem también puede crecer.
+
+Si le damos a todos los ítems del ejemplo anterior un valor `flex-grow` de $1$ entonces
+el espacio disponible en el contenedor flex será compartido equitativamente entre estos
+ítems y se ajustarán para llenar el contenedor sobre el eje principal.
+
+También podemos usar `flex-grow` para distribuir el espacio proporcionalmente. Si
+otorgamos al primer ítem un valor `flex-grow` de $2$ y a los otros un valor de $1$,
+entonces el primer elemento ocupara el mismo espacio que los otros dos.
+
+Así como la propiedad `flex-grow` se encarga de añadir espacio sobre el eje
+principal, la propiedad `flex-shrink` controla como se contrae. Si no contamos
+con suficiente espacio en el contenedor para colocar los ítems y `flex-shrink`
+posee un valor entero positivo, el ítem puede contraerse a partir de flex-basis.
+Así como podemos asignar diferentes valores de `flex-grow` con el fin que un ítem
+se expanda más que otros, un ítem con un valor más alto de `flex-shrink` se contraerá
+más que sus hermanos que poseen valores menores.
+
+Hay que considerar el tamaño mínimo del ítem para poder determine un valor de
+contracción, por lo que `flex-shrink` puede comportarse de forma menos
+consistentemente que `flex-grow`.
+
+Es raro ver la propiedades `flex-grow`, `flex-shrink` y `flex-basis`
+usadas individualmente ya que han sido combinadas en la abreviación `flex`,
+que permite establecer los valores en este orden: `flex-grow`, `flex-shrink` y
+`flex-basis`.
+
+
+
+Una característica clave de flexbox es la capacidad de **alinear y justificar
+ítems sobre los ejes principal y cruzado**, y distribuir el espacio entre los
+ítems flex. La propiedad `align-items` alineará los ítems sobre el eje cruzado,
+mientras que `justify-content` los alinea sobre el eje principal.
+
+El valor inicial para `align-items` es `stretch`, razón por la cual los ítems
+se ajustan por defecto a la altura del más alto. En efecto se ajustan para
+llenar el contenedor flex — el ítem más alto define la altura de este.
+
+En cambio usaremos `flex-start` para que los ítems se
+alineen al comienzo del contenedor flex, `flex-end` para alinearlos al
+final, o `center` para alinearlos al centro. 
+
+Los valores posibles de `align-items` son:
+
+- `stretch`
+
+- `flex-start`
+
+- `flex-end`
+
+- `center`
+
+La propiedad `justify-content` sirve para alinear los ítems en el eje
+principa. El valor inicial es `flex-start` que alineará los ítems al
+inicio del margen del contenedor, pero también se podría definir
+como `flex-end` para alinearlos al final, o `center` para alinearlos al
+centro.
+
+Los valores de `justify-content` son:
+
+- `space-evenly`
+
+- `flex-start`
+
+- `flex-end`
+
+- `center`
+
+- `space-around`
+
+- `space-between`
+
+
+También podemos usar `space-between` para tomar todo el espacio sobrante
+después de que los ítems hayan sido colocados, y distribuir de forma
+pareja los ítems para que haya un espacio equitativo entre cada ítem. O
+bien, usamos el valor `space-around` para crear un espacio equitativo
+a la derecha e izquierda de cada ítem.
