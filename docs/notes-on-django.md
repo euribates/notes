@@ -1445,3 +1445,43 @@ parámetros o atributos de la aplicación. Según la documentación:
 > aplicación. Algunos de estos valores pueden ser modificados definiendo
 > una subclase de `AppConfig`, mientras que otros se definen
 > por Django y son de solo lectura.
+
+## En Django 4.x las plantillas se cachean si DEBUG=true
+
+Todas las plantillas se cachean por defecto en Django a partir de la version 4,
+si el valor de `settings.DEBUG` es verdadero.
+
+De las notas de la version 4.1:
+
+> The cached template loader is now enabled in development, when `DEBUG` is True,
+> and `OPTIONS['loaders']` isn’t specified. You may specify `OPTIONS['loaders']` to
+> override this, if necessary.
+
+La solución es:
+
+```py
+default_loaders = [
+    "django.template.loaders.filesystem.Loader",
+    "django.template.loaders.app_directories.Loader",
+]
+
+cached_loaders = [("django.template.loaders.cached.Loader", default_loaders)]
+
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+            "loaders": default_loaders if DEBUG else cached_loaders,
+        },
+    },
+]
+```
+
+Fuente: [Django 4.1+ HTML Templates Are Cached by Default with DEBUG = True &mdash; Nick Janetakis](https://nickjanetakis.com/blog/django-4-1-html-templates-are-cached-by-default-with-debug-true)

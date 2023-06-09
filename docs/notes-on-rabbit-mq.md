@@ -1,4 +1,11 @@
-## Notes on Rabbit-MQ
+---
+title: Notas sobre Rabbit-MQ
+tags:
+    - linux
+    - backend
+---
+
+## Notas sobre Rabbit-MQ
 
 Notes from the session (26/Sep/2019):
 
@@ -34,7 +41,7 @@ client applications to communicate with conforming messaging middleware brokers.
 Messaging brokers receive messages from publishers (applications that publish them, also known as producers) and route them to consumers (applications that process them).
 
 
-#### Brokers and Their Role
+### Brokers and Their Role
 
 The AMQP 0-9-1 Model has the following view of the world: messages are published to **exchanges**, which
 are often compared to post offices or mailboxes. Exchanges then distribute message copies to **queues**
@@ -63,7 +70,7 @@ subscribe to queues and so on.  This gives application developers a lot of freed
 them to be aware of potential definition conflicts. In practice, definition conflicts are rare and
 often indicate a misconfiguration.
 
-#### Exchanges and Exchange Types
+### Exchanges and Exchange Types
 
 Exchanges are AMQP 0-9-1 entities where messages are sent. Exchanges take a message and route it
 into zero or more queues. The routing algorithm used depends on the exchange type and rules called
@@ -87,7 +94,7 @@ Exchanges can be **durable** or **transient**. Durable exchanges survive broker 
 transient exchanges do not (they have to be redeclared when broker comes back online). Not all
 scenarios and use cases require exchanges to be durable.
 
-#### The Default Exchange
+### The Default Exchange
 
 The default exchange is a direct exchange with no name (empty string) pre-declared by the broker. It
 has one special property that makes it very useful for simple applications: every queue that is
@@ -202,7 +209,9 @@ will be returned to the client with queue declaration response.
 
 Queue names starting with "amq." are reserved for internal use by the broker. Attempts to declare a
 queue with a name that violates this rule will result in a channel-level exception with reply code
-403 (ACCESS_REFUSED).  Queue Durability
+403 (`ACCESS_REFUSED`).
+
+### Queue Durability
 
 Durable queues are persisted to disk and thus survive broker restarts. Queues that are not durable
 are called transient. Not all scenarios and use cases mandate queues to be durable.
@@ -220,7 +229,9 @@ routing key acts like a filter.
 To draw an analogy:
 
 - Queue is like your destination in New York city
+
 - Exchange is like JFK airport
+
 - Bindings are routes from JFK to your destination. There can be zero or many ways to reach it
 
 Having this layer of indirection enables routing scenarios that are impossible or very hard to
@@ -290,7 +301,7 @@ of the work it is doing.
 Note that RabbitMQ only supports channel-level prefetch-count, not connection or size based
 prefetching.
 
-### Message Attributes and Payload
+## Message Attributes and Payload
 
 Messages in the AMQP 0-9-1 model have attributes. Some attributes are so common that the AMQP 0-9-1 specification defines them and application developers do not have to think about the exact attribute name. Some examples are
 
@@ -321,14 +332,14 @@ a message persistent: it all depends on persistence mode of the message itself. 
 as persistent affects performance (just like with data stores, durability comes at a certain cost in
 performance).
 
-### Connections
+## Connections
 
 AMQP 0-9-1 connections are **typically long-lived**. AMQP 0-9-1 is an application level protocol that
 uses TCP for reliable delivery. Connections use authentication and can be protected using TLS. When
 an application no longer needs to be connected to the server, it should gracefully close its AMQP
 0-9-1 connection instead of abruptly closing the underlying TCP connection.
 
-### Channels
+## Channels
 
 Some applications need multiple connections to the broker. However, it is undesirable to keep many
 TCP connections open at the same time because doing so consumes system resources and makes it more
@@ -346,7 +357,7 @@ closed, so are all channels on it.
 For applications that use multiple threads/processes for processing, it is very common to open a new
 channel per thread/process and not share channels between them.
 
-### Virtual Hosts
+## Virtual Hosts
 
 To make it possible for a single broker to host multiple isolated "environments" (groups of users,
 exchanges, queues and so on), AMQP 0-9-1 includes the concept of virtual hosts (vhosts). They are
@@ -354,9 +365,9 @@ similar to virtual hosts used by many popular Web servers and provide completely
 environments in which AMQP entities live. Protocol clients specify what vhosts they want to use
 during connection negotiation.
 
-### AMQP is Extensible
+## AMQP is Extensible
 
-AMQP 0-9-1 has several extension points:
+AMQP has several extension points:
 
 - Custom exchange types let developers implement routing schemes that exchange types provided
   out-of-the-box do not cover well, for example, geodata-based routing.
@@ -373,9 +384,9 @@ AMQP 0-9-1 has several extension points:
 
 These features make the AMQP 0-9-1 Model even more flexible and applicable to a very broad range of problems.
 
-### AMQP 0-9-1 Clients Ecosystem
+## AMQP Clients Ecosystem
 
-There are many AMQP 0-9-1 clients for many popular programming languages and platforms. Some of them
+There are many clients for many popular programming languages and platforms. Some of them
 follow AMQP terminology closely and only provide implementation of AMQP methods. Some others have
 additional features, convenience methods and abstractions. Some of the clients are asynchronous
 (non-blocking), some are synchronous (blocking), some support both models. Some clients support
@@ -386,4 +397,6 @@ understand protocol operations and not limit themselves to terminology of a part
 library. This way communicating with developers using different libraries will be significantly
 easier.  Getting Help and Providing Feedback
 
-> Source: <https://www.rabbitmq.com/tutorials/amqp-concepts.html>
+Fuentes:
+
+ - [AMQP Model Explained — RabbitMQ](https://www.rabbitmq.com/tutorials/amqp-concepts.html)

@@ -16,6 +16,7 @@ Referencia: `help: clipboard`
 > register is the same as the `*` register.  Thus you can yank to and paste the
 > selection without prepending `"*` to commands.
 
+
 ## Cómo incluir caracteres Unicode en Vim (Diagraphs)
 
 | Keys                   | Meaning          | Symbol |
@@ -34,12 +35,10 @@ Referencia: `help: clipboard`
 |++ctrl+shift+k++ `?=`   | Aproximadamente  | ≅      |
 |++ctrl+shift+k++ `?3`   | Equivalente      | ≡      |
 
-Referencias:
+Fuentes:
 
 - [List of Unicode useful symbols](https://en.wikibooks.org/wiki/Unicode/List_of_useful_symbols)
-
 - [RFC 1345 - Character Mnemonics and Character Sets](https://datatracker.ietf.org/doc/html/rfc1345)
-
 - [Deep dive into Digraph - Part 1](https://hjkl.substack.com/p/deep-dive-into-digraph-part-1?s=r)
 
 
@@ -58,7 +57,9 @@ una opción, no lleva `set`):
 :nohlsearch
 ```
 
-Fuente: [Highlight all search pattern matches | Vim Tips Wiki](https://vim.fandom.com/wiki/Highlight_all_search_pattern_matches)
+Fuentes:
+
+- [Highlight all search pattern matches | Vim Tips Wiki](https://vim.fandom.com/wiki/Highlight_all_search_pattern_matches)
 
 
 ## Cuál es la diferencia entre `remap`, `noremap`, `nnoremap` y `vnoremap`
@@ -89,7 +90,8 @@ se ha hecho un mapeo no recursivo.
 Es importante recordar que Vim es un editor **modal**; tiene un modo
 **normal**, un modo **visual**, entre otros. Hay un mapeo que funciona en los
 modos normal, visual, selección y operador (`:map` y `:noremap`), uno que
-funciona solo en modo normal (`:nmap` y `:nnoremap`), uno que funiona solo en modo visual (`:vmap` t `:vnoremap`), etc.
+funciona solo en modo normal (`:nmap` y `:nnoremap`), uno que funciona solo en
+modo visual (`:vmap` t `:vnoremap`), etc.
 
 Para más información sobre este tema:
 
@@ -106,7 +108,6 @@ Fuentes:
  - [Mapping keys in Vim - Tutorial (Part 1)](https://vim.fandom.com/wiki/Mapping_keys_in_Vim_-_Tutorial_(Part_1))
 
 
-
 ## Cómo reutilizar una selección visual
 
 Often when editing code, I'll select a block in visual mode and do a search and
@@ -115,18 +116,17 @@ mode. How do you do a new find and replace over the same selection?
 
 You may re-select the last selected visual area with `gv`.
 
-Sources: 
+Fuentes: 
 
 - [StackOverflow - How do you reuse a visual mode selection?](https://superuser.com/questions/220666/how-do-you-reuse-a-visual-mode-selection)
 
 
-
 ## Dónde puedo obtener resumenes/chuletas sobre Vim
 
--   [Vim Diff cheatshhet](https://devhints.io/vim-diff)
--   [Vim Cheatshhet](https://vim.rtorr.com/)
+- [Vim Diff cheatshhet](https://devhints.io/vim-diff)
+- [Vim Cheatshhet](https://vim.rtorr.com/)
 
-## Plantillas automáticaspor tipo de fichero (_skeletons_)
+## Plantillas automáticas por tipo de fichero (_skeletons_)
 
 Vim has a built-in concept called **skeleton files** which allow you to
 automatically populate a new file with a given template. Learn about it
@@ -149,25 +149,28 @@ autocmd BufNewFile *.sh 0r ~/skeletons/bash.sh
 
 Tags: skeleton, snippets, templates, vim
 
-Source: [Automated file templates](https://vimtricks.com/p/automated-file-templates/)
+Fuentes:
+
+- [Automated file templates](https://vimtricks.com/p/automated-file-templates/)
+
 
 ## Cómo posicionar el cursor despues de una búsqueda
 
-You can do it with this:
+Se puede hacer de la siguiente manera:
 
 ```
 /Fish/e
 ```
 
-La `/e` del final posiciona el cursor al final del texto encontrado, en lugasr de posicionarse al principio, que es el comportamiento por defecto. Además se puede
-añadir  `-n` o `+n` para posicionar el cursor $n$ posiciones antes o después de la posición final.
+La `/e` del final posiciona el cursor al final del texto encontrado, en lugar
+de posicionarse al principio, que es el comportamiento por defecto. Además se
+puede añadir  `-n` o `+n` para posicionar el cursor `n` posiciones antes o
+después de la posición final.
 
-También se puede usar `/s[+|-]<num>` para posicionarse a partir del principoo.
+También se puede usar `/s[+|-]<num>` para posicionarse a partir del principo.
 Usando `/Fish/s+2` te posiciona en la letra `s`.
 
-Fuente: [StackOverflow - Is there a command in Vim/Vi to move the cursor to the
-end of a search highlight?](Is there a command in Vim/Vi to move the cursor to
-the end of a search highlight?)
+Fuente: [StackOverflow - Is there a command in Vim/Vi to move the cursor to the end of a search highlight?](https://stackoverflow.com/questions/10707626/is-there-a-command-in-vim-vi-to-move-the-cursor-to-the-end-of-a-search-highlight)
 
 
 ## Como indentar/desindentar en modo de inserción.
@@ -190,6 +193,12 @@ Para habilitar o inhabilitar el corrector.
 
 - `:set nospell` desactiva el corrector
 
+Si queremos activar el corrector en español:
+
+```vim
+setlocal spell spelllang=es
+```
+
 Para navegar entre errores:
 
 - `]s` te lleva hasta la siguiente palabra errónea. Si precedes esta
@@ -207,20 +216,20 @@ Para navegar entre errores:
 Para añadir o eliminar palabras al diccionario
 
 - `zg` añade la palabra incorrecta sobre la que está el cursor al
-  archivo definido en el parámetro de la configuración spellfile.
+  archivo definido en el parámetro de la configuración `spellfile`.
 
 - `zG` funciona exactamente igual que `zg` pero añade la palabra a la
   lista de palabras interna.
 
 - `zw` en este caso en lugar de guardar la palabra como correcta, la
   guarda como incorrecta. Así, en el caso de que se encuentre en el
-  archivo spellfile la comentará.
+  archivo `spellfile` la comentará.
 
 - `zW` igual que en el caso anterior, pero en este caso la añade al
   listado interno, tal y como has visto en el caso anterior con `zg` y
   `zG`.
 
-- `zug` y zuw deshacen las acciones de `zg` y `zw`. Lo mismo sucede
+- `zug` y `zuw` deshacen las acciones de `zg` y `zw`. Lo mismo sucede
   con `zuG` y `zuW`, pero de nuevo en el caso de los listados
   internos.
 
@@ -234,66 +243,66 @@ También es posible realizar estas operaciones utilizando comandos:
 
 - `spellwrong! <palabra>` funciona como `zW`
 
-Utilizando el corrector ortográfico
-
 Una vez estés sobre una palabra que tienes que corregir, simplemente
-tienes que encontrar el reemplazo masa adecuado para esa palabra. Para
+tienes que encontrar el reemplazo más adecuado para esa palabra. Para
 ello, tienes que utilizar `z=`. Si estás sobre una palabra incorrecta,
 te mostrará un listado de alternativas o posibilidades correctas para
 reemplazar la palabra que tienes que corregir.
 
-Sources: 
+Fuentes: 
 
   - [El corrector ortográfico en Vim](https://atareao.es/tutorial/vim/el-corrector-ortografico-en-vim/)
   - [Using Spell Check in Vim](https://thejakeharding.com/using-spell-check-in-vim)
 
 
+## Cómo activar el modo Django para plantillas
 
-## Cómo activar el modo django para plantillas
-
-Usa `:setfiletype htmldjango` en Vim para seleccionar resaltado de sintaxis de plantillas django. Si queremos activar el resaltado de sintaxis solo para Django y no para HTML, podemos usar `:setfiletype django` .
+Usa `:setfiletype htmldjango` en Vim para seleccionar resaltado de sintaxis de
+plantillas Django. Si queremos activar el resaltado de sintaxis solo para
+Django y no para HTML, podemos usar `:setfiletype django` .
 
 Etiquetas: #django
 
 
-## How to integrate VIM with the system clipboards
+## Cómo integrar Vim con el porta papeles del sistema.
 
-For X11-based systems (ie. Linux and most other UNIX-like systems) there
-are **two clipboards** which are independent of each other:
+En los sistemas Unix/Linux hay **dos** porta papeles, independientes entre
+si.
 
-- **PRIMARY** - This is copy-on-select, and can be pasted with the
-  middle mouse button.
+- **PRIMARY** - Este porta papeles copia el contenido solo con seleccionarlo.
+  Podemos pegarlo normalmente con el botón intermedio del ratón (A veces, la
+  rueda de _scroll_ que actúa también como botón).
 
-- **CLIPBOARD** - This is copied with (usually) `^C`, and pasted with
-  `^V` (It\'s like MS Windows).
+- **CLIPBOARD** - Este porta papeles solo copia lo seleccionado con una
+  combinación de tecla, normalmente ++ctrl+c++, y se pega con ++ctrl+v++, igual
+  que en Windows.
 
-OS X and Windows systems only have one clipboard.
+En Mac/Windows, solo hay un porta papeles.
 
-For X11 systems there are also number of tools that synchronize these
-clipboards for you; so if they appear to be the same, you may have one
-of them running.
+En los sistemas Linux/Unix, hay numerosas utilidades que modifican la forma
+en que se sincronizan los porta papeles; si los dos se comportan como si solo
+hubiera un porta papales, es probable que haya alguno de estos programas
+funcionando.
 
-Vim has two special registers corresponding to these clipboards:
+Vim define dos registros para estos porta papeles:
 
-- `*` uses **PRIMARY**; mnemonic: *Star is Select* (for
-  copy-on-select)
+- `*` usa el **PRIMARY**; mnemotécnico: e**S**trella para copia el **S**eleccionar.
 
-- `+` uses **CLIPBOARD**; mnemonic: *CTRL PLUS C* (for the common
-  keybind)
+- `+` usa el **CLIPBOARD**; mnemotécnico: Porque hay que seleccionar **+**
+  combinación de teclas
 
-On Windows & OS X there is no difference between `+` and `*`, since
-these systems only have a single clipboard, and both registers refer to
-the same thing (it doesn\'t matter which one you use).
+En Windows/MAC, ambos registros se refieren al mismo, ya que solo hay un
+porta papeles.
 
-You can use these registers as any register. For example, using the
-PRIMARY clipboard `*` with the y and p commands:
+Estos registros se usan como cualquier otro registro, por ejemplo, para cortar
+(`y`) y pegar (`p`) usando el registro PRIMARY:
 
 ```
 "*yy
 "*p
 ```
 
-You could maybe use this as more convenient keybinds:
+Estos atajos de teclado pueden ser útiles:
 
 ```
 noremap <Leader>y "*y
@@ -302,47 +311,48 @@ noremap <Leader>Y "+y
 noremap <Leader>P "+p
 ```
 
-If you want to _automatically_ interface with the system's clipboard
-instead of referring to it manually all the time, you can set the
-clipboard variable:
+Se puede configurar Vim para que usa por defecto el parta papeles del sistema
+`CLIPBOARD` en vez del interno, que es el usado por defecto, usando la variable
+`clipboard`:
 
-- Set it to unnamed to use `*` (PRIMARY, on select)
+- Con el valor `unnamed` usa `*` (`PRIMARY`)
 
-- Set it to unnamedplus to use `+` (CLIPBOARD, \^C)
+- Con el valor `unnamedplus` usa `+` (`CLIPBOARD`)
 
-Now, just using `yy` will go to the system's clipboard, instead of Vim's
-unnamed register, and `p` will paste the system's clipboard.
+Con estos valores, al copiar con `yy` o pegar con `p` se estará trabajando con
+el porta papeles indicado.
 
-You can also assign to these registers just like any register with
-`let`:
+Estos registros también se pueden usar con `let`:
 
 ```
-    :let @+=42
-    :let @*=42
+:let @+=42
+:let @*=42
 ```
 
-If you use **gVim**, you can get copy-on-select behaviour when using
-`:set guioptions+=a`. This is enabled by default on X11 systems (copies
-to PRIMARY), but not on MS Windows & OSX (as selecting any text would
-override your clipboard).
+Al usar **gVim**, se puede activar el comportamiento de "copia al seleccionar"
+usado:
 
-The clipboard setting has some more options (such as exclude filters);
-but these are the basics. See `:help 'clipboard'` for the full story ;-)
+`:set guioptions+=a`. 
 
-Source: Stack Overflow: [How can I copy text to the system clipboard
-from
+Normalmente esta opción está activa por defecto para GVim, usando el porta
+papales `PRIMARY`, si estamos en Linux/Mac, pero no en Windows o MAC.
+Con `:help 'clipboard'` podemos ver más opciones de configuaración.
+
+Fuentes:
+
+- [Stack Overflow - How can I copy text to the system clipboard from
 Vim?](https://vi.stackexchange.com/questions/84/how-can-i-copy-text-to-the-system-clipboard-from-vim)
 
 
-### How To Turn Line Numbers On and Off
+## Cómo activar/desactivar los números de línea en Vim
 
-To turn line numbers on, type `:set nu` or `set number` and press
-Return.
+Para activar la numeración, `:set nu` o `set number` y pulsamos ++enter+. Para
+desactivar, `:set nu!` o `:set number!`.
 
 
-### How To use the integrated help system
+## Cómo usar el sistema integrado de ayuda
 
-There is `:h help-summary`, `:h howdoi`, `:h quickref`.
+Está información está disponible con `:h help-summary`, `:h howdoi`, `:h quickref`.
 
 If you're really stuck there's `:h index`, `:h option-list`,
 `:h vim-variable` and `:h functions`, and if you are really stuck
@@ -351,83 +361,83 @@ there is `:h :helpgrep` or searching `:h help-tags` by hand.
 Press `Ctrl-]` to follow the link (jump to the quickref topic).
 
 
-### How To get/set working directory of the current file
+## Cómo ajustar el directorio de trabajo al del fichero actual
 
-In Vim, you can automatically set its global current directory to match
-the location of the current file, or each window can have its own local
-current directory.
-
-The current working directory can be displayed in Vim with:
+Podemos ver el directorio actual con:
 
 ```
 :pwd
 ```
 
-To change to the directory of the currently open file (this sets the
-current directory for all windows in Vim):
+Para cambiarlo al directorio del fichero actual:
 
 ```
-    :cd %:p:h
+:cd %:p:h
 ```
 
-You can also change the directory only for the current window (each
-window has a local current directory that can be different from Vim\'s
-global current directory):
+También se puede cambiar el directorio solo para la ventana actual. Cada
+ventana maniene un directorio actual local, que puede ser diferentes del
+directorio actual global:
 
 ```
 :lcd %:p:h
 ```
 
-In these commands, `%` gives the name of the current file, `%:p` gives
-its full path, and `%:p:h` gives its directory (the \"head\" of the full
-path).
+En estas ordenes, `%` es el nombre del fichero actual, `%:p` es el fichero con
+el _path_ completo, y `%:p:h` nos da el directorio, (la `h` significa la cabeza
+o _head_ de la ruta completa.
 
-!!! note: Automatically change the current directoryEdit
+!!! note "Cambiar automáticamente al directorio del fichero en edición"
 
-    Sometimes it is helpful if your working directory is always the same as the
-    file you are editing. To achieve this, put the following in your vimrc:
+    Para mantener siempre como directorio activo el del directorio que estemos
+    editando, podemos poner en el fichero `.vimrc`:
 
     ```
     set autochdir
     ```
 
 
-### How to open a terminal inside Vim
+## Cómo abrir una terminal dentro de Vim
 
-Since Vim 8.0, there is a `:term` command that opens a new terminal in a
-new split window. If it does not work for you, check
-`vim --version | grep -o .terminal` to see if this feature is available
-(`+terminal`) or unavailable (`-terminal`).
+Desde Vim 8.0, hay una oredn `:term` que abre una terminal en una ventana
+nueva. Para salir de la terminal, usa el comando `exit` o simplemente cerrar la
+ventana con ++ctrl+shift+w++ y `:q`.
 
-Using `:term`, to quit from terminal split, use `ctrl W` and `:q`.
+Fuentes:
 
-Source:
-<https://stackoverflow.com/questions/1236563/how-do-i-run-a-terminal-inside-of-vim>
+- [How do I run a terminal inside of Vim? - Stack Overflow](https://stackoverflow.com/questions/1236563/how-do-i-run-a-terminal-inside-of-vim)
 
-### How to disable Syntastic
 
-To disable Syntastic for the current session, use:
+## Cómo desactivar Syntastic
 
-    :SyntasticToggleMode
+Para desactivas Syntactic de la sesión actual:
 
-To disable Syntastic for a specific language, use an empty checkers list
-in your `.vimrc`. For example, to disable HTML checking, use this line:
+```
+:SyntasticToggleMode
+```
 
-    let g:syntastic_html_checkers = []
+Pare desactivarlo para un lenguanje específico, se puede definir una lista
+vacía en la variable correspondiente, en el fichero `.vimrc`. Por ejemplo, para
+desactivar el chequeo de HTML, se podría usar:
 
-### Using an external program as a filter inside VIM
+```
+let g:syntastic_html_checkers = []
+```
 
-Following is a Python program to sort the words on each line of standard
-input (each line is separately sorted):
+## Cómo usar un porgrama externo como un filtro dentro de Vim
+
+El siguiente ejemplo es un _script_ en python para ordenar las
+palabras de un contenido que se le pasa mediante la entrada
+estándar:
 
 ```python
-# File sortwords.py
-from sys import stdin
-for line in stdin:
+import sys
+
+for line in sys.stdin:
     print(' '.join(sorted(line.split())))
 ```
 
-A file you are editing in Vim may include the following text:
+POr ejemplo, si estamos editando el siguiente texto:
  
 ```
 this is a line with some words
@@ -435,12 +445,12 @@ words on each line will be sorted
 fried banana and cream
 ```
 
-Use this procedure to filter the text:
+Podemos usar nuestro programa como un filtro así:
 
-- Press `V` on the first line, then `jj` to select three lines.
-- Type `!python sortwords.py` and press Enter.
+- Plsar `V` en la primera línea, luego `jj` para seleccionar las tres líneas.
+- Escribir `!python sortwords.py` y pulsar ++enter++.
 
-The lines are replaced with the result from running the program:
+Debería producir el siuiente resultado:
 
 ```
 a is line some this with words
@@ -448,11 +458,12 @@ be each line on sorted will words
 and banana cream fried
 ```
 
-Source:
-[https://vim.fandom.com/wiki/Use\_filter\_commands\_to\_process\_text\\](https://vim.fandom.com/wiki/Use_filter_commands_to_process_text\)
-§
+Fuentes:
 
-### How To Quick save in ViM
+- [Use filter commands to process text](https://vim.fandom.com/wiki/Use_filter_commands_to_process_text/)
+
+
+## Cómo salir rápidamente de Vim
 
 In order to make quick saves in ViM I think the following is the
 quickest trip there:
@@ -465,9 +476,11 @@ So just hitting the leader key, ++comma++ in my case, followed by the ++w++
 key will save the changes, if there was any (update is line write, but
 only if there is changes in the text).
 
-Source: Coderwall [Quick save in vim](https://coderwall.com/p/0tmfjw/quick-save-in-vim)
+Fuentes:
 
-### How to use the register calculator
+- [Coderwall: Quick save in vim](https://coderwall.com/p/0tmfjw/quick-save-in-vim)
+
+## Cómo usar la calculadora del registro
 
 Vim's expression register is a temporary register that can be used to
 run snippets of Vim script. We can use this for a variety of things,
@@ -481,9 +494,9 @@ will be inserted into your document. Think of the expression register as
 a little Vim command line that evaluates whatever you put into it and
 inserts the results into your document.
 
-- Source: [VimTricks - Performing calculations](https://vimtricks.com/p/performing-calculations/)
+Fuentes:
 
-### Search in vim for several words (a or b)
+- [VimTricks - Performing calculations](https://vimtricks.com/p/performing-calculations/)
 
 If you want to search for `logging` or `logger` you can do:
 
@@ -491,38 +504,58 @@ If you want to search for `logging` or `logger` you can do:
 :/logging\|logger
 ```
 
-### Unicode chars used to draw boxes
+## Caracteres Unicode usados para crear diagramas y cajas
 
-Box Drawing Official Unicode Consortium code chart (PDF):
+Este es el conjunto de caracteres definido
+en el [Box Drawing Blocl](https://en.wikipedia.org/wiki/Box_Drawing).
 
-    0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+``` 
+      0 1 2 3 4 5 6 7 8 9 A B C D E F
+      
+250x  ─ ━ │ ┃ ┄ ┅ ┆ ┇ ┈ ┉ ┊ ┋ ┌ ┍ ┎ ┏
+251x  ┐ ┑ ┒ ┓ └ ┕ ┖ ┗ ┘ ┙ ┚ ┛ ├ ┝ ┞ ┟
+252x  ┠ ┡ ┢ ┣ ┤ ┥ ┦ ┧ ┨ ┩ ┪ ┫ ┬ ┭ ┮ ┯
+253x  ┰ ┱ ┲ ┳ ┴ ┵ ┶ ┷ ┸ ┹ ┺ ┻ ┼ ┽ ┾ ┿
+254x  ╀ ╁ ╂ ╃ ╄ ╅ ╆ ╇ ╈ ╉ ╊ ╋ ╌ ╍ ╎ ╏
+255x  ═ ║ ╒ ╓ ╔ ╕ ╖ ╗ ╘ ╙ ╚ ╛ ╜ ╝ ╞ ╟
+256x  ╠ ╡ ╢ ╣ ╤ ╥ ╦ ╧ ╨ ╩ ╪ ╫ ╬ ╭ ╮ ╯
+257x  ╰ ╱ ╲ ╳ ╴ ╵ ╶ ╷ ╸ ╹ ╺ ╻ ╼ ╽ ╾ ╿
+```
 
-> U+250x ─ ━ │ ┃ ┄ ┅ ┆ ┇ ┈ ┉ ┊ ┋ ┌ ┍ ┎ ┏ U+251x ┐ ┑ ┒ ┓ └ ┕ ┖ ┗ ┘ ┙ ┚ ┛
-> ├ ┝ ┞ ┟ U+252x ┠ ┡ ┢ ┣ ┤ ┥ ┦ ┧ ┨ ┩ ┪ ┫ ┬ ┭ ┮ ┯ U+253x ┰ ┱ ┲ ┳ ┴ ┵ ┶ ┷
-> ┸ ┹ ┺ ┻ ┼ ┽ ┾ ┿ U+254x ╀ ╁ ╂ ╃ ╄ ╅ ╆ ╇ ╈ ╉ ╊ ╋ ╌ ╍ ╎ ╏ U+255x ═ ║ ╒ ╓
-> ╔ ╕ ╖ ╗ ╘ ╙ ╚ ╛ ╜ ╝ ╞ ╟ U+256x ╠ ╡ ╢ ╣ ╤ ╥ ╦ ╧ ╨ ╩ ╪ ╫ ╬ ╭ ╮ ╯ U+257x
-> ╰ ╱ ╲ ╳ ╴ ╵ ╶ ╷ ╸ ╹ ╺ ╻ ╼ ╽ ╾ ╿
+Un ejemplo de uso:
 
-Source: <https://en.wikipedia.org/wiki/Box-drawing_character#Unicode>
+```
+┌──┬┐  ╔══╦╗  ╓──╥╖  ╒══╤╕  ╭──┬╮  ┏━━┳┓  ┌──┬┒
+│  ││  ║  ║║  ║  ║║  │  ││  │  ││  ┃  ┃┃  │  │┃
+├──┼┤  ╠══╬╣  ╟──╫╢  ╞══╪╡  ├──┼┤  ┣━━╋┫  ├──┼┨
+└──┴┘  ╚══╩╝  ╙──╨╜  ╘══╧╛  ╰──┴╯  ┗━━┻┛  ┕━━┷┛
+```
 
-### Using regular expressions in search/replace
+Fuentes:
 
-Range of search and replace operation
+- [Box-drawing character - Wikipedia](https://en.wikipedia.org/wiki/Box-drawing_character)
 
-  Specifier       Description
-  --------------- ----------------------------------------------------------
-  *number*        An absolute line number
-  `.`             The current line
-  `$`             The last line in the file
-  `%`             The whole file. The same as 1,\$
-  `'t`            Position of mark \"t\"
-  `/pattern[/]`   The next line where text "pattern" matches
-  `?pattern[?]`   The previous line where text "pattern" matches
-  `\/`            The next line previously used search pattern matches
-  `\?`            The previous line previously used search pattern matches
-  `\&`            The next line previously used substitute pattern matches
 
-#### Quantifiers, Greedy and Non-Greedy.
+## Definir el área para buscar/reemplazar
+
+Estos son las expresiones definir el área donde se realizarán las operaciones
+de búsqueda/sustitución:
+
+| Expresión     | Descripción                                               |
+|---------------|-----------------------------------------------------------|
+| *number*      | En la linea indicada                                      |
+| `.`           | En la línea actual                                        |
+| `$`           | La última línea                                           |
+| `%`           | Todo el contenido del fichero. Equivale a `1,$`           |
+| `'t`          | En la posicion incicada por la marca `t`                  |
+| `/pattern[/]` | La siguiente línea que case con el patrón `pattern`       |
+| `?pattern[?]` | La línea anterior que case con `pattern`                  |
+| `\/`          | La línea siguiente a la usada en la busqueda anterior     |
+| `\?`          | La línea anterior a la usada en la busqueda anterior      |
+| `\&`          | La siguiente línea que case con el patrón anterior        |
+
+
+### Quantifiers, Greedy and Non-Greedy.
 
 Using quantifiers you can set how many times certain part of you pattern
 should repeat by putting the following after your pattern:
@@ -537,7 +570,7 @@ should repeat by putting the following after your pattern:
   `\{,m}`      Matches at most m (from 0 to m) of the preceding characters...
   `\{n,}`      Matches at least n of of the preceding characters
 
-#### Options at the end
+### Options at the end
 
   letter   meaning
   -------- --------------------------------------------------------------
@@ -546,7 +579,7 @@ should repeat by putting the following after your pattern:
   i        Ignore case for the pattern
   I        Don't ignore case for the pattern
 
-#### Escaped characters or metacharacters
+### Escaped characters or metacharacters
 
 So far our pattern strings were constructed from normal or literal text
 characters. The power of regexps is in the use of metacharacters. These
@@ -579,21 +612,27 @@ VIM metacharacters.
   `\u`   Uppercase character
   `\U`   Non-uppercase character
 
-Source: [Vim Regex](http://vimregex.com/)
+Fuentes:
+- [Vim Regex](http://vimregex.com/)
 
 
-### How to remove all the trailing spaces at the end of lines
+### Cómo eliminar los espacios al final de las líneas en un fichero
 
-The following command deletes any trailing whitespace at the end of each
-line. If no trailing whitespace is found no change occurs, and the `e`
-flag means no error is displayed:
+**tl/dr**: Usar la siguiente orden:
 
 ```
 :%s/\s\+$//e
 ```
 
-In a search, `\s` finds whitespace (a space or a tab), and `+` finds one
-or more occurrences.
+Explicación: El comando busca en todo el contenido del archivo (`%`), por el
+patrón «Uno o más espacios, antes del final de la línea» (`\s\+$`).  `\s`
+encuentra espacios en blanco, espacios o tabuladores, y `\+` significa, la
+expresión regular anterior, repetida una o más veces, y `$` es el final de la
+línea. Si los encuentras, cambialos por una cadena vacía (No hay nada en la
+segunda parte, `//`)/. Como hemos incluido el modificador final `e`, no se
+muestra mensaje de error aunque no hubiera ninguna línea que cumpla el
+criterio.
+
 
 ### How to Undo and Redo in Vim
 
@@ -678,12 +717,14 @@ and ++ctrl+w++ ++k++ to move up. This should prove easy to remember --
 down and ++k++ for up. You can also cycle between viewports by using ++ctrl+w++
 ++ctrl+w++.
 
-Source: Vim Tips: [Using
-viewports](https://www.linux.com/learn/vim-tips-using-viewports)
+Fuentes:
 
-### How to use sessions
+- [Vim Tipos: Using viewports](https://www.linux.com/learn/vim-tips-using-viewports)
 
-steps:
+
+## Cómo usar sesiones
+
+Seguimos los siguientes pasos:
 
 - Open any number of tabs you wish to work with
 
@@ -692,9 +733,10 @@ steps:
 ```
 :mksession header-files-work.vim
 ```
-and hit enter
 
-- Your current session of open tabs will be stored in a file `header-files-work.vim`
+y pulsa ++enter++.
+
+La configuración de pestañas y buffers de la sesión actual se almacenará en el fichero indicado.
 
 To see restore in action, close all tabs and Vim. Either start vim with
 your session using: `vim -S header-files-work.vim` or open vim with
@@ -704,13 +746,23 @@ you just the way you saved it! If you change any session tabs
 (close/open new), you can save that back using `:mks!` while you are in
 the session
 
-### How to fold/unfold code blocks?
 
-Go to the beginning of the function body and type `mb` . Now, just go to
-the end of the function body using % (brace matching) or any other
-convenient technique and press `zf'b` and you're done!
+## Cómo plegar/desplegar secciones de texto manualmente
 
-### Vim tab-pages
+Hay que posicionarse al principio del bloque que queremos plegar, por ejemplo,
+al inicio de la definición de una una fución, y pulsar `mb`, para poner la
+marca `b` (O cualquier otra marca que queramos). Luego nos movemos al final y
+escribimos `zf'b`
+
+Con `zd` podemos borrar el plegado. El texto no se borra, solo el plegado. Las
+ordenes `zo` y `zc` abren y cierran un plegado respectivamente. PUede ser más
+fácil usar La orden `za` que alterna (_toogle_) entra ambos estados. 
+
+Fuentes:
+
+- [Folding | Vim Tips Wiki | Fandom](https://vim.fandom.com/wiki/Folding)
+
+## Vim tab-pages
 
 - `:tabedit file` , will open a new tab and take you to edit file
 
@@ -738,25 +790,24 @@ convenient technique and press `zf'b` and you're done!
 
 - Use the suffix `!` to override changes of unsaved files
 
-### Use ctags with Vim
+## Cómo usar ctags con Vim
 
-Run Ctags recursively over the directory to generate the tags file:
+Ejecutar `ctags` en modo recursivo en el directorio que nos interese:
 
 ```shell
 ctags -R *
 ```
 
-To search for a specific tag and open Vim to its definition, run the
-following command in your shell:
+Para localizar un _tag_ determinado y abrir Vim con el fichero que
+contienen la definición del mismo, usar:
 
 ```shell
 vim -t <tag>
 ```
 
-Or, open any Linux source file in Vim and use the following basic
-commands:
+O, si estamos dentro de Vim, podemos usar los siguienes comandos:
 
-| Keyboard | command |
+| Keyboard | command                                        |
 |----------|------------------------------------------------|
 | `Ctrl-]` | Jump to the tag underneath the cursor          |
 | `Ctrl-t` | Jump back up in the tag stack                  |
@@ -766,26 +817,26 @@ commands:
 | `:tp`    | Go to the previous definition for the last tag |
 | `:ts`    | List all of the definitions of the last tag    |
 
-The first command ++ctrl+bracket-right++ is probably the one you will use most
-often: it jumps to the definition of the tag (function name, structure name,
-variable name, or pretty much anything) under the cursor.
+El primer comando es seguramente el más usado: ++ctrl+bracket-right++ salta
+a la definición de la etiqueta que esta bajo el cursor (Nombres de funciones,
+clases, métodos, etc.).
 
-The second command ++ctrl+t++ is used to jump back up in the tag stack to the
-location you initiated the previous tag search from.
+La segunda orden, ++ctrl+t++ se usa para regresar, recorriendo el camino hacia
+atras de las busqyedas que hayamos hechjo con el primero.
 
-The next commands `:tag`, `:tn`, `:tp` and `:ts` can be used to search for any
-tag, regardless of the file that is currently opened. If there are multiple
-definitions/uses for a particular tag, use `tn` and `tp` commands to scroll
-through them, or the `ts` command to search a list for the definition you want
-(useful when there are dozens or hundreds of definitions for some commonly-used
-struct). 
+Los siguientes comandos `:tag`, `:tn`, `:tp` and `:ts` pueden ser usados para
+buscar cualquier etiqueta, independientemente del fichero donde pueda estar
+definida. Si hubiera múltiples candidatos para la definición, con las ordenes
+`tn` y `tp` podemos ir recorriendolas de una en una, hacia adelante o hacia
+atras, o también podemos usar `ts` para seleccionar desde una lista la
+definiión que nos interesa.
 
-Sources:
+Fuentes:
 
  - [Weicode - Configuring ctags for Python and Vim](https://weicode.wordpress.com/2018/05/01/configuring-ctags-for-python-and-vim/comment-page-1/)
 
 
-### Wrap Existing Text at N Characters in Vim
+## Wrap Existing Text at N Characters in Vim
 
 Set the `textwidth` variable:
 
@@ -803,7 +854,7 @@ au BufRead,BufNewFile *.md setlocal textwidth=80
 Source:
 <https://thoughtbot.com/blog/wrap-existing-text-at-80-characters-in-vim>
 
-### How to setup a line length marker in vim/gvim
+## How to setup a line length marker in vim/gvim
 
 Just execute this:
 
@@ -830,18 +881,18 @@ unique lines):
 Source: [Uniq - Removing duplicate
 lines](https://vim.fandom.com/wiki/Uniq_-_Removing_duplicate_lines)
 
-### Basic vi Commands
+## Basic vi Commands
 
 The following sections explain the following categories of vi commands.
 
-#### Moving around in a file
+### Moving around in a file
 
-  Keyboard   Command
-  ---------- ----------------------------------------------------------
-  `Ctrl-b`   Move back one full screen (Remenmber b for backwards)
-  `Ctrl-f`   Move forward one full screen (Remenmber f for fordwards)
-  `Ctrl-d`   Move forward 1/2 screen (Remenmber d for down)
-  `Ctrl-u`   Move back (up) 1/2 screen (Remember u for up)
+| Keyboard | Command                                                  |
+-----------|----------------------------------------------------------|
+| `Ctrl-b` | Move back one full screen (Remenmber b for backwards)    |
+| `Ctrl-f` | Move forward one full screen (Remenmber f for fordwards) |
+| `Ctrl-d` | Move forward 1/2 screen (Remenmber d for down)           |
+| `Ctrl-u` | Move back (up) 1/2 screen (Remember u for up)            |
 
 Moving the Cursor When you start vi, the cursor is in the upper left corner of
 the vi screen. In command mode, you can move the cursor with a number of
@@ -849,9 +900,10 @@ keyboard commands. Certain letter keys, the arrow keys, and the Return key,
 Back Space (or Delete) key, and the Space Bar can all be used to move the
 cursor when you're in command mode.
 
-!!! Note: Most vi commands are case sensitive. The same command
-    typed in lowercase and uppercase characters might have
-    different effects.
+!!! note "La mayoría de las ordenes de Vi distinguen mayúsculas y minusculas"
+
+    La misma letra en mayúsculas o en minúsculas pueden tener efectos
+    diferentes.
 
 If your machine is equipped with arrow keys, try these now. You should be able
 to move the cursor freely about the screen by using combinations of the up,
@@ -893,7 +945,7 @@ screenful, press Ctrl-B.
 Scroll Backward One-Half Screen To scroll backward one half of a screen,
 press Ctrl-U.
 
-#### Inserting Text
+### Inserting Text
 
 vi provides many commands for inserting text. This section introduces
 you to the most useful of these commands. Note that each of these
@@ -917,7 +969,7 @@ Type ++shift+i++ to insert text at the beginning of a line. The command moves
 the cursor from any position on that line. Press ++esc++ to return to
 command mode after you type the desired text.
 
-#### Open Lines
+### Open Lines
 
 Use these commands to open new lines, either above or below
 the current cursor position.
@@ -954,7 +1006,7 @@ over the character and type `r`, followed by just one replacement
 character. After the substitution, vi automatically returns to command
 mode (you do not need to press Esc).
 
-#### Deleting Text
+### Deleting Text
 
 These commands delete the character, word, or line you indicate. vi
 stays in command mode, so any subsequent text insertions must be
@@ -1003,11 +1055,10 @@ You can also use the `P` or `p` commands immediately after any of the
 deletion commands discussed earlier. This action puts the text you
 deleted above or below the cursor, respectively.
 
-Sources:
+Fuente: [Basic vi Commands](https://docs.oracle.com/cd/E19683-01/806-7612/6jgfmsvqf/index.html)
 
-- [Basic vi Commands](https://docs.oracle.com/cd/E19683-01/806-7612/6jgfmsvqf/index.html)
 
-### Mapping keys in Vim
+## Mapping keys in Vim
 
 Key mapping refers to creating a shortcut for repeating a sequence of keys or commands.
 Vim supports several editing modes - `normal`, `insert`, `replace`, `visual`, `select`, `command-line` and `operator-pending`. You can map a key to work in all or some of these modes.
@@ -1103,5 +1154,51 @@ nnoremap <yourkey> :if &keywordprg == ":help" <BAR> set keywordprg=man <BAR>
 else <BAR> set keywordprg=:help <BAR> endif <BAR> set keywordprg?<CR>
 ```
 
-Fuentes: [Reddit - Vim help and keyworddprg](https://www.reddit.com/r/vimdailytips/comments/iruu9s/vim_help_and_keywordprg/)
+Fuente: [Reddit - Vim help and keyworddprg](https://www.reddit.com/r/vimdailytips/comments/iruu9s/vim_help_and_keywordprg/)
 
+## Como salvar un fichero protegido si no lo hemos editado como root
+
+**TL/DR**: Hay que hacer:
+
+```
+:w !sudo tee %
+```
+
+**Explicación**: La orden `:w !sudo tee %` pasará el contenido del _buffer_
+actual al comando `sudo tee %s`, donde `%` es el nombre del fichero actual.
+Obviamente, nos pedirá la contraseña para poder ejecutar el comando `sudo`.
+
+Para entender `tee`, podemos pensar en este comando como un una unión de
+tubería con una entrada y dos salidas. Todo lo que se le pasa a la entrada
+estándar de `tee` se escribe en el fichero que se le pasa como parámetro y
+**también** en la salida estándar, lo que permite seguir procesando los datos
+con otro comando.
+
+Por ejemplo, la orden `ps -ax | tee processes.txt | grep 'foo'` lista los
+procesos, los escribe en el fichero `processes.txt` y luego los filtra usando
+`grep`:
+
+```
+ ╭───────────╮      ╭────────────╮     ╭─────────────╮
+ │           └──────┘            └─────┘             │
+ │  ps -ax   ┌──────┐  tee       ┌─────┐  grep 'foo' │
+ │           │      │            │     │             │
+ ╰───────────╯      ╰─────┐ ┌────╯     ╰─────────────╯
+                          │ │
+                   ╒══════╛ ╘══════╕
+                   │               │
+                   │ processes.txt │
+                   │             ┌─┤
+                   └─────────────┴─╯ 
+```
+
+En esta situación, sin embargo, ignoramos la mitad de lo que hace `tee`, ya que
+descartamos la salida estándar final. Solo usamos `tee` para poder ejecuarlo con
+`sudo` y que pueda sobreescribir el fichero original. La ventaja es que si nos
+equivocamos con la contraseña, `sudo` fallará y el siguiente comando en el
+_pipeline_ nunca se ejecutará, impidiendo así que borremos el contenido del
+fichero.
+
+Fuentes: 
+
+- [How does the vim &quot;write with sudo&quot; trick work? - Stack Overflow](https://stackoverflow.com/questions/2600783/how-does-the-vim-write-with-sudo-trick-work/7078429)

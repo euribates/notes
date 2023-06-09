@@ -7,8 +7,8 @@ tags:
 
 ## Bulma CSS
 
-**[Bulma.css](https://bulma.io/)** es un framework **CSS**, relativamente pequeño, que en resumidas
-cuentas resulta en un único fichero `.css`:
+**[Bulma.css](https://bulma.io/)** es un _framework_ **CSS**, relativamente
+pequeño, que resulta en un único fichero `.css`:
 [https://github.com/jgthms/bulma/blob/master/css/bulma.css](https://github.com/jgthms/bulma/blob/master/css/bulma.css)
 
 Generalmente, Bulma define clases que debemos aplicar para los elementos
@@ -25,52 +25,62 @@ parte de Bulma excepto si le añadimos la clase `table`:
 
 La mayoría de los elementos de Bulma tienes estilos alternativos. Para
 aplicarlos, se usan lo que ellos llaman clases modificadoras. Todas las clases
-modificadoras empiezan con `is-` p `has-`.
+modificadoras empiezan con `is-` o `has-`.
 
 Por ejemplo, un botón sencillo solo necesita que le pongamos la clase `button`.
 
-```html <button class="button">Botón</button> ``` ![Button](./bulma/button.png)
+```html
+<button class="button">Botón</button>
+```
+
+![Button](./bulma/button.png)
+
 Pero luego tenemos varias clases alternativas que nos darán diferentes colores,
 `is-primary`, `is-link`, `is-info`, `is-success`, `is-warning` y `is-danger`: 
 
-```html <button class="button is-primary"> Button </button> <button
-class="button is-link"> Button </button> <button class="button is-info"> Button
-</button> <button class="button is-success"> Button </button> <button
-class="button is-warning"> Button </button> <button class="button is-danger">
-Button </button> ```
+```html
+<button class="button is-primary"> Primary Button </button>
+<button class="button is-link"> Link Button </button>
+<button class="button is-info"> Info Button </button>
+<button class="button is-success"> Success Button </button>
+<button class="button is-warning"> Warning Button </button>
+<button class="button is-danger"> Danger Button </button>
+```
 
 ![Buttons](./bulma/buttons.png)
 
-Tambien tenemos modificadores para el tamaño: `is-small`, `is-medium`,
+También tenemos modificadores para el tamaño: `is-small`, `is-medium`,
 `is-large`, y para el estilo:  `is-outline`, `is-loading` y `[disabled]`. Por
 supuesto, estos modificadores se pueden combinar sin problema, para tener por
 ejemplo un botón grande, de tipo `danger` y bordeado:
 
-```html <button class="button is-danger is-outlined is-large"> Button </button>
+```html
+<button class="button is-danger is-outlined is-large"> Button </button>
 ```
 
 ## Modularidad en Bulma
 
 Podemos recompilar el fuente de Bulma, en `sass`, para incorporar solo los
-módulos que nos interensen. Bula define internamente **39** módulos
+módulos que nos interesen. Bulma define internamente **39** módulos.
 
 ## Vertical por defecto
 
 Bulma aplica la idea de **mobile first**, y optimiza la lectura vertical. Por
 defecto:
 
-- Las columnas (`columns`) se pilan verticalmente
-- El componente `level` tambien apila sus contenidos veticalmente
+- Las columnas (`columns`) se apilan verticalmente
+- El componente `level` también apila sus contenidos verticalmente
 - El menú `nav` esta oculto
+
 
 ## Breakpoints
 
 Bulma define 5 breakpoints que se refieren a 5 tamaños de pantalla
 
 - `mobile` : Pantallas hasta 768px
--  `tablet`: A partir de 769px
--  `desktop` : A partir de 1024p
--  `widescreen` : A partir de 1216px
+- `tablet`: A partir de 769px
+- `desktop` : A partir de 1024p
+- `widescreen` : A partir de 1216px
 - `fullhd` : A partir de 1408px
 
 ## Formularios
@@ -88,18 +98,18 @@ Bulam define las siguientes clases para formularios:
 
 Usar columnas en Bulma es fácil, usaremos un contenedor de la clases `columns`,
 y dentro tantos elementos de la clase `column` como queramos. Por defecto todas
-las columnas tendran el mismo ancho.
+las columnas tendrán el mismo ancho.
 
 Si queremos cambiar el tamaño relativo de las columnas, se definen estos tipos:
 
--   `is-three-quarters`
--   `is-two-thirds`
--   `is-half`
--   `is-one-third`
--   `is-one-quarter`
--   `is-full`
+- `is-three-quarters`
+- `is-two-thirds`
+- `is-half`
+- `is-one-third`
+- `is-one-quarter`
+- `is-full`
 
-o usar multiplos del 20%:
+o usar múltiplos del 20%:
 
 -   `is-four-fifths`
 -   `is-three-fifths`
@@ -108,14 +118,14 @@ o usar multiplos del 20%:
 
 Las demás columnas se ajustarán automáticamente al resto del espacio.
 
-Si queremos teren varias filas podemos cerrar un contendor `columns` y abir
-otro inmediatamente debajo. Pero también existe la posibilidad de usar el
+Si queremos tener varias filas podemos cerrar un contenedor `columns` y abrir
+otro inmediatamente a continuación. Pero también existe la posibilidad de usar el
 modificador `is-multiline`,  que hace que las columnas que sobrepasen el
 espacio disponible pasan a otra fila.
 
 ## GRID de 12 columnas
 
-Tambien podemos usar el sistema de rejilla. En este sistema, tenemos 12
+También podemos usar el sistema de rejilla. En este sistema, tenemos 12
 columnas predefinidas y definimos cuantas de estas columnas usaremos para el
 ancho.
 
