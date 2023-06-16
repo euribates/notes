@@ -24,12 +24,13 @@ variable `SQLPATH` por defecto esta vacía.
 
 Fuentes:
 
-- [Administering SQL*Plus](https://docs.oracle.com/cd/E11882_01/server.112/e10839/admn_sqlpls.htm#UNXAR156)
+- [Administering SQLPlus](https://docs.oracle.com/cd/E11882_01/server.112/e10839/admn_sqlpls.htm#UNXAR156)
 
 
 ## Cómo editar lineas e histórico usando sqlplus
 
-Hay que instalar una utilidad de terceros llamada [rlwrap](https://oracle-base.com/articles/linux/rlwrap). Si no está instalada:
+Hay que instalar una utilidad de terceros llamada
+[rlwrap](https://oracle-base.com/articles/linux/rlwrap). Si no está instalada:
 
 ```shell
 sudo apt install rlwrap
@@ -41,7 +42,7 @@ Y luego llamar a sqlplus usando rlwrap:
 rlwrap sqlplus <usr>/<pwd>@oracle
 ```
 
-Nice to place alias to .bashrc:
+Podemos definir un alias, anadiendo esta linea a nuestro `.bashrc`:
 
 ```bash
 alias sqlplus="rlwrap sqlplus"
@@ -53,7 +54,7 @@ Fuentes:
 
 ## Cómo ajustar el ancho de las columnas en la salida de sqlplus
 
-Se usa el comando `COLUMN`
+Se usa el comando `COLUMN`:
 
 ```sql
 column username format A10
@@ -65,7 +66,7 @@ y _salary_ como 10 dígitos, los dos últimos reservados para decimales.
 
 Fuentes:
 
-- [Formatting SQL*Plus Reports](https://docs.oracle.com/cd/B19306_01/server.102/b14357/ch6.htm)
+- [Formatting SQLPlus Reports](https://docs.oracle.com/cd/B19306_01/server.102/b14357/ch6.htm)
 
 ## Cómo Crear una base de datos (usuario y tablespace) en Oracle
 
@@ -155,7 +156,7 @@ SELECT dbms_metadata.get_ddl('TABLE', 'TAREAS_PROYECTO', 'TAREAS') FROM DUAL;
 
 - Fuente: [Stackoverflow: How can I generate or get a DDL script on an existing table in Oracle](<https://stackoverflow.com/questions/26249892/how-can-i-generate-or-get-a-ddl-script-on-an-existing-table-in-oracle-i-have)
 
-### Cómo listar los tablespaces
+## Cómo listar los tablespaces
 
 This is the way:
 
@@ -206,6 +207,7 @@ SELECT table_name
 Since `USER_TABLES` only has information about the tables that you own,
 it does not have an `OWNER` column --the owner, by definition, is you.
 
+
 ## Cómo usar la codificación UTF-8 en Oracle
 
 Definiendo la variable de entorno `NLS_LANG` con este valor:
@@ -229,14 +231,14 @@ Podemos comprobar el estado de la cuenta de un usuario, por ejemplo
     WEBPUBLIC LOCKED(TIMED) DEFAULT
 ```
 
-Seguramente está bloqueado por haber realizado vaarios intentos de login
+Posiblemente está bloqueado por haber realizado varios intentos de login
 infructuosos. El número de intentos antes de bloquear la cuenta en el
 perfil por defecto es de **10**.
 
 Para volver a habilitar la cuenta:
 
 ```sql
-    ALTER USER webpublic ACCOUNT UNLOCK;
+ALTER USER webpublic ACCOUNT UNLOCK;
 ```
 
 ## Cómo salvar la salida de sqlplus (oracle) a fichero
@@ -361,4 +363,17 @@ SQLNET.OUTBOUND_CONNECT_TIMEOUT = 60
 SQLNET.ALLOWED_LOGON_VERSION = 10
 ```
 
+## Cómo obtener el código fuente de una función 
 
+Si sabemos el propietario (`OWNER`) y nombre de la función, podemos
+hacer:
+
+```sql
+SELECT text 
+  FROM all_source
+ WHERE name = 'funcion' 
+   AND owner = 'propietario'
+ ORDER BY line;
+ ```
+
+ Fuente: [plsql - How to see PL/SQL Stored Function body in Oracle - Stack Overflow](https://stackoverflow.com/questions/14212295/how-to-see-pl-sql-stored-function-body-in-oracle)

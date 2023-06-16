@@ -52,7 +52,7 @@ def topics():
     table = Table(show_header=True, header_style="bold green")
     table.add_column("Topic", style="dim")
     table.add_column("Title")
-    for filename in DOCS.iterdir():
+    for filename in sorted(DOCS.iterdir()):
         if is_note(filename):
             title = get_title(filename)
             topic = main_topic(filename)
