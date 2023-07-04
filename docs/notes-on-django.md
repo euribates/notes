@@ -1485,3 +1485,29 @@ TEMPLATES = [
 ```
 
 Fuente: [Django 4.1+ HTML Templates Are Cached by Default with DEBUG = True &mdash; Nick Janetakis](https://nickjanetakis.com/blog/django-4-1-html-templates-are-cached-by-default-with-debug-true)
+
+
+## Cómo incluir etiquetas y filtros propios en el sistema de plantillas
+
+Para no tener que usar `{% load ... %}` todo el rato.
+
+Podemos añadir nuestros componentes en la opcion `builtins` de la
+variable `TEMPLATES`, en el `settings.py`:
+
+```py
+TEMPLATES = [
+    {
+        ...,
+        'OPTIONS': {
+            'context_processors': [
+                ...
+            ],
+            'builtins': [
+                'django_components.templatetags.component_tags',
+            ]
+        },
+    },
+]
+```
+
+
