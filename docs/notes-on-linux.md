@@ -210,4 +210,25 @@ Fuentes:
 - [How to Check timezone in Linux (timedatectl and date commands) Using 4
 Easy Methods | CyberITHub](https://www.cyberithub.com/check-timezone-in-linux-timedatectl-command/)
 
+## Cómo insertar un caracter usando su código numérico
 
+Una forma fácil, si sabemos el código numérico en hexadecimal, es
+usando ++ctrl+shift+u++ y luego el código hexadecimal. Por ejemplo
+++ctrl+shift+u++ seguido de ++4++, ++0++, ++enter++ nos dará el caracter `@`,
+que es el carácter 64 decimal, `40` en hexadecimal.
+
+Algunos código útiles son:
+
+| Hex code |  Caracter |
+|----------|:---------:|
+| `23`     | `#`       |
+| `40`     | `@`       |
+| `5b`     | `[`       |
+| `5d`     | `]`       |
+| `7b`     | `{`       |
+| `7d`     | `}`       |
+
+Este truco funciona al menos con xfce4-terminal, gnome-terminal, lxterminal,
+libreoffice, mousepad, chromium-browser y firefox.
+
+Fuente: [keyboard - How to type special characters in Linux? - Super User](https://superuser.com/questions/59418/how-to-type-special-characters-in-linux)
