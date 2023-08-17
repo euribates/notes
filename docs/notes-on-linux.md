@@ -1,8 +1,37 @@
 ---
-title: Notes on Linux
+title: Notas sobre Linux
+tags:
+    - Linux
+    - systemd
+    - ram
 ---
 
-## Notes on Linux
+## Cómo saber cuanto memoria tenemos en el equipo y de que tipo
+
+El comando a escribir puede variar dependiendo de la distribución, pero por lo 
+general es:
+
+```shell
+sudo dmidecode --type memory
+```
+
+El comando devolverá una tabla con toda la información sobre tu memoria RAM. En
+__Maximum Capacity__ la cantidad exacta de memoria que tienes instalada, En
+__Number of devices__ el número de módulos de memoria instalados. Más abajo, en
+__Type__ podrás saber el tipo de memoria que tienes.
+
+De la documentación de `dmidecode`:
+
+> dmidecode  is  a  tool for dumping a computer's DMI (some say SMBIOS) table
+> contents in a human-readable format. This table contains a description of the
+> system's hardware components, as well as  other  useful pieces  of
+> information such as serial numbers and BIOS revision. Thanks to this table,
+> you can retrieve this information without having to probe for the actual
+> hardware.
+
+- Fuente: [Cómo saber cuánta memoria RAM tienes y de qué tipo es, en Windows, macOS y GNU/Linux](https://www.xataka.com/basics/como-saber-cuanta-memoria-ram-tienes-que-tipo-windows-macos-gnu-linux)
+
+
 
 ## Cómo reiniciar Cinnamon
 
@@ -52,7 +81,7 @@ Fuentes:
 - [basename](https://linux.die.net/man/1/basename)
 
 
-## Cómo copiar la salida de un comando al portapapeles o _clipboard_
+## Cómo copiar la salida de un comando al portapapeles
 
 Se puede usar el comando **`xclip`**, que interactúa con el porta papeles. Por ejemplo,
 el siguiente código copia el texto "Hola, Mundo" al porta papeles de Linux:
