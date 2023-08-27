@@ -339,3 +339,10 @@ This values are a good example:
 -   Ramp color bwtween 0.7 and 0.9
 
 ![Ajustes de blender para fondo de estrellas](./blender/blender-noise.png)
+
+## How to Set Unit Measurements in Blender
+
+To change the units of measurement for a Blender scene, go to Scene Properties.
+Expand the “units” tab and choose the unit system at the top. Then change
+specific settings for Rotation, Length, Mass, Time and Temperature. 
+

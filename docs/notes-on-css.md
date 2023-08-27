@@ -725,17 +725,21 @@ Y para posicionar el texto en las esquinas o en el centro:
 
 Fuente: [How To Position Text Over an Image](https://www.w3schools.com/howto/howto_css_image_text.asp)
 
-## El modelo Flax en CSS
+## El modelo Flexbox en CSS
 
 El modelo **flexbox** es un modelo de composición unidimensional (Es decir, que
 funciona o en modo columna o en modo fila, pero no en ambos a la vez. Para eso
 usaríamos el _Grid Layout_.
 
-Para trabajar con flex, lo primero es definir el **eje principal**, eso se hace
-con la propiedad `flex-direction`. Los valores posibles son: `row`,
-`row-reverse`, `column` y `column-reverse'. Los valores `row` o `row-reverse`
-definen como eje principal el horizontal, `column` y `column-reverse` definen el
-eje vertical como eje principal. El valor por defecto es `row`.
+Para trabajar con flex, lo primero es marcar el elemento contendedor como
+gestionado mediante flexbox. PAra eso, definimos la propiedad `display` con el
+valor `flex`.
+
+Una vez hecho esto, vamos a definir el **eje principal** del contenedor. Esto
+se hace con la propiedad `flex-direction`. Los valores posibles son: `row`,
+`row-reverse`, `column` y `column-reverse`. Los valores `row` o `row-reverse`
+definen como eje principal el horizontal, `column` y `column-reverse` definen
+el eje vertical como eje principal. El valor por defecto es `row`.
 
 El **eje perpendicular** también es importante, pero no hace falta definirlo, ya
 que es, como su nombre indica, perpendicular al eje principal.

@@ -1510,4 +1510,43 @@ TEMPLATES = [
 ]
 ```
 
+## Para qué sirve la variable `STATIC_ROOT`/`STATIC_FILES_DIR`
+
+La respuesta es diferente según estemos en desarrollo o en producción.
+
+En desarrollo, `STATIC_ROOT` no se usa para nada. Solo se usa en producción.
+Cuando estamos en desarrollo (Es decir, cuando `settings.DEBUG` está a `True`)
+no hace falta ni que la definamos; Django buscará los contenidos estáticos
+dentro de la carpeta de la `app` y los servirá directamente, cortesía de la
+magia del comando `runserver`.
+
+En producción, sin embargo, lo más probable es que queramos servir los
+contenidos estáticos usando Nginx o Apache, por ejemplo, ya que es una forma
+mucho más eficiente de hacerlo y además descargamos a Django de ese trabajo.
+En en estos casos en los que resulta útil `STATIC_ROOT`. Nginx o Apache no
+saben nada del proyecto Django, solo saben que tiene que servir unos ficheros que
+están en un determinado directorio.
+
+Si ajustando el valor de `STATIC_ROOT` a ese directorio, digamos:
+
+```py
+STATIC_ROOT = '/algun/directorio/por/ahi/'
+```
+
+Podemos ahora configurar Nginx/Apache para que sirva los contenidos de ese
+mismo directorio.
+
+Al ejecutar `manage.py collectstatic`, Django buscará en todas las carpetas
+`static` que hay dentro de todas las `apps` y los copiará a la carpeta
+`/algun/directorio/por/ahi/`.
+
+La variable `STATICFILES_DIRS` sirve para incluir directorios adicionales que
+el comando `collectstatic` también debe procesar. Una practica habitual es
+incluir aquí los contenidos estáticos que sean comunes a todo el proyecto, por
+ejemplo `main/static` (Suponiendo que `main` es la carpeta donde está el
+fichero `settings.py`, el `urls.py` principal, etc). Esta carpeta **no** es una
+`app`, por lo que simplemente crear una subcarpeta `static` no copiará los
+ficheros que haya dentro a `STATIC_ROOT`.
+
+Fuente: [python - Differences between STATICFILES_DIR, STATIC_ROOT and MEDIA_ROOT - Stack Overflow](https://stackoverflow.com/questions/24022558/differences-between-staticfiles-dir-static-root-and-media-root)
 

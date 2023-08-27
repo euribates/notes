@@ -11,6 +11,7 @@
 - [Blender](notes-on-blender.md)
 - [Bulma CSS](notes-on-bulma.md)
 
+- [Chart.js](notes-on-chartjs.md)
 - [CSS](notes-on-css.md)
 - [CookieCutter](notes-on-cookiecutter.md)
 - [cURL](notes-on-curl.md)
@@ -78,6 +79,7 @@
 - [Oracle](notes-on-oracle.md)
 
 - [Pandas](notes-on-pandas.md)
+- [Patrones de diseñó](notes-on-patterns.md)
 - [Postgresql](notes-on-postgresql.md)
   - [pgsql](notes-on-pgsql.md)
 - [Puppet](notes-on-puppet.md)

@@ -5,15 +5,110 @@ tags:
     - python
 ---
 
+## Sobre PostgreSQL
+
+**PostgreSQL**, también llamado simplemente **Postgres**, es un sistema de
+gestión de bases de datos relacional orientado a objetos y de código abierto,
+publicado bajo la licencia PostgreSQL, similar a
+la[BSD](https://es.wikipedia.org/wiki/Licencia_BSD) o la
+[MIT](https://es.wikipedia.org/wiki/Licencia_MIT).
+
+
+## Cómo instalar Postgresql en Ubuntu
+
+Primero, refrescar el índice de paquetes local:
+
+```shell
+sudo apt update
+```
+
+Ahora instalamos el paquete `postgresql`, junto con `postgresql-contrib`, que
+nos añade algunas utilidades y funcionalidad adicional:
+
+```shell
+sudo apt install postgresql postgresql-contrib
+```
+
+Podemos verificar que el _daemon_ está arrancado con:
+
+```shell
+sudo systemctl status postgresql.service
+```
+
+Si no lo estuviera, arrancarlo con:
+
+```shell
+sudo systemctl start postgresql.service
+```
+
+## Entender los roles de PostgreSQL
+
+Postgres Usa un concepto llamado **roles** para gestionar la autenticación y la
+autorización. Estos aspectos se gestiona de forma similar a los grupos y
+usuarios de linux,
+
+Tras la instalación, POstgres está configurado inicialmente pra utilizar un
+esquema de autenticación llamado **`ident`** que funciona asociando los roles
+de postgres con una cuenta de usuario de Linux/Unix. Si existe un role
+determinado en postgres, entonces un usuario con el mismo login o _username_
+que el rol puede vaidarse con este sistema.
+
+La instalación también crea por defecto un usuario Linux/Unix llamada
+`postgres`, que se asocia automáticamente, mediante el mecanismo explicado en
+el párrafo anterior, con el Rol `Postgres`.
+
+Podemos conectar a postgres con esta cuenta impersonandonos primero como el
+usuario `postgres`:
+
+```shell
+sudo -i -u postgres
+```
+
+Y luego accedemos al cliente de postgres con:
+
+```shell
+psql
+```
+
+Otra forma de hacerlo es combinar los dos pasos anteriores en uno solo:
+
+```shell
+sudo -u postgres psql
+```
+
 ## Cómo salir de psql
 
-This is the way:
+Para salir del interprete psql hay que usar:
 
 ```
 \q
 ```
 
+## Cómo crear un nuevo rol en PostgreSQL
+
+Si estamos conectados con el usuario `postgres`, la forma más facil de crear un
+nuevo rol es:
+
+```shell
+createuser --interactive
+```
+
+Si estamos con otro usuario podemos usar `sudo`:
+
+```shell
+sudo -u postgres createuser --interactive
+```
+
+El programa nos preguntará interactivamente por las propiedades del usuario.
+
+Fuente:
+
+- [How To Install PostgreSQL on Ubuntu 20.04 [Quickstart] | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-postgresql-on-ubuntu-20-04-quickstart)
+
 ## Cómo crear una base de datos PostgreSQL
+
+
+
 
 1) Suponiendo que el servidor de PostgreSQL esté activo, nos conectamos con
 un usuario con privilegios de administrador, normalmente `postgres`:
@@ -234,3 +329,21 @@ Stick to using a-z, 0-9 and underscore for names and you never have to worry
 about quoting them.
 
 Fuente: [Don't Do This on PostgreSQL](https://wiki.postgresql.org/wiki/Don't_Do_This#Don.27t_use_upper_case_table_or_column_names)
+
+## Como saber los parámetros de conexión desde dentro
+
+Una vez conectado, podemos comprobar los datos de la conexión con
+el siquiente comando:
+
+```
+\conninfo
+```
+Qué daría algo similar a:
+
+```
+You are connected to database "sammy" as user "sammy" via socket in "/var/run/postgresql" at port "5432".
+```
+
+Fuente:
+
+- [How To Install PostgreSQL on Ubuntu 20.04 [Quickstart]  | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-postgresql-on-ubuntu-20-04-quickstart)
