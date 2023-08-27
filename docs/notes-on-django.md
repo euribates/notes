@@ -1550,3 +1550,24 @@ ficheros que haya dentro a `STATIC_ROOT`.
 
 Fuente: [python - Differences between STATICFILES_DIR, STATIC_ROOT and MEDIA_ROOT - Stack Overflow](https://stackoverflow.com/questions/24022558/differences-between-staticfiles-dir-static-root-and-media-root)
 
+## La tabla de sesiones de Django no para de crecer, como puedo solucionarlo
+
+Efectivamente,la tabla de sesiones no se limpia sola, están registradas todas
+las sesiones, incluyendo las expiradas, por lo que la tabla no para de crecer. Esto
+se puede solucionar bien desde la propia base de datos (Este ejemplo usa MySQL):
+
+```sql
+DELETE FROM mydatabase.django_session where expire_date < now()
+```
+
+O, seguramente mejor, usando el comando que define Django expresamente para esto:
+
+```shell
+python manage.py clearsessions
+```
+
+Lo mejor es poner uno de estos comandos en nuestro _crontab_, y que se ejecute
+cada día, por ejemplo. El comando no borra las sesiones que sigan activas, solo
+las que se han caducado.
+
+Fuente: [Why django session table growing automatically - Stack Overflow](https://stackoverflow.com/questions/71441352/why-django-session-table-growing-automatically)
