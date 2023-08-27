@@ -1,8 +1,37 @@
 ---
-title: Notes on Linux
+title: Notas sobre Linux
+tags:
+    - Linux
+    - systemd
+    - ram
 ---
 
-## Notes on Linux
+## Cómo saber cuanto memoria tenemos en el equipo y de que tipo
+
+El comando a escribir puede variar dependiendo de la distribución, pero por lo 
+general es:
+
+```shell
+sudo dmidecode --type memory
+```
+
+El comando devolverá una tabla con toda la información sobre tu memoria RAM. En
+__Maximum Capacity__ la cantidad exacta de memoria que tienes instalada, En
+__Number of devices__ el número de módulos de memoria instalados. Más abajo, en
+__Type__ podrás saber el tipo de memoria que tienes.
+
+De la documentación de `dmidecode`:
+
+> dmidecode  is  a  tool for dumping a computer's DMI (some say SMBIOS) table
+> contents in a human-readable format. This table contains a description of the
+> system's hardware components, as well as  other  useful pieces  of
+> information such as serial numbers and BIOS revision. Thanks to this table,
+> you can retrieve this information without having to probe for the actual
+> hardware.
+
+- Fuente: [Cómo saber cuánta memoria RAM tienes y de qué tipo es, en Windows, macOS y GNU/Linux](https://www.xataka.com/basics/como-saber-cuanta-memoria-ram-tienes-que-tipo-windows-macos-gnu-linux)
+
+
 
 ## Cómo reiniciar Cinnamon
 
@@ -52,7 +81,7 @@ Fuentes:
 - [basename](https://linux.die.net/man/1/basename)
 
 
-## Cómo copiar la salida de un comando al portapapeles o _clipboard_
+## Cómo copiar la salida de un comando al portapapeles
 
 Se puede usar el comando **`xclip`**, que interactúa con el porta papeles. Por ejemplo,
 el siguiente código copia el texto "Hola, Mundo" al porta papeles de Linux:
@@ -210,4 +239,25 @@ Fuentes:
 - [How to Check timezone in Linux (timedatectl and date commands) Using 4
 Easy Methods | CyberITHub](https://www.cyberithub.com/check-timezone-in-linux-timedatectl-command/)
 
+## Cómo insertar un caracter usando su código numérico
 
+Una forma fácil, si sabemos el código numérico en hexadecimal, es
+usando ++ctrl+shift+u++ y luego el código hexadecimal. Por ejemplo
+++ctrl+shift+u++ seguido de ++4++, ++0++, ++enter++ nos dará el caracter `@`,
+que es el carácter 64 decimal, `40` en hexadecimal.
+
+Algunos código útiles son:
+
+| Hex code |  Caracter |
+|----------|:---------:|
+| `23`     | `#`       |
+| `40`     | `@`       |
+| `5b`     | `[`       |
+| `5d`     | `]`       |
+| `7b`     | `{`       |
+| `7d`     | `}`       |
+
+Este truco funciona al menos con xfce4-terminal, gnome-terminal, lxterminal,
+libreoffice, mousepad, chromium-browser y firefox.
+
+Fuente: [keyboard - How to type special characters in Linux? - Super User](https://superuser.com/questions/59418/how-to-type-special-characters-in-linux)

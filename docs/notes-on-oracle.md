@@ -377,3 +377,22 @@ SELECT text
  ```
 
  Fuente: [plsql - How to see PL/SQL Stored Function body in Oracle - Stack Overflow](https://stackoverflow.com/questions/14212295/how-to-see-pl-sql-stored-function-body-in-oracle)
+
+
+## Como ocultar/mostrar los nombres de los campos en SqlPlus
+
+Por defecto se muestran los nombres de las columnas en la salida de SqlPlus.
+Podemos ocultarlas con el comando:
+
+ ```
+ SET HEADING OFF
+ ```
+
+Para volver a verlos:
+
+ ```
+ SET HEADING ON
+ ```
+
+ Si no aparece, mirar la variable `PAGESIZE`. Si esta a `0` tampoco se muestran
+ los nombres de las columnas.
