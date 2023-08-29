@@ -347,3 +347,33 @@ You are connected to database "sammy" as user "sammy" via socket in "/var/run/po
 Fuente:
 
 - [How To Install PostgreSQL on Ubuntu 20.04 [Quickstart]  | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-postgresql-on-ubuntu-20-04-quickstart)
+
+
+## Cómo pasarle la contraseña a pg_dump?
+
+
+
+Crea un fichero `.pgpass` en el directorio `HOME` del usuario que va a ejecutar el programa pg_dump.
+
+El formato de este fichero es:
+
+```
+hostname:port:database:username:password
+```
+
+Por ejemplo:
+
+```
+localhost:5432:mydbname:postgres:mypass
+```
+pg_dump -Fc -U jileon_acl -c jileon_acl > jileon_acl.pgdump
+Importante, poner el fichero e nodo `0600` (Solo el propietario puede leer
+modificar). Si no tiene este modo, pg_dump lo ignorará.
+
+```shell
+chmod 600 ~/.pgpass
+```
+
+Fuente: [bash - How to pass in password to pg_dump? - Stack Overflow](https://stackoverflow.com/questions/2893954/how-to-pass-in-password-to-pg-dump)
+
+
