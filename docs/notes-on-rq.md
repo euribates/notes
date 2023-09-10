@@ -5,16 +5,25 @@ title: Notas sobre rq y django-rq
 ## Qué es rq
 
 Con **[rq](https://python-rq.org/docs/)** tenemos un sistema sencillo de colas,
-similar --pero no tan potente-- a otros como
-[Celery](https://docs.celeryq.dev/en/stable/),
-[RabbitMQ](https://www.rabbitmq.com/), [Kafka](https://kafka.apache.org/intro),
-[Amazon SQS](https://aws.amazon.com/es/sqs/) o [MQTT](https://mqtt.org/) entre
-otros.
+similar --pero no tan potente-- a otros como:
+
+- [Celery](https://docs.celeryq.dev/en/stable/)
+
+- [RabbitMQ](https://www.rabbitmq.com/)
+
+- [Kafka](https://kafka.apache.org/intro)
+
+- [Amazon SQS](https://aws.amazon.com/es/sqs/)
+
+- [MQTT](https://mqtt.org/)
+
+Entre otros.
 
 Para nosotros es interesante porque el único requerimiento es Redis, que nosotros
 ya estamos usando, y al ser mucho más sencillo que las alternativas, la barrera
 de entrada es muy baja.
 
+- [Documentación de RQ](https://python-rq.org/)
 
 ### Ejemplo de tareas desacopladas 
 
@@ -24,7 +33,7 @@ entre **2 y 7 segundos**, y que puede fallar un **20%** de las veces:
 
 ```
 --8<--
-./notes/rq/tareas.py
+./docs/rq/tareas.py
 --8<--
 ```
 
@@ -38,7 +47,7 @@ este primer ejemplo, `rq-demo-01.py`:
 
 ```
 --8<--
-./notes/rq/rq-demo-01.py
+./docs/rq/rq-demo-01.py
 --8<--
 ```
 
@@ -58,14 +67,14 @@ tarea_pesada_y_falible (5) ..... [OK]
 He tardado 34 segundos en total
 ```
 
-Vemos que es este caso hemos tardado **34** segundos (La segunda tarea falló muy
-rápidamente, así que no consumió los 4 segundos que en principio habría
+Vemos que es este caso hemos tardado **34** segundos (La segunda tarea falló
+muy rápidamente, así que no consumió los 4 segundos que en principio habría
 tardado).
 
 
-Vamos ahora a intentar desacoplarla. Lo primero que necesitamos es poder acceder
-a un sistema Redis. Con la conexión a redis establecida, podemos empezar a usar al
-sistema de colas de `rq`:
+Vamos ahora a intentar desacoplarla. Lo primero que necesitamos es poder
+acceder a un sistema _Redis_. Con la conexión a _redis_ establecida, podemos
+empezar a usar al sistema de colas de `rq`:
 
 ```
 from redis import Redis
@@ -82,7 +91,7 @@ digamos (Si no especificamos ninguna cola se usará la cola por defecto,
 `default`)
 
 
-Es decir, en vez de
+Es decir, en vez de:
 
 ```python
 tarea_pesada_y_falible(3)
@@ -99,7 +108,7 @@ de ejecutarlas directamente:
 
 ```
 --8<--
-./notes/rq/rq-demo-02.py
+./docs/rq/rq-demo-02.py
 --8<--
 ```
 
@@ -122,13 +131,13 @@ trabajos en las colas `default`, `low` y `high`:
 
 ```
 --8<--
-./notes/rq/rq-demo-03.py
+./docs/rq/rq-demo-03.py
 --8<--
 ```
 
 Con el sistema tal y como lo hemos dejado antes, deberíamos ver 10 peticiones en
 la cola `default`. Las colas `low` y `high` (que se crean si no existen
-prevamente, como es el caso) tienen que estar vacias.
+previamente, como es el caso) tienen que estar vacías.
 
 ```
 ❯ python ./rq-demo-03.py 
@@ -137,23 +146,10 @@ low: 0
 high: 0
 ```
 
-
-<section data-markdown>
-<textarea data-template>
-Muy bien ahora nuestro programa es asombrosamente rápido, las tareas están en
-una cola, pero el caso es que siguen sin ejecutarse. Pero esto es muy
-fácil de resolver, solo tenemos que arrancar uno o más **workers** que se ocupen
-de hacer el trabajo sucio. Con `rq` es muy sencilla, solo hay que ejecutar:
-</textarea> 
-</section>
-
-
-Muy bien ahora nuestro programa es muy rápido, las tareas están en
-una cola, pero el caso es que siguen sin ejecutarse.
-
-Pero esto es muy
-fácil de resolver, solo tenemos que arrancar uno o más **workers** que se ocupen
-de hacer el trabajo sucio. Con `rq` es muy sencilla, solo hay que ejecutar:
+Muy bien ahora nuestro programa es muy rápido, las tareas están en una cola,
+pero el caso es que siguen sin ejecutarse.  Pero esto es muy fácil de resolver,
+solo tenemos que arrancar uno o más **workers** que se ocupen de hacer el
+trabajo sucio. Con `rq` es muy sencilla, solo hay que ejecutar:
 
 ```
 rq worker <nombre de la cola>[, <otra cola>]
@@ -174,21 +170,21 @@ rq worker high default low
 
 Los _workers_ leen los trabajos de las colas indicadas, en el orden indicado.
 
-En nuestro caso, se ejecutaran siempre primero las tareas en la cola `high`,
+En nuestro caso, se ejecutarán siempre primero las tareas en la cola `high`,
 si no hubiera ninguna se encargará de las tareas en la cola `default`, y solo en
-el caso de que las dos anteriores estén vacias se encargará de trabajos en la
+el caso de que las dos anteriores estén vacías se encargará de trabajos en la
 cola `low`.
 
-Los nombres de las colas en si no son significativos, lo que importa
-es el orden en que se le pasan al _worker_.
+Los nombres de las colas en si **no son significativos**, lo que importa
+es **el orden** en que se le pasan al _worker_.
 
 Cada _worker_ se encargará de **un único trabajo** cada vez. Dentro del _worker_
 no hay procesamiento concurrente, ni _threads_. Si se quiere ejecutar más trabajos
-simultaneamente, simplemente hay que arrancar más _workers_.
+simultáneamente, solo hay que arrancar más _workers_.
 
 En producción, obviamente, debemos usar sistemas como **supervisor** o
 **systemd** para arrancar los _workers_, pero aquí vamos a arrancarlo
-manualmente por calidad.
+manualmente por simplicidad.
 
 Vamos entonces a ejecutar el _worker_ y veamos que pasa:
 
@@ -307,21 +303,21 @@ y añadir `"django_rq"` a la entrada `INSTALLED_APPS` del fichero `settings.py`
 
 ### Paso 2: Configurar/definir las colas a usar en `settings.py`
 
-En la configuración del proyecto, tenemos que definir es una variable `RQ_QUEUES` los
-parámetros de las colas que vayamos a usar. En el siguiente ejemplo definiremos tres colas:
-`default`, `high` y `low` (Los nombres on arbitrarios, usamos estos porque son los que se
-usan en la documentación de `rq`). En nuestro fichero settings tenemos definidas las
-entradas `REDIS_SERVER', `REDIS_PORT`, `REDIS_DB` y `REDIS_PASSWORD`, y además definimos una
-entrada llamada simplemente `REDIS`:
+En la configuración del proyecto, tenemos que definir es una variable
+`RQ_QUEUES` los parámetros de las colas que vayamos a usar. En el siguiente
+ejemplo definiremos tres colas: `default`, `high` y `low` (Los nombres son
+arbitrarios, usamos estos porque son los que se usan en la documentación de
+`rq`). En nuestro fichero `settings,py` tenemos definidas las entradas
+`REDIS_SERVER`, `REDIS_PORT`, `REDIS_DB` y `REDIS_PASSWORD`, y además definimos
+una entrada llamada simplemente `REDIS`:
 
 ```python
 REDIS = f"redis://{REDIS_SERVER}:{REDIS_PORT}/{REDIS_DB}"
 ```
 
-Con estos valores se simplifica la definición de las colas, ya que solo debemos asignarles
-un
-nombre, apuntar la entrada `URL` al servidor `REDIS` e indicar la contraseña con la entrada
-`PASSWORD`:
+Con estos valores se simplifica la definición de las colas, ya que solo debemos
+asignarles un nombre, apuntar la entrada `URL` al servidor `REDIS` e indicar la
+contraseña con la entrada `PASSWORD`:
 
 ```
 RQ_QUEUES = {
@@ -355,7 +351,7 @@ urlpatterns += [
 
 ## Administrar las colas
 
-COn los cambios anteriores, si todo ha ido bien y ejecutamos el `manage.py`,
+Con los cambios anteriores, si todo ha ido bien y ejecutamos el `manage.py`,
 veremos que nos aparecen nuevas opciones de línea de comandos, que han sido
 agregadas por la _app_ `django_rq`:
 
@@ -371,8 +367,9 @@ estadísticas asociadas con las mismas:
 ❯ ./manage.py rqstats
 ```
 
-Django RQ CLI Dashboard
+Django RQ CLI Dashboard:
 
+```
 ------------------------------------------------------------------------------
 | Name           |    Queued |    Active |  Deferred |  Finished |   Workers |
 ------------------------------------------------------------------------------
@@ -382,7 +379,7 @@ Django RQ CLI Dashboard
 ------------------------------------------------------------------------------
 ```
 
-POdemos ejecutarlo con la opción `--interval` que nos permite ejcutarlo para
+Podemos ejecutarlo con la opción `--interval` que nos permite ejecutarlo para
 monitorizar de forma continua las colas. El parámetro necesita especificar el
 número de segundos entre cada refresco:
 
@@ -397,7 +394,7 @@ formato `json` o `yaml`, con los parámetros `--json` y `--yaml` respectivamente
 python manage.py rqstats --json
 ```
 
-Produce la siguienbte salida (reformateada [ara mayor legibilidad):
+Produce la siguiente salida (reformateada para mayor legibilidad):
 
 ```json
 {
@@ -457,4 +454,123 @@ Produce la siguienbte salida (reformateada [ara mayor legibilidad):
 }
 ```
 
+## Cómo ejecutar los _workers_
 
+Para que los trabajadores empiezan a trabajar, debemos ejecutarlos desde
+el mismo directorio que el proyecto, especialmente si tenemos que usar
+librerías de terceros. En este caso, también es ideal que se ejecuten en el
+mismo entrono virtual.
+
+Para arrancar un _worker_, hacemos simplemente:
+
+```shell
+$ rq worker high default low
+```
+
+Que producirá algo similar a:
+
+```
+*** Listening for work on high, default, low
+```
+
+Obsérvese que los nombres de las colas se especifican en la línea de comandos.
+Mientras el _worker_ esté en ejecución, seguirá leyendo trabajos de las colas
+(en el orden indicado, esto es importante) y ejecutándolos, en un bucle continuo.
+
+Cada _worker_ procesara un único trabajo cada vez. Si no hay ningún _worker_ en
+ejecución, no habrá procesamiento concurrente. Podemos tener más de un
+_worker_ funcionando a la vez, el sistema evitará que se pisen entre si.
+
+
+## Por qué es importante el orden de las colas cuando ejecutamos un worker en RQ
+
+Los _workers_ procesan las colas en el orden que se les indica. Esto significa
+que, por ejemplo, si hemos invocado al _worker_ con estos parámetros:
+
+```shell
+$ rq worker high default low
+```
+
+El _worker_ empezará a procesar los trabajos que encuentre en la cola `high`.
+Solo cuando esta cola esté vacía empezará con la cola `default`, y solo cuando
+ambas colas `high` y `default` estén vacías, empezará a procesar trabajos de
+la cola `low`.
+
+## Arrancar _workers_ en mode `burst`
+
+Por defecto, los _workers_ empiezan a trabajar inmediatamente, y entran en un
+estado de _bloqueo en espera_ cuando se quedan sin trabajos que procesar. Este
+es el modo ideal si los estamos usando en un sistema de gestión de procesos
+como `supervisor` o `systemd`.
+
+Pero podemos usar el _worker_ con el _flag_ `--burst` para que ejecuten toda la
+carga de trabajo que encuentren al arrancar y, cuando la cola o colas que
+atienden estén vacías, en vez de quedarse en espera, simplemente terminen su
+ejecución. Este puede resultar útil para trabajos en bloque que tiene que
+ejecutarse de forma periódica, o para escalar el conjunto de _workers_ de forma
+temporal ante un incremento grande de la carga de trabajo.
+
+```
+$ rq worker --burst high default low
+
+*** Listening for work on high, default, low
+Got send_newsletter('me@nvie.com') from default
+Job ended normally without result
+No more work, burst finished.
+Registering death.
+```
+
+
+## Cómo usar rq con Django
+
+La mejor opción es [django-rq](https://github.com/rq/django-rq). Es una _app_
+que nos permite configurar las colas dentro del fichero `settings.py`, y además
+nos proporciona varios comandos y utilidades para usar `rq` desde Django.
+
+Para usarlo:
+
+- Instalar django-rq: `pip install django-rq`
+
+- Añadirlo a la lista de _apps_ instaladas
+
+    ```py
+    INSTALLED_APPS = (
+        # other apps
+        "django_rq",
+    )   
+    ```
+
+- Configurar las colas en el fichero `settings.py`
+
+    ```py
+    RQ_QUEUES = {
+        'default': {
+            'HOST': 'localhost',
+            'PORT': 6379,
+            'DB': 0,
+            'USERNAME': 'some-user',
+            'PASSWORD': 'some-password',
+            'DEFAULT_TIMEOUT': 360,
+            'REDIS_CLIENT_KWARGS': {    # Eventual additional Redis connection arguments
+                'ssl_cert_reqs': None,
+            },
+        },
+        'high': {
+            'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379/0'),
+            'DEFAULT_TIMEOUT': 500,
+        },
+        'low': {
+            'HOST': 'localhost',
+            'PORT': 6379,
+            'DB': 0,
+        },
+    }
+    ```
+
+- Incluir `django_rq.urls` en el fichero de rutas `urls.py`:
+
+    ```py
+    urlpatterns += [
+        path('django-rq/', include('django_rq.urls'))
+    ]
+    ```
