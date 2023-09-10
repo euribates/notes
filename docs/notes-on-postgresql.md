@@ -376,4 +376,34 @@ chmod 600 ~/.pgpass
 
 Fuente: [bash - How to pass in password to pg_dump? - Stack Overflow](https://stackoverflow.com/questions/2893954/how-to-pass-in-password-to-pg-dump)
 
+## Cómo listar las secuencias en PostgreSQL
 
+Hay varias formas de listar las secuencias (_sequences_) en Postgtres.
+
+Usando usa sentencia SQL:
+
+```sql
+SELECT sequence_schema, sequence_name 
+  FROM information_schema.sequences 
+ ORDER BY sequence_name 
+```
+
+O, si estamos usando `psql`, con el comando `\ds`.
+
+```
+                           List of relations
+ Schema |                 Name                 |   Type   |   Owner    
+--------+--------------------------------------+----------+------------
+ public | acepcion_etiquetas_id_seq            | sequence | jileon_acl
+ public | acepcion_id_acepcion_seq             | sequence | jileon_acl
+ public | acl_anexo_id_anexo_seq               | sequence | jileon_acl
+ public | acl_categoria_id_categoria_seq       | sequence | jileon_acl
+ public | acl_cita_id_cita_seq                 | sequence | jileon_acl
+ public | acl_contacto_id_contacto_seq         | sequence | jileon_acl
+ public | acl_enlace_id_enlace_seq             | sequence | jileon_acl
+```
+
+Fuentes:
+
+- [How to list sequences in PostgreSQL database - Softbuilder Blog](https://soft-builder.com/how-to-list-sequences-in-postgresql-database/)
+- [PostgreSQL Sequences](https://www.postgresqltutorial.com/postgresql-tutorial/postgresql-sequences/)

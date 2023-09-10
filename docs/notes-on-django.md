@@ -1178,6 +1178,10 @@ class Migration(migrations.Migration):
     ]
 ```
 
+Fuentes:
+
+- [Executing Custom SQL in Django Migrations | End Point Dev](https://www.endpointdev.com/blog/2016/09/executing-custom-sql-in-django-migration/)
+
 ## Como condensar /simplificar (_squash_) las migraciones en Django
 
 Existe una opción en el `manage.py` llamada `squashmigrations` que nos
