@@ -1575,3 +1575,30 @@ cada día, por ejemplo. El comando no borra las sesiones que sigan activas, solo
 las que se han caducado.
 
 Fuente: [Why django session table growing automatically - Stack Overflow](https://stackoverflow.com/questions/71441352/why-django-session-table-growing-automatically)
+
+## Cómo especificar, para un modelo, el nombre de la tabla en la BD? 
+
+Usando el atributo `db_table` de la clase `Meta` de modelo:
+
+```python
+class TempUser(models.Model):
+    
+    class Meta:
+        db_table = "temp_user"
+
+    username = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    ...
+```
+
+## Como especificar, para el capo de un modelo, el nombre de la columna en la BD?
+
+Con el parámetro `db_column` a la hora de definir el campo:
+
+```python
+class User(models.Model):
+    
+    login = models.CharField(max_length=100, db_column='username')
+    ...
+```

@@ -1,5 +1,8 @@
 ---
 title: Notas sobre Oracle
+tags:
+    - Database
+    - sql
 ---
 
 ## Sobre Oracle
@@ -396,3 +399,38 @@ Para volver a verlos:
 
  Si no aparece, mirar la variable `PAGESIZE`. Si esta a `0` tampoco se muestran
  los nombres de las columnas.
+
+ ## Cómo saber qué huso horario (_time zone_) está usando Oracle
+
+ Para saber en que huso horario o _timezone_ cree Oracle que está, podemos usar
+ la siguiente sentencia SQL:
+
+```sql
+SELECT DBTIMEZONE FROM DUAL;
+```
+
+Por otro lado, la sesión con la que estamos conectados puede estar usando otro valor diferente. Para saber el
+_timezone_ de la sesión, el comando SQL es:
+
+```sql
+SELECT SESSIONTIMEZONE FROM DUAL;
+```
+
+## Cómo cambiar el huso horario o _time zone_ por defecto en Oracle
+
+Necesitamos cambiar la base de datos con un comando `ALTER DATABASE`:
+
+```sql
+ALTER DATABASE SET TIME_ZONE='Atlantic/Canary';
+```
+
+Si queremos especificar la diferencia con UTC en vez de usar nombres, podemos
+usar:
+
+```sql
+ALTER DATABASE SET TIME_ZONE='-04:00';
+```
+
+Fuentes:
+
+- [Check and Set the Database and Session Time Zone in Oracle](https://linuxhint.com/check-and-set-the-database-and-session-time-zone-in-oracle/)

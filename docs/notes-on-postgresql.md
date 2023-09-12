@@ -110,8 +110,8 @@ Fuente:
 
 
 
-1) Suponiendo que el servidor de PostgreSQL esté activo, nos conectamos con
-un usuario con privilegios de administrador, normalmente `postgres`:
+1) Suponiendo que el servidor de PostgreSQL esté activo, nos conectamos con un
+usuario con privilegios de administrador, normalmente `postgres`:
 
 ```shell
 sudo -u postgres psql postgres
@@ -150,12 +150,13 @@ Por ejemplo:
 CREATE SCHEMA IF NOT EXISTS test AUTHORIZATION joe;
 ```
 
-Crea un esquema o espacio de nombres llamado `test`, que es
-propiodad del usuario `joe`, a menos que ya existiera un esquema con
-ese nombre (Sin importar quien sea el propietario de ese esquema).
+Crea un esquema o espacio de nombres llamado `test`, que es propiedad del
+usuario `joe`, a menos que ya existiera un esquema con ese nombre (Sin importar
+quien sea el propietario de ese esquema).
 
 Fuente: [PostgreSQL Documentation 9.3 CREATE
 SCHEMA](https://www.postgresql.org/docs/9.3/sql-createschema.html).
+
 
 ## Como cambiar la contraseña de un usuario
 
@@ -183,6 +184,7 @@ ALTER TABLE table_name ALTER COLUMN column_name TYPE CHARACTER VARCHAR(120);
 
 - Fuente: [HOW TO INCREASE THE LENGTH OF A CHARACTER VARYING DATATYPE IN
   POSTGRES WITHOUT DATA LOSS](https://www.carnaghan.com/knowledge-base/how-to-increase-the-length-of-a-character-varying-datatype-in-postgres-without-data-loss/)
+
 
 ## How to agregate string values in a comma-separated values
 
@@ -304,8 +306,13 @@ seen above.
 Source: [How to set the default user password in
 PostgreSQL](https://chartio.com/resources/tutorials/how-to-set-the-default-user-password-in-postgresql/).
 
-## Never use upper case table or column names
 
+## No usar nunca mayúsculas en los nombres de los campos ni tablas
+
+PostgreSQL convienrte internamente todos los nombres de tablas, funciuones o
+columnas a minúsculas, a no ser que se espedifiquen entre comillas dobles. Por
+ejemplo, si creamos la tabla `Foo`, internamente se creará una tabla `foo`, Pero
+si creamos una tabla `"Bar"` si que se respeta la capitalización 
 PostgreSQL folds all names - of tables, columns, functions and everything else
 - to lower case unless they're "double quoted". So create table `Foo` will create a table called `foo`, while create table `"Bar"` will create a table called `Bar`.
 
@@ -330,6 +337,7 @@ about quoting them.
 
 Fuente: [Don't Do This on PostgreSQL](https://wiki.postgresql.org/wiki/Don't_Do_This#Don.27t_use_upper_case_table_or_column_names)
 
+
 ## Como saber los parámetros de conexión desde dentro
 
 Una vez conectado, podemos comprobar los datos de la conexión con
@@ -349,11 +357,27 @@ Fuente:
 - [How To Install PostgreSQL on Ubuntu 20.04 [Quickstart]  | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-postgresql-on-ubuntu-20-04-quickstart)
 
 
-## Cómo pasarle la contraseña a pg_dump?
+## Cómo hacer una copia de seguridad de una base de datos PostgreSQL
+
+La mejor forma es usando la utilidad `pg_dump`:
+
+```
+pg_dump --format=custom --username $DATABASE_USER -c $DATABASE_NAME > database.pgdump
+```
+
+Existen varios formatos, que se pueden especificar con el flag `-F` o
+`--format`. Con el valor `sql` obtenemos la exportación en forma de sentencias
+SQL. con `custom` obtenemos un formato binario, que no podemos leer directamente
+pero en cambio es mucho máß rápido y el fichero resultante es más pequeñó, ya
+que está comrpimido. Las opciones `-U`/`--username` especifican el usuario, como
+es légico. La opción `-c`/`--clean` hace una importación limpia, es decir,
+elimina todos los objetos (drop) antes de volver a crearlos.
 
 
+## ¿Cómo pasarle la contraseña a pg_dump?
 
-Crea un fichero `.pgpass` en el directorio `HOME` del usuario que va a ejecutar el programa pg_dump.
+Crea un fichero `.pgpass` en el directorio `HOME` del usuario que va a ejecutar
+el programa `pg_dump`.
 
 El formato de este fichero es:
 
@@ -366,15 +390,16 @@ Por ejemplo:
 ```
 localhost:5432:mydbname:postgres:mypass
 ```
-pg_dump -Fc -U jileon_acl -c jileon_acl > jileon_acl.pgdump
-Importante, poner el fichero e nodo `0600` (Solo el propietario puede leer
-modificar). Si no tiene este modo, pg_dump lo ignorará.
+
+**Importante**: poner el fichero e nodo `0600` (Solo el propietario puede leer
+y modificar). Si no tiene este modo, `pg_dump` lo ignorará.
 
 ```shell
 chmod 600 ~/.pgpass
 ```
 
 Fuente: [bash - How to pass in password to pg_dump? - Stack Overflow](https://stackoverflow.com/questions/2893954/how-to-pass-in-password-to-pg-dump)
+
 
 ## Cómo listar las secuencias en PostgreSQL
 
@@ -407,3 +432,19 @@ Fuentes:
 
 - [How to list sequences in PostgreSQL database - Softbuilder Blog](https://soft-builder.com/how-to-list-sequences-in-postgresql-database/)
 - [PostgreSQL Sequences](https://www.postgresqltutorial.com/postgresql-tutorial/postgresql-sequences/)
+
+
+## Cómo restaurar una base de datos PostgreSQL
+
+Si tenemos una copia de la base de datos realizados con `pgdump`, podemos
+recuperarla con `psql` si esta en formato sql:
+
+```shell
+psql -U username -f backupfile.sql
+```
+
+o con `pg_restore`, si está en formato `custom`:
+
+```shell
+pg_restore -d db_bame path/to/dump/filenane -U db_user
+```
