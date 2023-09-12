@@ -137,4 +137,5 @@
 
 - [WSL](notes-on-wsl.md)
 - [Web Design](notes-on-webdesign.md)
+- [Websockets](notes-on-websockets.md)
 - [Writting](notes-on-writting.md)
