@@ -2,78 +2,114 @@
 title: Notes on javascript
 ---
 
-## Cómo convertir de string a entero
+## Cómo copiar texto al/desde porta papeles con Javascript
+
+Para copiar, hay que seleccionar primero el texto que queremos, ya sea que lo
+haga el usuario o el programa. Una vez hecho esto, solo hay que llamar a
+`document.execCommand("copy");`.
+
+Por ejemplo, el siguiente código selecciona previamente todo el contenido de un
+elemento de tipo `TextArea`, identificado como `txt_input`, y lo copia al
+porta papeles.
+
+```js
+let txt_input = jQuery('#txt_input');
+txt_input.select()
+document.execCommand("copy");
+```
+
+Fuente: [jquery - Click button copy to clipboard - Stack Overflow](https://stackoverflow.com/questions/22581345/click-button-copy-to-clipboard)
+
+
+## Cómo convertir de string a entero en Javascript
 
 Usa la función `parseInt`.
 
 
-## Arrow functions expressions
+## Funciones flecha (Arrow functions expressions)
 
-An **arrow function expression** is a compact alternative to a traditional
-function expression, but **is limited** and can't be used in all situations.
+Una función flecha a **arrow function expression** es una forma alternativa y
+más compacta de definir una nueva función en Javascript. Pero tiene **algunas
+limitaciones** y no puede ser usada en todos los casos.
 
-Differences & Limitations:
+Las diferencias y limitaciones con respecto a las definiciones normales son:
 
-- Does not have its own bindings to `this` or `super`, and should not be used as methods.
-- Does not have `new.target` keyword.
-- Not suitable for `call`, `apply` and `bind` methods, which generally rely on establishing a scope.
-- Can not be used as constructors.
-- Can not use `yield`, within its body.
+- No realiza ninguna vinculación a `this` o `super`, y no deben ser usadas para
+  definir métodos.
 
-Let's decompose a traditional function down to the simplest arrow function
-step-by-step. Notice each step along the way is a valid "arrow function".
+- No tiene la _keyword_ `new.target`.
+
+- No pueden/deben ser usadas con `call`, `apply` ni `bind`, que dependen por lo
+  general de la definici'on de un _scope_ perdefinido.
+
+- No pueden ser usadas como constructores
+
+- No pueden ejecutar `yield`
+
+Veamos la conversión de una definición de función normal en una función
+_flecha_:
+
 
 ```js
-// Traditional Function
 function (a) { return a + 100; }
+```
 
-// 1. Remove the word "function" and place arrow between the argument and opening body bracket
+Eliminamos la palabra clave `function` y ponemos una flecha (`->`) entre la
+lista de parámetros y el corchete de apertura:
 
+```js
 (a) => { return a + 100; }
+```
 
-// 2. Remove the body braces and word "return" -- the return is implied.
+Eliminamos los corchetes que delimitan el cuerpo, así como la palabra clave
+`return`, el valor retornado es implícitamente el calculado:
 
+```js
 (a) => a + 100;
+```
 
-// 3. Remove the argument parentheses (Only works if decalres one single parameter)
+Si la lista de parámetros solo tiene un elemento, se pueden omitir los paréntesis:
 
+```js
 a => a + 100;
 ```
 
-As shown above, the `{` braces `}` and `(` parentheses `)` and `return` are required in some cases.
+Tanto los corchetes, `{` y `}`, como los paréntesis y el uso de `return` pueden
+ser obligatorios en determinados casos: En caso de tener **múltiples
+parámetros** o **ningún parámetro** tendremos que volver a usar los paréntesis.
+En el caso de que el cuerpo contengan **más de una línea de código**, tenemos
+que volver a usar los corchetes y usar `return`. **No** se devuelve en estos
+casos el último valor evaluado, eso sería demasiado fácil.
 
-For example, if you have **multiple arguments or no arguments**, you'll need to
-**re-introduce parentheses** around the arguments
-
-Likewise, **if the body requires additional lines of processing**, you'll need
-to **re-introduce braces PLUS the `return`** [because arrow functions do not magically
-guess what or when you want to "return" (and asuming it was the last line was
-too simple, it seems)].
-
-Source: [MDN Web Docs: Arrow function expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
+Fuente: [MDN Web Docs: Arrow function expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
 
 
-## Using console for JavaScript debugging
+## Cómo usar la consola para depurar código con Javascript
 
-Using `console.log()` for JavaScript debugging is the most common practice. But, there is more...
+La forma más usada es `console.log()`, pero hay más posibilidades:
 
-The most common Console methods are:
+- `console.log()` Para mostrar información general
 
-- `console.log()` – For general output of logging information.
-- `console.info()` – Informative logging.
-- `console.debug()` – A message to the console with the log level debug.
-- `console.warn()` – A warning message.
-- `console.error()` – An error message.
+- `console.info()` Para mensajes informativos
+
+- `console.debug()` Para mensajes de depuración
+
+- `console.warn()` Para mensajes de aviso
+
+- `console.error()` Para mensajes de error
+
 
 ### Adding styles
 
-The `console.log` output can be styled in DevTools using the CSS format specifier.
+Además la salida de `console.log` puede usar estilos, especificados como segundo parámetro
+de la llamada.
 
 ```js
-    console.log('%c This is a fancy message', 'color: white;font-size:2em;background:teal')
+console.log('%c This is a fancy message', 'color: white;font-size:2em;background:teal')
 ```
 
-Notice the `%c` at the beginning ot the message.
+Es importante incluir la marca `%c` al principio del mensaje.
+
 
 ### String substitutions
 
@@ -131,5 +167,3 @@ parameter to label the group.
 ### console.trace()
 
 Outputs a stack trace.
-
-
