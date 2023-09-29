@@ -6,7 +6,18 @@ tags:
    - math
 ---
 
-## Notes on Pandas
+## Notas sobre Pandas
+
+**[Pandas](https://pandas.pydata.org/)** es una biblioteca de código abierto
+muy popular entre los desarrolladores de Python, especialmente en los campos de
+la ciencia de datos y el aprendizaje automático, porque proporciona
+estructuras de datos muy potentes y flexibles.
+
+Pandas surge por la necesidad de tener una biblioteca con todas las funciones
+que necesita en su día a día un [analista de
+datos](https://es.wikipedia.org/wiki/Ciencia_de_datos), como cargar datos,
+limpiarlos, modelarlos, analizarlos, manipularlos y prepararlos.
+
 
 ## Usar pandas para hacer un (inner) join
 
@@ -47,8 +58,8 @@ muestra = pd.DataFrame.from_dict({
 | 6 | fantastico | 1      |
 
 
-Podemos hacer un join usanndp la funcion `merge`. Los dos primeros parámetros
-son obligatorios y son los dos _dataframes_ con los datos. Si la columna por la
+Podemos hacer un _join_ usando la función `merge`. Los dos primeros parámetros
+son obligatorios y son los _dataframes_ con los datos. Si la columna por la
 que queremos hacer el _join_ se llama igual en ambos _dataframes_, podemos usar
 el parámetro opcional `on`:
 
@@ -56,16 +67,17 @@ el parámetro opcional `on`:
 pd.merge(pesos, muestra, on='palabra')
 ```
 
+El resultado debería ser:
+
 |   | palabra    | pesos  | total |
 |---|------------|-------:|------:|
 | 0 | turismo    |   0.88 |     1 |
 | 1 | videojuego |  -0.73 |     1 |
 
 
-
-¿Qué pasa si los nombres de las columnas no coinciden? Podemos usar los dos
+Si los nombres de las columnas no coinciden, podemos usar los dos
 parámetros opcionales `left_on` y `right_on`. Vamos a redefinir el _dataframe_
-`muestra` para cmabiar el nombre de la columna de `palabra` a `termino`:
+`muestra` para cambiar el nombre de la columna de `palabra` a `termino`:
 
 
 ```python
@@ -102,10 +114,11 @@ Fuente:
 - [Joins in Pandas: Master the Different Types of Joins in Python](https://www.analyticsvidhya.com/blog/2020/02/joins-in-pandas-master-the-different-types-of-joins-in-python/)
 
 
-### How to kwnow if a series has NaN values: The [hasnans]{.title-ref} method
+### Como saber si una serie de Pandas tiene valores NaN
 
-Pandas offers a quick method to check if a given series contains any
-nulls with hasnans attribute:
+Pandas ofrece un atributo que nos da justo esa información, llamado
+[hasnans](https://pandas.pydata.org/docs/reference/api/pandas.Series.hasnans.html#pandas.Series.hasnans).
+
 
 ```python
 series = pd.Series([2, 4, 6, "sadf", np.nan])
@@ -356,3 +369,73 @@ df.plot()
 ```
 
 ![Example of Dataframe plot](./pandas/sample-dataframe-plot.png)
+
+## Como hacer un select o filtrado por columndas un Pandas
+
+Para filtrar con condiciones, escribimos la condición dentro de
+corchetes. Por ejemplo, si deseamos mostrar a los que tienen en la columna
+`votos` un valor superior o igual a doscientos mil, podemos escribir:
+
+```python
+df[df.votes>200000]
+```
+
+La expresión dentro de los corchetes, al evaluarse, devuelve un vector
+de valores _booleanos_, según la expresión indicada. Al usar esa matriz como
+índices, se eliminan todas las filas para las que el valor lógico
+correspondiente sea false.
+	
+Si queremos filtrar por dos o más condiciones, podemos combinar los vectores
+booleanos usando operadores lógicos (`&` para `and` y `|` para `or`) y usar
+el vector resultante para realizar el filtrado. El siguiente ejemplo selecciona
+las filas en las que el campo `county` es `Manhattan` y el campo `party` es
+`Democrat`:
+
+```python
+
+df[(df.county=='Manhattan') & (df.party=='Democrat')])
+```
+
+## Cómo renombrar columnas en Pandas
+
+Para renombre una columna en Pandas usaremos el método
+[`rename`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rename.html#pandas.DataFrame.rename).
+Acepta un parámetro, `columns`, que puede ser o una función o
+un diccionario, y que es la responsable de _mapear_ los nombres originales con los
+nuevos. Si usamos un diccionario, por ejemplo, para cada una de sus entradas,
+la clave se corresponde con el nombre de la columna original, mientras que el
+valor será el nuevo nombre de la columna.
+
+Tiene un parámetro opcional, `inplace`, que hará el cambio modificando el
+propio _dataframe_. Si está a `False` (El valor por defecto), devolverá una copia
+del _dataframe_ con los nombres de las columnas modificados.
+
+```python
+df = pd.DataFrame({'a': [1,2,3], 'b': [4,5,6]})
+new_df = df.rename(columns={'a': 'Alfa', 'b': 'Beta'}, inplace=False)
+print(new_df)
+```
+
+Debería devolver:
+
+|   | Alfa | Beta |
+|---|:----:|:----:|
+| 0 |  1   |  4   |
+| 1 |  2   |  5   |
+| 2 |  3   |  6   |
+
+
+## Cómo ordenar las filas de un DataFrame
+
+Hay varios métodos, el más simple es usar el método `sort_values`. Con el
+parámetro `by` indicamos las columnas por las que qieremos ordenar, y con
+el parámetro `ascending`, que es un booleano, indicamos el sentido de la
+ordenación.
+
+Por ejemplo:
+
+```
+df.sort_values(by='column_name', ascending=True)
+```
+
+

@@ -14,7 +14,7 @@ messages onto the queue, and process messages from the queue by using
 Resources and Collections.
 
 
-### Creating a Queue
+## Como crear una cola en SQS
 
 Queues are created with a name. You may also optionally set queue
 attributes, such as the number of seconds to wait before an item may be
@@ -39,10 +39,10 @@ test.
 - Fuentes: [SQS.ServiceResource.create\_queue()](http://boto3.readthedocs.io/en/latest/reference/services/sqs.html#SQS.ServiceResource.create_queue))
 
 
-### Using an Existing Queue
+## Cómo usar una cola ya existente en SQS
 
-It is possible to look up a queue by its name. If the queue does not
-exist, then an exception will be thrown:
+Es posible buscar una cola si conocemos su nombre, con `get_queue_by_name`. Si
+la cola no existe, se elevará una excepción:
 
 ```python
 # Get the service resource
@@ -56,16 +56,14 @@ print(queue.url)
 print(queue.attributes.get('DelaySeconds'))
 ```
 
-It is also possible to list all of your existing queues:
+También podemos listar todas las colas existentes:
 
 ```python
-# Print out each queue name, which is part of its ARN
 for queue in sqs.queues.all():
     print(queue.url)
-
 ```
 
-!!!Note
+!!!Note "The queue name"
     To get the name from a queue, you must use its ARN, which is available
     in the queue's attributes attribute. Using
     `queue.attributes['QueueArn'].split(':')[-1]` will return its name.
@@ -76,15 +74,12 @@ Fuentes:
 - [SQS.ServiceResource.queues](http://boto3.readthedocs.io/en/latest/reference/services/sqs.html#SQS.ServiceResource.queues)
 
 
-### Sending Messages
+## Cómo enviar un mensaje usando SQS
 
-Sending a message adds it to the end of the queue:
+Al enviar un mensaje a una cola, se añade al final de la misma:
 
 ```python
-# Get the service resource
 sqs = boto3.resource('sqs')
-
-# Get the queue
 queue = sqs.get_queue_by_name(QueueName='test')
 
 # Create a new message
@@ -140,15 +135,12 @@ References:
 - [SQS.Queue.send\_messages()](http://boto3.readthedocs.io/en/latest/reference/services/sqs.html#SQS.Queue.send_messages)
 
 
-### Processing Messages
+## Procesando mensajes de SQS
 
-Messages are processed in batches:
+Los mensajes se procesan por lotes:
 
 ```python
-# Get the service resource
 sqs = boto3.resource('sqs')
-
-# Get the queue
 queue = sqs.get_queue_by_name(QueueName='test')
 
 # Process messages by printing out body and optional author name
@@ -176,7 +168,7 @@ Hello, world!
 Hello, boto3! (Daniel)
 ```
 
-References:
+Fuentes:
 
 - [SQS.Queue.receive\_messages()](http://boto3.readthedocs.io/en/latest/reference/services/sqs.html#SQS.Queue.receive_messages)
 - [SQS.Message.delete()](http://boto3.readthedocs.io/en/latest/reference/services/sqs.html#SQS.Message.delete)

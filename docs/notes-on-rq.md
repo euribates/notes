@@ -1,10 +1,10 @@
 ---
-title: Notas sobre rq y django-rq
+title: Notas sobre RQ y Django-RQ
 ---
 
-## Qué es rq
+## Qué es RQ
 
-Con **[rq](https://python-rq.org/docs/)** tenemos un sistema sencillo de colas,
+Con **[RQ](https://python-rq.org/docs/)** tenemos un sistema sencillo de colas,
 similar --pero no tan potente-- a otros como:
 
 - [Celery](https://docs.celeryq.dev/en/stable/)
@@ -27,7 +27,7 @@ de entrada es muy baja.
 
 ### Ejemplo de tareas desacopladas 
 
-Vamos a usar solo `rq` para desacoplar una hipotética tarea que lleva mucho
+Vamos a usar solo RQ para desacoplar una hipotética tarea que lleva mucho
 tiempo. Vamos trabajar con el siguiente código, que simula una tarea que toma
 entre **2 y 7 segundos**, y que puede fallar un **20%** de las veces:
 
@@ -71,10 +71,9 @@ Vemos que es este caso hemos tardado **34** segundos (La segunda tarea falló
 muy rápidamente, así que no consumió los 4 segundos que en principio habría
 tardado).
 
-
 Vamos ahora a intentar desacoplarla. Lo primero que necesitamos es poder
 acceder a un sistema _Redis_. Con la conexión a _redis_ establecida, podemos
-empezar a usar al sistema de colas de `rq`:
+empezar a usar al sistema de colas de RQ:
 
 ```
 from redis import Redis
@@ -146,16 +145,18 @@ low: 0
 high: 0
 ```
 
+## Cómo arrancar los _workers_
+
 Muy bien ahora nuestro programa es muy rápido, las tareas están en una cola,
 pero el caso es que siguen sin ejecutarse.  Pero esto es muy fácil de resolver,
 solo tenemos que arrancar uno o más **workers** que se ocupen de hacer el
-trabajo sucio. Con `rq` es muy sencilla, solo hay que ejecutar:
+trabajo sucio. Con RQ es muy sencillo, solo hay que ejecutar:
 
 ```
 rq worker <nombre de la cola>[, <otra cola>]
 ```
 
-O, si es la cola por defecto, simplemente:
+O, si solo usamos la cola por defecto, simplemente:
 
 ```
 rq worker
@@ -231,51 +232,6 @@ tarea_pesada_y_falible (6) ...... [OK]
 [... Omitido por claridad ...]
 ```
 
-### Parámetros que podemos usar al encolar una tarea
-
-Además de especificar la cola, se pueden añadir otros parámetros
-para especificar el comportamiento. Todos estos valores seran extraidos
-con `pop` de los parámetros por nombre (`kwargs`) de la función que queremos
-encolar:
-
-- `job_timeout` especifica el tiempo maximo de ejecución de una tarea hasta que
-  se la de por fallada. Las unidades por defecto son segundos, y se puede usar o
-  bien un entero o una cadena de texto en la que se indique la cantidad y la
-  unidad a usar, por ejemplo `'1h'`, `'3m'` o `'5s'`.
-
-- `result_ttl` espedicifica cuanto tiempo se mantendran el estado y los
-  resultados de las tareas ejecutadas con éxito. De nuevo la unidad por defecto
-  son segundos. El valor por defecto es de **500** segundos. Trascurrido ese
-  tiempo los trabajos terminados serán eliminados.
-
-- `ttl` especifica el tiempo máximo que se mantendrá esperando un trabajo en la
-  cola. Pasada esa cantidad de tiempo, si el trabajo no se ha ejecutado, se
-  descarta. El valor por defecto es `None`, que se interpreta como _para
-  siempre_.
-
-
-- `failure_ttl` es el tiempo máximo durante el cual se mentienen las tareas
-  fallidas. El valor por defecto es un año. 
-
-- `depends_on`  especifica uno o más tareas que se deben ejecutar antes de
-  encolar esta tarea.
-
-- `job_id` permite especificar manualmente el identificador de la tarea.
-
-- `at_front` pondrá esta tarea en la primera posición de la cola
-
-- `description` añade una descripcion textual de la tarea.
-
-- `on_success` permite ejecutar una función después de que la tarea termine con
-  éxito
-
-- `on_failure` permite ejecutar una función después de que la tarea termine con un fallo.
-
-- `args` y `kwargs`: Esto nos permite pasar parámetros por posición y por nombre
-  directamente a la función subyacente. Normalmente se usa para pasar algún
-  parametro a la función cuyo nombre entrara en conflicto con los parámetros de
-  `rq`, como por ejemplo `descriptio` o `ttl`.
-
 ### Métodos de las colas
 
 Las colas en si tienen algunos métodos, por ejemplo, vimos que usando la funcion
@@ -290,66 +246,8 @@ El método `empty` nos permite borrar todo el contenido de una cola, mientras qu
 `delete(job_id)` nos permite borrar una tarea, si conocemos su identificador.
 
 
-## Como empezar a usar rq y django-rq
 
-### Paso 1: Instalar rq y django-rq
-
-```shell
-pip install rq django-rq
-```
-
-y añadir `"django_rq"` a la entrada `INSTALLED_APPS` del fichero `settings.py`
-
-
-### Paso 2: Configurar/definir las colas a usar en `settings.py`
-
-En la configuración del proyecto, tenemos que definir es una variable
-`RQ_QUEUES` los parámetros de las colas que vayamos a usar. En el siguiente
-ejemplo definiremos tres colas: `default`, `high` y `low` (Los nombres son
-arbitrarios, usamos estos porque son los que se usan en la documentación de
-`rq`). En nuestro fichero `settings,py` tenemos definidas las entradas
-`REDIS_SERVER`, `REDIS_PORT`, `REDIS_DB` y `REDIS_PASSWORD`, y además definimos
-una entrada llamada simplemente `REDIS`:
-
-```python
-REDIS = f"redis://{REDIS_SERVER}:{REDIS_PORT}/{REDIS_DB}"
-```
-
-Con estos valores se simplifica la definición de las colas, ya que solo debemos
-asignarles un nombre, apuntar la entrada `URL` al servidor `REDIS` e indicar la
-contraseña con la entrada `PASSWORD`:
-
-```
-RQ_QUEUES = {
-    'default': {
-        'URL': REDIS,
-        'PASSWORD': REDIS_PASSWORD,
-        'DEFAULT_TIMEOUT': 360,
-    },
-    'high': {
-        'URL': REDIS,
-        'PASSWORD': REDIS_PASSWORD,
-        'DEFAULT_TIMEOUT': 360,
-    },
-    'low': {
-        'URL': REDIS,
-        'PASSWORD': REDIS_PASSWORD,
-        'DEFAULT_TIMEOUT': 360,
-    },
-}
-```
-
-### Incluir las urls para la gestión de las colas
-
-En el fichero `urls.py`, incluir una ruta para la administración, por ejemplo:
-
-```
-urlpatterns += [
-    path('django-rq/', include('django_rq.urls'))
-]
-```
-
-## Administrar las colas
+## Cómo Administrar las colas en _rq_
 
 Con los cambios anteriores, si todo ha ido bien y ejecutamos el `manage.py`,
 veremos que nos aparecen nuevas opciones de línea de comandos, que han sido
@@ -482,7 +380,7 @@ ejecución, no habrá procesamiento concurrente. Podemos tener más de un
 _worker_ funcionando a la vez, el sistema evitará que se pisen entre si.
 
 
-## Por qué es importante el orden de las colas cuando ejecutamos un worker en RQ
+## Por qué es importante el orden de las colas en _rq_
 
 Los _workers_ procesan las colas en el orden que se les indica. Esto significa
 que, por ejemplo, si hemos invocado al _worker_ con estos parámetros:
@@ -491,12 +389,13 @@ que, por ejemplo, si hemos invocado al _worker_ con estos parámetros:
 $ rq worker high default low
 ```
 
-El _worker_ empezará a procesar los trabajos que encuentre en la cola `high`.
+Este empezará a procesar los trabajos que encuentre en la cola `high`.
 Solo cuando esta cola esté vacía empezará con la cola `default`, y solo cuando
-ambas colas `high` y `default` estén vacías, empezará a procesar trabajos de
+ambas colas `high` y `default` estén vacías, empezará con los trabajos de
 la cola `low`.
 
-## Arrancar _workers_ en mode `burst`
+
+## Cómo arrancar _workers_ en mode _burst_ (Una sola pasada)
 
 Por defecto, los _workers_ empiezan a trabajar inmediatamente, y entran en un
 estado de _bloqueo en espera_ cuando se quedan sin trabajos que procesar. Este
@@ -506,9 +405,9 @@ como `supervisor` o `systemd`.
 Pero podemos usar el _worker_ con el _flag_ `--burst` para que ejecuten toda la
 carga de trabajo que encuentren al arrancar y, cuando la cola o colas que
 atienden estén vacías, en vez de quedarse en espera, simplemente terminen su
-ejecución. Este puede resultar útil para trabajos en bloque que tiene que
-ejecutarse de forma periódica, o para escalar el conjunto de _workers_ de forma
-temporal ante un incremento grande de la carga de trabajo.
+ejecución. Este puede resultar útil para desarrollo, para trabajos en bloque
+que tiene que ejecutarse de forma periódica, o para escalar el conjunto de
+_workers_ de forma temporal ante un incremento grande de la carga de trabajo.
 
 ```
 $ rq worker --burst high default low
@@ -520,12 +419,11 @@ No more work, burst finished.
 Registering death.
 ```
 
-
-## Cómo usar rq con Django
+## Cómo usar _rq_ con Django
 
 La mejor opción es [django-rq](https://github.com/rq/django-rq). Es una _app_
 que nos permite configurar las colas dentro del fichero `settings.py`, y además
-nos proporciona varios comandos y utilidades para usar `rq` desde Django.
+nos proporciona varios comandos y utilidades para usar RQ desde Django.
 
 Para usarlo:
 
@@ -569,8 +467,187 @@ Para usarlo:
 
 - Incluir `django_rq.urls` en el fichero de rutas `urls.py`:
 
-    ```py
-    urlpatterns += [
-        path('django-rq/', include('django_rq.urls'))
-    ]
-    ```
+```py
+urlpatterns += [
+    ...
+    path('django-rq/', include('django_rq.urls'))
+]
+```
+
+## Como configurar/definir las colas a usar en Djago/RQ
+
+En la configuración del proyecto, tenemos que definir es una variable
+`RQ_QUEUES` los parámetros de las colas que vayamos a usar. En el siguiente
+ejemplo definiremos tres colas: `default`, `high` y `low` (Los nombres son
+arbitrarios, estos son los que se usan en la documentación de
+RQ). En nuestro fichero `settings,py` tenemos definidas las entradas
+`REDIS_SERVER`, `REDIS_PORT`, `REDIS_DB` y `REDIS_PASSWORD`, y además definimos
+una entrada llamada simplemente `REDIS`:
+
+```python
+REDIS = f"redis://{REDIS_SERVER}:{REDIS_PORT}/{REDIS_DB}"
+```
+
+Con estos valores se simplifica la definición de las colas, ya que solo debemos
+asignarles un nombre, apuntar la entrada `URL` al servidor `REDIS` e indicar la
+contraseña con la entrada `PASSWORD`:
+
+```
+RQ_QUEUES = {
+    'default': {
+        'URL': REDIS,
+        'PASSWORD': REDIS_PASSWORD,
+        'DEFAULT_TIMEOUT': 360,
+    },
+    'high': {
+        'URL': REDIS,
+        'PASSWORD': REDIS_PASSWORD,
+        'DEFAULT_TIMEOUT': 360,
+    },
+    'low': {
+        'URL': REDIS,
+        'PASSWORD': REDIS_PASSWORD,
+        'DEFAULT_TIMEOUT': 360,
+    },
+}
+```
+
+## Cómo encolar una tarea usando RQ
+
+Para encolar una tarea o job partimos de una función normal en Python, por
+ejemplo:
+
+```py
+import requests
+
+def count_words_at_url(url):
+    resp = requests.get(url)
+    return len(resp.text.split())
+```
+
+En principio, es una función corriente. Pero hay que tener en cuenta que este
+código va a ser ejecutado en un momento diferente, en un proceso diferente y
+probablemente en una máquina diferente, así que  **no puede depender de
+variables de contexto, globales, etc**. Además, tanto el código a ejecutar como
+los valores de los parámetros van a ser serializados para almacenarlos en la
+cola, así que **no debemos usar como parámetros valores no serializables**. Por
+ejemplo, un manejador de un fichero abierto es propio del entorno y no
+serializable.
+
+En la práctica, es mejor limitarse a usar tipos simples en los parámetros. Si
+quieramos pasar como parámetro, por ejemplo, la conexión a la base de datos, es
+mejor y más simple pasarle la cadena de texto o los parámetros de conexión, y
+que el proceso realiza la suya propia.
+
+Volviendo al tema inicial, para encolar un trabajo en rq, partimos de
+una función normal, como el ejemplo anterior, `count_words_at_url`.
+Para encolarla, tenemos que:
+
+- Almacenar la función en un fichero `.py` aparte, que podamos importar. Con
+  _rq_ no podemos serializar el código de una función que no esté en un módulo
+  propio.
+
+- Definir la cola en la que queremos poner el trabajo. Si no especificamos
+  nada, la cola sera `default`.
+
+Supojiendo que hemos guardado nuestra función de ejemplo en un fichero
+`somewhere.py`, podriamos hacer algo como esto:
+
+```py
+import time
+from rq import Queue
+from redis import Redis
+from somewhere import count_words_at_url
+
+redis_conn = Redis()              # Conseguir una conexión a Redis
+q = Queue(connection=redis_conn)  # Obtener acceso a una cola
+
+job = q.enqueue(count_words_at_url, 'http://nvie.com')
+
+print(job.result)        # Normalmente `None`, no ha podido terminar
+time.sleep(5)            # Esperamos un poco a que el worker termina
+
+print(job.result)
+```
+
+Si queremos el trabajo encolado en una cola diferente de `defaaul`, hariamos el
+siguiente cambio:
+
+```py
+q = Queue('low', connection=redis_conn)
+q.enqueue(count_words_at_url, 'http://nvie.com')
+```
+
+## Que opciones tenemos disponibles a la hora de encolar un trabajo en _rq_
+
+
+
+
+
+
+Hay muchas opciones interesantes que podemos usar cuando encolamos un trabajo.
+Todos estos valores serán extraidos con `pop` de los parámetros por nombre
+(`kwargs`) de la función que queremos encolar, d forma que no llegan a la
+función subyacente: :
+
+- `job_timeout` espedifica el tiempo máximo de ejecución que se le permite a un
+  _worker_. Pasado este tiempo, el proceso se interrumpe y se marca como
+  fallido. Podemos usar como valor o bien un entero, indicando el número de
+  segundos, o una cadena de texto que incluya un número y un sufijo
+  especificando una unidad de tiempo de horas `h`, minutos (`m`) o segundos
+  (`s`). Por ejemplo serían valores váłidos `'1h'`, `'30m` o `15s`.
+
+- `result_ttl` especifica el tiempo, en segundos, durante el cual se mantien un
+  resultado de un trabajo finalizado con éxito. Por defecto esta establecido a
+  **500 segundos**.  Trascurrido ese tiempo los trabajos terminados serán
+  eliminados.
+
+- `failure_ttl` es el tiempo máximo durante el cual se mentienen las tareas
+  fallidas. El valor por defecto es un año. 
+
+- `ttl` especifica el máximo tiempo que se mantiene un trabajo en la cola antes
+  de descartarlo. Pasada esa cantidad de tiempo, si el trabajo no se ha ejecutado, se
+  descarta. Por defecto tiene el valor `None` lo que significa que no se
+  descartan nunca y, por tanto, los trabajos permaneceran en la cola hasta que
+  o bien se ejecuten conéxito o se descaraten manualmente.
+
+- `on_success` permite especificar una función que se ejecutará despues de que
+  un trabajo haya finalizado con éxito.
+
+- `on_failure`, de forma similar, permite especificar una función que se
+  ejecutará despues de que un trabajo haya finalizado sin éxito.
+
+- `job_id` nos permite establecer el identificador de un trabajo manualmente.
+
+- `at_front` permite posicionar el trabajo al principio de la cola, en vez de
+  al final, como sería lo normal.
+
+- `description` permite añadir una descripcion opcional al trabajo.
+
+- `depends_on`  especifica uno o más tareas que se deben ejecutar antes de
+  encolar esta tarea.
+
+- `args` y `kwargs`: Estos parámetros nos permiten especificar directamente los
+  argumentos posicionales o por nombre a pasar a la función subyacente.  Esto
+  resulta útil si alguno de los paráetros que acepta la función
+  entra en conflicto con alguno de los que hemos visto para `enqueue`,
+  como por ejemplo `description` o `ttl`.
+
+
+## Qué serializador usa RQ. ¿Se puede cambiar?
+
+El serializador por defecto en RQ es
+[pickle](https://docs.python.org/3/library/pickle.html). Aunque se pueden usar
+otros serializadores, _pickle_ tienen la ventaja de estar incluido de serie con
+Python y además soporta más tipos de datos que, por ejemplo, json. Pero no todo
+son ventajas. En la documentación oficial enlazada se describen con más detalle
+las diferencias y capacidades de _Piclle_ y _Json_.
+
+!!! Note "Serializar objetos con Pickle
+
+    En la documentación oficial hay un apartado sobre el protocolo
+    que debemos implementar en nuestras clases para que puedan ser
+    serializables por Pickle. Resumiendo mucho, tenemos que implementar dos
+    métodos, `__getstate__` y `__setstate__`. No obstante, es un tema
+    complicado y hay ciertas peculiaridades que convienen consultar en la
+    documentación.

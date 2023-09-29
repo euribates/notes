@@ -115,7 +115,7 @@ def ls(topic_name: str, index: Optional[int] = typer.Argument(None)):
             table.add_column("I", style="dim")
             table.add_column("Note")
             for i, point in enumerate(note.content):
-                table.add_row(f'{i}', point.title)
+                table.add_row(f'{i}', Markdown(point.title))
             console.print(table)
         else:
             for i, point in enumerate(note.content):
