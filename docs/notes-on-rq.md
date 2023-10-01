@@ -2,10 +2,10 @@
 title: Notas sobre RQ y Django-RQ
 ---
 
-## Qué es RQ
+## Qué es RQ (Redis Queue)
 
 Con **[RQ](https://python-rq.org/docs/)** tenemos un sistema sencillo de colas,
-similar --pero no tan potente-- a otros como:
+similar --aunque no tan potente-- a:
 
 - [Celery](https://docs.celeryq.dev/en/stable/)
 
@@ -19,7 +19,8 @@ similar --pero no tan potente-- a otros como:
 
 Entre otros.
 
-Para nosotros es interesante porque el único requerimiento es Redis, que nosotros
+Para nosotros es interesante porque es muy sencillo y el único requerimiento es
+Redis, que nosotros
 ya estamos usando, y al ser mucho más sencillo que las alternativas, la barrera
 de entrada es muy baja.
 
@@ -232,19 +233,24 @@ tarea_pesada_y_falible (6) ...... [OK]
 [... Omitido por claridad ...]
 ```
 
-### Métodos de las colas
+## Métodos y propiedades de las colas en RQ
 
-Las colas en si tienen algunos métodos, por ejemplo, vimos que usando la funcion
-`len` sobre una cola nos devuelve el número de trabajos en la misma.
+Las colas en si tienen algunos métodos y atributos. Ya vimos en los ejemplos
+que la funcion `len` sobre una cola nos devuelve el número de trabajos en la
+misma.
 
-Accediendo al atributo `job_ids` obtenemos una lista de los identificadores de
-las tareas que están en la cola. Con `jobs` accedes a una lista de las tareas en
-si. Se puede usar el método `fetch_job(job_id)` para obtener un trabajo en concreto (por
-ejemplo para obtener su resultado) si conocemos su identificador.
+- `job_ids`: Accediendo al atributo `job_ids` obtenemos una lista de los
+  identificadores de las tareas que están en la cola.
 
-El método `empty` nos permite borrar todo el contenido de una cola, mientras que
-`delete(job_id)` nos permite borrar una tarea, si conocemos su identificador.
+- `jobs`: Con el atributo `jobs` accedes a una lista de las tareas en si.
 
+- `fetch_job(job_id)`: Se puede usar este método para obtener un trabajo en
+  concreto (por ejemplo para obtener su resultado), a partir de su
+  identificador.
+
+- `empty()`: Borra todo el contenido de una cola
+
+- `delete(job_id)`: Borra una tarea, conocido su identificador.
 
 
 ## Cómo Administrar las colas en _rq_
