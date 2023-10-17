@@ -53,3 +53,65 @@ sudo systemctl restart nginx
 ```
 
 Fuente: [How to Increase Request Timeout in NGINX &ndash; TecAdmin](https://tecadmin.net/increase-request-timeout-in-nginx/)
+
+## Cómo comprobar si el fichero de configuracion de nginx es correcto
+
+Se puede ejecutar:
+
+```shell
+nginx -t
+```
+
+## Cómo saber que version de nginx tengo instalada
+
+Dedsde la línea de comandos:
+
+```shell
+nginx -v
+```
+
+## Como instalar php con nginx
+
+Suponemos instalado nginx, si no:
+
+```shell
+sudo apt-get install nginx -y
+sudo systemctl start nginx
+sudo systemctl enable nginx
+```
+
+Instalamos PHP 7.4:
+
+```shell
+sudo apt-get install php7.4 -y
+php --version
+```
+
+Debería devolver:
+
+```
+PHP 7.4.3-4ubuntu2.19 (cli) (built: Jun 27 2023 15:49:59) ( NTS )
+Copyright (c) The PHP Group
+Zend Engine v3.4.0, Copyright (c) Zend Technologies
+    with Zend OPcache v7.4.3-4ubuntu2.19, Copyright (c), by Zend Technologies
+```
+
+### Instalar PHP7.4-FPM y otras extensiones
+
+Nginx no procesa directamente PHP, es necesario instalar PHP-FPM, que es una
+alternativa PHP a FastCGI, con algunas funcionmalidades adicionales para sitios
+con mucha carga.
+
+```shell
+sudo apt install php7.4-fpm php7.4-cli php7.4-mysql php7.4-curl php7.4-json -y
+```
+
+Y si todo ha ido bien, lo activamos:
+
+```shell
+sudo systemctl start php7.4-fpm
+sudo systemctl enable php7.4-fpm
+```
+
+Fuente:  
+[How to install PHP 7.4 With Nginx on Ubuntu 20.04 - RoseHosting](https://www.rosehosting.com/blog/how-to-install-php-7-4-with-nginx-on-ubuntu-20-04/)

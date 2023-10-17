@@ -852,7 +852,7 @@ vez vamos a referirnos a un campo de un modelo sin que esté cualificado por la
 clase o por la instancia.
 
 
-## Los datos incorrectos de deberían poder almacenarse en la base de datos
+## Los datos incorrectos NO deberían poder almacenarse en la base de datos
 
 Si tiene sentido, es preferible usar `PositiveIntegerField` en vez de
 `IntegerField`, porque así prevenimos que **datos incorrectos se almacenen
@@ -860,14 +860,69 @@ en la base de datos**. Ver Impedir estados imposibles. Por la misma razón, hay
 que especificar siempre `unique` a `True` si tiene sentido, y eliminar o
 reducir al mínimo los campos con `required` a `False`.
 
+Si tenemos un valor o conjunto de valores que forman una clave candidata
+natural, podemos crear un índice indicando que la combinación de valores
+es única. Además, es conveniente usar el concepto de
+[`natural_key`](https://docs.djangoproject.com/fr/4.2/topics/serialization/#natural-keys) 
+para facilitar las migraciones. Una clave natural es una tupla de valores que
+identifican un registro, de forma equivalente pero alternativa a una clave
+primaria.
 
-## Getting the earliest/latest object
+Para usarlo, debemos definir un gestor (`models.Manager`) personalizado, y este
+gestor debe implementar una función `get_by_natural_key`, que aceptará como
+parámetros los campos que forman la clave natural. Supongamos que queremos usar
+como clave natural el nombre y apellidos de una persona, podriamos hacer algo
+como:
 
-You can use `ModelName.objects.earliest('created'/'earliest')` instead
-of `order_by('created')[0]` and you can also put `get_latest_by` in Meta
-model. You should keep in mind that `latest/earliest`, as well as `get`,
-can cause an exception `DoesNotExist`. Therefore,
-`order_by('created').first()` is the most useful variant.
+```py
+class PersonManager(models.Manager):
+    def get_by_natural_key(self, first_name, last_name):
+        return self.get(first_name=first_name, last_name=last_name)
+
+class Person(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    birthdate = models.DateField()
+
+    objects = PersonManager()
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["first_name", "last_name"],
+                name="unique_first_last_name",
+            ),
+        ]
+```
+
+Ahora, al exportar, donde antes se usaría la clave primaria, ahora se usa la
+clave natural:
+
+```json
+...
+{
+    "pk": 1,
+    "model": "store.book",
+    "fields": {"name": "Mostly Harmless", "author": ["Douglas", "Adams"]},
+}
+...
+```
+
+Cuando fueramos a cargar este libro, Django usará el método
+`get_by_natural_key` con los parámetros `["Douglas", "Adams"]` para localizar
+el autor, en vez de la clave primaria.
+        
+
+## Cómo obtener el primer/último elemento de un modelo
+
+Se puede usar el metodo `ModelName.objects.earliest('created'/'earliest')` en
+vez de usar `order_by('created')[0]`. Ademas, se puede definir el campo
+`get_latest_by` en la clase `Meta`, con lo cual podemos usar los métodos
+`latest` y `earliest` sin necesidad de especificar los campos por los que se
+realiza la ordenación.
+
+Hay que tener cuidado porque tanto el método `latest` como `earliest` pueden
+devolver una excepción `DoesNotExist`, en caso de que la tabla estuviera vacía.
 
 
 ## Nunca calcular el tamaño de un `queryset` con `len`
@@ -892,7 +947,7 @@ la misma que en la nota anterior, es preferible que la base de datos realice la
 consulta usando la sentencia `EXISTS`, mucho más rápido y más barato.
 
 
-## Please use `help_text` as documentation
+## Considera usar el campo`help_text` como documentción
 
 Using model `help_text` in fields as a part of documentation will
 definitely facilitate the understanding of the data structure by you,
@@ -1181,6 +1236,108 @@ class Migration(migrations.Migration):
 Fuentes:
 
 - [Executing Custom SQL in Django Migrations | End Point Dev](https://www.endpointdev.com/blog/2016/09/executing-custom-sql-in-django-migration/)
+
+### Crear migraciones usando código Python en vez de SQL
+
+Si las migraciones usando solo SQL se nos quedan cortas, también podemos hacer
+migraciones personalizadas que usen (con ciertas limitaciones) nuestro código
+ya existente.
+
+Para ello, en vez de usar la clase `RunSQL` usaremos la clase `RunPython`. Esta
+clase espera un _callable_, normalmente una función. Esta función debe aceptar
+dos parámetros: el primero es un registro que mantiene los versiones a lo largo
+de la historia de todos los modelos, de forma que podamos acceder al modelo tal
+y como era en la evolución del proyecto. El segundo parámetro es una instancia
+de a clase `SchemaEdior`, que se puede usar para realizar cambios manuales en
+el esquema de la base de datos (Pero que no es recomendable usar, ya que puede
+confundir, y mucho, al sistema de migraciones).
+
+Veamos un ejemplo, en el que calculamos la letra inicial, normalizada, de un
+texto y lo almacenamos en otro campo. Esto puede ser útil a efectos de filtrar
+y clasificar las entradas:
+
+```py
+from django.db import migrations
+
+
+def make_inicial(text):
+    if text:
+        normaliza_table = str.maketrans("ÁÉÍÓÚ", "AEIOU")
+        char = text[0].upper()
+        return char.translate(_normaliza_table)
+    return ''
+
+
+def set_inicial(apps, schema_editor):
+    # No podemos usar el modelo Entrada directamente, porque puede
+    # que a estas alturas exista una version posterior al modelo
+    # que espera la migración. Por eso tenemos que _viajar en el tiempo_
+    # y cargar elmodelo que se corresponda con el momento histórico
+    # de esta migración.
+    Ejemplo = apps.get_model("dc2", "Ejemplo")
+    for ejemplo in Ejemplo.objects.filter(inicial=None):
+        ejemplo.inicial = make_inicial(ejemplo.entrada)
+        ejemplo.save()
+
+
+class Migration(migrations.Migration):
+    dependencies = [
+        ("dc2", "0001_initial"),
+    ]
+
+    operations = [
+        migrations.RunPython(set_inicial),
+    ]
+```
+
+Al igual que con `RunSQL`, podemos implementar la operación que deshaga
+este cambio, y pasarla como segundo parámetro. Si hacemos esto con todas
+nuestras migraciones personales (Las automáticas lo realizan siempre), podemos
+viajar atrás y adelante en la historia del esquema de la base de datos, que
+puede ser una capacidad interesante. Para el ejemplo anterior, quedaría así:
+
+```py
+from django.db import migrations
+
+
+def make_inicial(text):
+    if text:
+        normaliza_table = str.maketrans("ÁÉÍÓÚ", "AEIOU")
+        char = text[0].upper()
+        return char.translate(_normaliza_table)
+    return ''
+
+
+def set_inicial(apps, schema_editor):
+    # No podemos usar el modelo Entrada directamente, porque puede
+    # que a estas alturas exista una version posterior a el modelo
+    # que espera la migración. Por eso tenemos que _viajar en el tiempo_
+    # y cargar elmodelo que se corresponda con el momento histórico
+    # de esta migración.
+    Ejemplo = apps.get_model("dc2", "Ejemplo")
+    for ejemplo in Ejemplo.objects.filter(inicial=None):
+        ejemplo.inicial = make_inicial(ejemplo.entrada)
+        ejemplo.save()
+
+
+def unset_inicial(apps, schema_editor):
+    Ejemplo = apps.get_model("dc2", "Ejemplo")
+    for ejemplo in Ejemplo.objects.exclude(inicial=None):
+        ejemplo.inicial = None
+        ejemplo.save()
+
+
+
+class Migration(migrations.Migration):
+    dependencies = [
+        ("dc2", "0001_initial"),
+    ]
+
+    operations = [
+        migrations.RunPython(set_inicial, unset_inicial),
+    ]
+```
+
 
 ## Como condensar /simplificar (_squash_) las migraciones en Django
 
