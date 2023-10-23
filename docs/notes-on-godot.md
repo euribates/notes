@@ -113,4 +113,32 @@ determinada textura, se desactive el filtrado.
 
 En resumen: incluir los ficheros `.import` pero no incluir el directorio `.import`
 
+## Qué es y para que sirve el nodo CharacterBody2D
+
+La herencia de este nodo es:
+
+
+``` mermaid
+graph LR
+  CharacterBody2D --> PhysicsBody2D;
+  PhysicsBody2D --> CollisionObject2D;
+  CollisionObject2D --> Node2D;
+  Node2D --> CanvasItem;
+  CanvasItem --> Node;
+```
+
+Es un objeto especializado en representar personajes 2D controlados por un
+_script_. Su movimiento no se ve afectados por la física, pero ellos si que pueden afectar
+físicamente a otros cuerpos físicos que se encuentren por el camino.
+
+Proporciona una API de alto nivel para mover objetos que queremos que detecten
+muros y reaccionen a pendientes (Vease el método
+[`move_and_slide`](https://docs.godotengine.org/en/stable/classes/class_characterbody2d.html#class-characterbody2d-method-move-and-slide)). Es usado a
+menudo para los personajes controlados por el jugador.
+
+Para elementos del juego que no requieran movimientos complicados ni detección
+de colisiones, como por ejemplo, plataformas móviles en un juego de
+plataformas, es más sencillo de usar y configurar el nodo
+[`AnimatableBody2D`](https://docs.godotengine.org/en/stable/classes/class_animatablebody2d.html#class-animatablebody2d)
+
 
