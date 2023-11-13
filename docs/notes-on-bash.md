@@ -227,3 +227,28 @@ Check out the following links for more information:
 -   [Bash Scripting Tutorial](https://ryanstutorials.net/bash-scripting-tutorial/)
 -   [Bash scripting tutorial for beginners](https://linuxconfig.org/bash-scripting-tutorial-for-beginners)
 -   [The Shell Scripting Tutorial](https://www.shellscript.sh/)
+
+## Cómo eliminar los primeros $n$ caracteres de un listado/fichero
+
+Tenemos la utilidad `cut`. Podemos usar la opción `-c|--characters` para 
+especificar el rango de caracteres (`4-` siginifica, "del cuarto carácter
+en adelante) o `-d|--delimiter` para especificar el delimitador a usar (Si no se
+especifica, se asumira el tabulador).
+
+Por ejemplo, para eliminar los primeros 3 caracteres
+de la salida del comando `git status --short`:
+
+```shell
+$ git status --short
+ M docs/notes-on-django.md
+```
+
+Usaríamos:
+
+```shell
+$ git status --short | cut -c 4-
+docs/notes-on-django.md
+```
+
+Fuente: 
+[bash - What is a unix command for deleting the first N characters of a line? - Stack Overflow](https://stackoverflow.com/questions/971879/what-is-a-unix-command-for-deleting-the-first-n-characters-of-a-line)

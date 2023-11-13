@@ -1749,7 +1749,7 @@ class TempUser(models.Model):
     ...
 ```
 
-## Como especificar, para el capo de un modelo, el nombre de la columna en la BD?
+## Como especificar, para un campo de un modelo, el nombre de la columna en la BD?
 
 Con el parámetro `db_column` a la hora de definir el campo:
 
@@ -1759,3 +1759,29 @@ class User(models.Model):
     login = models.CharField(max_length=100, db_column='username')
     ...
 ```
+
+## Cómo subir contenido a un campo de tipo FileFied, por programa
+
+Podemos usar el objeto `File` de `django.core.files`. Supongamos
+un modelo:
+
+```py
+class MyModel(models.Model):
+  document = models.FileField(upload_to=PATH)
+```
+
+Podemos hacer:
+
+```py
+from django.core.files import File
+
+doc = MyModel()
+with open(filepath, 'rb') as doc_file:
+   doc.document.save(filename, File(doc_file), save=True)
+doc.save()
+```
+
+Fuente: [Programmatically Upload Files in Django - Stack Overflow](https://stackoverflow.com/questions/1993939/programmatically-upload-files-in-django)
+
+
+
