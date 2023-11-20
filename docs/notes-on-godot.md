@@ -56,6 +56,62 @@ Un aspecto muy importante de los nodos es que, además de las
 propiedades, podemos **asigna a un nodo un _script_ o programa que
 controle su comportamiento**.
 
+## Como eliminaar un nodo de una escena
+
+**tl/dr**: `self.queue_free()`
+
+La forma correcta es llamando al método `queue_free()` del propio nodo. 
+
+Si el nodo no está en una escena (lo cual es raro,pero podría pasar)
+se puede elminar simplemente con el método `free()`.
+
+## Como convertir una sub rama del arbol de nodos en una escena
+
+Simplemente hay que arrastrar el nodo de la rama que queremos que sea la
+raíz de la nueva escena a la sección de Recursos (`FileSystem`), en la esquina
+inferior izquierda.
+
+## Cómo cargar una escena en Godot
+
+Usando `get_tree()` podemos obtener el nodo raíz de la escena actual, y luego,
+sobre ese nodo llamar al método `change_scene_to_file(file_path)` para cargar
+la nueva escena.
+
+Ejemplo:
+
+```gdscript
+get_tree().change_scene_to_file("res://Physics/Main.tscn")
+```
+
+## Cómo cambiar el gris oscuro de fondo por defecto de las escenas
+
+En `Project` --> `Settings`, ir a `Environemnt` y cambiar el color
+etiquetado como `Default Clear Color`.
+
+## Cómo trabajar con numeros aleatorios
+
+En el espacio global tenemos el método `randomize()`. Este método solo debe
+ser ejecutado al principio, para inicializar el generador de numero
+pseudo-aleatorios con una semilla diferente, basado en el momento en que
+ejecuta. También podemos fijar la semilla con `seed(int)`.
+
+- La función `randi() -> int` devuelve un número entero al azar entre $0$ y
+  $2^{32-1}$.
+
+- La función `randf() -> float` devuelve un número flotante al azar entre $0$ y
+  $1$.
+
+- La función `randfn(float mean, float deviation) -> float` devuelve un número
+  flotante basado en una distribución normal, con media `mean` (Por defecto
+  $0$) y desviación estandar `deviation` (Por defecto $1.0$).
+
+- La función `randf_range(float from, float to) -> float` devuelve un valor en
+  coma flotante comprendia entre los valores `from` y `to`, ambos inclusive.
+
+- La función `randi_range(int from, int to) -> int` devuelve un entero
+  comprendido entre los valores `from` y `to`, ambos inclusive.
+
+
 ## El nodo Area2D
 
 La herencia es:

@@ -13,6 +13,7 @@ tridimensionales. También de composición digital utilizando la técnica proces
 de nodos, edición de vídeo, escultura (incluye topología dinámica) y pintura
 digital. 
 
+
 ## Ajustes iniciales para desarrollar con Blender/Python
 
 Activar, en `Preferencias` -> `Interfaz`, las opciones de `Developer extra` y
@@ -240,7 +241,7 @@ Source: [StackExchange - How can I use an array modifier to create individually
 manipulatable objects?](https://blender.stackexchange.com/questions/109/how-can-i-use-an-array-modifier-to-create-individually-manipulatable-objects)
 
 
-## Como poner el cursor en el centro de masas de un objeto en Blender
+## Cómo poner el cursor en el centro de masas de un objeto en Blender
 
 In Edit Mode, select all the faces. Press `Shift-S` and select "cursor
 to selected", that will put the cursor at the center of the

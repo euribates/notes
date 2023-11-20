@@ -7,6 +7,110 @@ tags:
     - database
 ---
 
+## Como añadir acciones al Admin de Django
+
+Lo primero que necesitamos en escibir una función que será llamada
+cuando se ejecute la acción. Esta función debe aceptar tres parámetros:
+
+- La instancia del `ModelAdmin`.
+
+- El objeto `HttpRequest` de la petición.
+
+- Un `QuerySet` que contiene los objetos seleccionados por el usuario.
+
+El siguiente ejemplo solo cambie el estado de los objetos en el
+queryset, así que no necesita ninguno de lso dos primeros parámetros:
+
+```py
+from django.utils import timezone
+
+def make_published(model_admin, request, queryset):
+    queryset.update(status='PUB', f_published=timezone.now())
+```
+
+Nota: Tanmbién puede tener sentido definior la acción como un método
+del `ModelAdmin`. Es este caso el primer parámetro es el mismo, pero
+usaremos la convención de llamarlo `self.
+
+### registrar la acción para que aparezca en el admin
+
+Para que aparezca la opción en el admin, tenemos que registrarla. La
+forma más sencilla es usando el decorador `@admin.action`, que nos permite
+además especificar una descripción para la acción. Una vez marcada como una
+acción, podemos añadirla a el o los `modelAdmin` (Puede tener sentido que una
+misma accion se pueda aplicar a varios modelos) en el atributo `actions`:
+
+```py
+from django.contrib import admin
+from django.utils import timezone
+
+from myapp.models import Article
+
+
+@admin.action(description="Marcar como publicado")
+def make_published(model_admin, request, queryset):
+    queryset.update(status='PUB', f_published=timezone.now())
+
+
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ["title", "status"]
+    ordering = ["title"]
+    actions = [make_published]
+
+
+admin.site.register(Article, ArticleAdmin)
+```
+
+Si fuera un método, en ves de una función externa, en actions tendremos que
+usar una cadena de texto para especificarlo, en vez de usar directamente la
+función:
+
+```py
+class ArticleAdmin(admin.ModelAdmin):
+    ...
+
+    actions = ["make_draft"]
+
+    @admin.action(description="Mark selected stories as published")
+    def make_draft(self, request, queryset):
+        queryset.update(status="DRAFT")
+```
+
+### Acciones más complicadas o avanzadas
+
+En otros casos tendremos que pedir datos adicionales: Una confirmación de
+la solicitud, por ejemplo, o preguntar más detalles necesarios para la
+operación. Eso nos obliga a pasar por una página intermedia.
+
+Para ello, en vez de tener un método/función que no devuelve nada, devolveremos
+un objet de tipo `HttpResponseRedirect` que nos diriga a una página definida
+por nosotros, y que acepta el `queryset` original.
+
+```py
+from django.http import HttpResponseRedirect
+
+
+def issue_certificate(modeladmin, request, queryset):
+    selected = queryset.values_list("pk", flat=True)
+    ct = ContentType.objects.get_for_model(queryset.model)
+    return HttpResponseRedirect(
+        "/export/?ct=%s&ids=%s"
+        % (
+            ct.pk,
+            ",".join(str(pk) for pk in selected),
+        )
+```
+
+Esta página puede definir una plantilla que derive de `admin/base.html` para
+que se integre bien con el admin.
+
+
+
+
+
+
+
+
 ## Cómo obtener la fecha o _timestamp_ en Django, con el _timezone_ correcto
 
 Si en el `settings.py` tenemos definido la zona horaria (lo cual es totalmente
@@ -472,11 +576,11 @@ explicado, junto con muchas otras cosas interesantes, en la documentación
 oficial: [Django Query Set API reference - extra](https://docs.djangoproject.com/en/3.1/ref/models/querysets/#extra).
 
 
-## How to modify the queryset used in the admin forms to get a Foreign Model
+## Cómo modificar el queryset usado en el admin para incluir un select_related
 
 No hay que modificar el formumario en si, sino modificar la
 clase derivada de ModelAdmin. Django incluye un método específico
-par esto en la clase madre, `formfield_for_foreignkey`.
+para esto en la clase madre, `formfield_for_foreignkey`.
 
 De la documentación:
 
@@ -675,59 +779,69 @@ En general se recomienda usar **nombres en singular para los modelos**, como
 `Project`, `Task`, `Place`.
 
 
-### Relationship Field Naming
+### Nombres de los campos usados para enlazar modelos, como ForeignKey y otros
 
-For relationships such as `ForeignKey`, `OneToOneKey`, `ManyToMany` it is
-sometimes better to specify a name. Imagine there is a model called `Article`,
-- in which one of the relationships is `ForeignKey` for model `User`. If this
-field contains information about the author of the article, then `author` will
-be a more appropriate name than user.
+Para campos que relacionan con otros modelos, como 
+`ForeignKey`, `OneToOneKey`, `ManyToMany`, hay una serie de cuestiones
+importantes.
 
-### Correct Related-Name
+## Cómo usar el atributo `related_name`, y porqué es recomendable usarlo
 
-It is reasonable to indicate a related-name in plural as related-name
-addressing returns queryset. Please, do set adequate related-names. In
-the majority of cases, the **name of the model in plural** will be just
-right. For example:
+Cunado creamos una _foreign key_ en un modelo, esto crea automáticamente un
+atributo **el el modelo enlazado**. Podemos indicar cual será el nombre del
+atributo usando el parámetro `related_name`. Normalmente, es suficiente con el
+nombre en plural del modelo que contiene la `ForeignKey`.
+
+Por ejemplo:
 
 ```python
 class Owner(models.Model):
-    pass
+    name = CharField(max_length=128)
 
-class Item(models.Model):
-    owner = models.ForeignKey(Owner, related_name='items')
+class Comic(models.Model):
+    owner = models.ForeignKey(Owner, related_name='comics')
 ```
 
-## Nunca usar una `ForeignKey` con `unique=True`
+Ahora las instancias de `Owner` tienen un atributo `comics`, que es un
+_queryset_ de todos los comics que posee dicha instancia.
+
+Si no usamos el parámetro, el atributo se crea, pero con el nombre por defecto
+de `<model>_set`, en este caso, `comic_set`. El problema es que
+se crea _mágicamente_, y puede confundir a un programador que ve que se usa el
+atributo `comic_set` pero que no se define en ninguna parte del código. Esto va
+contra el principio _Explicit is better than implicit_, y es por lo que se
+recomuenda el uso, para tener un nombre **más claro** y **definido en el
+código**.
+
+## Porqué no hay que usar nunca una `ForeignKey` con `unique=True`
 
 No tiene sentido usar esta combinación, ya que existe `OneToOneField`
 precisamente para estos casos.
 
 
-## Attributes and Methods Order in a Model
+## Orden de los atributos y métodos declarados en un modelo.
 
-Preferable attributes and methods order in a model (an empty string
-between the points).
+Este sería el orden sugerido:
 
-1)  `meta`
+1)  Clase `meta`
 
-2)  constants (for choices and other)
+2)  Constantes (para usar en `choices` y otras)
 
-3)  fields of the model
+3)  Campos del modelo
 
-4)  custom manager indication
+4)  Managers personalizados, si lo s hubiera
 
-5)  `__unicode__` (python 2) or `__str__` (python 3)
+5)  Definicion del método `__str__`
 
-6)  other special methods
+6)  Otros métodos especiales
 
-7)  def `clean`
+7)  Definición del método `clean`
 
-8)  def `save`
+8)  Definición del método `save`
 
-9)  def `get_absolut_url`
+9)  Definición del método `get_absolut_url`
 
-10) other methods
+10) Otros métodos
 
 
 ## Denormalisations
@@ -947,11 +1061,11 @@ la misma que en la nota anterior, es preferible que la base de datos realice la
 consulta usando la sentencia `EXISTS`, mucho más rápido y más barato.
 
 
-## Considera usar el campo`help_text` como documentción
+## Considera usar el campo `help_text` como documentción
 
-Using model `help_text` in fields as a part of documentation will
-definitely facilitate the understanding of the data structure by you,
-your colleagues, and admin users.
+Usar el campo `help_text` como parte de la documenatación
+resulta muy útil, ya que es accesible tanto para desarrolladores
+como para administradores (Si usas el admin).
 
 
 ## Usar `DecimalField` para almacenar cantidades de dinero
@@ -1579,14 +1693,17 @@ que los necesitan por defecto:
 
 ## Cómo tener dos aplicaciones con el mismo nombre
 
-Desde Django 1.7, es obligatorio que las aplicaciones tengan una **etiqueta
-única** para identificarlos. Por defecto la etiqueta es el nombre del módulo,
-así que si tenemos dos módulos con el mismo nombre, `foo`, aunque están
-obviamente en ramas diferentes, tendremos un error.
+Desde Django 1.7, es obligatorio
+que las aplicaciones tengan una **etiqueta única**
+para identificarlos. Por defecto la etiqueta es el nombre del módulo,
+así que si tenemos dos módulos con el mismo nombre, `foo`,
+aunque están obviamente en ramas diferentes,
+tendremos un error.
 
-La solución es **sobreescribir** la etiqueta por defecto. Podemos hacerlo
-añadiendo el siguiente código al fichero `apps.py` de la aplicación (Ojo, que el
-valor importante es `label`, no `name`):
+La solución es **sobreescribir** la etiqueta por defecto.
+Podemos hacerlo añadiendo el siguiente código
+al fichero `apps.py` de la aplicación
+(Ojo, que el valor importante es `label`, no `name`):
 
 
 ```python
