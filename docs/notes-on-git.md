@@ -695,3 +695,36 @@ Fuentes:
 - [Stack Overflow - What's the practical difference between a Bare and non-Bare
   repository?](https://stackoverflow.com/questions/5540883/whats-the-practical-difference-between-a-bare-and-non-bare-repository)
 
+## ¿Cómo copio una versión de un fichero de una rama de git a otra?
+
+Debes hacer:
+
+```shell
+git checkout mi_otra_rama fichero.txt
+```
+
+Donde `mi_otra_rama` es la rama
+de donde quieres traer el fichero `fichero.txt`.
+
+Otras posbilidades:
+
+```shell
+git checkout <commit_hash> <ruta_relativa_al_fichero_o_directorio>
+git checkout <remote_name>/<branch_name> <fichero_o_directorio>
+```
+
+Algunas notas:
+
+- Usando el _commit_hash_
+  puedes traer ficheros de cualquier commit.
+
+- Funciona tanto para ficheros como para directorios.
+
+- se sobrescribira el fichero fichero.txt.
+    
+- No funcionan los wildcards, pero sí las rutas relativas.
+
+- Puedes indicar múltiples rutas.
+
+Fuente: 
+[Stack Overflow en español](https://es.stackoverflow.com/questions/243064/cdocs/notes-on-git.mdC3docs/notes-on-git.mdB3mo-copio-una-versidocs/notes-on-git.mdC3docs/notes-on-git.mdB3n-de-un-fichero-de-una-rama-de-git-a-otra)

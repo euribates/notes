@@ -1901,4 +1901,48 @@ doc.save()
 Fuente: [Programmatically Upload Files in Django - Stack Overflow](https://stackoverflow.com/questions/1993939/programmatically-upload-files-in-django)
 
 
+## Como crear un FormField (y Widget por defecto, si fuera necesario) propio
 
+Los campos **de formulario** son fáciles de personalizar:
+
+```py
+class UpperCaseField(forms.CharField):
+    def clean(self, value)
+        try:
+            return value.upper()
+        except:
+            raise ValidationError
+```
+
+Solo tenemos que crear una nueva clase
+que derive del campo de formulario
+que más se parezca al que necesitamos
+y reimplementar el método `clean()`
+para que devuelva el valor y tipo de dato que necesitamos.
+Si tuvieramos que reimplemenatar también el método `__init__`
+hay que seguir aceptando todos los parámetros básicos:
+`required`, `label`, `initial`, `widget` y `help_text`.
+La forma más sencilla es llamando a `super().__init__`.
+
+```py
+class MyObjectField(forms.ModelChoiceField):
+    # in this case, 'value' is a string representing
+    # the primary key of a MyObject
+    def clean(self, value):
+        try:
+            return MyObject.objects.get(pk=value)
+        except:
+            raise ValidationError
+```
+
+De igual manera, hay que tener cuidado
+al reimplementar `clean`
+porque este es responsable de llamar a
+`to_python()`, `validate()` y `run_validators()`. 
+Lo más seguro es llamar a la super implementación
+con `super().clean(value)`,
+antes y/o después de lo que tengamos que hacer nosotros.
+
+Esto es solo para personalizar los campos de formulario.
+para personalizar los _Widgets_, se requiere un poco más de trabajo
+porque hay que reimplementar unos cuantos métodos más.
