@@ -726,5 +726,11 @@ Algunas notas:
 
 - Puedes indicar múltiples rutas.
 
+Otra alternativa:
+
+```shell
+git show commit_id:path/to/file > path/to/file
+```
+
 Fuente: 
 [Stack Overflow en español](https://es.stackoverflow.com/questions/243064/cdocs/notes-on-git.mdC3docs/notes-on-git.mdB3mo-copio-una-versidocs/notes-on-git.mdC3docs/notes-on-git.mdB3n-de-un-fichero-de-una-rama-de-git-a-otra)
