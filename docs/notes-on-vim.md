@@ -1202,3 +1202,43 @@ fichero.
 Fuentes: 
 
 - [How does the vim &quot;write with sudo&quot; trick work? - Stack Overflow](https://stackoverflow.com/questions/2600783/how-does-the-vim-write-with-sudo-trick-work/7078429)
+
+## How to change in gvim GTK file browser the default file mask wildcard (glob)
+
+The `browsefilter` variable is a convenient way to add custom glob like filters
+for the graphical :browse dialog and select only the relevant filetypes for
+display.
+
+For MS-Windows and GTK, you can modify the filters that are used in the browse
+dialog.  By setting the `g:browsefilter` or `b:browsefilter` variables, you can
+change the filters globally or locally to the buffer.  The variable is set to
+a string in the format `"{filter label}\t{pattern};{pattern}\n"` where `{filter
+label}` is the text that appears in the "Files of Type" comboBox, and
+`{pattern}` is the pattern which filters the filenames.  Several patterns can be given,
+separated by `';'`.
+
+For example, to have only Vim files in the dialog, you could use the following
+command:
+
+```
+let g:browsefilter = "Vim Scripts\t*.vim\nVim Startup Files\t*vimrc\n"
+```
+
+You can override the filter setting on a per-buffer basis by setting the
+`b:browsefilter` variable.  You would most likely set `b:browsefilter` in a
+**filetype plugin**, so that the browse dialog would contain entries related to
+the type of file you are currently editing.  Disadvantage: This makes it
+difficult to start editing a file of a different type.  To overcome this, you
+may want to add "All Files\t*.*\n" as the final filter, so that the user can
+still access any desired file.
+
+To avoid setting browsefilter when Vim does not actually support it, you can
+use has("browsefilter"):
+
+```
+if has("browsefilter")
+    let g:browsefilter = "whatever"
+endif
+```
+
+Fuente: [StackExchange](https://vi.stackexchange.com/questions/22905/how-to-change-in-gvim-gtk-file-browser-the-default-file-mask-wildcard-glob)
