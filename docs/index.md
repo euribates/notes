@@ -114,6 +114,7 @@
 - [SSH](notes-on-ssh.md)
 - [Static-resources](notes-on-static-resources.md)
 - [Stripe](notes-on-stripe.md)
+- [SVG](notes-on-svg.md)
 - [Swagger](notes-on-swagger.md)
 - [SystemD](notes-on-systemd.md)
 
