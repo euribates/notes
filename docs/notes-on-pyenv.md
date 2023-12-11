@@ -11,13 +11,13 @@ tags:
 conmutar fácilmente entre versiones de Python. Sigue la filosofía Unix de hacer
 solo una cosa pero hacerla bien.
 
-Una ventaja que tiene es que **no depende de python**, es un conjunto de
-scripts de shell.
+Una ventaja que tiene es que **no depende de Python**, es un conjunto de
+_scripts_ de _shell_.
 
 ## Instalar pyenv
 
-Lo mejor es instalarlo acompañado de virtualenv, para ello hay que instalar
-tanto `pyenv` como `pyenv-virtualenv`.
+Lo mejor es instalarlo acompañado de [virtualenv](https://virtualenv.pypa.io/en/latest/),
+para ello hay que instalar tanto `pyenv` como `pyenv-virtualenv`.
 
 ### En Mac:
 
@@ -48,9 +48,9 @@ $ curl https://pyenv.run | bash
 ## Crear un entorno virtual con pyenv
 
 Hay que ejecutar `pyenv virtualenv <python.version> <name>`, donde
-`<python.version>` es una especificación de la versión de python usando 4
-dígitos separadospor coma, cmo `2.7.18` o `3.11.2`, y `<name>` el nombre del
-virtualenv:
+`<python.version>` es una especificación de la versión de Python usando 4
+dígitos separados por coma, como `2.7.18` o `3.11.2`, y `<name>` el nombre del
+_virtualenv_:
 
 ```shell
 pyenv virtualenv 3.11.2 newacl
@@ -66,8 +66,9 @@ Con el comando `pyenv virtualenvs`.
 
 ## Activando/Desactivando los entornos virtuales con pyenv
 
-Si en una carpeta existe un fichero `.python-version` cuyo contenido case con
-el nombre de un entorno virtual, y si hemos ejecutado previamente en la _shell_:
+Si en una carpeta existe un fichero `.python-version`
+cuyo contenido coincide con el nombre de un entorno virtual,
+y si hemos ejecutado previamente en la _shell_:
 
 `eval "$(pyenv virtualenv-init -)"`
 
@@ -76,7 +77,8 @@ el nombre de un entorno virtual, y si hemos ejecutado previamente en la _shell_:
 Al cambiar a este directorio **se activa automáticamente el entorno virtual**,
 y si nos salimos del directorio, se desactiva también automáticamente.
 
-También podemos activar/desactivar manualmente en entorno con los comandos:
+También podemos activar/desactivar manualmente en entorno
+con los comandos:
 
 ```shell
 pyenv activate <name>
@@ -85,7 +87,7 @@ pyenv deactivate
 
 ## Borrar un entorno virtual creaco con pyenv
 
-Usaremos el comando `unnistall` de pyenv:
+Usaremos el comando `unnistall` de `pyenv`:
 
 ```shell
 pyenv uninstall <name>
@@ -94,13 +96,13 @@ pyenv uninstall <name>
 ## Cómo instalar versiones de Python adicionales en pyenv
 
 Usamos el subcomando `install`. Por ejemplo, para descargar y poner como
-disponible la version de Python 3.11.2, gacemos:
+disponible la versión de Python 3.12.1, haríamos:
 
 ```bash
-pyenv install 3.11.2
+pyenv install 3.12.1
 ```
 
-Ejecutando `pyenv install -l` devuelve un listado de toas las versiones
+Ejecutando `pyenv install -l` devuelve un listado de todas las versiones
 disponibles.
 
 ## Cómo actualizar la lista de versiones de Python conocidas por pyenv
@@ -114,5 +116,5 @@ O si estás en un Mac, **`brew upgrade pyenv`**.
 Con la orden `install`, usando el flag `--list` o `-l`:
 
 ```shell
-    pyenv install --list
+pyenv install --list
 ```
