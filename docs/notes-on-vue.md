@@ -26,12 +26,12 @@ let app = new Vue.createApp({
 
 ## Cómo ejecutar una función nada más cargado Vue
 
-Hay que definir la propiedad `created` con la función que queramos
+Hay que definir la propiedad `mounted` con la función que queramos
 
 ```javascript
 let app = new Vue.createApp({
   ...
-  created: function() {
+  mounted: function() {
     // props are exposed on `this`
     console.log(this.foo)
   }
@@ -39,146 +39,61 @@ let app = new Vue.createApp({
 ```
 
 
-### Vue.js Intro
+## El hola, mundo en Vue
 
-At the core of Vue.js is a system that enables us to declaratively render data
-to the DOM using straightforward template syntax:
+Este es el código para un contador en Vue3. Em primer lugar necesitamos definir
+el área en la página Html en la que correrá nuestra aplicación (El resto de la
+página será invisible para Vue). Esto normalmente se hace con un `div`, pero
+podría ser cualquier elemento del DOM, incluido `body`. Para este
+ejemplo, usaremos un `div` con el identificador `counter`:
 
 ```html
 <div id="counter">
-  Counter: {{ counter }}
+  Counter: [[ counter ]]
 </div>
 ```
 
-```js
-const Counter = {
-  data() {
-    return {
-      counter: 0
-    }
-  }
-}
-
-Vue.createApp(Counter).mount('#counter')
-```
-
-The data and the DOM are now linked, and everything is now reactive. How do we
-know? Take a look at the example below where counter property increments every
-second and you will see how rendered DOM changes:
+Luego necesitamos la parte de javascript:
 
 ```js
-const CounterApp = {
-  data() {
-    return {
-      counter: 0
-    }
-  },
-  mounted() {
-    setInterval(() => {
-      this.counter++
-    }, 1000)
-  }
-}
+let app = Vue.createApp({
+    delimiters: ['[[', ']]'],            /* custom delimeters */
+    data: function() {                   /* state definition */
+        return {
+            counter: 0,
+        }
+    },
+    mounted: function() {                /* mounted function */
+        console.log('Vue 3 mounted');
+        },
+    methods: {                           /* methods */
+        increment_counter: function() {
+            this.counter++;              /* Use this to access state */
+            },
+        },
+    });
+
+app.mount('#app');
 ```
 
-### Prop / Event Fallthrough
+Notas sobre este ejemplo:
 
-You can set props (and listen to events) on a component which you haven't
-registered inside of that component. For example, this button component (which
-might exist to set up a button with some default styling) has no special props
-that would be registered:
+- Definimos unos marcadores propios, `[[` y `]]` para que no entren en conflicto
+  el sistema de plantillas de Vue con el sistema de plantillas de Django:
 
-```vue
-BaseButton.vue
+- La entrada `data` debe ser una función que devuelva un diccionario con los
+  datos que definen el estado de la aplicación. En este caso, solo el valor del
+  contador.
 
-<template>  
-  <button>
-    <slot></slot>
-  </button>
-</template>
- 
-<script>
-export default {}
-</script>
-```
+- La entrada `mounted` nos permite definir código que se ejecutará una vez que
+  Vue se haya cargado y se haya montado en el árbol DOM indicado. Es útil para
+  inicializaciones que dependan de que todo el árbol DOM está montado, llamadas
+  a APIs externas, etc. En nuestro caso solo se usa para imprimir un mensaje de
+  log.
 
-Yet, you can use it like this:
+- En `methods` definimos métodos que podremos usar más tarde en la aplicación. En
+  estos métodos, `this` es una referencia a la propia aplicación Vue, así que
+  podemos acceder a las propiedades como en este ejemplo, con `this.counter`.
 
-```html
-<base-button type="submit" @click="doSomething">Click me</base-button>
-```
-
-Neither the type `prop` nor a custom `click` event are defined or used in the
-component. This code works, though, because Vue has built-in support for prop
-(and event) "fallthrough".
-
-Props and events added on a custom component tag automatically fall through to
-the root component in the template of that component. In the above example,
-`type` and `@click` get added to the `<button>` in the BaseButton component.
-
-You can get access to these fallthrough props on a built-in `$attrs` property
-(e.g. `this.$attrs`).
-
-This can be handy to build "utility" or pure presentational components where
-you don't want to define all props and events individually.
-
-You can learn more about this behavior here: [https://v3.vuejs.org/guide/component-attrs.html](https://v3.vuejs.org/guide/component-attrs.html)
-
-
-### Binding All Props on a Component
-
-If you have this component (`UserData.vue`):
-
-```html
-<template>
-  <h2>{‌{ firstname }} {‌{ lastname }}</h2>
-</template>
- 
-<script>
-  export default {
-    props: ['firstname', 'lastname']
-  }
-</script>
-```
-
-You could use it like this:
-
-```html
-<template>
-  <user-data :firstname="person.firstname" :lastname="person.lastname"></user-data>
-</template>
- 
-<script>
-  export default {
-    data() {
-      return {
-        person: { firstname: 'Max', lastname: 'Schwarz' }
-      };
-    }
-  }
-</script>
-```
-
-But if you have an object which holds the props you want to set as properties,
-you can also shorten the code a bit:
-
-```
-<template>
-  <user-data v-bind="person"></user-data>
-</template>
- 
-<script>
-  export default {
-    data() {
-      return {
-        person: { firstname: 'Max', lastname: 'Schwarz' }
-      };
-    }
-  }
-</script>
-```
-
-With `v-bind="person"` you pass all key-value pairs inside of `person` as props
-to the component. That of course requires `person` to be a JavaScript object.
-This is purely optional but it's a little convenience feature that could be
-helpful.
+- Es necesario montar la aplicación sobre un árbol de componentes DOM, esto se
+  hace en la última línea del código.
