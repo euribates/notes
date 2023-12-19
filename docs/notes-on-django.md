@@ -333,7 +333,7 @@ Fuente:
 - ya no se puede usar la funcion `url`  para especificar patrones, hay que
   usar obligatoriamente `path` o `path_re`.
 
-- Si da problemas con CSRF, hay que añadir la siguiente varialble al `settings.py`:
+- Si da problemas con CSRF, hay que añadir la siguiente variable al `settings.py`:
 
     ```python
     CSRF_TRUSTED_ORIGINS = [
@@ -343,7 +343,7 @@ Fuente:
         ]
     ```
 
-    Por defecto es la lista vacia. Los valores en las versiones anteriores
+    Por defecto es una lista vacia. Los valores en las versiones anteriores
     a la 4 puede que estuvieran sin el esquema, y seguramente sin poder
     usar asteriscos.
 
@@ -352,9 +352,9 @@ Fuente:
 
 ## Configurar VIM para trabajar con plantillas de Django
 
-Escribir `:setfiletype htmldjango` para que Vim resalte automáticamente
-las plantillas Django. Si solo se quiere resaltado de las etiquetas de
-Django pero no de HTML, hay que usar `:setfiletype django`.
+Escribir `:setfiletype htmldjango` para que Vim resalte automáticamente las
+plantillas Django. Si solo se quiere resaltado de las etiquetas de Django pero
+no de HTML, hay que usar `:setfiletype django`.
 
 Fuente: [Syntax highlighting for django templates](https://www.vim.org/scripts/script.php?script_id=1487) 
 
@@ -363,8 +363,8 @@ Fuente: [Syntax highlighting for django templates](https://www.vim.org/scripts/s
 ## Cuáles son los posibles valores del parámetro `on_delete` en los campos de modelos
 
 Este es el comportamiento a adoptar cuando se borra un objeto de la base de
-datos que está referenciado desde otra parte. Esto es parte del estándar SQL,
-no de Django.
+datos que está referenciado desde otra parte. Esto es parte del estándar SQL, no
+de Django.
 
 Hay 6 acciones posibles que se pueden tomar:
 
