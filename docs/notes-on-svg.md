@@ -61,4 +61,24 @@ El siguiente ejmplo desplaza el eje de coordenadas al centro de la imagen:
 
 Fuente: [SVG Tutorial](https://svg-tutorial.com/)
 
+## Cómo usar el ellento `polygon`
+
+A polygon is the easiest way to draw a freeform shape. Polygons
+have a `points` property that sets a list of coordinates that are
+connected with straight lines.
+
+```svg
+<svg 
+  width="200"
+  height="400"
+  viewBox="-100 -200 200 400"
+>
+  <polygon 
+    points="0,0 80,120 -80,120" 
+    fill="#234236" 
+  />
+</svg>
+```
+Fuente: [Day 2: How to Build a Christmas Tree with SVG - SVG Tutorial](https://svg-tutorial.com/svg/polygon)
+
 

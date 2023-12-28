@@ -434,3 +434,27 @@ ALTER DATABASE SET TIME_ZONE='-04:00';
 Fuentes:
 
 - [Check and Set the Database and Session Time Zone in Oracle](https://linuxhint.com/check-and-set-the-database-and-session-time-zone-in-oracle/)
+
+
+## Cómo volver a compilar un procedimiento almacenado en Oracle
+
+Para compilar un procedimiento se usa la sentencia `ALTER PROCEDURE`. Por
+ejemplo, para compilar el procedimiento `CIERRE_LIQUIDA`, pertenecienta a
+`PRODUCTIVIDAD`, ejecutariamos la siguiente sentencia:
+
+```sql
+ALTER PROCEDURE productividad.cierre_liquida COMPILE;
+```
+
+Si Oracle no encuentra errores de compilación, el procedimiento pasará a estado
+válido. Se puede comprobar el estado del procedimiento usando:
+
+```sql
+SELECT object_type, object_name, status
+  FROM sys.dba_objects
+ WHERE object_type = 'PROCEDURE'
+   AND object_name = 'CIERRE_LIQUIDA'
+   AND owner = 'PRODUCTIVIDAD';
+```
+
+Debería devolver `VALID` en el campo `status`.
