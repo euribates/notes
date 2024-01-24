@@ -85,7 +85,7 @@ pyenv activate <name>
 pyenv deactivate
 ```
 
-## Borrar un entorno virtual creaco con pyenv
+## Borrar un entorno virtual creado con pyenv
 
 Usaremos el comando `unnistall` de `pyenv`:
 
@@ -118,3 +118,25 @@ Con la orden `install`, usando el flag `--list` o `-l`:
 ```shell
 pyenv install --list
 ```
+
+
+## Qué son los shims
+
+Para que pyenv funcione, se inserta un **directorio de shims** (Cuñas o
+calzadores) al principio del `PATH`, de esta forma:
+
+```shell
+$ echo $PATH
+$(pyenv root)/shims:/usr/local/bin:/usr/bin:/bin
+```
+
+Mediante un proceso llamada `rehashing`, pyenv mantiene _shims_ en ese diretorio para casar con todos los ejecutables de python: `pip`, `python`, etc. En esencia, los _shims_ son ejecutables ligeros, que simplemente pasan el programa y los parametros a traves de pyenv, así que cuando se ejecuta, por ejemplo, `pip`, el sistema operativo hará lo siguiente:
+
+- Buscar en el `PATH` un ejecutable que se llame `pip`
+
+- Encontrar el _shim_ llamado `pip` en la primera carpeta del `PATH`.
+
+- Ejecutar el _shim_ `pip`, que a su vez para el comando con pyenv.
+
+Fuente: 
+[GitHub - pyenv/pyenv: Simple Python version management](https://github.com/pyenv/pyenv)
