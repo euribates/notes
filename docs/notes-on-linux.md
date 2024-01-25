@@ -6,7 +6,7 @@ tags:
     - ram
 ---
 
-## Cómo saber cuanto memoria tenemos en el equipo y de que tipo
+## Cómo saber cuanta memoria hay en el equipo y de qué tipo
 
 El comando a escribir puede variar dependiendo de la distribución, pero por lo 
 general es:
@@ -261,3 +261,25 @@ Este truco funciona al menos con xfce4-terminal, gnome-terminal, lxterminal,
 libreoffice, mousepad, chromium-browser y firefox.
 
 Fuente: [keyboard - How to type special characters in Linux? - Super User](https://superuser.com/questions/59418/how-to-type-special-characters-in-linux)
+
+## Cómo hacer para que sudo recuerde la contraseña un cierto tiempo
+
+Hay que ejecutar `visudo`:
+
+```shell
+sudo visudo
+```
+
+Buscar el texto `Defaults env_reset`, y poner en la siguiente línea:
+
+```
+Defaults timestamp_timeout=<time-in-minutes>
+```
+
+Por ejemplo, para una hora:
+
+```
+Defaults timestamp_timeout=60
+```
+
+Fuente: [How to Change Sudo Timeout Period on Linux - OMG! Linux](https://www.omglinux.com/change-sudo-timeout-linux/)

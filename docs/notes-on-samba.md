@@ -56,3 +56,42 @@ boot time automatically
 Sources:
 
 - [Mount Windows (CIFS) shares on Linux with credentials in a secure way](https://jensd.be/229/linux/mount-windows-cifs-shares-on-linux-with-credentials-in-a-secure-way)
+
+## Compartir carpetas con Samba en Linux Mint
+
+Primero, instalar Samba:
+
+```shell
+sudo apt install samba
+```
+
+Para hacer el sistema "descubrible" y accesible para Windows 7 y superior, hay
+que instalar [`wsdd`](https://github.com/christgau/wsdd):
+
+```shell
+sudo apt install wsdd
+```
+
+Para verificar que el demonion está ejecutandose:
+
+```shell
+sudo service wsdd status
+```
+
+En Windows 8, 10, 11, también se puede conectar al servidor usado su nombre
+`mDNS`, que es solo el _host name_ con el sufifo `.local` (`\\nova.local`).
+
+
+Para hacer el sistema "descubrible" y accesible para MaxOS hay que instalar:
+
+```shell
+sudo apt install avahi-daemon
+```
+
+Pata verificar que está activo:
+
+```shell
+sudo service avahi-daemon status
+```
+
+Fuente: [Share Folders using Samba in Home Network with Mint 21 - Linux Mint Forums](https://forums.linuxmint.com/viewtopic.php?t=377372)

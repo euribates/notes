@@ -104,6 +104,41 @@ Fuente: [Learn CSS Variables in 5 minutes - A tutorial for beginners](https://ww
 
 ## Animaciones y transiciones
 
+### Qué es una transición
+
+Una transición (`transition`) es una regla que indica, para una propiedad
+determinada, el tiempo que llevara cambiar el valor y la forma de la curva
+que seguira esa transofmración. Por ejemplo:
+
+```css
+transition: background 0.5s linear;
+```
+
+Esto le indica que, siempre que se cambie la propiedad `backgroud`, el cambio
+deberá realizarse de forma gradual, durante medio segundo, y con una
+animación lineal. En el siguiente ejemplo podemos ver como cambia
+el forndo del boton al pasar el cursor por encima:
+
+```html
+<style>
+button {
+  background: white;
+  transition: background 0.5s linear;
+  }
+
+button:hover {
+  background: green;
+}
+</style>
+<button> Pon el raton encima para cambiar el fondo</button
+```
+
+Observese que esta transicion es automática. Podemos desencadenarla de forma
+activa mediate javascript, cambiado al atributo `background`, o como en el caso
+mostrado, al cambier el propio navegador el fondo en respuesta a la interacción
+con el usuario.
+
+
 CSS nos permite crear animaciones complejas y controlarlas de varias formas.
 Una animación se describe usando dos partes: un conjunto de **@keyframes** y
 los correspondientes parámetros animados. Este es un ejemplo:

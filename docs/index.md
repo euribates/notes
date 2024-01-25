@@ -11,6 +11,7 @@
 - [Blender](notes-on-blender.md)
 - [Bulma CSS](notes-on-bulma.md)
 
+- [Certbot](notes-on-certbot.md)
 - [Chart.js](notes-on-chartjs.md)
 - [CSS](notes-on-css.md)
 - [CookieCutter](notes-on-cookiecutter.md)
