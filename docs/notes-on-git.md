@@ -734,3 +734,17 @@ git show commit_id:path/to/file > path/to/file
 
 Fuente: 
 [Stack Overflow en español](https://es.stackoverflow.com/questions/243064/cdocs/notes-on-git.mdC3docs/notes-on-git.mdB3mo-copio-una-versidocs/notes-on-git.mdC3docs/notes-on-git.mdB3n-de-un-fichero-de-una-rama-de-git-a-otra)
+
+## Cómo crear alias para los subcomandos de Git
+
+Usando `git config` podemos almacenar alias, en el ámbito
+que desemos. Para definir en el ámbito blobal, usamos el
+_flag_ `--global`. Estos son los álias que suelo usar:
+
+```shell
+git config --global alias.co checkout
+git config --global alias.sw switch
+git config --global alias.st status
+```
+
+Fuente: [Git - Git Aliases](https://git-scm.com/book/en/v2/Git-Basics-Git-Aliases)
