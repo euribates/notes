@@ -351,3 +351,14 @@ mysql> SHOW VARIABLES LIKE 'validate_password%';
 ```
 
 - Fuente: [Fix - MySQL ERROR 1819 (HY000): Your password does not satisfy the current policy requirements - OSTechNix](https://ostechnix.com/fix-mysql-error-1819-hy000-your-password-does-not-satisfy-the-current-policy-requirements/)
+
+
+### Cómo saber la versión del gestor de la base de datos en MySql
+
+Con el comando SQL:
+
+```sql
+select VERSION();
+```
+
+Fuente: [Comando para saber la versión de la base de datos ORACLE, MS SQL SERVER, MYSQL, | MarcelitOS.NET](https://marcelitux.wordpress.com/2011/11/16/comando-para-saber-la-version-de-la-base-de-datos-oracle-ms-sql-server-mysql/)

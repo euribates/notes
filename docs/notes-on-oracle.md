@@ -458,3 +458,13 @@ SELECT object_type, object_name, status
 ```
 
 Debería devolver `VALID` en el campo `status`.
+
+## Cómo saber la versión del gestor de base de datos en Oracle
+
+Usando el siguiente comando SQL:
+
+```sql
+SELECT * FROM v$version;
+```
+
+Fuente: [Comando para saber la versión de la base de datos ORACLE, MS SQL SERVER, MYSQL, | MarcelitOS.NET](https://marcelitux.wordpress.com/2011/11/16/comando-para-saber-la-version-de-la-base-de-datos-oracle-ms-sql-server-mysql/)
