@@ -337,7 +337,6 @@ about quoting them.
 
 Fuente: [Don't Do This on PostgreSQL](https://wiki.postgresql.org/wiki/Don't_Do_This#Don.27t_use_upper_case_table_or_column_names)
 
-
 ## Como saber los parámetros de conexión desde dentro
 
 Una vez conectado, podemos comprobar los datos de la conexión con
