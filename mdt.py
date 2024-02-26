@@ -121,6 +121,7 @@ def ls(topic_name: str, index: Optional[int] = typer.Argument(None)):
             for i, point in enumerate(note.content):
                 if i == index:
                     console.print(Panel(Markdown(str(point))))
+                    console.print(Markdown(str(point)))
 
 class Format(str, Enum):
     JSON = 'json'

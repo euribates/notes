@@ -283,13 +283,13 @@ Fuente:
 - [El Ornitorrinco Enmascarado: Recetas Habituales en Django (Que siempre se me olvidan)](http://elornitorrincoenmascarado.blogspot.com/2015/10/recetas-habituales-en-django-que.html)
 
 
-## ¿Cómo mostrar contenido html en el admin?
+## Cómo mostrar contenido html en el admin
 
-Para que el admin interprete cualquier texto producido por un método como HTML,
-sin escaparlo, debemos **asignarle al método en cuestión el atributo `allow_tag` a
-`True`**. Es recomendable que nos escudemos de posibles fallos de seguridad **usando
-la función `format_html()`** siempre que incluyamos en la salida texto generado por
-el usuario final. Por ejemplo:
+Para que el _admin_ interprete cualquier texto producido por un método como HTML,
+sin escaparlo, debemos **asignar al método el atributo `allow_tag` a `True`**.
+Es recomendable que nos escudemos de posibles fallos de seguridad **usando la
+función `format_html()`** siempre que incluyamos en la salida texto generado
+por el usuario final. Por ejemplo:
 
 ```python
 def colored_name(self):
@@ -1154,7 +1154,7 @@ Source:
 <https://steelkiwi.com/blog/best-practices-working-django-models-python/>
 
 
-### Cómo escribir un sistema de almacenamiento propio
+## Cómo escribir un sistema de almacenamiento propio
 
 Source:
 [https://docs.djangoproject.com/en/3.2/howto/custom-file-storage/](https://docs.djangoproject.com/en/3.2/howto/custom-file-storage/)
@@ -1351,11 +1351,11 @@ Fuentes:
 
 - [Executing Custom SQL in Django Migrations | End Point Dev](https://www.endpointdev.com/blog/2016/09/executing-custom-sql-in-django-migration/)
 
-### Crear migraciones usando código Python en vez de SQL
+## Cómo crear migraciones propias usando código Python en vez de SQL
 
-Si las migraciones usando solo SQL se nos quedan cortas, también podemos hacer
-migraciones personalizadas que usen (con ciertas limitaciones) nuestro código
-ya existente.
+Si las migraciones usando solo SQL se quedan cortas, también podemos hacer
+migraciones personalizadas que usen código Python e incluso, con ciertas
+limitaciones, nuestro código ya existente.
 
 Para ello, en vez de usar la clase `RunSQL` usaremos la clase `RunPython`. Esta
 clase espera un _callable_, normalmente una función. Esta función debe aceptar

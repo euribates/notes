@@ -1,4 +1,11 @@
-## Notes on teaching Python
+---
+title: Notas sobre enseñanza de Python
+tags:
+    - linux
+    - python
+    - teaching
+---
+# Notes on teaching Python
 
 ## Anotaciones
 
