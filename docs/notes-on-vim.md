@@ -1193,7 +1193,7 @@ procesos, los escribe en el fichero `processes.txt` y luego los filtra usando
 ```
 
 En esta situación, sin embargo, ignoramos la mitad de lo que hace `tee`, ya que
-descartamos la salida estándar final. Solo usamos `tee` para poder ejecuarlo con
+descartamos la salida estándar final. Solo usamos `tee` para poder ejecutarlo con
 `sudo` y que pueda sobreescribir el fichero original. La ventaja es que si nos
 equivocamos con la contraseña, `sudo` fallará y el siguiente comando en el
 _pipeline_ nunca se ejecutará, impidiendo así que borremos el contenido del
@@ -1242,3 +1242,33 @@ endif
 ```
 
 Fuente: [StackExchange](https://vi.stackexchange.com/questions/22905/how-to-change-in-gvim-gtk-file-browser-the-default-file-mask-wildcard-glob)
+
+## Cómo posicionarse en una posición u _offset_ dentro de una línea
+
+En modo normal, escribir el número de línea y luego el carácter `|`, por
+ejemplo, para ir a la posición 15 de esta línea (la `i` de ir), escribe `16|`.
+
+Si no hay suficiente espacio para llegar a esa posición, se sitúa lo más cerca
+que pueda
+
+## Como hacer _scroll_ por el fichero sin mover el cursor
+
+Para esto Vim tiene unos cuantos comandos:
+
+- ++ctrl+y++: Mueve la pantalla una línea hacia arriba
+- ++ctrl+e++: Mueve la pantalla una línea hacia abajo
+- ++ctrl+u++: Mueve la pantalla hacia arriba ½ página
+- ++ctrl+d++: Mueve la pantalla hacia abajo ½ página
+- ++ctrl+b++: Mueve la pantalla hacia una página entera hacia arriba
+- ++ctrl+f++: Mueve la pantalla hacia una página entera hacia abajo
+- `zz`: Posiciona la línea actual en el centro de la pantalla
+
+Fuente: [Comandos de Vim para movimientos entre líneas del fichero](https://codingpotions.com/vim-movimientos-verticales/)
+
+## Cómo posicionar la línea actual en el centro de la pantalla
+
+Pulsando dos veces zeta: `zz`. Centra el cursor en mitad de la pantalla
+sin moverlo de la línea que estaba.
+
+Fuente: [Comandos de Vim para movimientos entre líneas del fichero](https://codingpotions.com/vim-movimientos-verticales/)
+

@@ -1,8 +1,10 @@
 ---
 title: Notas sobre Unicode
+
 tags:
     - linux
     - unicode
+    - graphics
 ---
 
 ## Qué es Unicode
@@ -42,53 +44,112 @@ Fuentes:
 
 Official Unicode Consortium code chart (PDF)
 
-```
-    0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
-U+250x  ─   ━   │   ┃   ┄   ┅   ┆   ┇   ┈   ┉   ┊   ┋   ┌   ┍   ┎   ┏
-U+251x  ┐   ┑   ┒   ┓   └   ┕   ┖   ┗   ┘   ┙   ┚   ┛   ├   ┝   ┞   ┟
-U+252x  ┠   ┡   ┢   ┣   ┤   ┥   ┦   ┧   ┨   ┩   ┪   ┫   ┬   ┭   ┮   ┯
-U+253x  ┰   ┱   ┲   ┳   ┴   ┵   ┶   ┷   ┸   ┹   ┺   ┻   ┼   ┽   ┾   ┿
-U+254x  ╀   ╁   ╂   ╃   ╄   ╅   ╆   ╇   ╈   ╉   ╊   ╋   ╌   ╍   ╎   ╏
-U+255x  ═   ║   ╒   ╓   ╔   ╕   ╖   ╗   ╘   ╙   ╚   ╛   ╜   ╝   ╞   ╟
-U+256x  ╠   ╡   ╢   ╣   ╤   ╥   ╦   ╧   ╨   ╩   ╪   ╫   ╬   ╭   ╮   ╯
-U+257x  ╰   ╱   ╲   ╳   ╴   ╵   ╶   ╷   ╸   ╹   ╺   ╻   ╼   ╽   ╾   ╿
-```
+| Base   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | A | B | C | D | E | F |
+|--------|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| U+250x | ─ | ━ | │ | ┃ | ┄ | ┅ | ┆ | ┇ | ┈ | ┉ | ┊ | ┋ | ┌ | ┍ | ┎ | ┏ |
+| U+251x | ┐ | ┑ | ┒ | ┓ | └ | ┕ | ┖ | ┗ | ┘ | ┙ | ┚ | ┛ | ├ | ┝ | ┞ | ┟ |
+| U+252x | ┠ | ┡ | ┢ | ┣ | ┤ | ┥ | ┦ | ┧ | ┨ | ┩ | ┪ | ┫ | ┬ | ┭ | ┮ | ┯ |
+| U+253x | ┰ | ┱ | ┲ | ┳ | ┴ | ┵ | ┶ | ┷ | ┸ | ┹ | ┺ | ┻ | ┼ | ┽ | ┾ | ┿ |
+| U+254x | ╀ | ╁ | ╂ | ╃ | ╄ | ╅ | ╆ | ╇ | ╈ | ╉ | ╊ | ╋ | ╌ | ╍ | ╎ | ╏ |
+| U+255x | ═ | ║ | ╒ | ╓ | ╔ | ╕ | ╖ | ╗ | ╘ | ╙ | ╚ | ╛ | ╜ | ╝ | ╞ | ╟ |
+| U+256x | ╠ | ╡ | ╢ | ╣ | ╤ | ╥ | ╦ | ╧ | ╨ | ╩ | ╪ | ╫ | ╬ | ╭ | ╮ | ╯ |
+| U+257x | ╰ | ╱ | ╲ | ╳ | ╴ | ╵ | ╶ | ╷ | ╸ | ╹ | ╺ | ╻ | ╼ | ╽ | ╾ | ╿ |
 
 ## Símbolos tipográficos útiles en Unicode
 
+### Miscelanea
 
-tabla:
+| S  | code point | Desc                          |
+|----|------------|-------------------------------|
+| ⚠  | `26A0`     | Warning sign                  |
+| ✓  | `2713`     | Check mark                    |
+| ✅ | `2705`     | White heavy check mark        |
+| ⚡ | `26A1`     | High voltage sign             |
+| ☎  | `9742`     | Phone (Black)                 |
+| ✉  | `9993`     | Envelope                      |
+| ✖  | `2716`     | Heavy multiplication          |
+| ✗  | `2717`     | Cross mark                    |
+| ⛔ | `26D4`     | No entry                      |
+| §  | `00A7`     | Section                       |
+| ¶  | `00B6`     | Paragraph                     |
+| ·  | `00B7`     | Middle dot                    |
+| †  | `2020`     | Dagger                        |
+| ‡  | `2021`     | Double dagger                 |
+| •  | `2022`     | Bullet                        |
+| …  | `2026`     | Ellipsis                      |
+| ←  | `2190`     | Left arrow                    |
+| ↑  | `2191`     | Up arrow                      |
+| →  | `2192`     | Right arrow                   |
+| ↓  | `2193`     | Down arrow                    |
+| ►  | `25BA`     | Black right-pointing poi nter |
+| ◄  | `25C4`     | Black left-pointing pointer   |
+| ▲  | `25B2`     | Black up-pointing triangle    |
+| ▼  | `25BC`     | Black down-pointing triangle  |
+| △  | `25B3`     | White up-pointing triangle    |
+| ▽  | `25BD`     | White down-pointing triangle  |
+| ☐  | `2610`     | Ballot box                    |
+| ☑  | `2611`     | Ballot box check              |
+| ☒  | `2612`     | Ballot box X                  |
+| ★  | `2605`     | Black star                    |
+| ☆  | `2606`     | White star                    |
+| □  | `25A1`     | Square                        |
+| ☠  | `2620`     | Skull and crossbones          |
 
-| First Header  | Second Header |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
+### Lógica
 
-Otra tabla:
+| S | code point | Desc             |
+|---|------------|------------------|
+| ¬ | `00AC`     | Logical NOT      |
+| ∧ | `2227`     | Logical AND      |
+| ∨ | `2228`     | Logical OR       |
+| ∎ | `220E`     | End of proof     |
+| ∴ | `2234`     | Therefore        |
+| ∵ | `2235`     | Because          |
+| ∀ | `2200`     | For all          |
+| ∃ | `2203`     | Exists           |
+| ∄ | `2204`     | Not Exists       |
 
-| Símbolos | code point (Hex) | Desc             |
-|----------|------------------|------------------|
-| ✓        | 2713             | check mark       |
-| ✗        | 2717             | cross mark       |
-| §	       | 00A7             | section          |
-| ¶	       | 00B6             | paragraph        |
-| ·	       | 00B7             | middle dot       |
-| †	       | 2020             | dagger           |
-| ‡	       | 2021             | double dagger    |
-| •	       | 2022             | bullet           |
-| …	       | 2026             | ellipsis         |
-| ←	       | 2190             | left arrow       |
-| ↑	       | 2191             | up arrow         |
-| →	       | 2192             | right arrow      |
-| ↓	       | 2193             | down arrow       |
-| ☐	       | 2610             | ballot box       |
-| ☑	       | 2611             | ballot box check |
-| ☒	       | 2612             | ballot box X     |
-| ★	       | 2605             | black star       |
-| ☆	       | 2606             | white star       |
-| □	       | 25A1             | square           |
+### Fracciones
 
-Fuente: [Unicode/List of useful symbols - Wikibooks, open books for an open world](https://en.wikibooks.org/wiki/Unicode/List_of_useful_symbols)
+| S | code point | Fractions      |
+|---|------------|----------------|
+| ½	| `00BD`     | one-half       |
+| ⅓	| `2153`     | one-third      |
+| ⅔	| `2154`     | two-thirds     |
+| ¼	| `00BC`     | one-quarter    |
+| ¾	| `00BE`     | three-quarters |
+| ⅕	| `2155`     | one-fifth      |
+| ⅖	| `2156`     | two-fifths     |
+| ⅗	| `2157`     | three-fifths   |
+| ⅘	| `2158`     | four-fifths    |
+| ⅙	| `2159`     | one-sixth      |
+| ⅚	| `215A`     | five-sixths    |
+| ⅐	| `2150`     | one-seventh    |
+| ⅛	| `215B`     | one-eighth     |
+| ⅜	| `215C`     | three-eighths  |
+| ⅝	| `215D`     | five-eighths   |
+| ⅞	| `215E`     | seven-eighths  |
+| ⅑	| `2151`     | one-ninth      |
+| ⅒	| `2152`     | one-tenth      |
+
+### Power symbols
+
+| S | code point | Fractions      |
+|---|------------|----------------|
+| ⏻ | `23FB`     | Power          |
+| ⏼ | `23FC`     | Toggle power   |
+| ⏽ | `23FD`     | Power on       |
+| ⭘ | `2B58`     | Power off      |
+| ⏾ | `23FE`     | Sleep mode     |
+
+### Social Networking
+
+| S  | code point | Fractions      |
+|--- |------------|----------------|
+| 👍 | `1F44D`    | Thumbs Up      |
+| 👎 | `1F44E`    | Thumbs Down    |
+
+Fuente: [Unicode/List of useful sym|
 
 ## UTF-16
 
@@ -119,14 +180,7 @@ Esto tiene el efecto secundario --y deseado-- de que el texto en inglés se ve
 
 Específicamente, `Hello`, que era `00480065006C006C006F` en UTF-16, se
 almacenará como `48656C6C6F` en UTF-8, que es lo mismo que se almacenaba en ASCII.
-
-
-y ANSI, y en todos los juegos de caracteres OEM del planeta. Ahora, si eras tan
-atrevido como para usar letras acentuadas, griegas o klingon, tendrás que usar
-varios bytes para almacenar un único “code point”, pero los estadounidenses
-nunca se darán cuenta. (UTF-8 también tiene la agradable propiedad de que el
-ignorante código de procesamiento de cadenas que quiera usar un solo byte 0
-como terminador nulo no truncará las cadenas).
+y ANSI, y en todos los juegos de caracteres OEM.
 
 ## Cosas que hay que tener en cuenta al trabajar con UTF-8
 
@@ -134,11 +188,11 @@ como terminador nulo no truncará las cadenas).
   contando los bytes.
 
 - **NO se puede** saltar directamente a una posición aleatoria dentro de una
-  cadena de texto y asumir que a partir de ahí se puede leer texto; podriamos
-  estar en medio de un caracter que usara más de un byte, y eso prococa que el
+  cadena de texto y asumir que a partir de ahí se puede leer texto; podríamos
+  estar en medio de un carácter que usara más de un byte, y eso provoca que el
   resto se interprete incorrectamente.
 
-- **No se puede idividir u obtener una subcadena de texto cortando en una
-  posicion aleatoria, por las mismas razones que el punto antrerior.
+- **No se puede** dividir u obtener una subcadena de texto cortando en una
+  posición aleatoria, por las mismas razones que el punto anterior.
 
 
