@@ -1,5 +1,8 @@
 ---
 title: Notes on Python
+tags:
+    - python
+    - linux
 ---
 
 ## Definir la versión por defecto a usar en Linux (Con apt)
@@ -58,19 +61,23 @@ home = str(Path.home())
 
 - Fuente: [Stack Overflow: What is a Cross platform way to get the home directory](https://stackoverflow.com/questions/4028904/what-is-a-cross-platform-way-to-get-the-home-directory)
 
-## Validación de tipos (_type checking_) con Python
 
-Python will always remain a dynamically typed language. However, [PEP
-484](https://www.python.org/dev/peps/pep-0484/) introduced **type hints**,
-which make it possible to also do static type checking of Python code.
+## Anotación de tipos (_type checking_, _type hints_) con Python
 
-Unlike how types work in most other statically typed languages, type hints by
-themselves don’t cause Python to enforce types. As the name says, type hints
-just suggest types. There are third party tools, which you’ll see later, that
-perform static type checking using type hints.
+Aunque Python siempre será un lenguaje de tipado dinámico, el 
+[PEP 484](https://www.python.org/dev/peps/pep-0484/) introduce
+el concepto de **anotación de tipos** (_type hints_), que introduce
+la posibilidad de añadir tipado estático opcional.
 
-To add information about types to the function, you simply annotate its
-arguments and return value as follows:
+El ser opcional, las anotaciones de tipo no provocan, por si mismos, ningún
+cambio en la interpretación del código. Específicamente, el interprete
+no hace nada para forzar el cumplimiento o la comprobación de estas anotaciones.
+De ahí el uso de la palabra _hints_ (Pistas o sugerencias en inglés). La
+responsabilidad de forzar o comprobar los tipos recae en herramientas de
+terceras partes, como mypy.
+
+Para añadir anotaciones de tipos a una función, solo hay que explicitar los
+tipos de los parámetros, así como el valor de retorno,
 
 Por ejemplo:
 
@@ -94,7 +101,7 @@ En lo que respecta a los estilos, PEP8 sugiere las siguientes reglas:
 
 - Usar espacios antes y después de la flecha `->`: `def headline(...) -> str`
 
-Estas anotaciones **no tienen nigún efecto en la ejecución**. Para detectar
+Estas anotaciones **no tienen ningún efecto en la ejecución**. Para detectar
 posibles errores con estas anotaciones necesitamos herramientas de terceros.
 La herramienta más usada para esto en [Mypy](http://mypy-lang.org/).
 
@@ -655,3 +662,78 @@ final de la secuencia.
 Fuente:
 
 - [python - How to make an object both a Python2 and Python3 iterator? - Stack Overflow](https://stackoverflow.com/questions/29578469/how-to-make-an-object-both-a-python2-and-python3-iterator)
+
+
+## Cómo acceder a información sobre el llamador de una función.
+
+Podemos usar el módulo de la librería estándar 
+[`inspect`](https://docs.python.org/3/library/inspect.html). Llamando a
+`inspect.currentframe()` obtenemos el `frame` de ejecución actual.
+
+Los _frames_ de ejecución forman una pila o _stack_. En cada _frame_, excepto
+el primero, hay una referencia al _frame_ anterior (es decir, desde el que ha
+sido llamado). Esta referencia está en el atributo `f_back`. Si el _frame_
+fuera el primero, entonces `f_back` será `None`. Veámoslo con el siguiente
+ejemplo:
+
+```python
+import inspect
+
+print('Frame actual:', inspect.currentframe())
+print('Frame anterior:', inspect.currentframe().f_back)
+```
+
+Si ejecutamos el código anterior directamente desde el interprete o escribiendo
+un fichero y ejecutándolo directamente (Es decir, no importándolo), la salida
+sería algo como:
+
+```python
+Frame actual: <frame at 0x7f757640fc40, file '<stdin>', line 1, code <module>>
+Frame anterior: None
+```
+
+Sabiendo como obtener, si existiese, el _frame_ anterior, podemos usar la
+función `inspect.getmodule` para obtener el módulo en que esta definida el
+código que está siendo ejecutando en el _frame_. Supongamos que tenemos estos
+dos ficheros, `foo.py` y `bar.py`:
+
+El código de `foo.py` sería:
+
+```python
+import bar
+
+bar.f()
+```
+
+Y el de bar:
+
+```
+import inspect
+
+def f():
+    current_frame = inspect.currentframe()
+    if current_frame.f_back:
+        _mod = inspect.getmodule(current_frame.f_back)
+        print('La función f ha sido llamada desde {_mod.__name__}')
+```
+
+Si ahora ejecutamos `foo.py`, obtendríamos:
+
+```shell
+$ python foo.py
+La función f ha sido llamada desde __main__
+```
+
+Nota: Recordar que `__main__` siempre será el nombre del módulo que se ejecute
+directamente desde el interprete, independientemente de como se llame el
+fichero.
+
+Si importamos `foo.py`, el código también se ejecutará, pero esta vez veremos
+el nombre correcto del módulo en la salida:
+
+```shell
+$ python -c "import foo"
+La función f ha sido llamada desde foo
+```
+
+Esto puede ser de interés para funciones de traza, _logging_, etc.
