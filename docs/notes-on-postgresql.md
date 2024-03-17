@@ -76,7 +76,8 @@ Otra forma de hacerlo es combinar los dos pasos anteriores en uno solo:
 sudo -u postgres psql
 ```
 
-## Cómo salir de psql
+
+## Cómo salir del intérprete psql (PostgreSQL)
 
 Para salir del interprete psql hay que usar:
 
@@ -84,9 +85,10 @@ Para salir del interprete psql hay que usar:
 \q
 ```
 
+
 ## Cómo crear un nuevo rol en PostgreSQL
 
-Si estamos conectados con el usuario `postgres`, la forma más facil de crear un
+Si estamos conectados con el usuario `postgres`, la forma más fácil de crear un
 nuevo rol es:
 
 ```shell
@@ -105,10 +107,8 @@ Fuente:
 
 - [How To Install PostgreSQL on Ubuntu 20.04 [Quickstart] | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-postgresql-on-ubuntu-20-04-quickstart)
 
+
 ## Cómo crear una base de datos PostgreSQL
-
-
-
 
 1) Suponiendo que el servidor de PostgreSQL esté activo, nos conectamos con un
 usuario con privilegios de administrador, normalmente `postgres`:
@@ -447,3 +447,136 @@ o con `pg_restore`, si está en formato `custom`:
 ```shell
 pg_restore -d db_bame path/to/dump/filenane -U db_user
 ```
+
+## Sobre la intercalación (_collation_) en postgreSQL
+
+!!! note "TLDR"
+
+    Ordenar, compara y agrupar textos no es tan sencillo como parece.
+    Asegurarse de usar `es_ES` o `es_ES.utf8` como _collation_. Si puede
+    ser como valor por defecto de la base de datos. Esto puede ser
+    complicado si la base de datos se creó con otra codificación/intercalación.
+    En ese caso se puede volver a definir la codificación y/o intercalación
+    para determinados campos.
+
+El término **intercalación** (_collation_) se refiere a las reglas que se deben
+usar para la ordenación, comparación y agrupación de textos. La simple
+ordenación numérica normalmente no es capaz de resolver diferentes aspectos de
+este problema.
+
+Por ejemplo, ¿se deben presentar primero las palabras que empiezan por
+mayúsculas que las que empiezan por minúsculas? (Es decir, las letras `A` y `a`
+deben ser consideradas iguales, o debe primar una sobre la otra? En ese caso,
+¿Cuál? ¿Y entre las letras ̀a ̀ y `á`? Si usáramos solo el código Unicode
+entonces `a` (Unicode 97 - `0x0061`) es muy diferente de `á` (Unicode 225 -
+`0x00E1`). ¿Qué hay de las letras `ch` y `ll`? ¿Son letras diferentes y, por
+tanto, en un diccionario deberían encontrarse en secciones separadas? 
+
+!!! note "Sobre CH y LL"
+
+    En el caso del Español, tanto la `ch` como la `ll` dejaron de considerarse
+    letras individuales en la Ortografía de la lengua española de **2010**. Esto no
+    significa, claro está, que desaparezcan de la escritura: simplemente, dejan
+    de considerarse letras del abecedario.
+
+las recomendaciones de la UOC para la intercalación en Español incluyen:
+
+- Las palabras con **guion o apóstrofo** se clasifican **como si no lo tuvieran**. En
+  el caso de palabras que solo se distinguen porque una tiene guion y la otra
+  no, esta va en primer lugar.
+
+- Las palabras que llevan **tilde o diéresis** suelen clasificarse **como si no la
+  llevasen**. En el caso de palabras que solo se distinguen por la tilde o la
+  diéresis (sea porque una lleva alguno de estos signos y la otra no, sea
+  porque los llevan diferentes), el orden de clasificación es el siguiente:
+
+    - primero sin tilde
+    - segundo con tilde
+    - tercero con diéresis
+
+- Las **mayúsculas y minúsculas** se **igualan**. En el caso de que dos palabras
+  coincidan en sus caracteres excepto en el hecho de tener una la primera letra
+  minúscula y la otra mayúscula, esta se suele ordenar después de aquella. 
+
+Por defecto, PostgreSQL solo tiene como intercalaciones disponibles, `default`,
+`C`, y `POSIX`. Estas intercalaciones solo están bien para angloparlantes. Lo
+bueno es que la instalación del servidor mirará las intercalaciones disponibles
+como variaciones locales en el sistema operativo, y las incorporará
+automáticamente. Por tanto, si el S.O. sobre el que está ejecutándose tiene
+soporte para Español, entonces el servidor de PostgreSQL también lo tendrá.
+
+Estas reglas están codificadas correctamente en la codificación
+`modern_spanish_ci_as`. Donde `modern` indica que no consideramos
+`ch` o `ll` como letras separadas, `ci` indica que no distingue entre las
+mayúsculas y las minúsculas (Es decir, que considera que **no** son
+letras diferentes) y `as` indica que tenga en cuenta los acentos.
+
+En PostgreSQL, la intercalación y el _encoding_ de una Base de Datos no se
+puede cambiar de forma trivial, y habitualmente implica reconstruir toda la
+Base de Datos, ya que afecta a cómo se almacenan internamente los datos. Cómo
+mínimo habría que exportar, reconstruir tablas, e importar de nuevo. No vale
+con modificar directamente las tablas del sistema (UPDATE pg_database).
+
+A estas alturas, la codificación esta claro que debería ser, a no ser que
+hubiera razones muy poderosas en contra, UTF-8.
+
+Podemos averiguar tanto el _encodig_ como la intercalación usada en una
+instancia de PostgreSQL con el metacomando `\l`, que nos produciría una
+tabla similar a esta:
+
+```
+     Name       |     Owner      | Encoding |   Collate   |    Ctype    |         Access privileges         
+-----------------+----------------+----------+-------------+-------------+-----------------------------------
+ bbdd            | bbdd_user      | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =Tc/bbdd_user                    +
+                 |                |          |             |             | bbdd_user=CTc/bbdd_user
+ parcanweb       | parcanweb      | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ postgres        | postgres       | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ pycheck         | pycheck_user   | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =Tc/pycheck_user                 +
+                 |                |          |             |             | pycheck_user=CTc/pycheck_user
+```
+
+Independientemente del cliente que utilicemos, podemos saber cuál es el
+codificador de caracteres que tenemos asignado en el servidor PostgreSQL y en el
+cliente con la instrucción `SHOW`.
+
+Para conocer el _encoding_ establecido en el servidor PostgreSQL, debemos de ejecutar la siguiente sentencia:
+
+```sql
+SHOW server_encoding;
+```
+
+Para saber el _encoding_ que está utilizando el cliente que estamos usando, ejecutamos esta otra:
+
+```
+SHOW client_encoding;
+```
+
+Obviamente, lo óptimo es que en todos los casos estemos usando la misma
+codificación e intercalado, para evitar conversiones ineficaces.
+
+
+Fuentes:
+
+- [Collations - Wikipedia](https://en.wikipedia.org/wiki/Collation)
+
+- [Ordenación alfabética - Lengua y estilo de la UOC](https://www.uoc.edu/portal/es/servei-linguistic/convencions/ordenacio-alfabetica/index.html)
+
+- [Collations in postgres](https://pganalyze.com/blog/5mins-postgres-collations)
+
+- [How collation works | Peter Eisentraut](https://peter.eisentraut.org/blog/2023/03/14/how-collation-works)
+
+- [PostgreSQL: Documentation: 15: 24.2. Collation Support](https://www.postgresql.org/docs/15/collation.html)
+- [Collations in PostgreSQL: The Good, the bad and the ugly](https://www.postgresql.eu/events/pgconfeu2022/sessions/session/4040/slides/337/Collationsdocs/notes-on-postgresql.md20indocs/notes-on-postgresql.md20PostgreSQLdocs/notes-on-postgresql.md20-docs/notes-on-postgresql.md20Thedocs/notes-on-postgresql.md20good,docs/notes-on-postgresql.md20thedocs/notes-on-postgresql.md20baddocs/notes-on-postgresql.md20anddocs/notes-on-postgresql.md20thedocs/notes-on-postgresql.md20uglydocs/notes-on-postgresql.md20-docs/notes-on-postgresql.md20Tobiasdocs/notes-on-postgresql.md20Bussmann.pdf)
+
+## Coma cambiar la intercalación usada en un campo de una tabla en PostgreSQL
+
+Aunque no podemos cambiar la intercalación por defecto de una base de datos de
+forma sencilla, podemos definirla de nuevo para determinados campos, con la
+siguiente sentencia `DDL`:
+
+```sql
+alter table <nombre_table> alter column {nombre_campo> set data type VARCHAR(75) COLLATE "es_ES";
+```
+
+Obviamente, la intercalación recomendada para español es `es_ES`.
+

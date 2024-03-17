@@ -88,7 +88,7 @@ RETURNS integer AS $$
 $$ LANGUAGE plpgsql;
 ```
 
-La expresion `%TYPE` se usa para obtener el tipo de la variable que la precece.
+La expresión `%TYPE` se usa para obtener el tipo de la variable que la precede.
 En el siguiente ejemplo devuelve el tipo de dato de la columna `roll_no` de la
 tabla `student`:
 
@@ -96,9 +96,9 @@ tabla `student`:
 variable_name student.roll_no%TYPE
 ```
 
-Here is another Example:
+Otro ejemplo:
 
-```
+```sql
 CREATE FUNCTION get_employee(text) RETURNS text AS $$
 DECLARE
     frst_name ALIAS FOR $1;
@@ -141,3 +141,5 @@ $$ LANGUAGE 'plpgsql';
 ```
 
 Fuente: <https://w3resource.com/PostgreSQL/pl-pgsql-declarations.php>
+
+

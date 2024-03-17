@@ -64,9 +64,11 @@ Fuentes:
 
 ## Cuál es la diferencia entre `remap`, `noremap`, `nnoremap` y `vnoremap`
 
-Note: `remap` es una opción que hace que los mapeos funcionen recursivamente.
-Está activo por defecto y se recomienda dejarlo así. El resto son comandos que
-funcionan así:
+!!! warning "Sobre remap"
+    `remap` es una opción que hace que los mapeos funcionen recursivamente.
+    Está activo por defecto y se recomienda dejarlo así.
+
+El resto son comandos que funcionan así:
 
 - `:map` y `:noremap` son las versiones **recursivas** y **no recursivas** de los
   diferentes comandos de mapeo. Por ejemplo, si ejecutamos:
@@ -110,11 +112,16 @@ Fuentes:
 
 ## Cómo reutilizar una selección visual
 
-Often when editing code, I'll select a block in visual mode and do a search and
-replace over the block. After I make the changes, however, it leaves visual
-mode. How do you do a new find and replace over the same selection?
+!!! note "TLDR"
 
-You may re-select the last selected visual area with `gv`.
+    Con `gv` seleccionamos de nuevo la última área visual seleccionada.
+
+A menudo necesitamos realizar varias operaciones sobre un bloque visual
+que hemos seleccionado, pero al realizar, por ejemplo, una búsqueda, o un
+reemplazo, salimos del modo visual y tenemos que seleccionar de nuevo el
+área que nos interesa.
+
+Podemos volver a seleccionar el área anterior con `gv`.
 
 Fuentes: 
 
