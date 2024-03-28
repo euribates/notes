@@ -347,3 +347,80 @@ To change the units of measurement for a Blender scene, go to Scene Properties.
 Expand the “units” tab and choose the unit system at the top. Then change
 specific settings for Rotation, Length, Mass, Time and Temperature. 
 
+## Atajos de teclado de Blender
+
+- ++ctrl+z++ Deshacer la última acción
+
+- ++a++ Seleccionar todo
+
+- ++shift+a++ Añadir un _mesh_
+
+- ++x++ Borrar
+
+### Mover el objeto seleccionado
+
+- ++g++ Mover el objeto libremente
+- ++g++ y ++x++ Mover en el eje $x$
+- ++g++ y ++shift+x++ Mover en el plano perpendicular
+  al eje $x$, es decir, al plano $z \times y$.
+- ++g++ e ++y++ Mover en el eje $y$
+- ++g++ y ++shift+y++ Mover en el plano perpendicular
+  al eje $y$, es decir, al plano $z \times x$.
+- ++g++ y ++z++ Mover en el eje $z$
+- ++g++ y ++shift+z++ Mover en el plano perpendicular
+  al eje $z$, es decir, al plano $y \times x$.
+
+Cualquier comando de mover, si se añade un número, mueve ese número de
+unidades. Por ejemplo, para mover un objeto $3.2$ unidades en el eje $z$
+haríamos: ++g++ ++z++ ++3++ ++period++ ++2++
+
+### Rotar el objeto seleccionado
+
+- ++r++ Rotar libremente
+
+- ++r++ ++x++ Rotar alrededor del eje $x$
+
+- ++r++ ++y++ Rotar alrededor del eje $y$
+
+- ++r++ ++z++ Rotar alrededor del eje $z$
+
+Cualquier comando de rotar, si se añade un número, rota ese número de
+grados. Por ejemplo, para mover un objeto $45°$ en el eje $y$
+haríamos: ++r++ ++y++ ++4++ ++5++
+
+### Escalar el objeto seleccionado
+
+- ++s++ Escalar el objeto seleccionado
+- ++s++ y ++x++ Escalar el objeto seleccionado en el eje $x$
+- ++s++ y ++shift+x++ Escalar el objeto seleccionado en el 
+  plano perpendicular al eje $x$ (es decir, $z \times y$)
+- ++s++ y ++y++ Escalar el objeto seleccionado en el eje $y$
+- ++s++ y ++shift+y++ Escalar el objeto seleccionado en el 
+  plano perpendicular al eje $y$ (es decir, $x \times z$)
+- ++s++ y ++z++ Escalar el objeto seleccionado en el eje $z$
+- ++s++ y ++shift+z++ Escalar el objeto seleccionado
+  en el plano perpendicular al eje $z$ (es decir, $x \times y$x \times y$))
+
+Cualquier comando de escalar, si se añade un número, escala por
+ese número. Por ejemplo, para duplicar un objeto en el eje $x$
+sería: ++s++ ++x++ ++2++.
+
+### Entrar en _Edit Mode_
+
+- ++tab++ Entrar en _edit Node_. Ahora estamos modificando individualmente
+  los vertices (_vertexs_), bordes (_edges_) y caras (_faces_).
+
+- ++1++ Seleccionar vértices
+- ++2++ Seleccionar border
+- ++3++ Seleccionar caras
+
+
+
+## Acciones con el ratón
+
+En la vista 3D:
+
+- ++middle-button++ y movimiento: Rotar la cámara alrededor del centro
+- ++shift+middle-button++ y movimiento: Desplazamiento lateral o vertical
+- Mouse wheel -> zoom
+- ++ctrl++ y mouse arriba o abajo: zoom
