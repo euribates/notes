@@ -1279,3 +1279,38 @@ sin moverlo de la línea que estaba.
 
 Fuente: [Comandos de Vim para movimientos entre líneas del fichero](https://codingpotions.com/vim-movimientos-verticales/)
 
+
+## Cómo usar el corrector ortográfico en Vim (Spell Check)
+
+Para activarlo (En español):
+
+```
+:set spell spelllang=es
+```
+
+Para inglés (Británico):
+
+```
+:set spell spelllang=en_gb
+```
+
+
+Atajos de teclado:
+
+- `:set spell` – Turn on spell checking.
+- `:set nospell` – Turn off spell checking.
+- `]s` – Jump to the next misspelled word.
+- `[s` – Jump to the previous misspelled word.
+- `z=` – Bring up the suggested replacements.
+- `zg` – Good word: Add the word under the cursor to the dictionary.
+- `zw` – Woops! (Marca la palabra como incorrecta)
+
+Si se quiere definir por defecto, añadir al fichero `.vimrc`:
+
+```
+set spell spelllang=en_us
+```
+
+Fuentes:
+
+- [Using Spell Checking in Vim - Linux.com](https://www.linux.com/training-tutorials/using-spell-checking-vim/)
