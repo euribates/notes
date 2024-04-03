@@ -414,7 +414,11 @@ sería: ++s++ ++x++ ++2++.
 - ++2++ Seleccionar border
 - ++3++ Seleccionar caras
 
+### En modo de edición
 
+- ++ctrl+r++ Crear un nuevo borde
+- ++ctrl+r++ y mouse wheel Crear una serie de bordes
+- ++ctrl+e++ Subdividir cara
 
 ## Acciones con el ratón
 
