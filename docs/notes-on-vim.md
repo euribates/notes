@@ -43,7 +43,7 @@ Fuentes:
 
 
 ## Cómo resolver las búsquedas
-	
+    
 Cuando buscamos, podemos resaltar los textos encontrados con:
 
 ```
@@ -1155,7 +1155,7 @@ you want to be able to toggle between the Vim help and manpages. You could put
 the following in your vimrc for toggling (replace <yourkey> with a keystroke
 you like) ...
 
-	
+    
 ```vim
 nnoremap <yourkey> :if &keywordprg == ":help" <BAR> set keywordprg=man <BAR>
 else <BAR> set keywordprg=:help <BAR> endif <BAR> set keywordprg?<CR>
@@ -1314,3 +1314,21 @@ set spell spelllang=en_us
 Fuentes:
 
 - [Using Spell Checking in Vim - Linux.com](https://www.linux.com/training-tutorials/using-spell-checking-vim/)
+
+## Marcas especiales definidas automáticamente por Vim
+
+Alguna de las más usadas son:
+
+| Marca | Significado                                                  |
+|:-----:|--------------------------------------------------------------|
+| `.`   | La posición del ultimo cambio hecho enel _buffer_ actual     |
+| `"`   | La posición enla cual se salvó por última vez este buffer    |
+| `0`   | La posicion del último fichero editado al salir de Vim       |
+| `1`   | Igual que `0`, pero el fichero anterior (igual con `2` etc.) |
+| `''`  | La posición anterior desde la que se saltó                   |
+| `[` o `]` | Inicio o fin del último texto cambiado o pegado          |
+| `<` o `>` | Inicio o fin de la última selección visual               | 
+
+El listado completo con `:help '[` y siguientes.
+
+Fuente: [Using marks | Vim Tips Wiki | Fandom](https://vim.fandom.com/wiki/Using_marks)
