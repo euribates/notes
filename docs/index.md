@@ -75,6 +75,7 @@
 - [Neo4j](notes-on-neo4j.md)
 - [NFS](notes-on-nfs.md)
 - [nginx](notes-on-nginx.md)
+- [Nix](notes-on-nix.md)
 
 - [Oauth2](notes-on-oauth2.md)
 - [Oracle](notes-on-oracle.md)
