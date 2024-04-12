@@ -2,6 +2,13 @@
 title: Notes on javascript
 ---
 
+## Obtener la posición del cursor en un control de tipo TextArea
+
+Podemos usar la propiedad `selectionStart` del control. Este propiedad
+nos informa de la primera posición del texto seleccionado, pero
+si no hay texto seleccionado, informa de la posición actual del cursor.
+
+
 ## Cómo copiar texto al/desde porta papeles con Javascript
 
 Para copiar, hay que seleccionar primero el texto que queremos, ya sea que lo
