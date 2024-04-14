@@ -107,6 +107,7 @@
 - [Redis](notes-on-redis.md)
 - [Restructured Text](notes-on-restructured-text.md)
 - [RQ](notes-on-rq.md)
+- [Rust](notes-on-rust.md)
 - [Rsync](notes-on-rsync.md)
 
 - [Samba](notes-on-samba.md)

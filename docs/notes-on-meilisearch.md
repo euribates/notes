@@ -1,11 +1,39 @@
 ---
-title: Notes on Meilisearch
+title: Notas sobre Meilisearch
 tags:
-  - Python
-  - Web
+  - python
+  - web
+  - linux
+  - systemd
+  - rust
 ---
 
 ## Sobre Meilisearch
+
+**MeiliSearch** es un motor de búsqueda de texto rápido,
+de fácil uso y despliegue. Algunas de las características más interesantes
+son las siguientes:
+
+- **Búsqueda mientras se teclea**: Encuentra resultados en menos de 50
+  milisegundos
+
+- **Tolerancia a errores**: Encuentra resultados relevantes aunque haya
+  errores en el texto buscado.
+
+- **Múltiples posibilidades de ordenación**: Se puede ordenar por 
+  precios, fechas, o cualquier otro campo que se defina.
+
+- **Filtrado** y **búsquedas refinadas**: Se pueden ir modificando
+  las consultas basándonos en las anteriores, para ir construyendo
+  consultas más complicadas.
+
+- **Sinónimos**
+
+- **API Resftul**
+
+- **Fácil de instalar, personalizar y desplegar**
+
+- Escrito en **[Rust](../notes-on-rust/)**.
 
 ## Instalar Meilisearch un Ubuntu
 
@@ -30,30 +58,101 @@ meilisearch-http 0.30.0
 
 Ver ahora [Como pasar Meilisearch a producción](#como-pasar-meilisearch-a-produccion)
 
+## Cómo instalar el cliente Python de Meilisearch
+
+Esta es fácil:
+
+```shell
+pip install meilsearch
+```
+
+## Cómo configurar Meilisearch
+
+Se puede configurar desde la línea de comandos, mediante
+variables de entorno o con un fichero de configuración.
+Esta configuración afectara a **todo** los índices.
+
+Las opciones de línea de comando tiene precedencia
+sobre las variables de entorno.
+
+### Usando un fichero de condiguración
 
 
-## Primeros pasos
+u4abKeG7mb2AVW2KNb9Z7dw5adyH6ETjoihZjQzGx0o
 
-### Crear un índice y actualizar documentos
+## Qué es un índice (`index`) para Meiliseacrh
 
-Si el servidor está ejecutándose, suponemos en el host local y en el puerto
-estándar, $7700$, podemos crear un índice y alimentarlo con datos usando
-`curl`.  Vamos a usar una base de datos de películas que se puede descargar
-desde aquí: [The movie
-database](https://www.notion.so/meilisearch/A-movies-dataset-to-test-Meili-1cbf7c9cfa4247249c40edfa22d7ca87#b5ae399b81834705ba5420ac70358a65).
-descargamos la base de datos en formato json al fichero `movies.json`.
+Un **índice** es un grupo de documentos, similar a una tabla
+o relación en una base de datos. Un índice se define dándole
+un identificador único (`uid`), y debe contener la
+siguiente información:
+
+- La clave primaria
+- Varios ajustes de configuración
+- Un número arbitrario de documentos
+
+
+## Crear un índice y actualizar documentos
+
+Aunque todas las peticiones a Meilisearch
+se pueden hacer mediante peticiones a la API Web,
+también podemos usar las librerías de Python.
+
+En este ejemplo
+suponemos que tenemos un servidor de Meilisearch
+instalado y ejecutándose,
+escuchando en la máquina local
+en el puerto $7700$. 
+    
+Vamos a usar una base de datos de películas
+que se puede descargar desde aquí:
+[The movie database](https://www.notion.so/meilisearch/A-movies-dataset-to-test-Meili-1cbf7c9cfa4247249c40edfa22d7ca87#b5ae399b81834705ba5420ac70358a65).
+descargemos la base de datos en formato json al fichero `movies.json`.
 
 ```shell
 curl -L https://docs.meilisearch.com/movies.json -o movies.json
 ```
 
-Ahora, para crear el índice y alimentarlo:
+!!! note "Usando Curl para interactuar con Meilisearch"
 
-```shell
-curl -i -X POST 'http://127.0.0.1:7700/indexes/movies/documents' \
-  --header 'content-type: application/json' \
-  --data-binary @movies.json
+    Ahora, para crear el índice y alimentarlo con Curl:
+
+    ```shell
+    curl -i -X POST 'http://127.0.0.1:7700/indexes/movies/documents' \
+    --header 'content-type: application/json' \
+    --data-binary @movies.json
+    ```
+
+Si se referencia un índice inexistente,
+Meilisearch lo creará automáticamente.
+Esto no siempre es deseable,
+porque hay ajustes que asumirá
+y cuyo valor por defecto puede que no nos interesen.
+
+En el ejemplo de Curl,
+si no se ha creado el índice antes,
+se creará automáticamente un nuevo índice
+con `uid` **`movies`**.
+
+Para crear un índice con la interfaz Python,
+haremos uso del método `create_index`:
+
+```python
+client.create_index('movies', {'primaryKey': 'id'})
 ```
+
+En este caso, hemos especificado que la clave primaria para
+los documentos será el campo `id`. Como casi todas las llamadas,
+esta es _asíncrona_, asi que el valor que nos devuelve es
+un `taskUid`: un identificador de la tarea que podemos usar para
+[Comprobar el estado de una petición](#comprobar-el-estado-de-una-peticion)
+
+!!! warning "Una vez creado el índice, no se puede modificar"
+
+    Una vez credo el índice, sus parámetros por defecto
+    no se pueden cambiar. Tampoco podremos crear otro índice
+    con el mismo `uid`.
+
 
 ## Consultas usando la web
 
@@ -114,7 +213,7 @@ instalado:
 pip install meilisearch
 ```
 
-El siguente ejemplo muestra una consulta sencilla:
+El siguiente ejemplo muestra una consulta sencilla:
 
 ```python
 import datetime
@@ -142,8 +241,16 @@ LEGO Marvel Super Heroes: Maximum Overload 2013
 LEGO Marvel Super Heroes: Avengers Reassembled! 2015
 ```
 
+## Cómo obtener un listado de los índices disponibles
 
-## Como saber la version de Meilisearch instalada
+Con el método `get_indexes`:
+
+```
+import meilisearch
+
+client = meilisearch.Client('http://localhost:7700', 'aSampleMasterKey')
+
+## Cómo saber la versión de Meilisearch instalada
 
 Se puede hacer desde la línea de comandos:
 
@@ -187,7 +294,7 @@ meilisearch-http 0.29.2
 
 2) Convertir meilisearh en un servicio
 
-Usaremos systemd. Los servicios de `systemd` están definidos como ficheros de
+Usaremos [systemd](../notes-on-systemd/). Los servicios de `systemd` están definidos como ficheros de
 texto en `/etc/systemd/system`. Para ejecutar Meilisearch en modo servidor
 hay que usar la opción `--env`. Para definir la clave maestra se usa
 `--masterkey`.
@@ -266,3 +373,15 @@ reinicios del sistema, etc.
 Si queremos dar acceso al sistema enel puerto 7000, probablemente tendremos que definir 
 una entrada especifica en `nginx`.
 
+## Comprobar el estado de una petición
+
+Sabiendo el `taskUid` de un tarea, podemos interrogar al índice
+con el método `get_task(task_id)`.
+
+## Cómo saber donde está guardadno los índices Meilisearch
+
+Meilisearch crea por defecto una carpeta llamada `data.ms`, en la misma
+carpeta en la que esté localizado el ejecutable `meilisearch`.
+
+La ubicación de la carpeta puede ser modificada ya sea mediante
+un fiehcro de configuración, o usando la opción `--db-path`.
