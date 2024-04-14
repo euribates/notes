@@ -35,6 +35,7 @@ son las siguientes:
 
 - Escrito en **[Rust](../notes-on-rust/)**.
 
+
 ## Instalar Meilisearch un Ubuntu
 
 Bajamos el script de instalación:
@@ -203,6 +204,32 @@ client = meilisearch.Client('http://127.0.0.1:7700', 'masterKey')
 client.create_index('notes', {'primaryKey': 'id'})
 ```
 
+## Añadir documentos a un índice Meilisearch
+
+Con el método `add_documents` podemos añadir una sequencia de cdocumentos
+al índice. Ejemplo:
+
+```python3
+import meilisearch
+
+client = meilisearch.Client('http://127.0.0.1:7700', 'masterKey')
+
+# An index is where the documents are stored.
+index = client.index('movies')
+
+documents = [
+      { 'id': 1, 'title': 'Carol', 'genres': ['Romance', 'Drama'] },
+      { 'id': 2, 'title': 'Wonder Woman', 'genres': ['Action', 'Adventure'] },
+      { 'id': 3, 'title': 'Life of Pi', 'genres': ['Adventure', 'Drama'] },
+      { 'id': 4, 'title': 'Mad Max: Fury Road', 'genres': ['Adventure', 'Science Fiction'] },
+      { 'id': 5, 'title': 'Moana', 'genres': ['Fantasy', 'Action']},
+      { 'id': 6, 'title': 'Philadelphia', 'genres': ['Drama'] },
+]
+
+# If the index 'movies' does not exist, Meilisearch creates it when you first add the documents.
+index.add_documents(documents) # => { "uid": 0 }
+```
+
 
 ## Consultar un índice con Python
 
@@ -321,10 +348,9 @@ ExecStart=/usr/local/bin/meilisearch --http-addr 127.0.0.1:7700 --env production
 WantedBy=default.target
 ```
 
-En esta configuración 
-el servidor esta viculado a la direccion `127.0.0.1` lo que significa que solo
-aceptará conexiones desde la máquina local. En producción habría que ponerla en
-la IP `0.0.0.0`.
+En esta configuración el servidor está vinculado a la dirección `127.0.0.1`
+lo que significa que solo aceptará conexiones desde la máquina local.
+En producción habría que ponerla en la IP `0.0.0.0`.
 
 Ahora arrancamos el servicio:
 
@@ -333,13 +359,13 @@ $ sudo systemctl enable meilisearch.service
 $ sudo systemctl start meilisearch.service
 ```
 
-Y comprobamos que esta funcionando:
+Y comprobamos que esté funcionando:
 
 ```bash
 $ sudo systemctl status meilisearch.service
 ```
 
-Debería producir al final:
+Debería producir algo parecido a:
 
 ```bash
 ● meilisearch.service - Meilisearch
@@ -365,23 +391,22 @@ Nov 23 11:30:10 nova meilisearch[30162]: [2022-11-23T11:30:10Z INFO  actix_serve
 ...
 ```
 
-En este momento el sistema esta funcionando y preparado para posibles caidas,
-reinicios del sistema, etc.
+En este momento el sistema está funcionando
+y preparado para posibles caídas, reinicias del sistema, etc.
 
 3) Usar el sistema desde `nginx`
 
-Si queremos dar acceso al sistema enel puerto 7000, probablemente tendremos que definir 
-una entrada especifica en `nginx`.
+Si queremos dar acceso directo al sistema en el puerto ($7000$, por defecto)
+probablemente tendremos que definir una entrada especifica en `nginx`.
 
 ## Comprobar el estado de una petición
 
 Sabiendo el `taskUid` de un tarea, podemos interrogar al índice
 con el método `get_task(task_id)`.
 
-## Cómo saber donde está guardadno los índices Meilisearch
+## Cómo saber donde está guardando los índices Meilisearch
 
 Meilisearch crea por defecto una carpeta llamada `data.ms`, en la misma
 carpeta en la que esté localizado el ejecutable `meilisearch`.
 
 La ubicación de la carpeta puede ser modificada ya sea mediante
-un fiehcro de configuración, o usando la opción `--db-path`.

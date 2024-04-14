@@ -10,7 +10,7 @@ tags:
 
 Es un motor de búsqueda libre, escrito en C++. Muy rápido y tolerante a fallos.
 
-- Repositorio: [https://github.com/typesense/typesense](Github typesense)
+- Repositorio: [Github typesense](https://github.com/typesense/typesense)
 
 ## Instalar Typesense
 
