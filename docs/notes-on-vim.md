@@ -1332,3 +1332,36 @@ Alguna de las más usadas son:
 El listado completo con `:help '[` y siguientes.
 
 Fuente: [Using marks | Vim Tips Wiki | Fandom](https://vim.fandom.com/wiki/Using_marks)
+
+## Sesiones con Vim
+
+Vim proporciona un sistema para guardar la configuracion y el conjunto de
+ficheros abiertos en nu momento dado, usado **sesiones**.
+
+De `:help sessiones`:
+
+    >  Session keeps the Views for all windows, plus the global settings. You
+    >  can save a Session and when you restore it later the window layout looks
+    >  the same. You can use a Session to quickly switch between different
+    >  projects, automatically loading the files you were last working on in
+    >  that project
+
+### Para salvar una sesión en Vim
+
+Con el comando `:mks` (o `:mksession`), Vim guardara en la carpeta actual un
+fichero `Session.Vim`, que es un fichero en vimscript que restaura la sesión.
+Si el fichero ya existe, tenemos que forzar a actualizar con `:mks!`. Tambien
+podemos especificar la ruta con `:mks ~/.vim-sessions/backend.vim`.
+
+### Para retaurar una sesión en Vim
+
+Hay dos maneras: La primera es llamando a Vim con el parámetro `-S`, este
+buscará un fichero `Session.vim` en la carpeta actual y, si existe, lo
+ejecutará, restaurando así la sesión.
+
+La otra forma sería desde dentro de Vim, ejecutando el comando `:so` (o
+`:source`), al cual debemos pasarle la ruta al fichero `.vim` donde está
+guardad la sesión.
+
+Fuente: [Vim Sessions - all drops](https://alldrops.info/posts/vim-drops/2020-11-15_vim-sessions/)
+
