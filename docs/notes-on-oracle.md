@@ -157,7 +157,7 @@ Por ejemplo para ver la tabla `tareas.tarea_proyectos`:
 SELECT dbms_metadata.get_ddl('TABLE', 'TAREAS_PROYECTO', 'TAREAS') FROM DUAL;
 ```
 
-- Fuente: [Stackoverflow: How can I generate or get a DDL script on an existing table in Oracle](<https://stackoverflow.com/questions/26249892/how-can-i-generate-or-get-a-ddl-script-on-an-existing-table-in-oracle-i-have)
+- Fuente: [Stackoverflow: How can I generate or get a DDL script on an existing table in Oracle](https://stackoverflow.com/questions/26249892/how-can-i-generate-or-get-a-ddl-script-on-an-existing-table-in-oracle-i-have)
 
 ## Cómo listar los tablespaces
 

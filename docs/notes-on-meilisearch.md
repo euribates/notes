@@ -33,7 +33,7 @@ son las siguientes:
 
 - **Fácil de instalar, personalizar y desplegar**
 
-- Escrito en **[Rust](../notes-on-rust/)**.
+- Escrito en **[Rust](notes-on-rust.md)**.
 
 
 ## Instalar Meilisearch un Ubuntu
@@ -321,7 +321,7 @@ meilisearch-http 0.29.2
 
 2) Convertir meilisearh en un servicio
 
-Usaremos [systemd](../notes-on-systemd/). Los servicios de `systemd` están definidos como ficheros de
+Usaremos [systemd](notes-on-systemd.md). Los servicios de `systemd` están definidos como ficheros de
 texto en `/etc/systemd/system`. Para ejecutar Meilisearch en modo servidor
 hay que usar la opción `--env`. Para definir la clave maestra se usa
 `--masterkey`.
