@@ -447,7 +447,7 @@ ALTER PROCEDURE productividad.cierre_liquida COMPILE;
 ```
 
 Si Oracle no encuentra errores de compilación
-(Ver [Como ver los errores de compilacion de Oracle](#como_ver_los_errores_de_compilacion_de_oracle)),
+(Ver [Cómo ver los errores de compilación de Oracle](#como-ver-los-errores-de-compilacion-de-oracle)),
 el procedimiento pasará a estado válido.
 Se puede comprobar el estado del procedimiento usando:
 
@@ -472,7 +472,7 @@ SELECT * FROM v$version;
 Fuente: [Comando para saber la versión de la base de datos ORACLE, MS SQL SERVER, MYSQL, | MarcelitOS.NET](https://marcelitux.wordpress.com/2011/11/16/comando-para-saber-la-version-de-la-base-de-datos-oracle-ms-sql-server-mysql/)
 
 
-## Cómo ver los errores de compilacion de Oracle
+## Cómo ver los errores de compilación de Oracle
 
 En sqlplus:
 
