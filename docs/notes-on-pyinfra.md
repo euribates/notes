@@ -4,6 +4,8 @@ tags:
     - python
     - sysadmin
     - devops
+    - curl
+    - jinja2
 ---
 
 ## Notas sobre pyintra
@@ -140,7 +142,6 @@ grupos, **dentro del directorio `group_data`** (Aunque se puede usar otro
 directorio si especificamos el parámetro `--group-data`). Todos los _hosts_ 
 del grupo reciben las varibales y valores definidos así.
 
-
 ## Definición de estados en pyinfra
 
 Podemos usar operaciones para definir determinados estados en los que queremos
@@ -153,25 +154,25 @@ Esto significa que los cambios de estado son
 cambio de estado dos veces, el segundo no hará nada, porque ya estamos en el
 estado deseado.
 
-## Como definir y usar operaciones en pyinfra
+## Cómo definir y usar operaciones en pyinfra
 
-Las **operaciones** le dicen a pyinfra que cosas deben ser hechas en los objetivos
-o _targets_. Existen varios tipos de operaciones, por ejemplo, las operaciones
-`server.shell` ejecutan un comando usando la shell del _host_.
+Las **operaciones** son lo que usamos para instruir a pyinfra sobre lo que
+tiene que hacer. Por ejemplo, la operación `server.shell` sirve para que pyinfra
+ejecute un comando mediante la _shell_.
 
-La mayoría de las operaciones definen **estados**, más que acciones. A modo de
-ejemplo, en vez de pensar en operaciones: "Arrancar este servicio", debemos
-pensar en estados: "Este servicio debería estar arrancado". De esta forma,
-las ordenes se ejecutarán solo si fuera necesario.
+Es preferible que las operaciones **definan un estado**,
+mejor que listar acciones a ejecutar. Es decir, en vez de
+especificar "Arranca este servicio", indicamos "Este servicio debería estar
+arrancado". De esta forma pyinfra solo ejecuta las acciones
+si es necesario. En el ejemplo anterior, si el servicio ya
+está arrancado, no haría nada.
 
-El siguiente ejemplo verifica que el usuario `pyinfra` existe, que su
-directorio principal es `/home/pyinfra`, y también que el fichero `/var/log/pyinfra.log`
-existe, que es propiedad del usuario `pyinfra`, y que tienes como _bits_ de permisos
-el valor `644`.
+La siguiente operación especifica que debe existir un usuario `pyinfra`, con su
+directorio inicial en `/home/pyinfra`, y que debe existir un fichero en
+`/var/log/pyinfra.log`, propiedad de dicho usuario:
 
 ```python3
 # Import pyinfra modules, each containing operations to use
-
 from pyinfra.operations import server, files
 
 server.user(
@@ -192,9 +193,200 @@ files.file(
 
 Esta operación usa operaciones de los tipos `server` y `files`. En la
 documentación oficial se puede consultar [la lista de operaciones
-disponibles](https://docs.pyinfra.com/en/2.x/operations.html). Si salvamos este
-_script_ con el nombre `deploy.py`, podemos testearlo usando una imagen Docker:
+disponibles](https://docs.pyinfra.com/en/2.x/operations.html).
+
+Si salvamos este _script_ con el nombre `deploy.py`, podemos testearlo usando una imagen Docker:
 
 ```shell
 pyinfra @docker/ubuntu:20.04 deploy.py
 ```
+
+## Operaciones sobre ficheros
+
+Las operaciones sobre ficheros gestionan el estado de los ficheros del sistema,
+las cargas de ficheros y la generación de ficheros mediante plantillas.
+
+### [`files.block`](https://docs.pyinfra.com/en/2.x/operations/files.html#files-block)
+
+Verifica que un determinado contenido, comprendido entre
+unos marcadores apropiados, esté -o no-, en el fichero indicado. El
+estado final será que el fichero tendrá -o no- ese texto.
+
+Ejemplo:
+
+```python
+# add entry to /etc/host
+files.block(
+    name="add IP address for red server",
+    path="/etc/hosts",
+    content="10.0.0.1 mars-one",
+    before=True,
+    regex=".*localhost",
+)
+```
+
+### [`files.directory`](https://docs.pyinfra.com/en/2.x/operations/files.html#files-directory)
+
+Añadir/borrar/actualizar directorios. Ejemplo:
+
+```python
+files.directory(
+    name="Ensure the /tmp/dir_that_we_want_removed is removed",
+    path="/tmp/dir_that_we_want_removed",
+    present=False,
+)
+```
+
+[`files.download`](https://docs.pyinfra.com/en/2.x/operations/files.html#files-download)
+
+Descargar ficheros de una localización remota usango `curl` o `wget`.
+Ejemplo:
+
+```python
+files.download(
+    name="Download the Docker repo file",
+    src="https://download.docker.com/linux/centos/docker-ce.repo",
+    dest="/etc/yum.repos.d/docker-ce.repo",
+    )
+```
+
+### [`files.file`](https://docs.pyinfra.com/en/2.x/operations/files.html#files-file)
+
+Añadir/borrar/actualizar archivos. Ejemplo:
+
+```python
+# Note: The directory /tmp/secret will get created with the default umask.
+files.file(
+    name="Create /tmp/secret/file",
+    path="/tmp/secret/file",
+    mode="600",
+    user="root",
+    group="root",
+    touch=True,
+    create_remote_dir=True,
+    )
+```
+
+### [`files.flags`](https://docs.pyinfra.com/en/2.x/operations/files.html#files-flags)
+
+Ajustar _flags_ de ficheros
+
+Ejemplo:
+
+```python
+files.flags(
+    name="Ensure ~/Library is visible in the GUI",
+    path="~/Library",
+    flags="hidden",
+    present=False
+)
+```
+
+### [`files.get`](https://docs.pyinfra.com/en/2.x/operations/files.html#files-get) Descargar
+un archivo desde el sistema
+
+!!! warning "Esta operación no tiene estado"
+
+    La operación siempre se ejecutará, **no es idempotente**.
+
+Ejemplo:
+
+```python
+files.get(
+    name="Download a file from a remote",
+    src="/etc/centos-release",
+    dest="/tmp/whocares",
+    )
+```
+
+### [`files.line`](https://docs.pyinfra.com/en/2.x/operations/files.html#files-line)
+
+Verifica líneas de un fichero usando `grep` para localizarlas y `sed` para
+cambiarlas. Ejemplo:
+
+```python
+files.line(
+    name="Ensure myweb can run /usr/bin/python3 without password",
+    path="/etc/sudoers",
+    line=r"myweb .*",
+    replace="myweb ALL=(ALL) NOPASSWD: /usr/bin/python3",
+    )
+```
+
+### [`files.link`](https://docs.pyinfra.com/en/2.x/operations/files.html#files-link)
+
+Añadir/borrar/actualizar enlaces
+
+
+[`files.put`](https://docs.pyinfra.com/en/2.x/operations/files.html#files-put)
+
+Subir un fichero (O un objeto de tipo fichero) a los sistemas remotos. Ejemplo:
+
+```python
+files.put(
+    name="Update the message of the day file",
+    src="files/motd",
+    dest="/etc/motd",
+    mode="644",
+    )
+```
+
+
+### [`files.replace`](https://docs.pyinfra.com/en/2.x/operations/files.html#files-replace)
+
+Reemplaza el contenido de un fichero usand `sed`.
+
+
+### [`files.rsync`](https://docs.pyinfra.com/en/2.x/operations/files.html#files-rsync)
+
+!!! warning "Esta operación no tiene estado"
+
+    La operación siempre se ejecutará, **no es idempotente**.
+    Además, está en versioón de pruebas (alfa). Solo chuta
+    con `ssh`.
+
+Sincronizar los contenidos de una carpeta local con otra en el sistema remoto,
+usando `rsync`. Está operación ejecutará el binario `rsync` en el sistema local.
+
+### [`files.sync`](https://docs.pyinfra.com/en/2.x/operations/files.html#files-sync)
+
+Sincroniza un directorio local con otro remoto, incluyendo borrados. Esta
+operación borrará os ficheros extra que encuentre en el sistema remoto, pero
+**no** los directorio extra.
+
+### [`files.template`](https://docs.pyinfra.com/en/2.x/operations/files.html#files-template)
+
+Genera un fichero en el servidor remoto, a partir de una plantilla Jinja2.
+
+Ejemplo:
+
+```python
+# Example showing how to pass python variable to template file. You can also
+# use dicts and lists. The .j2 file can use `{{ foo_variable }}` to be interpolated.
+
+foo_variable = 'This is some foo variable contents'
+foo_dict = { "str1": "This is string 1", "str2": "This is string 2" }
+foo_list = [ "entry 1", "entry 2" ]
+
+template = StringIO("""
+name: "{{ foo_variable }}"
+dict_contents:
+    str1: "{{ foo_dict.str1 }}"
+    str2: "{{ foo_dict.str2 }}"
+list_contents:
+{% for entry in foo_list %}
+    - "{{ entry }}"
+{% endfor %}
+""")
+
+files.template(
+    name="Create a templated file",
+    src=template,
+    dest="/tmp/foo.yml",
+    foo_variable=foo_variable,
+    foo_dict=foo_dict,
+    foo_list=foo_list
+)
+```
+
+
