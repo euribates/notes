@@ -19,6 +19,7 @@
 
 - [Discord](notes-on-discord.md)
 - [Django](notes-on-django.md)
+  - [Django Admin](notes-on-django-admin.md)
   - [Django-crispy-forms](notes-on-django-crispy-forms.md)
   - [Migrating-django](notes-on-migrating-django.md)
 - [Docker](notes-on-docker.md)

@@ -7,109 +7,6 @@ tags:
     - database
 ---
 
-## Como añadir acciones al Admin de Django
-
-Lo primero que necesitamos en escibir una función que será llamada
-cuando se ejecute la acción. Esta función debe aceptar tres parámetros:
-
-- La instancia del `ModelAdmin`.
-
-- El objeto `HttpRequest` de la petición.
-
-- Un `QuerySet` que contiene los objetos seleccionados por el usuario.
-
-El siguiente ejemplo solo cambie el estado de los objetos en el
-queryset, así que no necesita ninguno de lso dos primeros parámetros:
-
-```py
-from django.utils import timezone
-
-def make_published(model_admin, request, queryset):
-    queryset.update(status='PUB', f_published=timezone.now())
-```
-
-Nota: Tanmbién puede tener sentido definior la acción como un método
-del `ModelAdmin`. Es este caso el primer parámetro es el mismo, pero
-usaremos la convención de llamarlo `self.
-
-### registrar la acción para que aparezca en el admin
-
-Para que aparezca la opción en el admin, tenemos que registrarla. La
-forma más sencilla es usando el decorador `@admin.action`, que nos permite
-además especificar una descripción para la acción. Una vez marcada como una
-acción, podemos añadirla a el o los `modelAdmin` (Puede tener sentido que una
-misma accion se pueda aplicar a varios modelos) en el atributo `actions`:
-
-```py
-from django.contrib import admin
-from django.utils import timezone
-
-from myapp.models import Article
-
-
-@admin.action(description="Marcar como publicado")
-def make_published(model_admin, request, queryset):
-    queryset.update(status='PUB', f_published=timezone.now())
-
-
-class ArticleAdmin(admin.ModelAdmin):
-    list_display = ["title", "status"]
-    ordering = ["title"]
-    actions = [make_published]
-
-
-admin.site.register(Article, ArticleAdmin)
-```
-
-Si fuera un método, en ves de una función externa, en actions tendremos que
-usar una cadena de texto para especificarlo, en vez de usar directamente la
-función:
-
-```py
-class ArticleAdmin(admin.ModelAdmin):
-    ...
-
-    actions = ["make_draft"]
-
-    @admin.action(description="Mark selected stories as published")
-    def make_draft(self, request, queryset):
-        queryset.update(status="DRAFT")
-```
-
-### Acciones más complicadas o avanzadas
-
-En otros casos tendremos que pedir datos adicionales: Una confirmación de
-la solicitud, por ejemplo, o preguntar más detalles necesarios para la
-operación. Eso nos obliga a pasar por una página intermedia.
-
-Para ello, en vez de tener un método/función que no devuelve nada, devolveremos
-un objet de tipo `HttpResponseRedirect` que nos diriga a una página definida
-por nosotros, y que acepta el `queryset` original.
-
-```py
-from django.http import HttpResponseRedirect
-
-
-def issue_certificate(modeladmin, request, queryset):
-    selected = queryset.values_list("pk", flat=True)
-    ct = ContentType.objects.get_for_model(queryset.model)
-    return HttpResponseRedirect(
-        "/export/?ct=%s&ids=%s"
-        % (
-            ct.pk,
-            ",".join(str(pk) for pk in selected),
-        )
-```
-
-Esta página puede definir una plantilla que derive de `admin/base.html` para
-que se integre bien con el admin.
-
-
-
-
-
-
-
 
 ## Cómo obtener la fecha o _timestamp_ en Django, con el _timezone_ correcto
 
@@ -191,8 +88,9 @@ nuevo error.
 
 ## Cómo hacer una formulario dinámicamente
 
-TL/DR: Añadir o cambiar los campos definidos en el formulario durante la
-inicialización del mismo, usando el atributo `fields`.
+!!! note "TL/DR"
+    Añadir o cambiar los campos definidos en el formulario durante la
+    inicialización del mismo, usando el atributo `fields`.
 
 Cada instancia  de `Form` tiene este atributo `fields`, que es un diccionario
 que mantiene referencias a todos los campos definidos en la declaración de la
@@ -261,51 +159,6 @@ class FooConfig(AppConfig):
 Fuente: [StackOverflow - How to resolve
 "django.core.exceptions.ImproperlyConfigured: Application labels aren't unique,
 duplicates: foo" in Django 1.7?](https://stackoverflow.com/questions/24319558/how-to-resolve-django-core-exceptions-improperlyconfigured-application-labels)
-
-## Cómo hacer que un método booleano se vea bonito en el admin
-
-Esta documentado, pero a menudo resulta complicado de encontrar. Si escribimos
-un método de un modelo que devuelve solo `True` o `False`, y lo consultamos en el
-admin, este nos muestra texto. Sin embargo, para campos definidos como
-booleanos (`BooleanField`) nos muestra un icono. Podemos hacer que utilice esos
-mismos iconos si **añadimos un atributo `boolean` al método**.  por ejemplo:
-
-```python
-def nacio_en_bisiesto(self):
-    year = self.birthday.year
-    return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
-
-nacio_en_bisiesto.boolean = True
-```
-
-Fuente:
-
-- [El Ornitorrinco Enmascarado: Recetas Habituales en Django (Que siempre se me olvidan)](http://elornitorrincoenmascarado.blogspot.com/2015/10/recetas-habituales-en-django-que.html)
-
-
-## Cómo mostrar contenido html en el admin
-
-Para que el _admin_ interprete cualquier texto producido por un método como HTML,
-sin escaparlo, debemos **asignar al método el atributo `allow_tag` a `True`**.
-Es recomendable que nos escudemos de posibles fallos de seguridad **usando la
-función `format_html()`** siempre que incluyamos en la salida texto generado
-por el usuario final. Por ejemplo:
-
-```python
-def colored_name(self):
-    return format_html('<span style="color: #{};">{} {}</span>',
-        self.color_code,
-        self.first_name,
-        self.last_name,
-        )
-
-colored_name.allow_tags = True
-```
-
-Fuente:
-
-- [El Ornitorrinco Enmascarado: Recetas Habituales en Django (Que siempre se me olvidan)](http://elornitorrincoenmascarado.blogspot.com/2015/10/recetas-habituales-en-django-que.html)
-
 
 ## Cómo migrar a 3.1.1
 
@@ -428,7 +281,7 @@ y el mecanismo de uso es:
 - Añadir `formtools` a la variable `INSTALLED_APPS`.
 
 - Definimos una serie de formularios, instancias de `Form`, uno para cada
-  página del wizard.
+  página del _wizard_.
 
 - Creamos una subclase de `WizardView`, que especifica lo que tenemos que
   hacer cuando **todos** los formularios anteriores hayan sido presentados y
@@ -576,72 +429,33 @@ explicado, junto con muchas otras cosas interesantes, en la documentación
 oficial: [Django Query Set API reference - extra](https://docs.djangoproject.com/en/3.1/ref/models/querysets/#extra).
 
 
-## Cómo modificar el queryset usado en el admin para incluir un select_related
-
-No hay que modificar el formumario en si, sino modificar la
-clase derivada de ModelAdmin. Django incluye un método específico
-para esto en la clase madre, `formfield_for_foreignkey`.
-
-De la documentación:
-
-> ModelAdmin.formfield_for_foreignkey(self, db_field, request, \*\*kwargs):
->
-> The formfield_for_foreignkey method on a ModelAdmin allows you to
-> override the default formfield for a foreign keys field. For example,
-> to return a subset of objects for this foreign key field based on the
-> user
-
-Veámoslo con un ejemplo:
-
-```python
-class MyModelAdmin(admin.ModelAdmin):
-    ...
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "car":
-            kwargs["queryset"] = Car.objects.filter(
-                owner=request.user
-            )
-        return super(MyModelAdmin, self).formfield_for_foreignkey(
-            db_field,
-            request,
-            **kwargs
-        )
-```
-
-
-## Cómo usar formularios diferentes en el admin para insertar y modificar
-
-Usa el método `get_form` de la clase `ModelAdmin`, y devuelve el formulario que
-necesites en cada caso. Puedes discriminar si es un `UPDATE` o un `INSERT`
-mirando el parámetro `obj`: Si es `None` se trata de un alta, si no, se trata
-de una modificación y `obj` es el modelo modificado.
-
-Un ejemplo:
-
-```python
-class AdminBiografia(admin.ModelAdmin):
-
-    ...
-
-    def get_form(self, request, obj=None, **kwargs):
-        if obj:
-            kwargs['form'] = EditarBiografiaAdminForm
-        else:
-            kwargs['form'] = NuevaBiografiaAdminForm
-        return super().get_form(request, obj, **kwargs)§
-```
-
-
 ## Como hacer un CASE de base de datos usando el ORM de Django
 
-First thing is know to use the conditional expressions. Conditional expressions
-let you use `if ... elif ... else` logic within filters, annotations,
-aggregations, and updates. A conditional expression **evaluates a series of
-conditions for each row of a table and returns the matching result
-expression**. Conditional expressions can also be combined and nested like
-other expressions.
+Lo primero es saber como se usa las expresiones condicionales en SQL.
+Las expresiones condicionales son una especia de mezcla entre
+las sentencias `if ... elif ... else` y `case`.
 
-We'll be using the following model in the subsequent examples:
+En SQL, la forma general de una sentencia `Case` es la siguiente:
+
+```sql
+CASE
+    WHEN condition1 THEN result1
+    WHEN condition2 THEN result2
+    WHEN conditionN THEN resultN
+    ELSE result
+END;
+```
+
+En Django, usaremos un objeto de la clase **`When`** para incluir los diferentes
+casos a considerar. Funciona de forma similar a `.filter`, añadiendo
+varias instancias de objetos `When` en una clase `Case`.
+
+Se pueden usar en filtros,
+anotaciones (`annotate`), agrupaciones (`aggregations`) y actualizaciones.
+Funciona evaluando una serie de condiciones, para cada fila de la tabla, y
+devolviendo la primera que se resuelva correctamente.
+
+Vamos a usar el siguiente modelo como ejemplo:
 
 ```python
 from django.db import models
@@ -664,14 +478,7 @@ class Client(models.Model):
     )
 ```
 
-A **When** object is used to encapsulate a condition and its result for
-use in the conditional expression. Using a `When()` object is similar to
-using the `filter()` method. The condition can be specified using field
-lookups, `Q` objects, or Expression objects that have an `output_field`
-that is a `BooleanField`. The result is provided using the `then`
-keyword.
-
-Some examples:
+Algunos ejemplos de `When`:
 
 ```python
 from django.db.models import F, Q, When
@@ -699,8 +506,8 @@ non_unique_account_type = Client.objects.filter(
 When(Exists(non_unique_account_type), then=Value('non unique'))
 ```
 
-Una expresión **Case** usa varios objetos `When()`, que son evaluados por
-orden.  Cuando uno de ellos se evalúa como verdadero, se devolverá el valor
+Una expresión **`Case`** usa varios objetos `When()`, que son evaluados por
+orden.Cuando uno de ellos se evalúa como verdadero, se devolverá el valor
 correspondiente.
 
 Un ejemplo:
@@ -722,9 +529,9 @@ Client.objects.annotate(
 ```
 
 La clase `Case()` acepta cualquier número de objetos de tipo 
-`When()` como parámetros posicionales. También existen parámettros por
+`When()` como parámetros posicionales. También hay parámetros por
 nombre para determinadas facilidades. Por ejemplo, `default` para definir
-el valor a usar si ninguna de las condiciones `When()` evalua a verdadero.
+el valor a usar si ninguna de las condiciones `When()` evalúa a verdadero.
 Si no se proporciona un valor por defecto, se devuelve `None`.
 
 Fuentes: 
@@ -732,46 +539,7 @@ Fuentes:
 - [Conditional expressions](https://docs.djangoproject.com/en/3.1/ref/models/conditional-expressions/)
 - [Best practices working with Django models](https://steelkiwi.com/blog/best-practices-working-django-models-python/)
 
-
-## Cómo enlazar a una página dentro del admin
-
-La _app_ `admin` proporciona los siguientes patrones de enlace:
-
-| Page                      | URL name | Parameters                 |
-|---------------------------|----------|----------------------------|
-| Index                     | `index`  |                            |
-| Login                     | `login`  |                            |
-| Logout                    | `logout` |                            |
-| Password change           | `password_change` |                   | 
-| Password change done      | `password_change_done` |              | 
-| i18n JavaScript           | `jsi18n` |                            |
-| Application index page    | `app_list` | `app_label`             |
-| Redirect to object's page | `view_on_site` | `content_type_id`, `object_id` |
-
-
-Cada instancia de `ModelAdmin` proporciona un conjunto adicional
-de URLs:
-
-
-| Page       | URL name                              | Parameters  |
-|------------|---------------------------------------|-------------|
-| Changelist | `<app_label>_<model_name>_changelist` |             |
-| Add        | `<app_label>_<model_name>_add`        |             |
-| History    | `<app_label>_<model_name>_history`    | `object_id` |
-| Delete     | `<app_label>_<model_name>_delete`     | `object_id` |
-| Change     | `<app_label>_<model_name>_change`     | `object_id` |
-
-Por ejemplo, para enlazar con la página de edición (*change*) del modelo
-`Libro` dentro de la _app_ `biblioteca`, sería:
-
-```
-admin:biblioteca_libro_change <object_id>
-```
-
-Fuentes:
-
-- [Reversing admin URLs](https://docs.djangoproject.com/en/dev/ref/contrib/admin/#reversing-admin-urls)
-
+- [SQL CASE Expression](https://www.w3schools.com/sql/sql_case.asp)
 
 ## Nomenclatura correcta de los modelos
 
@@ -806,12 +574,11 @@ Ahora las instancias de `Owner` tienen un atributo `comics`, que es un
 _queryset_ de todos los comics que posee dicha instancia.
 
 Si no usamos el parámetro, el atributo se crea, pero con el nombre por defecto
-de `<model>_set`, en este caso, `comic_set`. El problema es que
-se crea _mágicamente_, y puede confundir a un programador que ve que se usa el
-atributo `comic_set` pero que no se define en ninguna parte del código. Esto va
-contra el principio _Explicit is better than implicit_, y es por lo que se
-recomuenda el uso, para tener un nombre **más claro** y **definido en el
-código**.
+de `<model>_set`, en este caso, `comic_set`. El problema es que se crea
+_mágicamente_, y puede confundir a un programador que ve que se usa el atributo
+`comic_set` pero que no se define en ninguna parte del código. Esto va contra
+el principio _Explicit is better than implicit_, y es por lo que se recomienda
+el uso, para tener un nombre **más claro y definido en el código**.
 
 ## Porqué no hay que usar nunca una `ForeignKey` con `unique=True`
 
@@ -821,7 +588,7 @@ precisamente para estos casos.
 
 ## Orden de los atributos y métodos declarados en un modelo.
 
-Este sería el orden sugerido:
+Este sería el orden recomendado:
 
 1)  Clase `meta`
 
@@ -829,9 +596,9 @@ Este sería el orden sugerido:
 
 3)  Campos del modelo
 
-4)  Managers personalizados, si lo s hubiera
+4)  _Managers_ personalizados, si los hubiera
 
-5)  Definicion del método `__str__`
+5)  Definición del método `__str__`
 
 6)  Otros métodos especiales
 
@@ -844,15 +611,14 @@ Este sería el orden sugerido:
 10) Otros métodos
 
 
-## Denormalisations
+## Denormalizaciones
 
-You should not allow thoughtless use of denormalization in relational
-databases. Always try to avoid it, except for the cases when you denormalise
-data consciously for whatever the reason may be (e.g.  productivity). If at the
-stage of database designing you understand that you need to denormalise much of
-the data, a good option could be the use of NoSQL. However, if most of data
-does not require denormalisation, which cannot be avoided, think about a
-relational base with JsonField to store some data.
+En general, hay que evitar el uso de campos o tablas desnormalizadas, pero a
+veces, normalmente por razones de rendimiento, son necesarias.
+
+Si la mayoría de la información necesita ser desnormalizada, podría ser
+interesante estudiar el uso de una base de datos NoSQL, pero si solo se trata
+de unos pocos casos, puede ser muy interesante el uso del tipo `JsonField`.
 
 
 ## Nunca usar BooleanField con `null` o `black`
@@ -907,16 +673,16 @@ class Article(models.Model):`
     is_verified = models.BooleanField(default=False)
 ```
 
-Si asumimos que la lógica de la aplicación es que un articulo
-empieza su vida como no publicado y no verificado, luego es comprobado 
-por un revisor, y se marca como verificado si le da el visto bueno. Tras eso, el editor
-puede publicar los artículos verificados, pasando a publicado. El problema de
-este enfoque es que permite los llamados **estados imposibles**, ya que solo hay
+Si asumimos que la lógica de la aplicación es que un articulo empieza su vida
+como no publicado y no verificado, luego es comprobado por un revisor, y se
+marca como verificado si le da el visto bueno. Tras eso, el editor puede
+publicar los artículos verificados, pasando a publicado. El problema de este
+enfoque es que permite los llamados **estados imposibles**, ya que solo hay
 tres estados, pero cuatro posibles combinaciones de dos valores booleanos. 
 
-En este caso concreto, existe la posibilidad de tener un artículo publicado pero
-no comprobado. En este caso, parece una mejor opción tener un campo que acepte
-solo uno de los tres posibles estados:
+En este caso concreto, existe la posibilidad de tener un artículo publicado
+pero no comprobado. En este caso, parece una mejor opción tener un campo que
+acepte solo uno de los tres posibles estados:
 
 ```python
 class Article(models.Model):
@@ -926,10 +692,10 @@ class Article(models.Model):
     status = models.IntegerField(choices=STATUSES, default=STATUSES.draft)
 ```
 
-Observese que es trivial implementar una propiedades que funciones como en el
-modelo anterior, derivando su valor del estado, si tuviéramos código que hiciera
-referencia a los atributos anteriores (Este ejemplo usa el soporte para `enum`
-disponible desde Django 3.0):
+Obsérvese que es trivial implementar una propiedades que funciones como en el
+modelo anterior, derivando su valor del estado, si tuviéramos código que
+hiciera referencia a los atributos anteriores (Este ejemplo usa el soporte para
+`enum` disponible desde Django 3.0):
 
 ```python
 from django.db import models
@@ -969,15 +735,15 @@ clase o por la instancia.
 ## Los datos incorrectos NO deberían poder almacenarse en la base de datos
 
 Si tiene sentido, es preferible usar `PositiveIntegerField` en vez de
-`IntegerField`, porque así prevenimos que **datos incorrectos se almacenen
-en la base de datos**. Ver Impedir estados imposibles. Por la misma razón, hay
-que especificar siempre `unique` a `True` si tiene sentido, y eliminar o
-reducir al mínimo los campos con `required` a `False`.
+`IntegerField`, porque así prevenimos que **datos incorrectos se almacenen en
+la base de datos**. Ver Impedir estados imposibles. Por la misma razón, hay que
+especificar siempre `unique` a `True` si tiene sentido, y eliminar o reducir al
+mínimo los campos con `required` a `False`.
 
 Si tenemos un valor o conjunto de valores que forman una clave candidata
-natural, podemos crear un índice indicando que la combinación de valores
-es única. Además, es conveniente usar el concepto de
-[`natural_key`](https://docs.djangoproject.com/fr/4.2/topics/serialization/#natural-keys) 
+natural, podemos crear un índice indicando que la combinación de valores es
+única. Además, es conveniente usar el concepto de
+[`natural_key`](https://docs.djangoproject.com/fr/4.2/topics/serialization/#natural-keys)
 para facilitar las migraciones. Una clave natural es una tupla de valores que
 identifican un registro, de forma equivalente pero alternativa a una clave
 primaria.
@@ -985,7 +751,7 @@ primaria.
 Para usarlo, debemos definir un gestor (`models.Manager`) personalizado, y este
 gestor debe implementar una función `get_by_natural_key`, que aceptará como
 parámetros los campos que forman la clave natural. Supongamos que queremos usar
-como clave natural el nombre y apellidos de una persona, podriamos hacer algo
+como clave natural el nombre y apellidos de una persona, podríamos hacer algo
 como:
 
 ```py
@@ -1009,7 +775,7 @@ class Person(models.Model):
         ]
 ```
 
-Ahora, al exportar, donde antes se usaría la clave primaria, ahora se usa la
+Al exportar, donde antes se usaría la clave primaria, ahora se usa la
 clave natural:
 
 ```json
@@ -1022,14 +788,14 @@ clave natural:
 ...
 ```
 
-Cuando fueramos a cargar este libro, Django usará el método
+Cuando fuéramos a cargar este libro, Django usará el método
 `get_by_natural_key` con los parámetros `["Douglas", "Adams"]` para localizar
 el autor, en vez de la clave primaria.
         
 
 ## Cómo obtener el primer/último elemento de un modelo
 
-Se puede usar el metodo `ModelName.objects.earliest('created'/'earliest')` en
+Se puede usar el método `ModelName.objects.earliest('created'/'earliest')` en
 vez de usar `order_by('created')[0]`. Ademas, se puede definir el campo
 `get_latest_by` en la clase `Meta`, con lo cual podemos usar los métodos
 `latest` y `earliest` sin necesidad de especificar los campos por los que se
@@ -1061,11 +827,11 @@ la misma que en la nota anterior, es preferible que la base de datos realice la
 consulta usando la sentencia `EXISTS`, mucho más rápido y más barato.
 
 
-## Considera usar el campo `help_text` como documentción
+## Considera usar el campo `help_text` como documentación
 
-Usar el campo `help_text` como parte de la documenatación
+Usar el campo `help_text` como parte de la documentación
 resulta muy útil, ya que es accesible tanto para desarrolladores
-como para administradores (Si usas el admin).
+como para administradores (Si usas el `admin`).
 
 
 ## Usar `DecimalField` para almacenar cantidades de dinero
@@ -1076,15 +842,20 @@ para evitar perdidas por redondeo es usar enteros y almacenar las cantidades
 como céntimos, centavos, peniques, etc.
 
 
-## Don't use `null=true` if you don't need it
+## No usar `null=true` a menos que realmente lo necesites
 
-- `null=True` Allows column to keep null value.
+- `null=True` indica que la base de datos aceptará `NULL`.
 
-- `blank=True` Will be used only if Forms for validation and **is not
-  related to the database**.
+- `blank=True` solo se usa en los formularios derivados
+  automáticamente de este modelo, para saber si la validación debe
+  comprobar que no falte el campo. En caso de que sea verdadero,
+  el formulario considera valido los datos aunque no este definido
+  ningún valor para este campo. **No tiene nada que ver con la base de datos**.
 
-In text-based fields, it's better to keep default value. `''`, this way
-you'll get only one possible value for columns without data.
+Para campos de texto, se recomienda usar como valor por defecto la cadena de
+texto vacía: `''`, y **no permitir el uso de `NULL` en la base de datos**.  De
+este manera, solo hay una forma posible de almacenar que no tenemos datos para
+ese campo. _In the face of ambiguity, refuse the temptation to guess_.
 
 
 ## Cómo leer los valores pasados como parámetros en una URL
@@ -1096,12 +867,12 @@ Se usa el pseudo-diccionario `GET`. Por ejemplo, si la URL era
 request.GET.get('q', '')
 ```
 
-## Transparent fields list
+## Usar listas explicitas de campos
 
-Do not use `Meta.exclude` for a model's fields list description in
-`ModelForm`. It is better to use `Meta.fields` for this as it makes the
-fields list transparent. Do not use `Meta.fields="__all__"` for the
-same reason.
+Usar la opción `fields` de la clase `Meta`, mejor que `exclude`, en un
+`ModelForm`. De está forma estamos siendo explícitos en lo que respecta
+a los campos que usará el formulario. Por la misma razón, no usar nunca el
+valor especial `__all__`.
 
 
 ## Do not heap all files loaded by user in the same folder
@@ -1143,10 +914,10 @@ posts = Post.objects.with_comments_counter()
 posts[0].comments_count
 ```
 
-You can use this in chain with others `queryset` methods:
+Como devolvemos un _queryset_, los resultados se pueden encadenar:
 
 ```python
-posts = Post.objects.with_comments_counter().filter()
+posts = Post.objects.with_comments_counter().filter(title__icontains='starman')
 posts[0].comments_count 
 ```
 
@@ -1453,9 +1224,9 @@ class Migration(migrations.Migration):
 ```
 
 
-## Como condensar /simplificar (_squash_) las migraciones en Django
+## Como condensar/simplificar (_squash_) las migraciones en Django
 
-Existe una opción en el `manage.py` llamada `squashmigrations` que nos
+Existe una opción en el `manage.py` llamada **`squashmigrations`** que nos
 permite condensar todas las migraciones aplicadas (o un subconjunto de ellas)
 de forma que se sustituyan por una única migración. Además, intenta optimizar
 las migraciones al mezclarlas, de forma que se eliminan los cambios que son
@@ -1575,7 +1346,7 @@ qs.query = pickle.loads(s)     # Assuming 's' is the pickled string.
 
 !!! warning "Atención a las versiones"
 
-    Como todo lo que se serializa con pickle, no se puede compartir entre
+    Como todo lo que se serializa con `pickle`, no se puede compartir entre
     versiones de Python, pero este truco con las queries serializadas es aun
     más estricto: **No se puede compartir estos datos entre
     versiones diferentes de Django**.
@@ -1590,8 +1361,8 @@ _callable_) que acepta un parámetro de entrada y cuyo comportamiento es:
 
 - No devuelve nada, si el dato es correcto
 
-- Eleva la excepción `ValidationError` si no es correcto. La excepción
-  está definida en `django.core.exceptions`.
+- Eleva la excepción `ValidationError` (o una clase derivada de esta) 
+  si no es correcto. La excepción está definida en `django.core.exceptions`.
 
 Podemos asignar varias validadores a un solo campo. La forma más fácil es usar
 el parámetro `validators`, que acepta una lista de validadores a aplicar.
@@ -1700,7 +1471,7 @@ así que si tenemos dos módulos con el mismo nombre, `foo`,
 aunque están obviamente en ramas diferentes,
 tendremos un error.
 
-La solución es **sobreescribir** la etiqueta por defecto.
+La solución es **sobreescribir** la **etiqueta** por defecto.
 Podemos hacerlo añadiendo el siguiente código
 al fichero `apps.py` de la aplicación
 (Ojo, que el valor importante es `label`, no `name`):
@@ -1723,6 +1494,7 @@ parámetros o atributos de la aplicación. Según la documentación:
 > aplicación. Algunos de estos valores pueden ser modificados definiendo
 > una subclase de `AppConfig`, mientras que otros se definen
 > por Django y son de solo lectura.
+
 
 ## En Django 4.x las plantillas se cachean si DEBUG=true
 
@@ -1828,6 +1600,7 @@ ficheros que haya dentro a `STATIC_ROOT`.
 
 Fuente: [python - Differences between STATICFILES_DIR, STATIC_ROOT and MEDIA_ROOT - Stack Overflow](https://stackoverflow.com/questions/24022558/differences-between-staticfiles-dir-static-root-and-media-root)
 
+
 ## La tabla de sesiones de Django no para de crecer, como puedo solucionarlo
 
 Efectivamente,la tabla de sesiones no se limpia sola, están registradas todas
@@ -1850,7 +1623,8 @@ las que se han caducado.
 
 Fuente: [Why django session table growing automatically - Stack Overflow](https://stackoverflow.com/questions/71441352/why-django-session-table-growing-automatically)
 
-## Cómo especificar, para un modelo, el nombre de la tabla en la BD? 
+
+## Cómo especificar, para un modelo, el nombre de la tabla en la BD
 
 Usando el atributo `db_table` de la clase `Meta` de modelo:
 
@@ -1866,7 +1640,7 @@ class TempUser(models.Model):
     ...
 ```
 
-## Como especificar, para un campo de un modelo, el nombre de la columna en la BD?
+## Cómo especificar, para un campo de un modelo, el nombre de la columna en la BD
 
 Con el parámetro `db_column` a la hora de definir el campo:
 
@@ -1919,7 +1693,8 @@ que derive del campo de formulario
 que más se parezca al que necesitamos
 y reimplementar el método `clean()`
 para que devuelva el valor y tipo de dato que necesitamos.
-Si tuvieramos que reimplemenatar también el método `__init__`
+
+Si tuviéramos que reimplementar también el método `__init__`
 hay que seguir aceptando todos los parámetros básicos:
 `required`, `label`, `initial`, `widget` y `help_text`.
 La forma más sencilla es llamando a `super().__init__`.
@@ -1935,8 +1710,7 @@ class MyObjectField(forms.ModelChoiceField):
             raise ValidationError
 ```
 
-De igual manera, hay que tener cuidado
-al reimplementar `clean`
+De igual manera, hay que tener cuidado al reimplementar `clean`
 porque este es responsable de llamar a
 `to_python()`, `validate()` y `run_validators()`. 
 Lo más seguro es llamar a la super implementación
