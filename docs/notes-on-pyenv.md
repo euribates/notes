@@ -140,3 +140,12 @@ Mediante un proceso llamada `rehashing`, pyenv mantiene _shims_ en ese diretorio
 
 Fuente: 
 [GitHub - pyenv/pyenv: Simple Python version management](https://github.com/pyenv/pyenv)
+
+## Como compilar la version de Python que queremos si no existen los binarios
+
+Hay que instalar varias librerias de codigo fuente
+
+```shell
+$ sudo apt install make libssl-dev libedit-dev libreadline-dev openssl-dev libffi-dev libbz2-dev libsqlite3-dev tk-dev liblzma-dev build-dep python3-dev
+```
+

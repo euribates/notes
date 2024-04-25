@@ -1,9 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
+from enum import Enum
 from pathlib import Path
 from typing import Optional
 import re
-from enum import Enum
 
 from rich.console import Console
 from rich.markdown import Markdown
@@ -17,7 +17,12 @@ from models import load_note_from_file
 
 DOCS = Path('./docs')
 
-app = typer.Typer()
+
+app = typer.Typer(
+	add_completion=False,
+	help='[green]✎[/green] cliente de acceso a las notas',
+	no_args_is_help=True,
+	)
 
 
 def get_title(filename: str) -> Optional[str]:
@@ -147,6 +152,9 @@ def metadata(
             print(json.dumps(note.metadata))
 
 
+def main():
+    app()
+
 
 if __name__ == '__main__':
-    app()
+	main()

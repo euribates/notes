@@ -1,8 +1,9 @@
+meilisearch
 mkdocs
 mkdocs-material
-pygments
-requests
 mkdocs-table-reader-plugin
-typer[all]
+pygments
 python-markdown-math
 pyyaml
+requests
+typer[all]
