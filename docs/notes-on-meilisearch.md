@@ -329,8 +329,36 @@ hay que usar la opción `--env`. Para definir la clave maestra se usa
 Cuando se ejecuta por primera vez, Meilisearch crea dos
 claves API: `Default Admin API Key` y `Default Search API Key`. Usaremos la
 primera para operaciones de mantenimiento como crear nuevos documentos,
-índices, o cambios en la configuración, mientras que ls segunda se usará para
-las busquedas.
+índices, o cambios en la configuración, mientras que la segunda se usará para
+las búsquedas.
+
+Es conveniente wmodificar la configuración de meilisearch en
+`/etc/meilisearch/config.toml`
+y definir como mínimo los siguientes valores: 
+
+- `db_path`
+- `env`
+- `http_addr`
+- `master_key`
+
+Ejemplo:
+
+```
+# Path to database indexes
+db_path = "/var/meilisearch/data.ms"
+
+# Enviroment
+env = "development" # `production` or `development`.
+
+# The address on which the HTTP server will listen.
+http_addr = "localhost:7700"
+
+# Sets the instance's master key
+# automatically protecting all routes except GET /health.
+# https://www.meilisearch.com/docs/learn/configuration/instance_options#master-key
+master_key = "747bdd8f-25c5-4be0-8d66-bf3c545de7c3"
+```
+
 
 Ahora el fichero service en `/etc/systemd/system/meilisearch.service` podría
 ser algo como esto:
@@ -342,7 +370,7 @@ After=systemd-user-sessions.service
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/meilisearch --http-addr 127.0.0.1:7700 --env production --master-key Y0urVery-S3cureAp1K3y
+ExecStart=/usr/local/bin/meilisearch --config-file-path /etc/meilisearch/config.toml
 
 [Install]
 WantedBy=default.target
@@ -409,4 +437,38 @@ con el método `get_task(task_id)`.
 Meilisearch crea por defecto una carpeta llamada `data.ms`, en la misma
 carpeta en la que esté localizado el ejecutable `meilisearch`.
 
-La ubicación de la carpeta puede ser modificada ya sea mediante
+La ubicación de la carpeta puede ser modificada ya sea mediante parámetros,
+variables de entorno o un fichero de configuración.
+
+## Atributos visibles y buscables
+
+Displayed and searchable attributes
+
+Por defecto, al añadir cualquier documento a un índice
+todos los atributos nuevos que se encuentren se añaden
+automáticamente a **dos** listas: La lista de atributos
+visibles (_displayed_, es decir, que se mostrarán en
+los resultados) y buscables (_searchable_, es decir, que se
+usaran para las b↓squedas).
+
+A causa de esto, todos los atributos son, por defecto, visibles
+y buscables. Pero podemos modificar estos ajustes mediante
+la configuración del índice.
+
+Si se define la lista `displayedAttributes`, entonces **solo**
+Los campos cuyos nombres estén la lista serán visibles, y saldrán
+por lo tanto en los resultados de las búsquedas.
+
+De forma similar, si se define la lista `searchableAttributes`, solo
+se considerán los campos incluidos en la lista.
+
+Ejemplo:
+
+```python3
+client.index('movies').update_displayed_attributes([
+    'title',
+    'overview',
+    'genres',
+    'release_date'
+])
+```
