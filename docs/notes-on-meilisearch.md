@@ -332,7 +332,7 @@ primera para operaciones de mantenimiento como crear nuevos documentos,
 índices, o cambios en la configuración, mientras que la segunda se usará para
 las búsquedas.
 
-Es conveniente wmodificar la configuración de meilisearch en
+Es conveniente modificar la configuración de meilisearch en
 `/etc/meilisearch/config.toml`
 y definir como mínimo los siguientes valores: 
 
@@ -360,7 +360,7 @@ master_key = "747bdd8f-25c5-4be0-8d66-bf3c545de7c3"
 ```
 
 
-Ahora el fichero service en `/etc/systemd/system/meilisearch.service` podría
+Ahora el fichero en `/etc/systemd/system/meilisearch.service` podría
 ser algo como esto:
 
 ```
