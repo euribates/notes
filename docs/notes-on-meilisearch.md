@@ -11,7 +11,14 @@ tags:
 ## Sobre Meilisearch
 
 **MeiliSearch** es un motor de búsqueda de texto rápido,
-de fácil uso y despliegue. Algunas de las características más interesantes
+de fácil uso y despliegue.
+
+!!! warning "No tiene operadores lógicos"
+
+    En la versión $1.7.2$ no incluye operadores lógicos (`and`, `or`, `not`).
+    Se espera que la version $1.8$ incluya el operador `not`.
+
+Algunas de las características más interesantes
 son las siguientes:
 
 - **Búsqueda mientras se teclea**: Encuentra resultados en menos de 50
@@ -472,3 +479,49 @@ client.index('movies').update_displayed_attributes([
     'release_date'
 ])
 ```
+
+## Cómo usar filtros en Meilisearch
+
+Los filtros se usan para refinar búsquedas y también son las bases para las
+búsquedas segmentadas. 
+
+Supoingamos una colección de películas que contenga los siguiente títulos:
+
+```js
+[
+  {
+    "id": 458723,
+    "title": "Us",
+    "director": "Jordan Peele",
+    "genres": [
+      "Thriller",
+      "Horror",
+      "Mystery"
+    ],
+    "rating": {
+      "critics": 86,
+      "users": 73
+    },
+    "overview": "Husband and wife Gabe and Adelaide Wilson take their…"
+  },
+  …
+]
+```
+
+Para filtar por los campos de director (_director_) y géneros (_genres_),
+primero hay que añadir ambos campos a la lista `filterableAttributes`, usando la
+llamada `update_filterable_attributes`:
+
+```python
+client.index('movies').update_filterable_attributes([
+    'director',
+    'genres',
+    ])
+```
+
+Este paso es **obligatorio**, ya que la lista `filterableAttributes` está vacía
+por defecto.
+
+Es mejor establecer esto **en el momento de crear el índice**, ya que implicar
+una reorganización del mismo, que podría llevar un tiempo apreciable si contiene
+muchos documentos.
