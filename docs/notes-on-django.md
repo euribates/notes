@@ -1720,3 +1720,22 @@ antes y/o después de lo que tengamos que hacer nosotros.
 Esto es solo para personalizar los campos de formulario.
 para personalizar los _Widgets_, se requiere un poco más de trabajo
 porque hay que reimplementar unos cuantos métodos más.
+
+## Mostrar el mensaje de ayuda (`help`) escribiendo comandos de Django
+
+Puedes llamar al método `self.print_help`. Por ejemplo:
+
+```python
+    def handle(self, *args, **options):
+        items = [x.lower() for x in set(args)]
+        if not items:
+            self.print_help('manage.py', '<your command name>')
+            sys.exit(1)
+```
+
+Fuentes: 
+
+- [python - Show help for command from within Django
+management command - Stack Overflow](https://stackoverflow.com/questions/58127109/show-help-for-command-from-within-django-management-command)
+
+- [How to Create Custom Django Management Commands](https://simpleisbetterthancomplex.com/tutorial/2018/08/27/how-to-create-custom-django-management-commands.html)

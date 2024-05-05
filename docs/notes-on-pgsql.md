@@ -142,4 +142,42 @@ $$ LANGUAGE 'plpgsql';
 
 Fuente: <https://w3resource.com/PostgreSQL/pl-pgsql-declarations.php>
 
+## Cómo obtener un listado de las bases de datos
+
+Dentro de `psql`, Usar la siguiente orden:
+
+```
+\l
+```
+
+o:
+
+```
+\list
+```
+
+Daría un resultado parecido a este:
+
+```
+                                 List of databases
+   Name    |  Owner   | Encoding |   Collate   |    Ctype    |   Access privileges   
+-----------+----------+----------+-------------+-------------+-----------------------
+ postgres  | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ template0 | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+           |          |          |             |             | postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+           |          |          |             |             | postgres=CTc/postgres
+ mydb      | dbuser   | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+```
+
+Donde:
+
+- `Name`: El nombre de la base de datos
+- `Owner`: El rol propietario de la base de daros
+- `Encoding`: Codificación por defecto.
+- `Collate`: Especificación de ordenación.
+- `Ctype`: ¿_Character classification_?. Ni idea.
+- `Access privileges`: Privilegios, si los tuviera
+
+Fuente: [How to List Databases Using the psql command line tool | Beekeeper Studio](https://www.beekeeperstudio.io/blog/how-to-list-databases-in-postgres)
 
