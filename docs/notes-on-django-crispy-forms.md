@@ -280,10 +280,10 @@ Los elementos que podemos usar para formar el Layout son:
 
 - **MultiField**
 
-## Como determinar el control o _widget_ a usar en un campo
+## Cómo determinar el control o _widget_ a usar en un campo
 
 Lo más sencillo es sobreescribir el método `__init__`, y realizar las
-modificaciones usando el campo `fields` del formulario, que nos da
+modificaciones usando el atributo `fields` del formulario, que nos da
 acceso a los campos definidos en el mismo.
 
 ```python
