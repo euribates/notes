@@ -461,6 +461,28 @@ SELECT object_type, object_name, status
 
 Debería devolver `VALID` en el campo `status`.
 
+## Cómo saber el nombre de la instancia de la base de datos
+
+Si tenemos acceso por SQL:
+
+```sql
+SELECT host_name
+  FROM v$instance
+```
+
+Si no tenemos acceso a las vistas `v$...` también puede funcionar:
+
+```sql
+SELECT utl_inaddr.get_host_name
+  FROM dual
+```
+
+O esta otra:
+
+```sql
+SELECT sys_context('USERENV','SERVER_HOST')
+  FROM dual
+```
 ## Cómo saber la versión del gestor de base de datos en Oracle
 
 Usando el siguiente comando SQL:
