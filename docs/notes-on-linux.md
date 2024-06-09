@@ -283,3 +283,78 @@ Defaults timestamp_timeout=60
 ```
 
 Fuente: [How to Change Sudo Timeout Period on Linux - OMG! Linux](https://www.omglinux.com/change-sudo-timeout-linux/)
+
+## Cómo funciona el _firewall_ UFM
+
+El _software_ de configuración de_firewall_ por defecto en Ubuntu (Y por tanto,
+en Mint) en **ufw**. Se desarroillo para facilitar la configuración de las
+`iptables`, de forma amigable. Hay que tener en cuenta que UFW, por defecto,
+está desabilitado.
+
+### Enable UFW
+
+To turn UFW on with the default set of rules:
+
+```shell
+sudo ufw enable
+```
+
+To check the status of UFW:
+
+```shell
+sudo ufw status verbose
+```
+
+### Reglas para permitir o denegar (_Allow and Deny specific rules_)
+
+Para permitir el acceso a un puerto:
+
+```
+sudo ufw allow <port>/<optional: protocol>
+```
+
+Por ejemplo, para permitir acceso usando UDP y/o TCP, al puerto $53$.
+
+```shell
+sudo ufw allow 53
+```
+
+Si solo queremos habilitar acceso por TCP:
+
+```shell
+sudo ufw allow 53/tcp
+```
+
+De forma similar, solo habilitar acceso por UDP:
+
+
+```shell
+sudo ufw allow 53/udp
+```
+
+Para denegar el acceso, usariamos:
+
+```shell
+sudo ufw deny <port>/<optional: protocol>
+```
+
+
+Ejemplo: Denegar acceso al puerto $53$ tanto para TCP como para UDP:
+
+```
+sudo ufw deny 53
+```
+
+Solo para TCP:
+
+```shell
+sudo ufw deny 53/tcp
+```
+
+Y solo par UDP:
+
+```shell
+sudo ufw deny 53/udp
+```
+
+Fuente: [UFW - Community Help Wiki](https://help.ubuntu.com/community/UFW)

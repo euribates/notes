@@ -116,6 +116,7 @@
 - [Slack](notes-on-slack.md)
 - [Soft skills](notes-on-soft-skills.md)
 - [Sphinx](notes-on-sphinx.md)
+- [SQLite](notes-on-sqlite.md)
 - [SSH](notes-on-ssh.md)
 - [Static-resources](notes-on-static-resources.md)
 - [Stripe](notes-on-stripe.md)
