@@ -279,3 +279,26 @@ Los elementos que podemos usar para formar el Layout son:
 - **Fieldset**
 
 - **MultiField**
+
+## Cómo determinar el control o _widget_ a usar en un campo
+
+Lo más sencillo es sobreescribir el método `__init__`, y realizar las
+modificaciones usando el atributo `fields` del formulario, que nos da
+acceso a los campos definidos en el mismo.
+
+```python
+class DeviceFilterForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(DeviceFilterForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.fields['updated_date'].widget = forms.DateInput(attrs={
+                'required': True,
+                'class': 'date-time-picker',
+                'data-options': '{"format":"Y-m-d H:i", "timepicker":"true"}'
+            })
+```
+
+!!! note "Esto funciona tambien para formularios que no usen Crispy-forms"
+    Solo tenemos que modificar con `fields` los valores que nos interese.
+
+Fuente: [jquery - How to use widgets in Django Crisp Forms - Stack Overflow](https://stackoverflow.com/questions/57500962/how-to-use-widgets-in-django-crisp-forms)

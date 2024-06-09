@@ -67,7 +67,7 @@ let app = Vue.createApp({
         console.log('Vue 3 mounted');
         },
     methods: {                           /* methods */
-        increment_counter: function() {
+        incrementCounter: function() {
             this.counter++;              /* Use this to access state */
             },
         },
@@ -75,6 +75,17 @@ let app = Vue.createApp({
 
 app.mount('#app');
 ```
+
+Ahora, para que esto funcione, necesitamos definir el siguiente código
+Html:
+
+```html
+    <div id="app">
+      <button @click="incrementCounter">Counter is: [[ counter ]]</button>
+    </div>
+```
+
+
 
 Notas sobre este ejemplo:
 
@@ -97,3 +108,18 @@ Notas sobre este ejemplo:
 
 - Es necesario montar la aplicación sobre un árbol de componentes DOM, esto se
   hace en la última línea del código.
+
+- La vinculación entre el area de la páfina web y el codigo Vue que gestiona
+  ese area se realiza usando el identificador Html, en este caso `app` (Pero
+  podria sere cualquier otro valor, siempre que mantegamos la referencia
+  consistente entre Html y Javascript.
+
+- Para mostrar un valor de los definidos en la función `data`, usamos las
+  marcas `[[` y `]]`, ya que así lo definimos al inicializar Vue. Esto lo
+  hacemos para que no entren en conflicto, ya que el marcado por defecto
+  de Vue, unsaod `{{` y `}}`, es identico al de Django.
+
+- POdemos ejecutar los **metodos** definidos en la clave `methods`, con la
+  sintaxis `@event="<nombre del evento>"`. En el ejemplo mostrado:
+  `@click="incrementCounter"`.
+
