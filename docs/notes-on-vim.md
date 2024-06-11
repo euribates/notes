@@ -1,8 +1,12 @@
 ---
 title: Notes on Vim
+tags:
+    - unix
+    - linux
+    - vim
 ---
 
-## Cómo hacer que Vim copie al portapapeles del sistema, ademas del interno
+## Cómo hacer que Vim copie al porta papeles del sistema, ademas del interno
 
 Este es el camino (Ponerlo en el fichero `.vimrc`):
 
@@ -17,7 +21,7 @@ Referencia: `help: clipboard`
 > selection without prepending `"*` to commands.
 
 
-## Cómo incluir caracteres Unicode en Vim (Diagraphs)
+## Cómo incluir caracteres unicode en Vim (_Diagraphs_)
 
 | Keys                   | Meaning          | Symbol |
 |------------------------|------------------|--------|
@@ -1364,4 +1368,11 @@ La otra forma sería desde dentro de Vim, ejecutando el comando `:so` (o
 guardad la sesión.
 
 Fuente: [Vim Sessions - all drops](https://alldrops.info/posts/vim-drops/2020-11-15_vim-sessions/)
+
+## Cómo cambiar el tipo de fichero de DOS a Unix en Vim
+
+Con el fichero abierto en un _buffer_ de Vim, hacer `set ff=unix` y luego salvar (`ff` es por _file format_).
+
+Fuente: 
+[Change DOS to Unix text file format in VIM - Today I Learned](https://til.hashrocket.com/posts/hu3jlszfrf-change-dos-to-unix-text-file-format-in-vim)
 
