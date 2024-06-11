@@ -4,13 +4,48 @@ tags:
     - db
     - sql
     - python
+    - c
+    - c++
 ---
 
 ## Sobre SQLite
 
 **SQLite** es un sistema de gestión de bases de datos relacional compatible con
-ACID, contenida en una relativamente pequeña (~275 kiB) biblioteca escrita en C.
-Es un proyecto de dominio público creado por D.  Richard Hipp.
+capacidades [ACID](https://es.wikipedia.org/wiki/ACID), contenida en una
+biblioteca relativamente pequeña (~275 kiB) escrita en
+[C](https://es.wikipedia.org/wiki/C_%28lenguaje_de_programaci%C3%B3n%29). Es un
+proyecto de dominio público creado por D.  Richard Hipp.
+
+## Inconvenientes y rarezas de SQLite
+
+- No es un gestor de base de datos, es una librería pensada para _sotfware_
+  **embebido**.
+
+- **Tipos de datos _flexibles_**: Los tipos de datos se consideran más
+  recomendaciones que obligaciones. Si, por ejemplo, insertamos la cadena de
+  texto `'1234'` en un campo de tipo `INTEGER`, la base de datos almacenará
+  el número $1234$. Pero si intentamos insertar `'wzxy'`, en vez de dar un
+  error, guardará el dato en forma de cadena de texto. Si, es raro de cojones.
+
+- **No hay un tipo de dato para fechas**. En vez de eso, podemos guardar fechas
+  como:
+
+    - Una cadena de texto (`TEXT`) en formato `ISO-8601`
+
+    - Un `INTEGER` con el número de segundos desde 1/1/1989 (_Unix time_)
+
+    - Un valor `REAL` como una fracción del [día juliano](https://es.wikipedia.org/wiki/Fecha_juliana)
+
+  Las funciones de fechas de SQLite entienden todos estos formatos.
+
+- **No hay un campo de datos para _booleanos_**. Se suele usar los entero $0$ y $1$
+  para representar falso y verdadero respectivamente. Desde la versión
+  3.23.0 (Marzo de 2018) se pueden usar las palabras clave `TRUE` y `FALSE` como
+  sinónimos de $1$ y $0$.
+
+Hay [más rarezas y cosas curiosas de SQLite
+aquí](https://sqlite.org/quirks.html).
+
 
 ## Cómo ver las tablas e índices en una base de datos SQLite
 
@@ -46,7 +81,7 @@ SELECT name
 Tanto para índices como para tablas, el campo `text` contiene las sentencias `DDL`
 de creación correspondiente (`CREATE TABLE | CREATE INDEX`).
 
-## Como crear un campo auto incremental en SQLite?
+## Cómo crear un campo auto incremental en SQLite
 
 **tldr**; Declarar el campo como `INTEGER PRIMARY KEY AUTOINCREMENT`.
 
