@@ -51,6 +51,7 @@
 - [Https](notes-on-https.md)
 
 - [Ideas](notes-on-ideas.md)
+- [Internet of Things (IoT)](notes-on-iot.md)
 
 - [Javascript](notes-on-js.md)
 - [Jupyter](notes-on-jupyter.md)

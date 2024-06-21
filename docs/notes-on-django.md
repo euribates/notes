@@ -1739,3 +1739,25 @@ Fuentes:
 management command - Stack Overflow](https://stackoverflow.com/questions/58127109/show-help-for-command-from-within-django-management-command)
 
 - [How to Create Custom Django Management Commands](https://simpleisbetterthancomplex.com/tutorial/2018/08/27/how-to-create-custom-django-management-commands.html)
+
+## ¿Cuál es la utilidad de la variable `app_name` en el fichero `urls.py`?
+
+Cuando vamos a hacer un `include` de una fichero `urls.py` dentro de otro, hay
+dos formar de definir el **espacio de nombres** o **`namespace`**.
+
+Uno es usando el parámetro `namespace`
+en la llamada a `include`. Si no se especifica,
+tomara como valor por defecto
+el nombre de la aplicación
+en la que esta definido el fichero `urls.py`.
+Eso implica que el `namespace` de una _app_ será por defecto
+el de la misma `app`.
+
+El segundo método es definiendo una variable en el fichero `urls.py` que
+se llame `app_name`, en el mismo _scope_ que `url_patterns`.
+
+El segundo método es ahora mismo el recomendado.
+
+
+
+- [Documentaión de Django](https://docs.djangoproject.com/en/dev/topics/http/urls/#url-namespaces-and-included-urlconfs)
