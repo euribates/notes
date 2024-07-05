@@ -1,89 +1,87 @@
-## Notes on uWSGI server
+---
+title: "Notas sobre uWSGI"
+tags:
+    - python
+    - web
+    - wsgi
+    - server
+---
 
-### Managing the uWSGI server
+## Sobre uWSGI
 
-#### Starting the server
+El proyecto **uWSGI** intenta ofrecer un _Stack_ completo para alojar
+desarrollos web. Servidores de aplicación (Para diferentes lenguajes
+y protocolos), _proxies_, gestores de procesos y monitores utilizan una
+API común y un sistema de configuración homogéneo.
 
-Starting an uWSGI server is the role of the system administrator, like starting the Web server. It
-should not be the role of the Web server to start the uWSGI server – though you can also do that if
-it fits your architecture.
 
-How to best start uWSGI services at boot depends on the operating system you use.
+## Cómo instalar uWSGI
 
-On modern systems the following should hold true. On “classic” operating systems you can use
-init.d/rc.d scripts, or tools such as Supervisor, Daemontools or inetd/xinetd.
+Podemos instalarlo con pip:
 
-You can instruct uWSGI to write the master process PID to a file with the safe-pidfile option.
+```shell
+pip install uswgi
+```
 
-#### Signals for controlling uWSGI
+Puede que necesite al compilador de `C` y el fuente de Python. Podemos
+garantizar que tenemos las dos cosas (En Debian y derivados que usen `apt`)
+con:
 
-The uWSGI server responds to the following signals.
+```shell
+apt install build-essential python
+```
 
-| Signal  | Description                     | Convenience command  |
-|---------|---------------------------------|----------------------|
-| SIGHUP  | gracefully reload all the workers and the master process | `--reload` |
-| SIGTERM | brutally reload all the workers and the master process | (use --die-on-term to respect the convention of shutting down the instance) |
-| SIGINT  | immediately kill the entire uWSGI stack | --stop |
-| SIGQUIT | immediately kill the entire uWSGI stack ||
-| SIGUSR1 | print statistics ||
-| SIGUSR2 | print worker status or wakeup the spooler ||
-| SIGURG  | restore a snapshot ||
-| SIGTSTP | pause/suspend/resume an instance ||
-| SIGWINCH| wakeup a worker blocked in a syscall (internal use) ||
-| SIGFPE  | generate C traceback ||
-| SIGSEGV | generate C traceback ||
+Para máquinas Fedora/Red Hat:
 
-Note: there are better ways to manage your instances than signals, as an example the master-fifo is
-way more robust.
+```shell
+yum groupinstall "Development Tools"
+yum install python
+yum install python-devel
+```
 
-if you know the process is:
 
-    kill -SIGHUP <proc_id>
+## El "HOla, Mundo" de WSGI
 
-#### Reloading the server
+Creamos el fichero `foobar.py` (Puede llamarse como queramos, en realidad):
 
-When running with the master process mode, the uWSGI server can be gracefully restarted without
-closing the main sockets.
+```
+def application(env, start_response):
+    start_response('200 OK', [('Content-Type','text/html')])
+    return [b"Hello World"]
+```
 
-This functionality allows you patch/upgrade the uWSGI server without closing the connection with the
-web server and losing a single request.
+Podemos arranar ahora un servicio web. En este caso, `application` si que es un nombre
+_obligatorio_, ya que es el nombre del punto de entrada por defecto de uSWGI (Aunque se
+podría cambiar en la configuración).
 
-When you send the SIGHUP to the master process it will try to gracefully stop all the workers,
-waiting for the completion of any currently running requests.
 
-Then it closes all the eventually opened file descriptors not related to uWSGI.
+Podemos arrancar uWSGI para que empiece a servir nuestra aplicación, en este caso escuchando
+el el puerto `9090`:
 
-Lastly, it binary patches (using execve()) the uWSGI process image with a new one, inheriting all of
-the previous file descriptors.
+```shell
+uwsgi --http :9090 --wsgi-file foobar.py
+```
 
-The server will know that it is a reloaded instance and will skip all the sockets initialization,
-reusing the previous ones.
+## Añadiendo concurrencia y monitorización
 
-There are several ways to make uWSGI gracefully restart.
+Por defecto, uSWGI arranca un único proceso, y este usa un único _thread_. Podemos añadir
+más procesos con `--process` (y normalmente `--master`) y mas _threads_ con 
+`--threads`:
 
-    # using kill to send the signal
-    kill -HUP `cat /tmp/project-master.pid`
-    # or the convenience option --reload
-    uwsgi --reload /tmp/project-master.pid
-    # or if uwsgi was started with touch-reload=/tmp/somefile
-    touch /tmp/somefile
+```shell
+uwsgi --http :9090 --wsgi-file foobar.py --master --processes 4 --threads 2
+```
 
-Or from your application, in Python:
+Esto arrancara 4 procesos (Cada uno de ellos con dos _threads_), y un proceso _master_
+que rearrancara estos procesos en caso de caida de alguno de ellos).
 
-    uwsgi.reload()
+Otro aspecto importante es la monitorización, especialmente en producción.
+Se puede arrancar un subsistema que da estadisticas de uso en JSON con `--stats`:
 
-Or in Ruby,
+```shell
+uwsgi --http :9090 --wsgi-file foobar.py --master --processes 4 --threads 2 --stats 127.0.0.1:9191
+```
 
-    UWSGI.reload
+Una opción más avanzada es usar `Make some request to your app and then telnet to the port 9191, you’ll get lots of fun information. You may want to use [`uwsgitop`]() (Sólo hay que instalarlo con `pip`). (just pip install it), which is a top-like tool for monitoring instances.
 
-#### Stopping the server
 
-If you have the uWSGI process running in the foreground for some reason, you can just hit CTRL+C to kill it off.
-
-When dealing with background processes, you’ll need to use the master pidfile again. The SIGINT signal will kill uWSGI.
-
-kill -INT `cat /tmp/project-master.pid`
-# or for convenience...
-uwsgi --stop /tmp/project-master.pid
-The Master FIFO
-Starting from uWSGI 1.9.17, a new management system has been added using unix named pipes (fifo): The Master FIFO

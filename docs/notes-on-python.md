@@ -737,3 +737,77 @@ La función f ha sido llamada desde foo
 ```
 
 Esto puede ser de interés para funciones de traza, _logging_, etc.
+
+
+## Como instalar Python 3.12 en Ubuntu, Debian y Linux Mint
+
+Las instrucciones que siguen usan como base la subversión actual, que es la
+`3.12.4`, a fecha 3 de julio de 2024 (La `3.12.5` se espera para el 6 de agosto
+de 2024). En [esta página se puede consultar el calendario de versiones
+liberadas para la versión 3.12 de Python](https://peps.python.org/pep-0693/).
+Seguramente cuando leas esto haya una versión más avanzada, lo que significa que
+hay que cambiar todas las ordenes que hagan referencia a la versión `3.12.4` por
+la actual.
+
+Todos los cambios en las ramas `3.12.*` en principio son seguros de aplicar. Con
+el [esquema de numeración de versiones actual de
+Python](https://docs.python.org/es/3/faq/general.html#how-does-the-python-version-numbering-scheme-work),
+los cambios en la _microversión_ (Por ejemplo de `3.12.4` a `3.12.5`) son
+versiones de corrección de errores y no rompen código previo, así que en
+principio no debería haber problema en actualizar de _microversión_.
+
+Los siguientes pasos deberían funcionar:
+
+### Preparar el entorno:
+
+```shell
+sudo apt update
+sudo apt upgrade
+sudo apt install wget build-essential checkinstall
+sudo apt install libreadline-dev libncursesw5-dev libssl-dev
+sudo apt install libsqlite3-dev tk-dev libgdbm-dev libc6-dev
+sudo apt install libbz2-dev libffi-dev zlib1g-dev
+```
+
+### Obtener el código fuente de Python 3.12
+
+```shell
+cd /tmp
+wget https://www.python.org/ftp/python/3.12.4/Python-3.12.4.tar.xz 
+tar -xf Python-3.12.4.tar.xz
+cd Python-3.12.4
+```
+
+### Compilar e instalar la versión 3.12 (Como opcional)
+
+```shell
+./configure --enable-optimizations
+make -j $(nproc)
+sudo make altinstall
+```
+
+- El _flag_ `--enable-optimizations` ejecuta varios test para intentar optimizar el
+compilado, por lo que puede tardar un poco más de lo normal.
+
+- El parámetro `-j $(nproc)` agiliza el compilado indicando que use todos
+ los núcleos o _cores_ disponibes.
+
+- La orden `make altinstall` realiza una instalación alternativa, lo que
+  significa que el Python del sistema seguira siendo el original. Podemos
+  acceder al nuevo interprete usando `python3.12`
+
+Podemos verificar la instalacion con:
+
+```shell
+python3.12 --version
+```
+
+### Limpieza
+
+Podemos limpiar los ficheros que hemos descargado, así como todos los
+_artifacts_ creados por la compilación:
+
+```shell
+cd /tmp
+rm -r Python-3.12.4.tar.xz Python-3.12.4
+```
