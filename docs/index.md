@@ -1,6 +1,7 @@
 # Notes On Everything
 
 - [ANSI](notes-on-ansi.md)
+- [Ansible](notes-on-ansible.md)
 - [API](notes-on-api-design.md)
 - [Aws-lambdas](notes-on-aws-lambdas.md)
 - [Aws-S3](notes-on-aws-s3.md)
