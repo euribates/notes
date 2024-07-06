@@ -92,3 +92,185 @@ Las desventajas son:
 
 - Cada comando individual es una clase, que incremente la complejidad y
   dificulta la implementación y el mantenimiento.
+
+## El patrón Monada (_Monad_)
+
+El patrón **Mónada** o **_Monad_** es un patrón de diseño
+habitual en los lenguajes de programación funcionales
+que nos permite combinar varios cálculos u funciones un una única expresión,
+manteniendo a la vez una adecuada gestión de errores y [efectos
+secundarios](https://es.wikipedia.org/wiki/Efecto_secundario_(inform%C3%A1tica)).
+
+Para poder encadenarse, cada función debe, en teoría, devolver una nueva mónada
+que puede ser usada como una entrada para la siguiente función.
+
+### Typos de mónadas
+
+Se han definido diferentes tipos de mónadas, que son de uso común para
+representar diferentes tipos de cálculos o procesos. Algunos ejemplos son:
+
+- **`Maybe Monad`**: Representa una computación que puede, o no, devolver un
+valor. Se usa para gestionar condiciones de error o valores opcionales.
+
+- **`State Monad`**: Representa una computación que mantiene en estado interno, que se
+pasa de función a función. Se usa para modelar simulaciones y otros procesos
+que requieren tener en cuenta los cambios durante el tiempo.
+
+- **`Reader Monad`**: Representa una computación que tiene acceso a un entorno
+  o configuración compartida. Puede ser útil para parametrizar procesos
+  y hacerlos más reutilizables.
+
+- **`Writer Monad`**: Representa una computación, cálculo o proceso que genera una
+salida o que tiene un efecto secundario. Se utiliza para hacer _logging_,
+_debug_ y otros tipos de procesos de diagnóstico.
+
+- **`IO Monad`**:  Representa una computación, cálculo o proceso que realiza
+operaciones de entrada/salida, o otros tipo de efectos secundarios. Esto es
+útil para interacturar con sistemas externos, como bases de datos o servicios
+web.
+
+Cada mónada define su propio conjunto de operaciones que defines como las
+operaciones a efectuar pueden encadenarse juntas y como se pueden
+transformar o combinar los valores. En cualquier caso, todas las mónadas
+comparten la propiedad de ser **componibles** y **modulares**, lo que las
+convierte en herramientas muy potentes para construir cálculos y procesos
+complejos en un estilo de programación funcional.
+
+Fuentes: 
+
+- [Mastering Monad Design Patterns: Simplify Your Python Code and Boost Efficiency - DEV Community](https://dev.to/hamzzak/mastering-monad-design-patterns-simplify-your-python-code-and-boost-efficiency-kal)
+
+- [ArjanCodes | Python Functors and Monads: A Practical Guide](https://arjancodes.com/blog/python-functors-and-monads/)
+
+- [What the Heck Are Monads?! - YouTube](https://www.youtube.com/watch?v=Q0aVbqim5pE)
+## Cómo funciona la mónada `Maybe`
+
+Podemos implementar la mónada `Mayde` en Python usando clases y la sobrecarga de operadores.
+El siguiente código es un ejemplo de una implementación de `Maybe`, que recordemos que
+representa una computación que puede, o no, retornar un valor:
+
+```python
+class Maybe:
+
+    def __init__(self, value):
+        self._value = value
+
+    def bind(self, func):
+        if self._value is None:
+            return Maybe(None)
+        else:
+            return Maybe(func(self._value))
+
+    def orElse(self, default):
+        if self._value is None:
+            return Maybe(default)
+        else:
+            return self
+
+    def unwrap(self):
+        return self._value
+
+    def __or__(self, other):
+        return Maybe(self._value or other._value)
+
+    def __str__(self):
+        if self._value is None:
+            return 'Nothing'
+        else:
+            return f'Just {self._value!r}'
+
+    def __repr__(self):
+        return str(self)
+
+    def __eq__(self, other):
+        if isinstance(other, Maybe):
+            return self._value == other._value    
+        return False
+
+    def __ne__(self, other):
+        return not (self == other)
+
+    def __bool__(self):
+        return self._value is not None
+```
+
+Vaamos un ejemplo de uso:
+
+```python
+
+def add_one(x):
+    return x + 1
+
+def double(x):
+    return x * 2
+
+result = Maybe(3).bind(add_one).bind(double)
+print(result)  # Just 8
+
+result = Maybe(None).bind(add_one).bind(double)
+print(result)  # Nothing
+
+result = Maybe(None).bind(add_one).bind(double).orElse(10)
+print(result)  # Just 10
+
+result = Maybe(None) | Maybe(1)
+print(result) # Just 1
+```
+
+Obsérvese que las funciones que realizan la computación, `add_one`, `double`,
+funcionan **igual de bien con números que con mónadas**. Pero cuando usamos
+mónadas, obtenemos computaciones compuestas que pueden manejar condiciones
+de error y efectos secundarios.
+
+El método `bind` acepta una función como entrada y devuelve una nueva
+instancia de `Meybe`, que representa el resultado de aplicar la función 
+al valor original, si existe. El operador `|`se puede usar para combinar
+dos instancias de `Maybe`, devolviendo la primera si esta contiene un valor, y la
+segunda en caso contrario.
+
+Nótese que este patrón no es de uso frecuente en Python, ya que está normalmente más
+asociado a los funcionales funcionales puros, pero puede ser útil en el caso de
+tener que encadenar operaciones de una forma modular y reutilizable.
+
+## La mónada `State`
+
+La monada **`State`** nos permite encapsular un proceso con estados de una forma
+puramente funcional. Las funcionas aceptan una variable de estado inicial y devuelven
+una nueva variable de estado y un resultado. El estado se representa
+generalmente con una estructura de datos, y la función realiza operaciones que
+actualizan el estado segón lo necesite. Veamos una implementación en Python:
+
+La siguiente implementacíon utiliza las mónadas de estaod para realizr una
+operación que cuenta el número de veces que una función es invocada.
+
+```python
+class State:
+
+    def __init__(self, state):
+        self.state = state
+
+    def __call__(self, value):
+        return (self.state[1], State((self.state[0] + 1, value)))
+
+# create a stateful computation that counts the number of times it is called
+counter = State((0, 0))
+
+# call the computation multiple times and print the current count
+for i in range(5):
+    result, counter = counter(i)
+    print(f"Computation result: {result}, count: {counter.state[0]}") 
+
+#Computation result: 0, count: 1
+#Computation result: 0, count: 2
+#Computation result: 1, count: 3
+#Computation result: 2, count: 4
+#Computation result: 3, count: 5
+```
+
+Las ventajas de usar esta mónada en Python es incluir la capacidad de escribir
+funciones puras que encapsulan cálculos que implican estados, lo que clarifica y
+hace más mantenible el código. Como hemos separado el cálculo y modificaciones
+del estado del resto del código, podemos tener funciones más modulares y
+_testeables_, que también son, por ello, más fáciles de comprender.
+
+
