@@ -1761,3 +1761,59 @@ El segundo método es ahora mismo el recomendado.
 
 
 - [Documentaión de Django](https://docs.djangoproject.com/en/dev/topics/http/urls/#url-namespaces-and-included-urlconfs)
+
+## ¿Para qué sirve la clase AppConfig?
+
+Django mantien un **registro de aplicaciones instaladas**. En ese registro se
+almacena aspectos de la configuración de cada _app_. El registro se llama `apps`
+y vive en `django.apps`:
+
+```python
+from django.apps import apps
+print(apps.get_app_config('admin').verbose_name)
+```
+
+**No** existe en Django una clase `Aplicction` que reprsente la _app_
+en si, pero lo que más se parece serian los objetos que se almacenan
+en este repositorio, que son instancias (directa o indirectamente) de `AppConfig`.
+
+Para configurar una aplicación, tenemos que crear un fichero `apps.py`, y dentro
+del mismo definir una clase de `AppConfig` (La utilidad de línea `startapp` crea
+una automáticamente). Para cualquier entrada en `INSTALLED_APPS`, si es una
+especificación de ruta al estilo Python (Con puntos `.` en vez del separador de
+direcotorios), Django busca dentro de esa ruta el fichero `apps.py` y, sii lo
+encuentra, busca que haya una única clase derivada de `AppConfig`. Si encuentra
+una y solo una, se usa esa clase para configurar la aplicación. Si encuentra
+varias, Django buscara la que tenga la propiedad `default` a `True`. Si no se
+encuentra ninguna, se usará la clase base `AppConfig`.
+
+De forma alternativa, podemos tener en la lista `INSTALLED_APPS` directamente
+especificada la clase de configuracion. Por ejemplo:
+
+```python
+INSTALLED_APPS = [
+    ...
+    'polls.apps.PollsAppConfig',
+    ...
+]
+```
+
+Las características más interesantes que hay que definir en esta clase son:
+
+- El **identificador** de la _app_, que definiremos con el atributo `name`
+- El **nombre publido**, que definiremos con `verbose_name`.
+
+Por ejemplo, si tenemos el fichero `rock_n_roll/apps.py`:
+
+```
+# rock_n_roll/apps.py
+
+from django.apps import AppConfig
+
+class RockNRollConfig(AppConfig):
+    name = 'rock_n_roll'
+    verbose_name = "Rock ’n’ roll"
+```
+
+Cuando Django encuentre la etiqueta `rock_n_roll`, se usara como
+configuración la de esta clase.

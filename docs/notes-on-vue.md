@@ -18,7 +18,7 @@ Por ejemplo, para evitar interferir con las _tags_ de las plantillas de Django o
 Jinja2:
 
 ```javascript
-let app = new Vue.createApp({
+let app = Vue.createApp({
     delimiters: ['{%', '%}'],
     ...
 }
@@ -29,7 +29,7 @@ let app = new Vue.createApp({
 Hay que definir la propiedad `mounted` con la función que queramos
 
 ```javascript
-let app = new Vue.createApp({
+let app = Vue.createApp({
   ...
   mounted: function() {
     // props are exposed on `this`
