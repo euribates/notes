@@ -748,3 +748,21 @@ git config --global alias.st status
 ```
 
 Fuente: [Git - Git Aliases](https://git-scm.com/book/en/v2/Git-Basics-Git-Aliases)
+
+## Cómo retroceder HEAD a un _commit_ anterior
+
+Antes que nada, ¿Qué es `HEAD`? Es simplemente una referencia al _commit_
+actual (es decir, el último) en la rama actual. Solo puede haber **un `HEAD`**
+en un momento dado (Excluyendo `git worktree`). El contenido de `HEAD` se
+almacena en `.git/HEAD` y consiste en los 40 bytes del _hash_ del _commit_.
+
+¿Que significa _detached HEAD_? Que `HEAD` no está apuntando al último _commit-,
+sino a uno anterior en la historia.
+
+Si queremos configurar **a lo bruto** `HEAD` para que apunte a un commit
+específico:
+
+```shell
+git reset --hard <hash>
+```
+

@@ -1376,3 +1376,12 @@ Con el fichero abierto en un _buffer_ de Vim, hacer `set ff=unix` y luego salvar
 Fuente: 
 [Change DOS to Unix text file format in VIM - Today I Learned](https://til.hashrocket.com/posts/hu3jlszfrf-change-dos-to-unix-text-file-format-in-vim)
 
+## Cómo poner la línea actual en la parte superior/central/inferior de la pantalla
+
+- Con ++z+enter++ o `zt` ponemos la línea actual como la primera línea de la
+pantalla.
+
+- Con `z.` o `zz` ponemos la línea actual en el centro de la pantalla.
+
+- Con `z-` o `zb` ponemos la línea actual como la última línea de la pantalla.
+

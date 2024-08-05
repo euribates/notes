@@ -19,10 +19,13 @@ Jinja2:
 
 ```javascript
 let app = Vue.createApp({
-    delimiters: ['{%', '%}'],
+    delimiters: ['[[', ']]'],
     ...
 }
 ```
+
+Ahora los delimitadores para la 
+salida de valores son `[[` y `]]`.
 
 ## Cómo ejecutar una función nada más cargado Vue
 
@@ -122,4 +125,28 @@ Notas sobre este ejemplo:
 - POdemos ejecutar los **metodos** definidos en la clave `methods`, con la
   sintaxis `@event="<nombre del evento>"`. En el ejemplo mostrado:
   `@click="incrementCounter"`.
+
+
+## Como vincular un campo de un formulario con un valor de vue
+
+Se hace mediante la directiva `v-model`, asignándole el valor de la entrada
+que tenemos en Vue.
+
+```html
+<input v-model="counter">
+```
+
+También podríamos hacer el doble _binding_ a mano, usando `:value` e `@input`,
+como en el siguiente ejemplo:
+
+```html
+<input
+  :value="text"
+  @input="event => text = event.target.value">
+```
+
+Pero es más corto y legible la opción anterior:
+
+La directiva `v-model` puede ser usada con diferentes tipos ed entrada, como
+`input`, `textarea` y `select`.
 

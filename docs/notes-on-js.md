@@ -1,6 +1,13 @@
 ---
 title: Notes on javascript
+tags:
+    - js
+    - javascript
+    - html
+    - web
+    - development
 ---
+
 
 ## Obtener la posición del cursor en un control de tipo TextArea
 
@@ -174,3 +181,13 @@ parameter to label the group.
 ### console.trace()
 
 Outputs a stack trace.
+
+## Cómo copiar texto de una página web que lo haya deshabilitado con Javascript
+
+Abrir la consola del navegador con ++ctrl+shift+i++ y ejecutar:
+
+```js
+restrictCopyPasteByKeyboard = function () { return true; };
+```
+
+Fuente: [javascript - Enable copy and paste for a site that doesn&#39;t allow it - Stack Overflow](https://stackoverflow.com/questions/55315209/enable-copy-and-paste-for-a-site-that-doesnt-allow-it)
