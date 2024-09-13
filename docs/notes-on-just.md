@@ -1,5 +1,9 @@
 ---
 title: Notes on just
+labels:
+    - linux
+    - unix
+    - tools
 ---
 
 ## Qué es just
@@ -78,8 +82,8 @@ Algunas características intersantes:
 
 ### Cuál es la receta por defecto de just
 
-Si se invoca sin indicarle ninguna receta, just ejectua la primera de as
-recetas definnidas en el fichoro `justfile`. Lo ideal es que esta primera
+Si se invoca sin receta, just ejecuta la primera de las
+recetas definidas en el fichero `justfile`. Lo lógico es que esta primera
 receta sea la usada con más frecuencia, por ejemplo, ejecutar los tests.
 
 
@@ -98,4 +102,3 @@ Fuentes:
    _build_ o construcción, pero no tanto para un ejecutor de tareas, así que
    Just no incorpora estas comprobaciones, y por tanto no necesita la orden
    `$PHONY`, que en `Make` se usa para indicar objetivos que **no** son ficheros.
-
