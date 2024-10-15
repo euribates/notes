@@ -1819,7 +1819,7 @@ class RockNRollConfig(AppConfig):
 Cuando Django encuentre la etiqueta `rock_n_roll`, se usara como
 configuración la de esta clase.
 
-## How to Safely Pass Data to JavaScript in a Django Template
+## Cómo pasar datos de forma segura desde Django a Javascript
 
 Hay dos técnicas:
 
@@ -1827,7 +1827,7 @@ Hay dos técnicas:
 - Usar `json_script` para datos complejos
 
 La primera idea puede ser la de usar el propio sistema de plantillas de
-django, por ejemplo, haciendo:
+Django, por ejemplo, haciendo:
 
 ```html
 {# DON’T DO THIS #}
@@ -1847,7 +1847,7 @@ salida en la plantilla sería:
 ```
 
 Otro peligro relacionado con esto sería la posibilidad de [inyección de código](https://es.wikipedia.org/wiki/Inyecci%C3%B3n_de_c%C3%B3digo), especialmente si se usan [plantillas
-literal de javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals). En el siguiente ejemplo:
+literales de javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals). En el siguiente ejemplo:
 
 ```html
 {# DON’T DO THIS #}
@@ -1874,14 +1874,15 @@ Entonces la salida final sería:
 ```
 
 El sistema de plantillas de Django está pensado para escapar Html, no para
-Javascript, que tiene un sintaxis mucho más compleja.
+_Javascript_, que tiene un sintaxis mucho más compleja.
 
 Descartado esto, veamos pues las dos opciones que tenemos:
 
 ### Usar atributos de datos en etiquetas Html
 
 Para datos simple, se pueden usar [atributos de
-datos](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes), que son atributos genéricos cuyo nombre empiece por `data-`. Por ejemplo:
+datos](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes),
+que son atributos genéricos cuyo nombre empiece por `data-`. Por ejemplo:
 
 ```html
 <script data-username="{{ username }}">
@@ -1934,43 +1935,67 @@ No hay límite al numero de atributos de datos que podemos pasarle a un _script_
         ></script>
 ```
 
-Pero esto puede ser al final complicado si tenemois que pasar muchos datos, o 
-muy complicados. Eso no s lleva a la segunda solución.
+Pero esto puede ser complicado si tenemos muchos datos, o 
+muy complicados. Eso nos lleva a la segunda solución.
 
 ### Usar `json_script` para valores complejos
 
-Podemos pasar valores más complicados, como listas o diccionarios, con el
-_tag_ de django `json_script`. Supongamos que tenemos que pasar el valor:
+Podemos pasar valores más complicados (como listas, diccionarios y, en
+general, cualquier cosa que se pueda representar en json) con el
+_tag_ de django `json_script`.
+
+Supongamos que tenemos que pasar el valor:
 
 ```python
-follower_chart = [
-    {"date": "2022-10-05", "count": 11},
-    {"date": "2022-10-06", "count": 12},
-]
+saludos = {'hello': 'world'}
 ```
 
-Podemos pasar este valor a través del filtro `json_script`:
+Para dejar estos datos accesibles desde _javascript_ 
+los pasaríamos a través del filtro `json_script`. La vista, obviamente,
+necesita los datos en el contexto:
+
+```python
+def vista_que_necesita_los_datos(request):
+    saludos = {'hello': 'world'}
+    return render(request, 'plantilla.html', {
+      'saludos': saludos,
+      })
+```
+
+Y en la plantilla, en este ejemplo `plantilla.html`, haríamos:
 
 ```html
 {% load static %}
-
-<script src="{% static 'follower-chart.js' %}" defer></script>
-{{ follower_chart|json_script }}
+...
+{{ saludos|json_script }}
 ```
 
-La salida de la plantilla sería algo como esto:
+Esto provoca que la salida de la plantilla sea:
 
 ```js
-<script src="/static/follower-chart.js" defer></script>
-<script type="application/json">[{"date": "2022-10-05", "count": 11}, {"date": "2022-10-06", "count": 12}]</script>
+<script id="saludos" type="application/json">{"hello": "world"}</script>
 ```
 
-El _script_ puede ahora leer esos datos usando `nextElementSibling` y `document.currentScript`, y parsear esos datos usando `JSON.parse()`:
+El _script_ puede ahora _parsear_ y obtener esos datos en _javascript_
+usando `JSON.parse()`:
 
+```js
+...
+const saludos = JSON.parse(document.getElementById('saludos').textContent);
+console.log('saludos:', saludos);
 ```
-const data = JSON.parse(
-  document.currentScript.nextElementSibling.textContent
-);
+
+Por seguridad ante [ataques de tipo XSS (_Cross-site
+scripting_)](https://es.wikipedia.org/wiki/Cross-site_scripting), los
+caracteres `<`, `>` y `&` se escaparán. Por ejemplo, si los datos
+fueran:
+
+```python
+saludos = {'hello': 'world</script>&amp;'}
 ```
 
+La salida sería:
 
+```html
+<script id="saludos" type="application/json">{"hello": "world\\u003C/script\\u003E\\u0026amp;"}</script>
+```
