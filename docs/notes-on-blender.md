@@ -7,11 +7,11 @@ tags:
 
 ## Introducción a Blender
 
-Blender es un programa informático multiplataforma, dedicado especialmente al
-modelado, iluminación, renderizado, la animación y creación de gráficos
-tridimensionales. También de composición digital utilizando la técnica procesal
-de nodos, edición de vídeo, escultura (incluye topología dinámica) y pintura
-digital. 
+*Blender* es un programa informático multiplataforma, dedicado
+especialmente al modelado, iluminación, renderizado, la animación y
+creación de gráficos tridimensionales. También de composición digital
+utilizando la técnica procesal de nodos, edición de vídeo, escultura
+(incluye topología dinámica) y pintura digital. 
 
 
 ## Ajustes iniciales para desarrollar con Blender/Python
@@ -41,14 +41,15 @@ Blender incorpora varios _scripts_ útiles para aprender:
 
 ## Como ejecutar código Python en Blender
 
-Las dos formas máß habituales son o usar el editor incorporado, o mediante la
-consola. Las dos son tpos de ventanas que podemos seleccionar en cualquier
-espacio de BLender (Hay una configuración predeterminada para desarrollo
-con estas ventanas ya activas en el _workspace_ `Scripting`.
+Las dos formas más habituales son o usar el editor incorporado, o
+mediante la consola. Las dos son tipos de ventanas que podemos
+seleccionar en cualquier espacio de Blender (Hay una configuración
+predeterminada para desarrollo con estas ventanas ya activas en el
+_workspace_ `Scripting`.
 
 En el editor de texto podemos cargar ficheros `.py` o pegar el código
-desde el portapapeles. La consola se usa más normalemente para pequeñas 
-pruebas o para cunsultar la documentación.
+desde el porta papeles. La consola se usa habitualmente para pequeñas
+pruebas o para consultar la documentación.
 
 Otra forma posible es al invocar a Blender desde la línea de comandos.
 
@@ -56,13 +57,14 @@ Otra forma posible es al invocar a Blender desde la línea de comandos.
 
 ### Acceso a datos
 
-Se puede acceder desde Python a cualquier cosa que se pueda hacer con un botón
-en Blender. El acceso a los datos de la escena actual se realiza con el módulo
-`bpy.data`. Algunos ejemplos:
+Se puede acceder desde Python a cualquier cosa que se pueda hacer con un
+botón en Blender. El acceso a los datos de la escena actual se realiza
+con el módulo `bpy.data`. Algunos ejemplos:
 
-En `bpy.data.objects` tenemos una colección de todos los objetos definidos en la
-escena. Si estamos en la escena inicial que carga Blender por defecto,
-tendremos tres objetos: El cubo, la cámara y una luz.
+En `bpy.data.objects` tenemos una colección de todos los objetos
+definidos en la escena. Si estamos en la escena inicial que carga
+Blender por defecto, tendremos tres objetos: El cubo, la cámara y una
+luz.
 
 ```python
 >>> bpy.data.objects[0]
@@ -76,7 +78,7 @@ bpy.data.objects['Light']
 ```
 
 En `bpy.data.scenes`, tenemos una colección de escenas. Si acabamos de arrancar
-Blender, lo normal es que solo tengamos una escena, que será, logicamente, la
+Blender, lo normal es que solo tengamos una escena, que será, lógicamente, la
 activa.
 
 ```python
@@ -87,28 +89,32 @@ activa.
 ```
 
 En `bpy.data.materials` tenemos todos los materiales definidos en la escena.
-bpy.data.materials
-<bpy_collection[1], BlendDataMaterials>
 
+```python
+>>> bpy.data.materials
+<bpy_collection[1], BlendDataMaterials>
+```
 
 ## Cómo hacer niebla dinámica usando un _Volumetric Cube_
 
-tldr: The scene is covered by a large Volumetric Cube, we change density inside
-different parts of cube using a texture, this makes it looks like fog and
-finally we use those parameters to animate it.
+Tldr: Se cubre la escena con un cubo lo suficientemente grande como para
+contenerla en su totalidad, cambiamos la densidad dentro del cubo
+usando una textura, para que no sea una densidad uniforme. Esto hace que
+parezca una niebla. Luego, ajustando los parámetros, podemos hacer que
+se mueva.
 
-1. **Adding a Volume**
+1. **Añadimos el cubo**
 
-Add a Cube by clicking `Add` > `Mesh` > `Cube`.
+Añadimos el cubo con `Add` > `Mesh` > `Cube`. Incrementamos su tamaño
+para que abarque toda la escena, cambiando su escala, por ejemplo.
 
-Increase the size of the Cube so that it covers the scene. The cube can be
-resized using the Scale tool on the toolbar.
+En principio el cubo no nos dejará ver la escena, podemos pulsar
+++alt+z++ (Activar transparencia),
 
-Pulsa `Alt` + `Z` para poder ver a traves del _mesh_
-
-Switch to the Shading tab for the Ribbon. This tab has two windows, one is 3D
-viewport, which is the workspace and the other is Shader Editor, it is used to
-apply materials and textures onto a model.
+Cambia la pantalla de _3d Viewport_ a _Shading_. Esta pantalla tiene dos
+ventanas, una es una vista de presentación 3D, como en el espacio de
+trabajo normal, y la otra es el _shader editor_, que se usa para aplicar
+texturas y materiales a un modelo.
 
 Selecciona el cubo y añade y un nuevo material. Normalmente este material
 sera de tipo superficial _surface_, y necesitamos que sea volumétrico. Borramos
@@ -119,7 +125,11 @@ pulsando `Add` > `Shader` > `Principled Volume`. Conectamos el nuevo nodo
 Si activamos ahora la vista _Rendered_ deberiamos poder ver el efecto en forma
 de una niebla muy densa.
 
-2. **Changing Density using texture to make the Volume look like fog**
+2. **Cambiamos la densidad para que no sea uniforma (Añadir ruido)**
+
+Para cambiar la densidad de nuestra niebla, añadiremos una textura
+dinámica, y controlaremos la densidad que queremos usando un nodo
+`ColorRamp`.
 
 We want the scene to have a fog like effect, to do this, we are going to have
 some parts of the volume have higher density than the others. This can be done
@@ -242,39 +252,43 @@ manipulatable objects?](https://blender.stackexchange.com/questions/109/how-can-
 
 
 ## Cómo poner el cursor en el centro de masas de un objeto en Blender
+ 
+En modo edición, seleccionar todas las caras. Pulsar ++shitft+s++ y seleccionar
+_cursor to selected_, esto pondrá el cursor en el centro de masas
+de todas las caras selecionadas.
 
-In Edit Mode, select all the faces. Press `Shift-S` and select "cursor
-to selected", that will put the cursor at the center of the
-selected faces.
+Otra forma, más sencilla:
 
-1.  Switch to Object mode ++tab++
-
-2.  Select Object -> Transform -> Origin to 3D cursor (or ++ctrl+shift+alt+c++).
-
-Another, simplier form:
-
-All you have to do is ++shift+s++ then ++u++. This will work in object mode
-and edit mode.
+Pulsar ++shift+s++ y luego ++u++. Esto funciona tanto en mode objeto como enmodo
+edición.
 
 Source: [Blender manual: 3D Cursor](https://docs.blender.org/manual/en/dev/editors/3dview/3d_cursor.html?highlight=cursor#using-the-snap-menu)
+
+## Cómo poner el cursor en un vértice
+
+En modo de edición, seleccionar el vértice y pulsar ++shift+s++. Seleccionar
+_Cursor to selected_.
+
+Fuente: [How to move 3D cursor in Blender – And other tricks! iMeshh](https://blog.imeshh.com/index.php/2022/08/15/how-to-move-3d-cursor-in-blender-and-other-tricks/)
 
 
 ## Cómo hacer que la camara de Blender se oriente hacia un objeto
 
-To point the camera towards an object, you can select the camera, add a **Track
-To** constraint to it (constraints can be added in the Constraints tab), choose
-the object in the Target field, `-Z` in the To field, and `Y` in the Up field.
+Para forzar a una cámara a seguir un objeto, selecciona la cámara y
+añade un _constraint_ de tipo _Track to_. Selecciona el objeto en el
+campo _Target_, `-Z` en el campo _Field_, e `Y` en el campo _Up_.
 
-The camera will now always point at the object no matter where it (the camera
-or object) is moved to. This way isn't very efficient however and it is much
-better to point the camera towards an empty and then position the empty
-wherever the point of interest lies.
+La cámara ahora apuntará al objeto en todo momento, ya sea que se mueva
+el objeto, la cámara o ambos.
+
+Por eficiencia computacional, es recomendable hacer que la cámara apunte
+a un _empty_, y usar este para guiar la cámara.
 
 
-## Cómo resetear los atributos de rotación, escala y translación de un objeto
+## Cómo resetear la rotación, escala y/o translación de un objeto
 
-Con el objeto seleccionado, pulsar ++ctrl+a++ y elegir la opción adecuada
-en el menú.
+Con el objeto seleccionado, pulsar ++ctrl+a++ y elegir la opción
+adecuada en el menú.
 
 The simplest ways to do this are to either rotate the mesh in Edit Mode or to
 rotate it in Object mode and then applying the rotation.
@@ -290,7 +304,7 @@ thus not the origin, and then resseting the origin's rotation.
 Source:
 <https://blender.stackexchange.com/questions/33905/how-can-i-zero-an-objects-orientation-in-blender>
 
-## Cómo usar la vista activa para definir la vista de la camara
+## Cómo usar la vista activa para definir la vista de la cámara
 
 tldr: ++ctrl+alt+0++
 
@@ -341,11 +355,17 @@ This values are a good example:
 
 ![Ajustes de blender para fondo de estrellas](./blender/blender-noise.png)
 
-## How to Set Unit Measurements in Blender
 
-To change the units of measurement for a Blender scene, go to Scene Properties.
-Expand the “units” tab and choose the unit system at the top. Then change
-specific settings for Rotation, Length, Mass, Time and Temperature. 
+## Cómo cambiar las unidades del sistema de medidas de Blander
+
+Hay que ir a _Scene Properties_, expandir la sección etiquetada _units_
+y seleccionar el sistema el sistema de medidas que queramos. Por defecto
+es el sistema métrico y la unidad en Blender equivale a un metro.
+
+También podemos definir la unidad de medidas de rotación (Grados por
+defecto), la unidad de masa (kilogramo), tiempo (Segundos) y
+temperaturas (Grados Kelvin).
+
 
 ## Atajos de teclado de Blender
 
@@ -357,7 +377,26 @@ specific settings for Rotation, Length, Mass, Time and Temperature.
 
 - ++x++ Borrar
 
+- ++ctrl+space++ : ampliar panel actual / volver a panel normal
+
+### Cambiar la vista en el _viewport_
+
+- ++1++ : vista frontal
+- ++3++ : vista lateral
+- ++7++ : vista superior
+- ++ctrl+7++ teclado numérico → Vista inferior
+- ++ctrl+1++ teclado numérico → Vista trasera
+- ++ctrl+3++ teclado numérico → Vista izquierda
+
+- ++0++ : vista de cámara
+- ++5++ : cambiar de perspectiva/ortográfica
+- ++shift+f++ : navegación vuelo/a pie
+- ++alt+F++ : vista del cursor
+
+
 ### Mover el objeto seleccionado
+
+La tecla clave es `G`, de _grab_.
 
 - ++g++ Mover el objeto libremente
 - ++g++ y ++x++ Mover en el eje $x$
@@ -428,3 +467,27 @@ En la vista 3D:
 - ++shift+middle-button++ y movimiento: Desplazamiento lateral o vertical
 - Mouse wheel -> zoom
 - ++ctrl++ y mouse arriba o abajo: zoom
+
+
+### Operaciones en modo edición
+
+++k++ : cuchillo (_knife_)
+++f++ : crear cara y/o arista
+++alt+m++ : fusionar vértices (_merge_)
+++alt+s++ : encoger / ensanchar (cambiar volumen de la malla)
+++y++ : dividir selección
+++v++ : recortar selección
+++p++ : separar selección de objeto
+++ctrl+m++ : reflejar
+++w++ : menú de acciones especiales
+++ctrl+e++ : menú de edición de aristas (_edges_)
+++ctrl+f++ : menú de edición de caras
+++ctrl+v++ : menú de edición de vértices
+++ctrl+n++ : recalcular normales
+++delete++ o ++x++ : menú de borrado
+++u++ : desenvolver (unwrap)
+
+
+Fuentes:
+
+-  [140 shortcuts esenciales de Blender 3D | Domestika](https://www.domestika.org/es/blog/7434-140-shortcuts-esenciales-de-blender-3d)

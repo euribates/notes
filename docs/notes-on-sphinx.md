@@ -185,43 +185,79 @@ autor del
 - Dos ejemplos de marcado: Énfasis fuerte (normálmente con negritas) usando `**`
   y énfasis normal (normalmente itálicas) con `*`. 
 
+## Qué es un rol
+
+Un **rol** es un mecanismo que proporciona |RST| para poder ser extendido, igual
+que las directivas. En el caso de rol, estaríamos trabajando a nivel de elemento
+en línea. Normalmente se ejecutan como:
+
+```
+:rolename:`content`
+```
+
+Por ejemplo, para incluir un fragmento de texto en línea que queremos en formato
+de código usaremos el rol `code`:
+
+```
+Si queremos incrementas la variable :code:`a`, haremos :code:`a = a + 1`.
+```
+
+Existen múltiples roles predefinidos ya en Sphinx, como `math` para incluir
+expresiones matemáticas, `abbr` para abrebiaturas
 
 ## Qué es una directiva
 
-Las directivas son una forma muy potente de ampliar las posibilidades de ReEstructuredText.
-El sistema define un conjunto de varias directivas predefinidas, y este conjunto puede ser
-ampliado con directivas de terceras partes.
+Un **rol** es un mecanismo que proporciona |RST| para poder ser extendido, igual
+que los roles. En el caso de la directiva, estaríamos trabajando a nivel de bloque.
 
-Las directivas pueden aceptar argumentos y/o tener opciones. y/o contenidos.
-Un ejemplo de directiva es `.. toctree`, que se genera en la pagina de `index.rst` por
-defecto al crear el proyectp. Todas las directivas se ejecutan escribiendo antes los dos
-puntos (No el caracter `:`, sino dos veces el caracter `.`)
+Las directivas son la forma mas potente de ampliar las posibilidades de
+ReEstructuredText. El sistema define un conjunto de varias directivas
+predefinidas, y este conjunto puede ser ampliado con directivas de terceras
+partes.
 
-Cada directiva define los argumentos que acepta (Puede no aceptar ninguno). En caso de que
-se definan estos argumentos, deben especificarse después del nombre de la directiva. Las
-opciones vendrían en la o las líneas a continuación, en forma de "lista de campos" o cadenas
-con la forma `<nombre>: <valor>`. Por ejemplo, `maxtree` es un ejemplo de opción para la
-directiva `toctree`.
+Las características principales de las directivas son:
 
-Después de las opciones, tiene que venir una línea en blanco y luego, opcionalmente, el
-contenido. No todas las directivas tienen que aceptar un contenido, pero si este es el caso,
-el contendo tiene que estar indentado en el mismo nivel que las opciones
+ - Tiene un _nombre único_
 
+ - Pueden (o no) aceptar _argumentos_ 
 
-Esta seria la forma general:
+ - Tener (o no) _opciones_
+
+ - Tener (o no) _contenidos_
+
+Un ejemplo de directiva es `toctree`, que se genera en la pagina de
+`index.rst` por defecto al crear el proyecto. Todas las directivas se ejecutan
+escribiendo antes dos puntos (No el caracter `:`, sino dos veces el caracter
+`.`), seguidos de dos veces el caracter _dos puntos_. Suena más confuso de lo
+que es; si quieremos ejecutar `toctree`, escribimos:
 
 ```
-.. <directiva> [<opcion 1> <opcion 2>...]
-    opcion1: valor1
-    opcion2: valor 2
-    ...
+.. toctree::
+```
+
+Cada directiva define los argumentos que acepta (Puede no aceptar ninguno). En
+caso de que se definan estos argumentos, deben especificarse después del nombre
+de la directiva. Las opciones vendrían en la o las líneas a continuación, en
+forma de "lista de campos" o cadenas con la forma `:<nombre>: <valor>`. Por
+ejemplo, `maxtree` es un ejemplo de opción para la directiva `toctree`.
+
+Después de las opciones, tiene que venir una línea en blanco y luego,
+opcionalmente, el contenido. No todas las directivas tienen que aceptar un
+contenido, pero si este es el caso, el contenido **tiene que estar indentado en el
+mismo nivel que las opciones**. Esta seria la forma general:
+
+```
+.. <directiva>:: [<argumento 1> <argumento 2>...]
+    :opcion1: valor1
+    :opcion2: valor 2
+    
     <contenido>
+```
 
 ## Cómo añadir contenido a la documentación.
 
-Debemos especifica los ficheros a incluir como
-parte del contenido de la directiva `tocfree`. El siguiente
-ejemplo añade dos ficheros:
+Debemos especifica los ficheros a incluir como parte del contenido de la
+directiva `tocfree`. El siguiente ejemplo añade dos ficheros:
 
 ```
 .. toctree::
@@ -232,41 +268,148 @@ ejemplo añade dos ficheros:
    ...
 ```
 
-De esta forma `toctree` aprende no solo donde están los contenidos, sino el orden
-en que deben ser presentados y la estructura jerárquica de los mismos.
+De esta forma `toctree` aprende no solo donde están los contenidos, sino el
+orden en que deben ser presentados y la estructura jerárquica de los mismos. No
+es necesario normalmente especificar la extensión del archivo, se buscara el
+ficheros con extensiones como `.rst` o `.md`.
 
-## Como crear un glosario
+## Como crear un glosario en Sphinx
 
-Usaremos el rol
+Crearemos un fichero `glosario.rst`, por ejemplos. Lo incluimos en algun
+`toctree` para que Sphinx lo integre en la documentación. Dentro de este fichero
+usaremos la directiva `glossary`. El contenido de esta directiva debe ser una
+lista de definiciones en formato ResetructuredText, como en el siguiente
+ejemplo:
 
+```
+.. glossary::
+   :sorted:
 
-Markdown
+   Bulbasaur
 
-Markdown is a lightweight markup language with a simplistic plain text formatting syntax. It exists in many syntactically different flavors. To support Markdown-based documentation, Sphinx can use MyST-Parser. MyST-Parser is a Docutils bridge to markdown-it-py, a Python package for parsing the CommonMark Markdown flavor.
-Configuration
+      **Bulbasaur** es un pokémon de tipo planta y veneno introducido en la
+      primera generación. Es uno de los Pokémon iniciales que pueden seleccionar
+      los jugadores al comenzar su aventura en la región de Kanto
 
-To configure your Sphinx project for Markdown support, proceed as follows:
+   Charizard
 
-    Install the Markdown parser MyST-Parser:
+      **Charizard** es un Pokémon de tipo fuego/volador. Es la tercera y última
+      etapa de Charmander. Es uno de los Pokémon más conocidos. Aparece por
+      primera vez en Pokémon Red y Blue.
 
+   ...
+```
+    
+ 
+
+## Cómo usar Markdown en Sphinx
+
+Para poder usar MarkDown, Sphinx utiliza una extensión de terceros llamada
+[**MyST-Parser**](https://myst-parser.readthedocs.io/en/latest/). MyST-Parser es
+un puente (_bridge_) hacia `markdown-it-py`, un paquete Python package para
+parsear la variante de Markdown conocica como `CommonMark Markdown`. MyST-Parser
+requiere Sphinx 2.1 o superior.
+
+Para configurar un proyecto Sphinx para que pueda usar esta variante de
+MarkDown, los pasos a seguir son:
+
+- Instala el parser `MyST-Parser`:
+
+    ```
     pip install --upgrade myst-parser
+    ```
 
-    Add myst_parser to the list of configured extensions:
+- Ańadelo a la lista de extensiones:
 
+    ```python
     extensions = ['myst_parser']
+    ```
+   
+Si se quiere usar ficheros Markdown pero con extensiones diferentes a `.md`,
+debemos incluir esas extensiones en la variable `source_suffix`. El siguiente
+ejemplo configura Sphinx para que procese como MarkDown los ficheros con
+extensiones tanto `.md` como `.txt`:
 
-    Note
-
-    MyST-Parser requires Sphinx 2.1 or newer.
-
-    If you want to use Markdown files with extensions other than .md, adjust the source_suffix variable. The following example configures Sphinx to parse all files with the extensions .md and .txt as Markdown:
-
+```python
     source_suffix = {
         '.rst': 'restructuredtext',
         '.txt': 'markdown',
         '.md': 'markdown',
     }
+```
 
-    You can further configure MyST-Parser to allow custom syntax that standard CommonMark doesn’t support. Read more in the MyST-Parser documentation.
+Se puede configurar `MyST-Parser` para permitir sintaxis personalizada que en
+principio CommonMark no soportaría. Hay más información en la documentación del
+paquete.
+
+## Cómo poner notas a pie de página con Sphinx
+
+Para las notas a pie de página, hay que usar `[#]_` para marcar la ubicación de
+la llamada a la nota, y luego, al final del documento, añadimos una directiva
+`rubric`, como en en siguiente ejemplo:
+
+```
+    Porque patatín [#]_ ... y patatán  [#]_ ...
+
+    .. rubric:: Notas
+
+    .. [#] Texto de la primera nota.
+    .. [#] Texto de la segunda nota.
+
+```
+
+## Ańadir enlaces en Sphinx
+
+Se puede incluir enlaces a localizaciones dentro del mismo documento, a otras
+localizaciones en otro documento, o a sitios web externos
+
+### Enlaces a secciones dentro del mismo documento
+
+Se puede enlazar a cualquier encabezado del documento usando el comand `:ref:`,
+usando el propio texto de la cabecera como parámetro, como en el siguiente
+ejemplo:
+
+```
+:ref:`Cross-References to Locations in the Same Document`
+````
+
+Para esto tenemos que tener habilitada la extensión
+`sphinx.ext.autosectionlabel`.
+
+Si no queremos usar las secciones, podemos enlazar a cualquier parte del
+documentos usando una referencia manual:
+
+```
+    Bla bla ... Bla.
+
+    .. _Quiero referenciar aquí
+
+    Ble ble ... ble.
+
+    Para incluir un enlace a la referencia usando  :ref:`Quiero referenciar aquí`
+```
+
+### Enlaces a páginas externas
+
+Para enlazar a una URL externa, podemos usar esta sintaxis:
+
+```
+`Link text <link URL>`_
+```
+
+Por ejemplo:
+
+`Python <http://python.org/>`_
+
+También podemos separar en dos el texto del enlace y la definición de la URL destino:
+
+```
+Aprende e programar en `Python`_.
+
+.. _Python: http://python.org/
+
+
+
+
 
 

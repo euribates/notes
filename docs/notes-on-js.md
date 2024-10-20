@@ -191,3 +191,15 @@ restrictCopyPasteByKeyboard = function () { return true; };
 ```
 
 Fuente: [javascript - Enable copy and paste for a site that doesn&#39;t allow it - Stack Overflow](https://stackoverflow.com/questions/55315209/enable-copy-and-paste-for-a-site-that-doesnt-allow-it)
+
+## Cómo reactivar el menu derecho del ratón
+
+Usa el siguiente cófigp JavaScript
+en la consola del navegador
+
+```js
+document.addEventListener('contextmenu', event => event. stopPropagation(), true);
+```
+
+Fuente: 
+[javascript - How to re-enable right click so that I can inspect HTML elements in Chrome? - Stack Overflow](https://stackoverflow.com/questions/21335136/how-to-re-enable-right-click-so-that-i-can-inspect-html-elements-in-chrome)

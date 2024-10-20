@@ -811,3 +811,28 @@ _artifacts_ creados por la compilación:
 cd /tmp
 rm -r Python-3.12.4.tar.xz Python-3.12.4
 ```
+
+## Cómo deshabilitar determinados mensajes en pylint
+
+Desde la versión 0.25.3, se pueden usar nombres simbólicos paraq referirnos
+a determinados mensajes, n vez de tener que usar los códigos numéricos. Por
+ejemplo:
+
+```
+# pylint: disable=locally-disabled, multiple-statements, fixme, line-too-long
+```
+
+Para no tener que especificarlo en cada invocación,
+podemos poner una entrada
+en el fichero `.pylintrc` o `~/.pylintrc`
+con el nombre `disable`
+en una sección que se llame `[MESSAGES CONTROL]`,
+por ejemplo:
+
+```
+# .lintrc
+
+[MESSAGES CONTROL]
+
+disable=locally-disabled, multiple-statements
+```
