@@ -7,24 +7,26 @@ tags:
 
 ## Sobre Sphinx
 
-**Sphinx** es una conunto de utilidades/libreria para crear documentación atractiva.
+**Sphinx** es una conunto de utilidades/libreria para crear
+documentación atractiva. Algunas de sus características más interesantes
+son:
 
-Algunas de sus características más interesantes son:
+- Múltiples formatos de salida: Html, Latex/Pdf, ePub, Texinfo, manual
+  pages o texto plano.
 
-- Formatos de salida: Html, Latex/Pdf, ePub, Texinfo, manual pages o texto plano.
+- Referencias cruzadas, enlaces automáticos a funciones, clases,
+  glosario de términos, etc.
 
-- Referencias cruzadas, enlaces automáticos a funciones, clases, glosario de términos, etc.
-
-- Estructura jerárquica. Documentación en forma de árbol con enlaces automáticos a
-  páginas hermas, padres e hijos.
+- Estructura jerárquica. Documentación en forma de árbol con enlaces
+  automáticos a páginas hermanas, padres e hijos.
 
 - Índices automáticos
 
 - Coloreado sintáctico del código, usando [Pygments](https://pygments.org/)
 
-- Extensiones: Testeo  automárico de fragmentos de código, inclusion de las _docstrings_
-  en el caso de Python, y muchas atras extensiones de terceros. La mayoría de las
-  extensiones se pueden instalar con `pip`.
+- Extensiones: Testeoautomático de fragmentos de código, inclusión de
+  las _docstrings_ en el caso de Python, y muchas otras extensiones de
+  terceros. La mayoría de las extensiones se pueden instalar con `pip`.
 
 
 Sphinx usa por defecto [reStructuredText markup
@@ -275,11 +277,12 @@ ficheros con extensiones como `.rst` o `.md`.
 
 ## Como crear un glosario en Sphinx
 
-Crearemos un fichero `glosario.rst`, por ejemplos. Lo incluimos en algun
-`toctree` para que Sphinx lo integre en la documentación. Dentro de este fichero
-usaremos la directiva `glossary`. El contenido de esta directiva debe ser una
-lista de definiciones en formato ResetructuredText, como en el siguiente
-ejemplo:
+Crearemos un fichero `glosario.rst`, por ejemplo (Puede ser el nombre
+que queramo, pero el habitual es este). Lo incluimos en algún `toctree`
+para que Sphinx lo integre en la documentación. Dentro de este fichero
+usaremos la directiva `glossary`. El contenido de esta directiva debe
+ser una lista de definiciones en formato RestructuredText, como en el
+siguiente ejemplo:
 
 ```
 .. glossary::
@@ -299,16 +302,32 @@ ejemplo:
 
    ...
 ```
-    
- 
+   
+Después, para referenciar el glosario, en cualquier documento
+que lo necesitemos, solo hay que usar el rol `term`:
+
+```
+El pokemon más carismático es sin duda :term:`Charizard`, conn sus
+grandes alas y su aliento de fuego. Cuando se enfurece de verdad, la
+llama de la punta de su cola se vuelve de color azul claro.
+```
+
 
 ## Cómo usar Markdown en Sphinx
 
-Para poder usar MarkDown, Sphinx utiliza una extensión de terceros llamada
-[**MyST-Parser**](https://myst-parser.readthedocs.io/en/latest/). MyST-Parser es
-un puente (_bridge_) hacia `markdown-it-py`, un paquete Python package para
-parsear la variante de Markdown conocica como `CommonMark Markdown`. MyST-Parser
-requiere Sphinx 2.1 o superior.
+Para poder usar MarkDown, Sphinx utiliza una extensión de terceros
+llamada
+[**MyST-Parser**](https://myst-parser.readthedocs.io/en/latest/).
+
+[myST](https://myst-parser.readthedocs.io/en/latest/intro.html) es una
+combinación de las sintaxiz de MarkDown y rST. Es una opción muy
+interesante si se está familiarizado con MarkDown, ya que ofrece la
+sencillez de uso de este con la potencia de rST.
+
+MyST-Parser es un puente (_bridge_) hacia `markdown-it-py`, un paquete
+Python para parsear la variante de Markdown conocida como `CommonMark
+Markdown` (MyST es un superconjunto de _CommonMArk Markdown_).
+MyST-Parser requiere Sphinx 2.1 o superior.  .
 
 Para configurar un proyecto Sphinx para que pueda usar esta variante de
 MarkDown, los pasos a seguir son:
