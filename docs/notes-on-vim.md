@@ -1385,3 +1385,16 @@ pantalla.
 
 - Con `z-` o `zb` ponemos la línea actual como la última línea de la pantalla.
 
+## Cómo hacer que Vim carge automáticamente el tichero tags
+
+Añadir la siguiente linea al fichero  `~/.vimrc`:
+
+```
+set tags=./tags;,tags;
+```
+
+Significa: Busca el fichero `tags` en el directorio del fichero actual, luego
+asciende por la ruta hasta el directorio de trabajo, luego sigue hasta el
+directorio raíz.
+
+Fuente: [vim - How do I automatically load a tag file from a directory when changing to that directory? - Stack Overflow](https://stackoverflow.com/questions/19330843/)
