@@ -7,7 +7,7 @@ tags:
 
 ## Sobre Sphinx
 
-**Sphinx** es una conunto de utilidades/libreria para crear
+**Sphinx** es una conjunto de utilidades/libreria para crear
 documentación atractiva. Algunas de sus características más interesantes
 son:
 
@@ -24,20 +24,28 @@ son:
 
 - Coloreado sintáctico del código, usando [Pygments](https://pygments.org/)
 
-- Extensiones: Testeoautomático de fragmentos de código, inclusión de
-  las _docstrings_ en el caso de Python, y muchas otras extensiones de
-  terceros. La mayoría de las extensiones se pueden instalar con `pip`.
+- [Extensiones](https://www.sphinx-doc.org/en/master/usage/extensions/index.html),
+  que amplían enormemente las posibilidades de Sphinx.  Algunos ejemplo
+  pudrían ser: Testeo automático de fragmentos de código, inclusión de
+  las _docstrings_ en el caso de Python, y muchas otras [extensiones de
+  terceros](https://github.com/sphinx-contrib/). La mayoría de las
+  extensiones se pueden instalar con `pip`. También podemos [escribir
+  nuestras propias
+  extensiones](https://www.sphinx-doc.org/en/master/development/index.html).
 
+Sphinx por defecto utiliza el formato
+[reStructuredText](https://docutils.sourceforge.io/rst.html) (normalmente
+abreviado como ReST), pero puede también trabajar con [MyST
+markdown](https://jupyterbook.org/en/stable/content/myst.html) --que es un
+superconjunto de Markdown--, usando una extensión (ver [nota
+correspondiente](#como-usar-markdown-en-sphinx)).
 
-Sphinx usa por defecto [reStructuredText markup
-language](https://docutils.sourceforge.io/rst.html), pero puede también trabajar con [MyST
-markdown](https://jupyterbook.org/en/stable/content/myst.html) --que es un superconjunto
-de Markdown--, usando una extensión (ver nota correspondiente).
 
 ## Empezar un projecto con Sphinx
 
-Conviene crear un entorno virtual para eso, con la herramienta que prefieras. Aquí vamos a
-usar `venv`, disponible en la librería estándar de Python desde la versión 3.3:
+Conviene crear un entorno virtual para eso, con la herramienta que
+prefieras. Aquí vamos a usar `venv`, disponible en la librería estándar
+de Python desde la versión 3.3:
 
 ```python
 python -m venv .venv
@@ -45,7 +53,7 @@ source .venv/bin/activate
 python -m pip istall sphinx
 ```
 
-Podemos verificar la instlación con:
+Podemos verificar la instalación con:
 
 ```shell
 sphinx-build --version
@@ -139,16 +147,15 @@ volcar inventario de objetos... hecho
 construir éxitoso.
 ```
 
-Ahorapodemos abrir con nuestro navegador favorito las páginas en
-`docs/build/html/index.html`. Deberia verse algo como:
+Ahora podemos abrir con nuestro navegador favorito las páginas en
+`docs/build/html/index.html`. Debería verse algo como:
 
 ![Primera versión de nuestra documentación](sphinx/first-impression.png)
 
 El fichero `index.rst` ha sido creado automáticamente, podemos editarlo. Aquí podemos
-ver el uso de algunas de las caraterísticas de ReEstructuredText:
+ver el uso de algunas de las características de ReEstructuredText:
 
 ```rest
-
 .. lab-sphibx documentation master file, created by
    sphinx-quickstart on Fri Mar 17 11:43:17 2023.
    You can adapt this file completely to your liking, but it should at least
@@ -161,8 +168,6 @@ Welcome to lab-sphibx's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-
-
 Indices and tables
 ==================
 
@@ -171,25 +176,25 @@ Indices and tables
 * :ref:`search`
 ```
 
+Aquí podemos ver:
 
 - Una cabecera de sección usando `===` debajo de la línea
 
 - Uso de la **directiva** `toctree` para crear el índice o tabla de contenidos.
-  (
 
-- Y una nota de aviso, en forma de una de las **directivas** disponibles.
+- Una nota de aviso, en forma de una de las **directivas** disponibles.
 
+- Un enlace a una página externa
 
-    an inline external link,
-
-    and a note admonition (one of the available directives)
-autor del 
-- Dos ejemplos de marcado: Énfasis fuerte (normálmente con negritas) usando `**`
+- Dos ejemplos de marcado: Énfasis fuerte (normalmente con negritas) usando `**`
   y énfasis normal (normalmente itálicas) con `*`. 
+
+- Tres ejemplos de un **rol**, `ref`.
+
 
 ## Qué es un rol
 
-Un **rol** es un mecanismo que proporciona |RST| para poder ser extendido, igual
+Un **rol** es un mecanismo que proporciona ReST para poder ser extendido, igual
 que las directivas. En el caso de rol, estaríamos trabajando a nivel de elemento
 en línea. Normalmente se ejecutan como:
 
@@ -205,56 +210,128 @@ Si queremos incrementas la variable :code:`a`, haremos :code:`a = a + 1`.
 ```
 
 Existen múltiples roles predefinidos ya en Sphinx, como `math` para incluir
-expresiones matemáticas, `abbr` para abrebiaturas
+expresiones matemáticas, `abbr` para abrebiaturas...
 
-## Qué es una directiva
 
-Un **rol** es un mecanismo que proporciona |RST| para poder ser extendido, igual
-que los roles. En el caso de la directiva, estaríamos trabajando a nivel de bloque.
+## Secciones o estructura en Sphinx / RestructuredText
+
+Las secciones se definen con una serie de caracteres a modo de subrayado (Y, a
+veces, también a modo de superrayado) del texto de la sección. La longitud
+de la línea de subrayado / superrayado debe ser como mínimo igual a la del
+texto de la sección.
+
+Este sería un ejemplo:
+
+```ReST
+=================
+This is a heading
+=================
+```
+
+Hay que tener en cuenta que no hay una jerarquía definida de secciones, sino que
+la estructura se determina dinámicamente a medida que se van sucediendo las
+secciones. Existe una convención, usada en la documentación de Python, que mucha
+gente usa:
+
+- ``#`` tanto por encima como por debajo del texto, para las **partes**.
+
+- ``*`` tanto por encima como por debajo, para **capítulos**.
+
+- ``=`` por debajo, para secciones
+
+- ``-`` por debajo, para sub-secciones
+
+- ``^`` por debajo, para sub-sub-secciones
+
+- ``"`` por debajo para párrafos
+
+Por supuesto, esta es solo una recomendación, puede usarse la convención que se
+desee, con más o menos niveles, usando diferentes caracteres, etc. (Ver la
+documentación de reStructuredText para ver qué caracteres son válidos).
+
+Téngase en cuenta, en todo caso, que formatos como Html o Epub tienen una
+limitación en en número de niveles.
+
+
+## Cómo generar la documentación usando sphinx
+
+El comando viene a ser:
+
+```
+sphinx-build -W -c docs/ -b html ./docs ./html
+```
+
+Donde los parámetros significan:
+
+- `W` : convertir advertencias en errores
+
+- `-c docs` : Directorio donde buscar el fichero de configuracion `conf.py`
+
+- `-b html` : Usar el _builder_ (de ahí la `b`) para html
+
+- `./docs` : Directorio de origen
+
+- `./html` : Directorio de destino
+
+
+## Qué es una directiva en Sphinx?
 
 Las directivas son la forma mas potente de ampliar las posibilidades de
-ReEstructuredText. El sistema define un conjunto de varias directivas
-predefinidas, y este conjunto puede ser ampliado con directivas de terceras
-partes.
+ReEstructuredText.
 
-Las características principales de las directivas son:
+Un ejemplo de directiva es `.. toctree::`, que se genera en la pagina de
+`index.rst` por defecto al crear el proyecto. Todas las directivas se
+ejecutan escribiendo antes los dos puntos (No el carácter `:`, sino dos
+veces el carácter `.`), un espacio, el nombre de la directiva y dos
+veces el carácter "dos puntos" (Ahora sí, el carácter `:`). Suena más
+ confuso de lo que es; si quieremos ejecutar `toctree`, escribimos::
 
- - Tiene un _nombre único_
-
- - Pueden (o no) aceptar _argumentos_ 
-
- - Tener (o no) _opciones_
-
- - Tener (o no) _contenidos_
-
-Un ejemplo de directiva es `toctree`, que se genera en la pagina de
-`index.rst` por defecto al crear el proyecto. Todas las directivas se ejecutan
-escribiendo antes dos puntos (No el caracter `:`, sino dos veces el caracter
-`.`), seguidos de dos veces el caracter _dos puntos_. Suena más confuso de lo
-que es; si quieremos ejecutar `toctree`, escribimos:
 
 ```
 .. toctree::
 ```
 
-Cada directiva define los argumentos que acepta (Puede no aceptar ninguno). En
-caso de que se definan estos argumentos, deben especificarse después del nombre
-de la directiva. Las opciones vendrían en la o las líneas a continuación, en
-forma de "lista de campos" o cadenas con la forma `:<nombre>: <valor>`. Por
-ejemplo, `maxtree` es un ejemplo de opción para la directiva `toctree`.
-
-Después de las opciones, tiene que venir una línea en blanco y luego,
-opcionalmente, el contenido. No todas las directivas tienen que aceptar un
-contenido, pero si este es el caso, el contenido **tiene que estar indentado en el
-mismo nivel que las opciones**. Esta seria la forma general:
+Esta es la forma general de uso de una directiva:
 
 ```
-.. <directiva>:: [<argumento 1> <argumento 2>...]
-    :opcion1: valor1
-    :opcion2: valor 2
-    
+.. <nombre de la directiva>::[ <argumento_1> <argumento_2> ...  <argumento_n>]
+    [opcion_1: valor1]
+    [opcion_2: valor 2]
+    ...
+    [opcion_n: valor n]
+
     <contenido>
 ```
+
+Las características principales de las directivas son:
+ 
+- Tiene un **nombre único** que sirve para identificarlas.
+
+- Pueden aceptar un **número arbitrario de argumentos** (incluyendo
+  ninguno).  Cada directiva define los argumentos que acepta. En caso de
+  que se definan, estos argumentos son obligatorios, y deben
+  especificarse después del nombre de la directiva, en el orden
+  adecuado. Vendrían a ser el equivalente a los parámetros por orden en
+  una función Python.
+
+- Pueden tener un **número arbitrario de opciones** (Incluyendo
+  ninguna). Las opciones, si se definen, vendrían en la o las líneas
+  justo a continuación, en forma de "lista de campos" o cadenas con la
+  forma `<nombre>: <valor>`. Por ejemplo, `maxtree` es un ejemplo de
+  opción para la directiva `toctree`.  Vendrían a ser el equivalente a
+  los parámetros por nombre en una función Python.
+
+- Pueden, o no, tener un contenido. En este último caso, tiene que haber
+  obligatoriamente **una línea en blanco que separe la directiva del
+  contenido**. Además, el contenido (si existe) tiene que estar
+  **indentado en el mismo nivel que las opciones**.
+
+Como vemos, lo único realmente obligatorio es el nombre.
+
+El sistema incluye un conjunto de
+varias directivas predefinidas, y este conjunto puede ser ampliado con
+directivas de terceras partes.
+
 
 ## Cómo añadir contenido a la documentación.
 
@@ -271,14 +348,16 @@ directiva `tocfree`. El siguiente ejemplo añade dos ficheros:
 ```
 
 De esta forma `toctree` aprende no solo donde están los contenidos, sino el
-orden en que deben ser presentados y la estructura jerárquica de los mismos. No
+orden en que deben ser presentados y la **estructura jerárquica** de los mismos. No
 es necesario normalmente especificar la extensión del archivo, se buscara el
 ficheros con extensiones como `.rst` o `.md`.
+
 
 ## Como crear un glosario en Sphinx
 
 Crearemos un fichero `glosario.rst`, por ejemplo (Puede ser el nombre
-que queramo, pero el habitual es este). Lo incluimos en algún `toctree`
+que queramos, o incluso tener máß de un archivo, pero lo normal es tener
+solo uno y con este nombre o similar. Necesitamos incluirlo en algún `toctree`
 para que Sphinx lo integre en la documentación. Dentro de este fichero
 usaremos la directiva `glossary`. El contenido de esta directiva debe
 ser una lista de definiciones en formato RestructuredText, como en el
@@ -307,11 +386,10 @@ Después, para referenciar el glosario, en cualquier documento
 que lo necesitemos, solo hay que usar el rol `term`:
 
 ```
-El pokemon más carismático es sin duda :term:`Charizard`, conn sus
+El pokemon más carismático es sin duda :term:`Charizard`, con sus
 grandes alas y su aliento de fuego. Cuando se enfurece de verdad, la
 llama de la punta de su cola se vuelve de color azul claro.
 ```
-
 
 ## Cómo usar Markdown en Sphinx
 
@@ -319,8 +397,8 @@ Para poder usar MarkDown, Sphinx utiliza una extensión de terceros
 llamada
 [**MyST-Parser**](https://myst-parser.readthedocs.io/en/latest/).
 
-[myST](https://myst-parser.readthedocs.io/en/latest/intro.html) es una
-combinación de las sintaxiz de MarkDown y rST. Es una opción muy
+[MyST](https://myst-parser.readthedocs.io/en/latest/intro.html) es una
+combinación de las sintaxis de MarkDown y rST. Es una opción muy
 interesante si se está familiarizado con MarkDown, ya que ofrece la
 sencillez de uso de este con la potencia de rST.
 
@@ -358,8 +436,97 @@ extensiones tanto `.md` como `.txt`:
 ```
 
 Se puede configurar `MyST-Parser` para permitir sintaxis personalizada que en
-principio CommonMark no soportaría. Hay más información en la documentación del
-paquete.
+principio CommonMark no soportaría. Hay más información en la [documentación del
+paquete MyST-Parser](https://myst-parser.readthedocs.io/en/latest/index.html).
+
+
+## En que se diferencia el Myst Markdown del Markdown normal
+
+El parser [MyST - Markedly Structured
+Text](https://myst-parser.readthedocs.io/en/latest/index.html)
+es un superconjunto de Markdown, por lo acepta todo el MarDown estáñdar y añade
+nuevas funcionalidades (Algunas requieren añadir paquetes adicionales):
+
+- Texto tachado, con la extensión
+  [strikethrough](https://myst-parser.readthedocs.io/en/latest/syntax/optional.html#syntax-strikethrough)
+
+- Extensiones tipográficas, con la extensión [replacements], para hacer
+  transformaciones como `(c)` a `©`.
+
+- Figuras e [Imágenes con
+  atributos](https://myst-parser.readthedocs.io/en/latest/syntax/optional.html#syntax-attributes-inline)
+
+- Matemáticas 
+
+- Tablas
+
+- Referencias cruzadas
+
+## ¿Se pueden usar las directivas y los roles de Sphinx usando MyST Markdown?
+
+La respuesta corta es si, pero no directamente.
+
+Para los roles, cuando en ReST usaríamos:
+
+```
+:role_name:`role-content`
+```
+
+En Markdown haremos:
+
+```
+{role_name}`role_content`
+```
+
+
+Por ejemplo:
+```
+Desde Pitágoras, sabemos que {math}`a^2 + b^2 = c^2`.
+```
+
+Para las directivas, solo hay que incluirlas dentro
+de un _Markdown code fence_, es decir, embeberlas entre triples comillas
+inversas simple: _'\`'_.
+
+Es decir, para los roles, lo que seria así en Rest:
+
+```
+.. directivename:: arguments
+   :key1: val1
+   :key2: val2
+
+   This is
+   directive content
+```
+
+Habría que ponerlo en Markdown como:
+
+    ```{directivename} arguments
+    :key1: val1
+    :key2: val2
+
+    This is
+    directive content
+    ```
+
+Para casos especiales, MySt también ofrece la directiva `eval-rst`, que
+parsea el contenido como ReStructuredText:
+
+    ```{eval-rst}
+    .. figure:: img/fun-fish.png
+      :width: 100px
+      :name: rst-fun-fish
+
+    Party time!
+
+    A reference from inside: :ref:`rst-fun-fish`
+
+    A reference from outside: :ref:`syntax/directives/parsing`
+    ```
+
+Esto se integra con el resto de la documentación, así que podríamos enlazar
+a la imagen desde fuera usando el nombre `rst-fun-fish`.
+
 
 ## Cómo poner notas a pie de página con Sphinx
 
@@ -412,21 +579,18 @@ documentos usando una referencia manual:
 
 Para enlazar a una URL externa, podemos usar esta sintaxis:
 
-```
-`Link text <link URL>`_
-```
+    `Link text <link URL>`_
 
 Por ejemplo:
 
-`Python <http://python.org/>`_
+    `Python <http://python.org/>`_
 
-También podemos separar en dos el texto del enlace y la definición de la URL destino:
+También podemos separar en dos el texto del enlace y la definición de la
+URL destino:
 
-```
-Aprende e programar en `Python`_.
+    Aprende e programar en `Python`_.
 
-.. _Python: http://python.org/
-
+    .. _Python: http://python.org/
 
 
 

@@ -1385,7 +1385,7 @@ pantalla.
 
 - Con `z-` o `zb` ponemos la línea actual como la última línea de la pantalla.
 
-## Cómo hacer que Vim carge automáticamente el tichero tags
+## Cómo hacer que Vim cargue automáticamente el fichero `tags`
 
 Añadir la siguiente linea al fichero  `~/.vimrc`:
 
