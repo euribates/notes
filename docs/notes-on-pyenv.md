@@ -7,17 +7,18 @@ tags:
 
 ## Sobre pyenv
 
-[Pyenv](https://github.com/pyenv/pyenv#readme) es una utilidad que te permite
-conmutar fácilmente entre versiones de Python. Sigue la filosofía Unix de hacer
-solo una cosa pero hacerla bien.
+[Pyenv](https://github.com/pyenv/pyenv#readme) es una utilidad que te
+permite conmutar fácilmente entre versiones de Python. Sigue la
+filosofía Unix de hacer solo una cosa pero hacerla bien.
 
 Una ventaja que tiene es que **no depende de Python**, es un conjunto de
 _scripts_ de _shell_.
 
 ## Instalar pyenv
 
-Lo mejor es instalarlo acompañado de [virtualenv](https://virtualenv.pypa.io/en/latest/),
-para ello hay que instalar tanto `pyenv` como `pyenv-virtualenv`.
+Lo mejor es instalarlo acompañado de
+[virtualenv](https://virtualenv.pypa.io/en/latest/), para ello hay que
+instalar tanto `pyenv` como `pyenv-virtualenv`.
 
 ### En Mac:
 
@@ -48,9 +49,9 @@ $ curl https://pyenv.run | bash
 ## Crear un entorno virtual con pyenv
 
 Hay que ejecutar `pyenv virtualenv <python.version> <name>`, donde
-`<python.version>` es una especificación de la versión de Python usando 4
-dígitos separados por coma, como `2.7.18` o `3.11.2`, y `<name>` el nombre del
-_virtualenv_:
+`<python.version>` es una especificación de la versión de Python usando
+4 dígitos separados por coma, como `2.7.18` o `3.11.2`, y `<name>` el
+nombre del _virtualenv_:
 
 ```shell
 pyenv virtualenv 3.11.2 newacl
