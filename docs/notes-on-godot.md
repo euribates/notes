@@ -88,7 +88,7 @@ get_tree().change_scene_to_file("res://Physics/Main.tscn")
 En `Project` --> `Settings`, ir a `Environemnt` y cambiar el color
 etiquetado como `Default Clear Color`.
 
-## Cómo trabajar con numeros aleatorios
+## Cómo trabajar con números aleatorios
 
 En el espacio global tenemos el método `randomize()`. Este método solo debe
 ser ejecutado al principio, para inicializar el generador de numero
@@ -271,7 +271,7 @@ Asegúrate de incluir:
 
 - Los ficheros '.gs', '.cs' (Scripts)
 - Los ficheros `.tscn` (Escenas)
-- Todos los _assets_: Ficheros de imánenes (`.bmp`, '.png`, '.jpg`,
+- Todos los _assets_: Ficheros de imágenes (`.bmp`, '.png`, '.jpg`,
   etc.), audio (`.wav`, `.mp3`, `.ogg`, etc.), vídeo (`.mov`, `.avi`,
   `.mpg`, etc.)
 - incluir **los ficheros `.import`** pero **no incluir el directorio
@@ -286,3 +286,4 @@ para los siguientes casos:
 - Excluir los ficheros `*.translation`. Son ficheros binarios de
   traducción generados automáticamente a partir de ficherosa partir de
   ficheros  `.csv`. 
+
