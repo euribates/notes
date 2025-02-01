@@ -27,8 +27,8 @@ Principales características:
 En linux:
 
 ```shell
-curl -O https://dl.typesense.org/releases/26.0/typesense-server-26.0-amd64.deb
-sudo apt install ./typesense-server-26.0-amd64.deb
+curl -O https://dl.typesense.org/releases/27.1/typesense-server-27.1-amd64.deb
+sudo apt install ./typesense-server-27.1-amd64.deb
 ```
 
 Para ver que está instalado y funcionando:
