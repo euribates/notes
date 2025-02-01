@@ -2,15 +2,27 @@
 title: Notes on CSS
 ---
 
-## CSS Variables (Custom Properties)
+## Variables CSS (Custom Properties)
 
-This has indeed been possible with SASS and LESS variables for years. However,
-there are a few big benefits with CSS Variables.
+Las variables en CSS antes no eran posibles, teníamos que usar
+transpiladores como SASS o LESS. Ahora ya se soportan de forma
+nativa.
 
-They don’t require any transpiling to work, as they’re native to the browser.
-So you don’t need any setup to get started, as you do with SASS and LESS.  They
-live in the DOM, which opens up a ton of benefits, which I’ll go through in this
-article and in my upcoming course.
+Las variables se declaran anteponiendo dos caracteres `-` al nombre de la
+variable, seguido del caracter `:` y finalmente el valor, con la forma:
+
+```css
+  --<nombre de la variable>: <valor>;
+```
+
+y para usar su valor, usamos la función `var`, pasando entre paréntesis
+el nombre de la variable, con los dos caracteres `-`:
+
+```css
+   var(--<nombre de la variable>);
+```
+
+Por ejemplo:
 
 ```css
 :root {
@@ -26,23 +38,11 @@ article and in my upcoming course.
 }
 ```
 
-To declare a variable, you first need to decide which scope the variable should
-live in. If you want it to be available globally, simply define it on the
-`:root` pseudo-class. It matches the root element in your document tree (usually
-the `<html>` tag).
-
-As you can see, you declare a variable just the same way you’d set any CSS
-property. However, the variable must start with two dashes. To access a
-variable, you need to use the `var()` function, and pass in the name of the
-variable as the parameter.
-
-You can also create **local variables**, which are accessible only to the
-element it’s declared at and to its children. This makes sense to do if you know
-that a variable only will be used in a specific part (or parts) of your app.
-
-For example, you might have an alert box which uses a special kind of colour
-which aren’t being used in other places in the app. In that case, it might make
-sense to avoid placing it in the global scope:
+Podemos definir el _scope_ o ámbito de la variable. Para definirlas a nivel
+global, podemos usar la pseudo-clase `:root`. También se pueden declarar
+localmente, dentro de un cuerpo (es decir, dentro de un par de llaves 
+`{` y `}`). Por ejemplo, si queremos definir un color que solo va a ser usado
+para los componentes con la clase `alert`, podríamos hacer:
 
 ```css
 .alert {  
@@ -50,7 +50,7 @@ sense to avoid placing it in the global scope:
 }
 ```
 
-This variable can now be used by its children:
+Esta variable solo puede ser usada por la clase `alert` o sus hijos:
 
 ```css
 .alert p {  
@@ -59,15 +59,15 @@ This variable can now be used by its children:
 }
 ```
 
-Una ventaja de las variables/propiedades es que tienen **acceso al DOM**, algo
-que losp rocesadores como LESS o SASS no pueden hacer. Por ejemplo, podemos
-cambiar el valor de una variable basándonos en el ancho de la ventana, por
-ejemplo:
+Una ventaja de las variables/propiedades es que tienen **acceso al
+DOM**, algo que los procesadores como LESS o SASS no pueden hacer. Por
+ejemplo, podemos cambiar el valor de una variable basándonos en el ancho
+de la ventana, por ejemplo:
  
 ```css
-:root {  
-  --main-font-size: 16px;  
-}
+:root {
+  --main-font-size: 16px;
+  }
 
 media all and (max-width: 600px) {  
   :root {  
@@ -76,13 +76,13 @@ media all and (max-width: 600px) {
 }
 ```
 
-EL código CSS anterior actualiza el tamaño principal de las fuentes en caso de
-que el área de visualización sea pequeña (600 _pixels_ o menos, para ser
-precisos).
+El código CSS anterior actualiza el tamaño principal de las fuentes en
+caso de que el área de visualización sea pequeña (600 _pixels_ o menos,
+para ser precisos).
 
 Otra gran ventaja es que podemos acceder e incluso modificar estas
-variables/propiedades desde Javascript. Para leer una variable CSS desde
-Javascript hacen falta estas tres líneas de código:
+variables/propiedades desde JavaScript. Para leer una variable CSS desde
+JavaScript hacen falta estas tres líneas de código:
 
 ```js
 var root = document.querySelector(':root');  
@@ -767,7 +767,7 @@ funciona o en modo columna o en modo fila, pero no en ambos a la vez. Para eso
 usaríamos el _Grid Layout_.
 
 Para trabajar con flex, lo primero es marcar el elemento contendedor como
-gestionado mediante flexbox. PAra eso, definimos la propiedad `display` con el
+gestionado mediante flexbox. Para eso, definimos la propiedad `display` con el
 valor `flex`.
 
 Una vez hecho esto, vamos a definir el **eje principal** del contenedor. Esto
@@ -816,27 +816,27 @@ flex-direction: row-reverse
 Un área del documento que contiene un _flexbox_ es llamada **contenedor flex**.
 Para crear un contenedor flex, establecemos la propiedad del área del contenedor
 display como `flex` o `inline-flex`. Tan pronto como hacemos esto, los hijos
-directos de este contenedor se vuelven **ítems flex**. Como con todas las
+directos de este contenedor se vuelven **elementos flex**. Como con todas las
 propiedades de CSS, se definen algunos valores iniciales, así que cuando creemos
-un contenedor flex todos los ítems flex contenidos se comportarán de la
+un contenedor flex todos los elementos flex contenidos se comportarán de la
 siguiente manera.
 
-- Los ítems se despliegan sobre una fila (la propiedad flex-direction por defecto es row)
+- Los elementos se despliegan sobre una fila (la propiedad flex-direction por defecto es row)
 
-- Los ítems empiezan desde el margen inicial sobre el eje principal
+- Los elementos empiezan desde el margen inicial sobre el eje principal
 
-- Los ítems no se ajustan en la dimensión principal, pero se pueden contraer
+- Los elementos no se ajustan en la dimensión principal, pero se pueden contraer
 
-- Los ítems se ajustarán para llenar el tamaño del eje cruzado
+- Los elementos se ajustarán para llenar el tamaño del eje cruzado
 
 - La propiedad `flex-basis` es definida como `auto`
 
 - La propiedad `flex-wrap` es definida como `nowrap`.
 
-El resultado es que todos los ítems se alinearán en una solo fila, usando el
-tamaño del contenedor como su tamaño en el eje principal. Si hay más ítems de
+El resultado es que todos los elementos se alinearán en una solo fila, usando el
+tamaño del contenedor como su tamaño en el eje principal. Si hay más elementos de
 los que caben en el contenedor, estos no pasarán más abajo si no que
-sobrepasarán el margen. Si los ítems tienen diferentes alturas, todos serán
+sobrepasarán el margen. Si los elementos tienen diferentes alturas, todos serán
 ajustados en el eje cruzado para alcanzar al mayor.
 
 ```css
@@ -882,9 +882,9 @@ abreviatura `flex-flow` . El primer valor especificado es `flex-direction` y el
 segundo, `flex-wrap`.
 
 
-### Propiedades aplicadas a los ítems flex
+### Propiedades aplicadas a los elementos flex
 
-Para obtener más control sobre los ítems flex disponemos de tres propiedades:
+Para obtener más control sobre los elementos flex disponemos de tres propiedades:
 
 - `flex-grow`
 
@@ -895,12 +895,12 @@ Para obtener más control sobre los ítems flex disponemos de tres propiedades:
 Antes de darle sentido a estas propiedades debemos considerar el concepto de
 **espacio disponible**. Lo que hacemos cuando cambiamos el valor de alguna de
 estas propiedades es cambiar la forma que se distribuye el espacio disponible
-entre nuestros ítems. Este concepto de espacio disponible es también importante
-cuando veamos la alineación de ítems.
+entre nuestros elementos. Este concepto de espacio disponible es también importante
+cuando veamos la alineación de elementos.
 
-Si tenemos tres ítems con un ancho de 100 pixeles en un contenedor de 500
+Si tenemos tres elementos con un ancho de 100 pixeles en un contenedor de 500
 pixeles de ancho, entonces el espacio que se necesita para colocar nuestros
-ítems es de 300 pixeles. Esto deja 200 pixeles de espacio disponible. Si no
+elementos es de 300 pixeles. Esto deja 200 pixeles de espacio disponible. Si no
 cambiamos los valores iniciales, flexbox colocará ese espacio después
 del último ítem.
 
@@ -914,20 +914,20 @@ del último ítem.
 
 La propiedad **flex-basis** define el tamaño de un ítem en términos del espacio
 que deja como espacio disponible. El valor inicial de esta propiedad es `auto`; en
-este caso el navegador revisa si los ítems definen un tamaño. En el ejemplo anterior,
-todos los ítems tienen un ancho de 100 pixeles así que este es usado como `flex-basis`.
-Si los ítems no tiene un tamaño entonces el **tamaño de su contenido** es usado como
+este caso el navegador revisa si los elementos definen un tamaño. En el ejemplo anterior,
+todos los elementos tienen un ancho de 100 pixeles así que este es usado como `flex-basis`.
+Si los elementos no tiene un tamaño entonces el **tamaño de su contenido** es usado como
 `flex-basis`. 
 
 
-Con la propiedad `flex-grow` definida como un entero positivo, los ítems flex pueden
+Con la propiedad `flex-grow` definida como un entero positivo, los elementos flex pueden
 crecer en el eje principal a partir de `flex-basis`. Esto hará que el ítem se ajuste
 y tome todo el espacio disponible del eje, o una proporción del espacio disponible
 si otro ítem también puede crecer.
 
-Si le damos a todos los ítems del ejemplo anterior un valor `flex-grow` de $1$ entonces
+Si le damos a todos los elementos del ejemplo anterior un valor `flex-grow` de $1$ entonces
 el espacio disponible en el contenedor flex será compartido equitativamente entre estos
-ítems y se ajustarán para llenar el contenedor sobre el eje principal.
+elementos y se ajustarán para llenar el contenedor sobre el eje principal.
 
 También podemos usar `flex-grow` para distribuir el espacio proporcionalmente. Si
 otorgamos al primer ítem un valor `flex-grow` de $2$ y a los otros un valor de $1$,
@@ -935,7 +935,7 @@ entonces el primer elemento ocupara el mismo espacio que los otros dos.
 
 Así como la propiedad `flex-grow` se encarga de añadir espacio sobre el eje
 principal, la propiedad `flex-shrink` controla como se contrae. Si no contamos
-con suficiente espacio en el contenedor para colocar los ítems y `flex-shrink`
+con suficiente espacio en el contenedor para colocar los elementos y `flex-shrink`
 posee un valor entero positivo, el ítem puede contraerse a partir de flex-basis.
 Así como podemos asignar diferentes valores de `flex-grow` con el fin que un ítem
 se expanda más que otros, un ítem con un valor más alto de `flex-shrink` se contraerá
@@ -953,15 +953,15 @@ que permite establecer los valores en este orden: `flex-grow`, `flex-shrink` y
 
 
 Una característica clave de flexbox es la capacidad de **alinear y justificar
-ítems sobre los ejes principal y cruzado**, y distribuir el espacio entre los
-ítems flex. La propiedad `align-items` alineará los ítems sobre el eje cruzado,
+elementos sobre los ejes principal y cruzado**, y distribuir el espacio entre los
+elementos flex. La propiedad `align-items` alineará los elementos sobre el eje cruzado,
 mientras que `justify-content` los alinea sobre el eje principal.
 
-El valor inicial para `align-items` es `stretch`, razón por la cual los ítems
+El valor inicial para `align-items` es `stretch`, razón por la cual los elementos
 se ajustan por defecto a la altura del más alto. En efecto se ajustan para
 llenar el contenedor flex — el ítem más alto define la altura de este.
 
-En cambio usaremos `flex-start` para que los ítems se
+En cambio usaremos `flex-start` para que los elementos se
 alineen al comienzo del contenedor flex, `flex-end` para alinearlos al
 final, o `center` para alinearlos al centro. 
 
@@ -975,8 +975,8 @@ Los valores posibles de `align-items` son:
 
 - `center`
 
-La propiedad `justify-content` sirve para alinear los ítems en el eje
-principa. El valor inicial es `flex-start` que alineará los ítems al
+La propiedad `justify-content` sirve para alinear los elementos en el eje
+principal. El valor inicial es `flex-start` que alineará los elementos al
 inicio del margen del contenedor, pero también se podría definir
 como `flex-end` para alinearlos al final, o `center` para alinearlos al
 centro.
@@ -997,7 +997,7 @@ Los valores de `justify-content` son:
 
 
 También podemos usar `space-between` para tomar todo el espacio sobrante
-después de que los ítems hayan sido colocados, y distribuir de forma
-pareja los ítems para que haya un espacio equitativo entre cada ítem. O
+después de que los elementos hayan sido colocados, y distribuir de forma
+pareja los elementos para que haya un espacio equitativo entre cada ítem. O
 bien, usamos el valor `space-around` para crear un espacio equitativo
 a la derecha e izquierda de cada ítem.
