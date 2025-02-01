@@ -1,19 +1,16 @@
 #!/usr/bin/env python3
 
-from enum import Enum
-import glob
 from pathlib import Path
 from typing import Optional
 import argparse
+import glob
+import json
 import re
 
 from rich.console import Console
 from rich.markdown import Markdown
-from rich.table import Table
 from rich.panel import Panel
-import typer
-import yaml
-import json
+from rich.table import Table
 
 from models import load_note_from_file
 
@@ -24,8 +21,7 @@ ERROR = "[red]✖[/red]"
 
 
 def is_note(filename: str|Path) -> bool:
-    if not isinstance(filename, Path):
-        filename = Path(filename)
+    filename = Path(filename)
     name = filename.name
     return name.startswith('notes-on-') and name.endswith('.md')
 
@@ -199,8 +195,6 @@ class Handler:
         parser = self.get_parser()
         args = parser.parse_args()
         args.func(args)
-
-
 
 
 if __name__ == '__main__':
