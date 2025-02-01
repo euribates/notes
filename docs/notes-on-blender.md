@@ -95,93 +95,6 @@ En `bpy.data.materials` tenemos todos los materiales definidos en la escena.
 <bpy_collection[1], BlendDataMaterials>
 ```
 
-## Cómo hacer niebla dinámica usando un _Volumetric Cube_
-
-Tldr: Se cubre la escena con un cubo lo suficientemente grande como para
-contenerla en su totalidad, cambiamos la densidad dentro del cubo
-usando una textura, para que no sea una densidad uniforme. Esto hace que
-parezca una niebla. Luego, ajustando los parámetros, podemos hacer que
-se mueva.
-
-1. **Añadimos el cubo**
-
-Añadimos el cubo con `Add` > `Mesh` > `Cube`. Incrementamos su tamaño
-para que abarque toda la escena, cambiando su escala, por ejemplo.
-
-En principio el cubo no nos dejará ver la escena, podemos pulsar
-++alt+z++ (Activar transparencia),
-
-Cambia la pantalla de _3d Viewport_ a _Shading_. Esta pantalla tiene dos
-ventanas, una es una vista de presentación 3D, como en el espacio de
-trabajo normal, y la otra es el _shader editor_, que se usa para aplicar
-texturas y materiales a un modelo.
-
-Selecciona el cubo y añade y un nuevo material. Normalmente este material
-sera de tipo superficial _surface_, y necesitamos que sea volumétrico. Borramos
-el _Principled BSDF_ que pone por defecto y añadimos un _Principled Volume_
-pulsando `Add` > `Shader` > `Principled Volume`. Conectamos el nuevo nodo
- a la entrada _Volume_ del nodo _Material Output_.
-
-Si activamos ahora la vista _Rendered_ deberiamos poder ver el efecto en forma
-de una niebla muy densa.
-
-2. **Cambiamos la densidad para que no sea uniforma (Añadir ruido)**
-
-Para cambiar la densidad de nuestra niebla, añadiremos una textura
-dinámica, y controlaremos la densidad que queremos usando un nodo
-`ColorRamp`.
-
-We want the scene to have a fog like effect, to do this, we are going to have
-some parts of the volume have higher density than the others. This can be done
-using a texture. To adjust the density of the fog we will use a ColorRamp node.
-
-Add a ColorRamp node by clicking Add > Converter > ColorRamp. Connect the Color
-output to the Density input of the Principled Volume node.
-
-We will add a Noise texture, click Add > Texture > Noise Texture. Connect the
-Color output to the Fac Input of the ColorRamp.
-
-You will now see some patches of the fog on your screen. You may scale the
-texture appropriately using the Scale parameter on the Noise Texture.
-
-Note that, to adjust the density of the fog, you will need to use color ramp.
-The black color represents the number 0 which means no fog. while the white
-presents the number 1, means thick fog.
-
-You will need to adjust the slider of the both colors to achieve the desired
-result. You may also add more colors that are between black and white.
-
-3. **Animating the fog**
-
-To animate the fog, we will need to define a coordinate system and then move
-it. We are going to add two nodes for both of these.
-
-Add a _Mapping node_ by clicking `Add` > `Vector` > `Mapping`. Conmect Vector
-output to the Vector input of the _Noise Texture_. This node will be used for
-animating.
-
-Add a _Texture Coordinate_ node by clicking `Add` > `Input` > `Texture
-Coordinate`. This node will define the coordinate type. We will use
-`Generated`.  It generates coordinates without deforming mesh or the texture.
-Connect Generated output to the Vector input of the Mapping node.
-
-Switch to the Animation tab from the ribbon. There will be two 3D Viewports
-there, change one to the Shader Editor. We are going to use Timeline to
-animate. For this tutorial, we have animated only upto 100 frames. But, the
-number can be increased.
-
-Select the mapping node, and press Right Mouse Button on the X parameter under
-Location of the mapping node. A menu will pop up, click Insert Single Keyframe.
-We have inserted a keyframe thus, the value is stored on this particular
-keyframe. Now, drag the Timeline cursor to the end frame (in this case,100),
-and change the X location to 0.1 m, and then again insert a keyframe by
-pressing `Right Mouse Button`.
-
-- Sources:
-
-    - [Make Volumetric fog animation in Blender using Eevee - Part 1](https://usamababar.com/make-volumetric-fog-animation-in-blender-using-eevee/)
-    - [Make Volumetric fog animation in Blender using Eevee - Part 2](https://usamababar.com/make-volumetric-fog-animation-in-blender-using-eevee/2/)
-
 
 ## Cómo unir dos vértices en uno solo
 
@@ -491,3 +404,172 @@ En la vista 3D:
 Fuentes:
 
 -  [140 shortcuts esenciales de Blender 3D | Domestika](https://www.domestika.org/es/blog/7434-140-shortcuts-esenciales-de-blender-3d)
+
+## Cómo hacer un efecto tipo Interfaz de Iron Man
+
+- Grabar un croma con el individuo
+
+- Hacer _track_ del ojo, o de los dos ojos, si queremos
+
+- Añadir los elementos del interfaz, con una restricción o _Constraint_  
+  de tipo _copy location_, limitada a los ejes `X` e `Y`. El `Z` queda libre
+  para que podamos situar los elementos de la interfaz a diferentes alturas
+  y así obtener un mejor efecto de perspectiva.
+
+
+Fuentes:
+
+- [Futuristic HUD Part 1 - Blender Tutorial - YouTube](https://www.youtube.com/watch?v=QFJESgclikQ)
+- 
+[Futuristic HUD Part 2 - Blender Tutorial - YouTube](https://www.youtube.com/watch?v=Q3kDiTXUU-s)
+
+- 
+[Futuristic HUD Part 3 - Blender Tutorial - YouTube](https://www.youtube.com/watch?v=RwDXp4BFl9c)
+
+## Cómo hacer niebla dinámica usando un _Volumetric Cube_
+
+Tldr: Se cubre la escena con un cubo lo suficientemente grande como para
+contenerla en su totalidad, cambiamos la densidad dentro del cubo
+usando una textura, para que no sea una densidad uniforme. Esto hace que
+parezca una niebla. Luego, ajustando los parámetros, podemos hacer que
+se mueva.
+
+1. **Añadimos el cubo**
+
+Añadimos el cubo con `Add` > `Mesh` > `Cube`. Incrementamos su tamaño
+para que abarque toda la escena, cambiando su escala, por ejemplo.
+
+En principio el cubo no nos dejará ver la escena, podemos pulsar
+++alt+z++ (Activar transparencia),
+
+Cambia la pantalla de _3d Viewport_ a _Shading_. Esta pantalla tiene dos
+ventanas, una es una vista de presentación 3D, como en el espacio de
+trabajo normal, y la otra es el _shader editor_, que se usa para aplicar
+texturas y materiales a un modelo.
+
+Selecciona el cubo y añade y un nuevo material. Normalmente este material
+sera de tipo superficial _surface_, y necesitamos que sea volumétrico. Borramos
+el _Principled BSDF_ que pone por defecto y añadimos un _Principled Volume_
+pulsando `Add` > `Shader` > `Principled Volume`. Conectamos el nuevo nodo
+ a la entrada _Volume_ del nodo _Material Output_.
+
+Si activamos ahora la vista _Rendered_ deberiamos poder ver el efecto en forma
+de una niebla muy densa.
+
+2. **Cambiamos la densidad para que no sea uniforma (Añadir ruido)**
+
+Para cambiar la densidad de nuestra niebla, añadiremos una textura
+dinámica, y controlaremos la densidad que queremos usando un nodo
+`ColorRamp`.
+
+We want the scene to have a fog like effect, to do this, we are going to have
+some parts of the volume have higher density than the others. This can be done
+using a texture. To adjust the density of the fog we will use a ColorRamp node.
+
+Add a ColorRamp node by clicking Add > Converter > ColorRamp. Connect the Color
+output to the Density input of the Principled Volume node.
+
+We will add a Noise texture, click Add > Texture > Noise Texture. Connect the
+Color output to the Fac Input of the ColorRamp.
+
+You will now see some patches of the fog on your screen. You may scale the
+texture appropriately using the Scale parameter on the Noise Texture.
+
+Note that, to adjust the density of the fog, you will need to use color ramp.
+The black color represents the number 0 which means no fog. while the white
+presents the number 1, means thick fog.
+
+You will need to adjust the slider of the both colors to achieve the desired
+result. You may also add more colors that are between black and white.
+
+3. **Animating the fog**
+
+To animate the fog, we will need to define a coordinate system and then move
+it. We are going to add two nodes for both of these.
+
+Add a _Mapping node_ by clicking `Add` > `Vector` > `Mapping`. Conmect Vector
+output to the Vector input of the _Noise Texture_. This node will be used for
+animating.
+
+Add a _Texture Coordinate_ node by clicking `Add` > `Input` > `Texture
+Coordinate`. This node will define the coordinate type. We will use
+`Generated`.  It generates coordinates without deforming mesh or the texture.
+Connect Generated output to the Vector input of the Mapping node.
+
+Switch to the Animation tab from the ribbon. There will be two 3D Viewports
+there, change one to the Shader Editor. We are going to use Timeline to
+animate. For this tutorial, we have animated only upto 100 frames. But, the
+number can be increased.
+
+Select the mapping node, and press Right Mouse Button on the X parameter under
+Location of the mapping node. A menu will pop up, click Insert Single Keyframe.
+We have inserted a keyframe thus, the value is stored on this particular
+keyframe. Now, drag the Timeline cursor to the end frame (in this case,100),
+and change the X location to 0.1 m, and then again insert a keyframe by
+pressing `Right Mouse Button`.
+
+- Sources:
+
+    - [Make Volumetric fog animation in Blender using Eevee - Part 1](https://usamababar.com/make-volumetric-fog-animation-in-blender-using-eevee/)
+    - [Make Volumetric fog animation in Blender using Eevee - Part 2](https://usamababar.com/make-volumetric-fog-animation-in-blender-using-eevee/2/)
+
+
+## Cómo hacer un croma en Blender
+
+Resumen:
+
+- Grabar con un fondo verde que cubra, si no toda, la mayoria de la acción.
+
+- Crear una mascara para el resto de lo que quede fuera del croma, si lo
+  hubiera.
+
+- Usar el compositer
+
+Esta todoo explicado en la fuente:
+
+Fuente: https://www.youtube.com/watch?v=deUyhukYzwI
+
+## Distintos usos del compositor
+
+- Eliminar ruido (Denoise)
+- Añadir efectos de brillos (Glare)
+- Ajustar brillo, tono, saturación, ajustes de color
+- Blanco y negro
+- Marcas de agua (Watermarks)
+- Reemplazar fondos
+- Mascaras 
+
+Fuente: https://www.youtube.com/watch?v=8x2qfWNHedM
+
+## Blender API
+
+La API de Blender en Python permite hacer:
+
+- Editar cualquier dato que se pueda editar desde la interfaz de usuario
+  (Escenas, modelos, partículas, etc.)
+
+- Modificar preferencias de usuarios, asignaciones de teclas y temas
+
+- Ejecutar utilidades con ajustes personalizados
+
+- Crear elementos de la interfaz de usuario, como menús, cabeceras y paneles
+
+- Crear nuevas herramientas
+
+- Crear herramientas interactivas
+
+- Crear nuevos motores de renderizado que se integren con
+  Blender.
+
+- Subscribirse a cambios en datos y propiedades
+
+- Definir nuevos ajustes
+
+- Dibujar en el _Viewport_
+
+Ajustes recomendados:
+
+En preferencias -> _Interface_ -> Display, habilitar _Developer extras_ y
+_python tooltips_.
+
+
