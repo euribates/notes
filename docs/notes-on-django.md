@@ -944,7 +944,9 @@ class MyStorage(Storage):
     ...
 ```
 
-Django must be able to instantiate your storage system without any arguments. This means that any settings should be taken from django.conf.settings:
+Django debe ser capaz de instanciar esta clase sin necesidad de ningún
+parámetro. En caso necesario, lo recomendado es que lea esos valores
+desde el fichero de configuración.
 
 ```
 from django.conf import settings
@@ -1288,15 +1290,17 @@ Fuentes:
 
 ## Cómo saber que base de datos se corresponde con cada modelo
 
-Si usamos _routers_ para trabajar con múltiples bases de datos, hay una forma
-de preguntar, para un modelo dado y con la configuración definida en
-`settings.DATABASE_ROUTERS`, qué base de datos le corresponde. Además, la base
-de datos puede ser diferente según queramos leer o escribir en ella.
+Si usamos _routers_ para trabajar con múltiples bases de datos, hay una
+forma de preguntar, para un modelo dado y con la configuración definida
+en `settings.DATABASE_ROUTERS`, qué base de datos le corresponde.
+Además, la base de datos puede ser diferente según queramos leer o
+escribir en ella.
 
-Llamando a `django.db.router.db_for_read` y pasándole el modelo, nos devuelve
-la entrada en `settings.DATABASES` a usar para leer. De forma equivalente,
-llamando a `django.db.router.db_for_write` con el modelo nos dirá la entrada
-correspondiente a la base de datos a usar para escribir ese modelo.
+Llamando a `django.db.router.db_for_read` y pasándole el modelo, nos
+devuelve la entrada en `settings.DATABASES` a usar para leer. De forma
+equivalente, llamando a `django.db.router.db_for_write` con el modelo
+nos dirá la entrada correspondiente a la base de datos a usar para
+escribir ese modelo.
 
 ```python
 from django.db import router
@@ -1309,34 +1313,36 @@ assert router.db_for_write(ModelAlfa) == 'default'
 
 ## Cómo prevenir que el método `save` de un ModelForm modifique la BD
 
-A veces queremos hacer un tratamiento previo a una instancia de un modelo y
-necesitamos hacerlo **antes** de que se almacene en la base de datos.  La
-solución es llamar al método `save` del formulario usando el parámetro opcional
-`commit`. El parámetro `commit` es un valor booleano que por defecto vale
-`True`.
+A veces queremos hacer un tratamiento previo a una instancia de un
+modelo y necesitamos hacerlo **antes** de que se almacene en la base de
+datos.  La solución es llamar al método `save` del formulario usando el
+parámetro opcional `commit`. El parámetro `commit` es un valor booleano
+que por defecto vale `True`.
 
-Si llamamos a `save` con `commit` a `False`, el formulario crea una instancia
-del modelo en memoria, pero **no la salva en la base de datos**.
+Si llamamos a `save` con `commit` a `False`, el formulario crea una
+instancia del modelo en memoria, pero **no la salva en la base de
+datos**.
 
-Obviamente, es importante que en algún momento posterior salvemos nosotros la
-instancia en la base de datos, lo que implica llamar a `save` con `commit` a
-`True`.
+Obviamente, es importante que en algún momento posterior salvemos
+nosotros la instancia en la base de datos, lo que implica llamar a
+`save` con `commit` a `True`.
 
 Fuente: [Creating forms from models | Django documentation](https://docs.djangoproject.com/en/4.1/topics/forms/modelforms/#the-save-method)
 
 ## Cómo serializar un queryset
 
 Los _QuerySets_ se pueden serializar con
-[pickle](https://docs.python.org/3/library/pickle.html), y esto conlleva que la
-consulta es ejecutada y todos los resultados son almacenados también en la
-serializacion. Esto puede ser útil a efectos de _cachear_ el _queryset_.
+[pickle](https://docs.python.org/3/library/pickle.html), y esto conlleva
+que la consulta es ejecutada y todos los resultados son almacenados
+también en la serializacion. Esto puede ser útil a efectos de _cachear_
+el _queryset_.
 
 Obviamente, al recuperar el resultado, los registros obtenidos pueden
 diferir de los almacenados en ese momento en la base de datos.
 
-Si quieres almacenar solo la información necesaria para recrear el _queryset_,
-podemos serializar solo la propiedad `query`. Para recrear el _queryset_,
-haríamos algo como esto:
+Si quieres almacenar solo la información necesaria para recrear el
+_queryset_, podemos serializar solo la propiedad `query`. Para recrear
+el _queryset_, haríamos algo como esto:
 
 ```python
 import pickle
@@ -1347,26 +1353,29 @@ qs.query = pickle.loads(s)     # Assuming 's' is the pickled string.
 
 !!! warning "Atención a las versiones"
 
-    Como todo lo que se serializa con `pickle`, no se puede compartir entre
-    versiones de Python, pero este truco con las queries serializadas es aun
-    más estricto: **No se puede compartir estos datos entre
-    versiones diferentes de Django**.
+    Como todo lo que se serializa con `pickle`, no se puede compartir
+    entre versiones de Python, pero este truco con las queries
+    serializadas es aun más estricto: **No se puede compartir estos
+    datos entre versiones diferentes de Django**.
 
 
 ## Cómo usar las validaciones en los formularios
 
 Los formularios de Django soportan el uso de unas funciones/clases de
-validación, que en la documentación se denominan `validators`, en español,
-validadores. Un **validador** es simplemente una función (o un objeto
-_callable_) que acepta un parámetro de entrada y cuyo comportamiento es:
+validación, que en la documentación se denominan `validators`, en
+español, validadores. Un **validador** es simplemente una función (o un
+objeto _callable_) que acepta un parámetro de entrada y cuyo
+comportamiento es:
 
 - No devuelve nada, si el dato es correcto
 
-- Eleva la excepción `ValidationError` (o una clase derivada de esta) 
-  si no es correcto. La excepción está definida en `django.core.exceptions`.
+- Eleva la excepción `ValidationError` (o una clase derivada de esta) si
+  no es correcto. La excepción está definida en
+  `django.core.exceptions`.
 
-Podemos asignar varias validadores a un solo campo. La forma más fácil es usar
-el parámetro `validators`, que acepta una lista de validadores a aplicar.
+Podemos asignar varias validadores a un solo campo. La forma más fácil
+es usar el parámetro `validators`, que acepta una lista de validadores a
+aplicar.
 
 El siguiente validador solo acepta valores pares:
 
@@ -1378,8 +1387,8 @@ def validate_is_even(value):
         raise ValidationError(f'{value} is not an even number')
 ```
 
-El siguiente ejemplo muestra como se añade este validador a un campo
-de un formulario:
+El siguiente ejemplo muestra como se añade este validador a un campo de
+un formulario:
 
 ```python
 from django import forms
@@ -1397,25 +1406,26 @@ class MyModel(models.Model):
     even_field = models.IntegerField(validators=[validate_is_even])
 ```
 
-La mayor parte de las clases de campos de formularios tienen una serie de
-validadores predefinidos. Por ejemplo `SlugField` viene de serie con el
-validador `validate_slug`.
+La mayor parte de las clases de campos de formularios tienen una serie
+de validadores predefinidos. Por ejemplo `SlugField` viene de serie con
+el validador `validate_slug`.
 
-En Django se define la clase `RegexValidator`, que nos permite crear
-un validador a partir de una expresión regular. Para ello
-instanciaremos un objeto desde la clase `RegexValidator`, cuyo constructor
-acepta los siguientes parámetros:
+En Django se define la clase `RegexValidator`, que nos permite crear un
+validador a partir de una expresión regular. Para ello instanciaremos un
+objeto desde la clase `RegexValidator`, cuyo constructor acepta los
+siguientes parámetros:
 
-- `regex`: La expresión regular. Puede ser una cadena de texto o un expresión
-  regular ya compilada. El valor por defecto es la cadena vacía, lo que no
-  tiene mucha utilidad porque casaría con cualquier cosa.
+- `regex`: La expresión regular. Puede ser una cadena de texto o un
+  expresión regular ya compilada. El valor por defecto es la cadena
+  vacía, lo que no tiene mucha utilidad porque casaría con cualquier
+  cosa.
 
-- `message`: El mensaje con el que se creara la excepción, en caso de ser
-  necesario. Si no se especifica, el valor por defecto es
-  `"Enter a valid value"`.
+- `message`: El mensaje con el que se creara la excepción, en caso de
+  ser necesario. Si no se especifica, el valor por defecto es `"Enter a
+  valid value"`.
 
-- `code`: El código de error usado en la excepción en caso de fallo. El valor
-  por defecto es `'invalid'`.
+- `code`: El código de error usado en la excepción en caso de fallo. El
+  valor por defecto es `'invalid'`.
 
 - `flags`: Los valores opcionales para la definición de patrón, si lo
   hemos definido con una cadena de texto.
@@ -1425,8 +1435,8 @@ Otras clases generadoras de validadores predefinidas en Django son:
 - `EmailValidator`. Permite definir opcionalmente una lista de dominios
   válidos con el parámetro `allowlist`.
 
-- `URLValidator`. Permite definir opcionalmente los esquemas (`http`/`https`)
-  aceptados.
+- `URLValidator`. Permite definir opcionalmente los esquemas
+  (`http`/`https`) aceptados.
 
 - `MaxValueValidator`
 
@@ -1441,8 +1451,8 @@ Otras clases generadoras de validadores predefinidas en Django son:
 - `FileExtensionValidator`
 
 
-Django tiene varios validadores predefinidos, normalmente usado por determinados campos
-que los necesitan por defecto:
+Django tiene varios validadores predefinidos, normalmente usado por
+determinados campos que los necesitan por defecto:
 
 - `validate_email` (Una instancia sin parametrizar de `EmailValidator`)
 
@@ -1465,17 +1475,14 @@ que los necesitan por defecto:
 
 ## Cómo tener dos aplicaciones con el mismo nombre
 
-Desde Django 1.7, es obligatorio
-que las aplicaciones tengan una **etiqueta única**
-para identificarlos. Por defecto la etiqueta es el nombre del módulo,
-así que si tenemos dos módulos con el mismo nombre, `foo`,
-aunque están obviamente en ramas diferentes,
-tendremos un error.
+Desde Django 1.7, es obligatorio que las aplicaciones tengan una
+**etiqueta única** para identificarlos. Por defecto la etiqueta es el
+nombre del módulo, así que si tenemos dos módulos con el mismo nombre,
+`foo`, aunque están obviamente en ramas diferentes, tendremos un error.
 
-La solución es **sobreescribir** la **etiqueta** por defecto.
-Podemos hacerlo añadiendo el siguiente código
-al fichero `apps.py` de la aplicación
-(Ojo, que el valor importante es `label`, no `name`):
+La solución es **sobreescribir** la **etiqueta** por defecto.  Podemos
+hacerlo añadiendo el siguiente código al fichero `apps.py` de la
+aplicación (Ojo, que el valor importante es `label`, no `name`):
 
 
 ```python
@@ -1488,8 +1495,9 @@ class FooConfig(AppConfig):
     label = 'my.foo'  # <-- this is the important line - change it to anything oth
 ```
 
-La finalidad del fichero `apps.py` es permitir configurar y definir determinados
-parámetros o atributos de la aplicación. Según la documentación:
+La finalidad del fichero `apps.py` es permitir configurar y definir
+determinados parámetros o atributos de la aplicación. Según la
+documentación:
 
 > Los objetos de tipo `AppConfig` almacenan _metadatos_ relativos a una
 > aplicación. Algunos de estos valores pueden ser modificados definiendo
@@ -1565,18 +1573,19 @@ TEMPLATES = [
 
 La respuesta es diferente según estemos en desarrollo o en producción.
 
-En desarrollo, `STATIC_ROOT` no se usa para nada. Solo se usa en producción.
-Cuando estamos en desarrollo (Es decir, cuando `settings.DEBUG` está a `True`)
-no hace falta ni que la definamos; Django buscará los contenidos estáticos
-dentro de la carpeta de la `app` y los servirá directamente, cortesía de la
-magia del comando `runserver`.
+En desarrollo, `STATIC_ROOT` no se usa para nada. Solo se usa en
+producción.  Cuando estamos en desarrollo (Es decir, cuando
+`settings.DEBUG` está a `True`) no hace falta ni que la definamos;
+Django buscará los contenidos estáticos dentro de la carpeta de la `app`
+y los servirá directamente, cortesía de la magia del comando
+`runserver`.
 
 En producción, sin embargo, lo más probable es que queramos servir los
-contenidos estáticos usando Nginx o Apache, por ejemplo, ya que es una forma
-mucho más eficiente de hacerlo y además descargamos a Django de ese trabajo.
-En en estos casos en los que resulta útil `STATIC_ROOT`. Nginx o Apache no
-saben nada del proyecto Django, solo saben que tiene que servir unos ficheros que
-están en un determinado directorio.
+contenidos estáticos usando Nginx o Apache, por ejemplo, ya que es una
+forma mucho más eficiente de hacerlo y además descargamos a Django de
+ese trabajo.  En en estos casos en los que resulta útil `STATIC_ROOT`.
+Nginx o Apache no saben nada del proyecto Django, solo saben que tiene
+que servir unos ficheros que están en un determinado directorio.
 
 Si ajustando el valor de `STATIC_ROOT` a ese directorio, digamos:
 
@@ -1584,29 +1593,31 @@ Si ajustando el valor de `STATIC_ROOT` a ese directorio, digamos:
 STATIC_ROOT = '/algun/directorio/por/ahi/'
 ```
 
-Podemos ahora configurar Nginx/Apache para que sirva los contenidos de ese
-mismo directorio.
+Podemos ahora configurar Nginx/Apache para que sirva los contenidos de
+ese mismo directorio.
 
-Al ejecutar `manage.py collectstatic`, Django buscará en todas las carpetas
-`static` que hay dentro de todas las `apps` y los copiará a la carpeta
-`/algun/directorio/por/ahi/`.
+Al ejecutar `manage.py collectstatic`, Django buscará en todas las
+carpetas `static` que hay dentro de todas las `apps` y los copiará a la
+carpeta `/algun/directorio/por/ahi/`.
 
-La variable `STATICFILES_DIRS` sirve para incluir directorios adicionales que
-el comando `collectstatic` también debe procesar. Una practica habitual es
-incluir aquí los contenidos estáticos que sean comunes a todo el proyecto, por
-ejemplo `main/static` (Suponiendo que `main` es la carpeta donde está el
-fichero `settings.py`, el `urls.py` principal, etc). Esta carpeta **no** es una
-`app`, por lo que simplemente crear una subcarpeta `static` no copiará los
-ficheros que haya dentro a `STATIC_ROOT`.
+La variable `STATICFILES_DIRS` sirve para incluir directorios
+adicionales que el comando `collectstatic` también debe procesar. Una
+practica habitual es incluir aquí los contenidos estáticos que sean
+comunes a todo el proyecto, por ejemplo `main/static` (Suponiendo que
+`main` es la carpeta donde está el fichero `settings.py`, el `urls.py`
+principal, etc). Esta carpeta **no** es una `app`, por lo que
+simplemente crear una subcarpeta `static` no copiará los ficheros que
+haya dentro a `STATIC_ROOT`.
 
 Fuente: [python - Differences between STATICFILES_DIR, STATIC_ROOT and MEDIA_ROOT - Stack Overflow](https://stackoverflow.com/questions/24022558/differences-between-staticfiles-dir-static-root-and-media-root)
 
 
 ## La tabla de sesiones de Django no para de crecer, como puedo solucionarlo
 
-Efectivamente,la tabla de sesiones no se limpia sola, están registradas todas
-las sesiones, incluyendo las expiradas, por lo que la tabla no para de crecer. Esto
-se puede solucionar bien desde la propia base de datos (Este ejemplo usa MySQL):
+Efectivamente,la tabla de sesiones no se limpia sola, están registradas
+todas las sesiones, incluyendo las expiradas, por lo que la tabla no
+para de crecer. Esto se puede solucionar bien desde la propia base de
+datos (Este ejemplo usa MySQL):
 
 ```sql
 DELETE FROM mydatabase.django_session where expire_date < now()
@@ -1618,9 +1629,9 @@ O, seguramente mejor, usando el comando que define Django expresamente para esto
 python manage.py clearsessions
 ```
 
-Lo mejor es poner uno de estos comandos en nuestro _crontab_, y que se ejecute
-cada día, por ejemplo. El comando no borra las sesiones que sigan activas, solo
-las que se han caducado.
+Lo mejor es poner uno de estos comandos en nuestro _crontab_, y que se
+ejecute cada día, por ejemplo. El comando no borra las sesiones que
+sigan activas, solo las que se han caducado.
 
 Fuente: [Why django session table growing automatically - Stack Overflow](https://stackoverflow.com/questions/71441352/why-django-session-table-growing-automatically)
 
@@ -1676,7 +1687,7 @@ doc.save()
 Fuente: [Programmatically Upload Files in Django - Stack Overflow](https://stackoverflow.com/questions/1993939/programmatically-upload-files-in-django)
 
 
-## Como crear un FormField (y Widget por defecto, si fuera necesario) propio
+## Crear un FormField (y Widget por defecto, si fuera necesario) propio
 
 Los campos **de formulario** son fáciles de personalizar:
 
@@ -1689,16 +1700,15 @@ class UpperCaseField(forms.CharField):
             raise ValidationError
 ```
 
-Solo tenemos que crear una nueva clase
-que derive del campo de formulario
-que más se parezca al que necesitamos
-y reimplementar el método `clean()`
-para que devuelva el valor y tipo de dato que necesitamos.
+Solo tenemos que crear una nueva clase que derive del campo de
+formulario que más se parezca al que necesitamos y reimplementar el
+método `clean()` para que devuelva el valor y tipo de dato que
+necesitamos.
 
-Si tuviéramos que reimplementar también el método `__init__`
-hay que seguir aceptando todos los parámetros básicos:
-`required`, `label`, `initial`, `widget` y `help_text`.
-La forma más sencilla es llamando a `super().__init__`.
+Si tuviéramos que reimplementar también el método `__init__` hay que
+seguir aceptando todos los parámetros básicos: `required`, `label`,
+`initial`, `widget` y `help_text`.  La forma más sencilla es llamando a
+`super().__init__`.
 
 ```py
 class MyObjectField(forms.ModelChoiceField):
@@ -1711,16 +1721,15 @@ class MyObjectField(forms.ModelChoiceField):
             raise ValidationError
 ```
 
-De igual manera, hay que tener cuidado al reimplementar `clean`
-porque este es responsable de llamar a
-`to_python()`, `validate()` y `run_validators()`. 
-Lo más seguro es llamar a la super implementación
-con `super().clean(value)`,
-antes y/o después de lo que tengamos que hacer nosotros.
+De igual manera, hay que tener cuidado al reimplementar `clean` porque
+este es responsable de llamar a `to_python()`, `validate()` y
+`run_validators()`.  Lo más seguro es llamar a la super implementación
+con `super().clean(value)`, antes y/o después de lo que tengamos que
+hacer nosotros.
 
-Esto es solo para personalizar los campos de formulario.
-para personalizar los _Widgets_, se requiere un poco más de trabajo
-porque hay que reimplementar unos cuantos métodos más.
+Esto es solo para personalizar los campos de formulario. para
+personalizar los _Widgets_, se requiere un poco más de trabajo porque
+hay que reimplementar unos cuantos métodos más.
 
 ## Mostrar el mensaje de ayuda (`help`) escribiendo comandos de Django
 
@@ -1743,53 +1752,52 @@ management command - Stack Overflow](https://stackoverflow.com/questions/5812710
 
 ## ¿Cuál es la utilidad de la variable `app_name` en el fichero `urls.py`?
 
-Cuando vamos a hacer un `include` de una fichero `urls.py` dentro de otro, hay
-dos formar de definir el **espacio de nombres** o **`namespace`**.
+Cuando vamos a hacer un `include` de una fichero `urls.py` dentro de
+otro, hay dos formar de definir el **espacio de nombres** o
+**`namespace`**.
 
-Uno es usando el parámetro `namespace`
-en la llamada a `include`. Si no se especifica,
-tomara como valor por defecto
-el nombre de la aplicación
-en la que esta definido el fichero `urls.py`.
-Eso implica que el `namespace` de una _app_ será por defecto
-el de la misma `app`.
+Uno es usando el parámetro `namespace` en la llamada a `include`. Si no
+se especifica, tomará como valor por defecto el nombre de la aplicación
+en la que esta definido el fichero `urls.py`.  Eso implica que el
+`namespace` de una _app_ será por defecto el de la misma `app`.
 
 El segundo método es definiendo una variable en el fichero `urls.py` que
 se llame `app_name`, en el mismo _scope_ que `url_patterns`.
 
 El segundo método es ahora mismo el recomendado.
 
-
-
 - [Documentaión de Django](https://docs.djangoproject.com/en/dev/topics/http/urls/#url-namespaces-and-included-urlconfs)
+
 
 ## ¿Para qué sirve la clase AppConfig?
 
-Django mantien un **registro de aplicaciones instaladas**. En ese registro se
-almacena aspectos de la configuración de cada _app_. El registro se llama `apps`
-y vive en `django.apps`:
+Django mantien un **registro de aplicaciones instaladas**. En ese
+registro se almacena aspectos de la configuración de cada _app_. El
+registro se llama `apps` y vive en `django.apps`:
 
 ```python
 from django.apps import apps
 print(apps.get_app_config('admin').verbose_name)
 ```
 
-**No** existe en Django una clase `Aplicction` que reprsente la _app_
-en si, pero lo que más se parece serian los objetos que se almacenan
-en este repositorio, que son instancias (directa o indirectamente) de `AppConfig`.
+**No** existe en Django una clase `Aplicction` que reprsente la _app_ en
+si, pero lo que más se parece serian los objetos que se almacenan en
+este repositorio, que son instancias (directa o indirectamente) de
+`AppConfig`.
 
-Para configurar una aplicación, tenemos que crear un fichero `apps.py`, y dentro
-del mismo definir una clase de `AppConfig` (La utilidad de línea `startapp` crea
-una automáticamente). Para cualquier entrada en `INSTALLED_APPS`, si es una
-especificación de ruta al estilo Python (Con puntos `.` en vez del separador de
-direcotorios), Django busca dentro de esa ruta el fichero `apps.py` y, sii lo
-encuentra, busca que haya una única clase derivada de `AppConfig`. Si encuentra
-una y solo una, se usa esa clase para configurar la aplicación. Si encuentra
-varias, Django buscara la que tenga la propiedad `default` a `True`. Si no se
-encuentra ninguna, se usará la clase base `AppConfig`.
+Para configurar una aplicación, tenemos que crear un fichero `apps.py`,
+y dentro del mismo definir una clase de `AppConfig` (La utilidad de
+línea `startapp` crea una automáticamente). Para cualquier entrada en
+`INSTALLED_APPS`, si es una especificación de ruta al estilo Python (Con
+puntos `.` en vez del separador de direcotorios), Django busca dentro de
+esa ruta el fichero `apps.py` y, sii lo encuentra, busca que haya una
+única clase derivada de `AppConfig`. Si encuentra una y solo una, se usa
+esa clase para configurar la aplicación. Si encuentra varias, Django
+buscara la que tenga la propiedad `default` a `True`. Si no se encuentra
+ninguna, se usará la clase base `AppConfig`.
 
-De forma alternativa, podemos tener en la lista `INSTALLED_APPS` directamente
-especificada la clase de configuracion. Por ejemplo:
+De forma alternativa, podemos tener en la lista `INSTALLED_APPS`
+directamente especificada la clase de configuracion. Por ejemplo:
 
 ```python
 INSTALLED_APPS = [
@@ -1802,6 +1810,7 @@ INSTALLED_APPS = [
 Las características más interesantes que hay que definir en esta clase son:
 
 - El **identificador** de la _app_, que definiremos con el atributo `name`
+
 - El **nombre publido**, que definiremos con `verbose_name`.
 
 Por ejemplo, si tenemos el fichero `rock_n_roll/apps.py`:
@@ -1818,6 +1827,7 @@ class RockNRollConfig(AppConfig):
 
 Cuando Django encuentre la etiqueta `rock_n_roll`, se usara como
 configuración la de esta clase.
+
 
 ## Cómo pasar datos de forma segura desde Django a Javascript
 
