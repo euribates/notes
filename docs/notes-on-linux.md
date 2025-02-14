@@ -239,11 +239,13 @@ Fuentes:
 - [How to Check timezone in Linux (timedatectl and date commands) Using 4
 Easy Methods | CyberITHub](https://www.cyberithub.com/check-timezone-in-linux-timedatectl-command/)
 
-## Cómo insertar un caracter usando su código numérico
+## Cómo insertar un carácter usando su código numérico (Unicode)
+
+
 
 Una forma fácil, si sabemos el código numérico en hexadecimal, es
 usando ++ctrl+shift+u++ y luego el código hexadecimal. Por ejemplo
-++ctrl+shift+u++ seguido de ++4++, ++0++, ++enter++ nos dará el caracter `@`,
+++ctrl+shift+u++ seguido de ++4++, ++0++, ++enter++ produce el carácter `@`,
 que es el carácter 64 decimal, `40` en hexadecimal.
 
 Algunos código útiles son:
@@ -282,7 +284,15 @@ Por ejemplo, para una hora:
 Defaults timestamp_timeout=60
 ```
 
-Fuente: [How to Change Sudo Timeout Period on Linux - OMG! Linux](https://www.omglinux.com/change-sudo-timeout-linux/)
+Para 12 horas:
+
+```
+Defaults timestamp_timeout=720
+```
+
+Fuentes:
+
+- [How to Change Sudo Timeout Period on Linux - OMG! Linux](https://www.omglinux.com/change-sudo-timeout-linux/)
 
 ## Cómo funciona el _firewall_ UFM
 
