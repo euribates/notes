@@ -36,14 +36,21 @@ eval "$(pyenv virtualenv-init -)"
 
 ### En linux:
 
+Primero instalamos algunas librerías que nos harán falta:
+
+```shell
+sudo apt install build-essential build-dep make python3-dev
+     \ lib1g-dev libffi-dev libssl-dev zlib1g-dev
+     \ libbz2-dev libedit-dev libreadline-dev libsqlite3-dev liblzma-dev
+     \ libncurses-dev tk-dev openssl-dev llvm xz-utils python-openssl
+sudo apt install curl
+```
+
+$ sudo apt install make
+Luego instalamos el pyenv:
+
 ```shell
 curl https://pyenv.run | bash
-sudo apt-get install -y make build-essential libssl-dev zlib1g-dev \
-     libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
-     libncurses5-dev libncursesw5-dev \
-     xz-utils tk-dev libffi-dev liblzma-dev \
-     python-openssl git
-$ curl https://pyenv.run | bash
 ```
 
 ## Crear un entorno virtual con pyenv
@@ -112,7 +119,7 @@ Con el comando **`pyenv update`**.
 
 O si estás en un Mac, **`brew upgrade pyenv`**.
 
-## Cómo listar las versiones posibles de python disponibles
+## Cómo listar las versiones de Python disponibles
 
 Con la orden `install`, usando el flag `--list` o `-l`:
 
@@ -131,7 +138,11 @@ $ echo $PATH
 $(pyenv root)/shims:/usr/local/bin:/usr/bin:/bin
 ```
 
-Mediante un proceso llamada `rehashing`, pyenv mantiene _shims_ en ese diretorio para casar con todos los ejecutables de python: `pip`, `python`, etc. En esencia, los _shims_ son ejecutables ligeros, que simplemente pasan el programa y los parametros a traves de pyenv, así que cuando se ejecuta, por ejemplo, `pip`, el sistema operativo hará lo siguiente:
+Mediante un proceso llamada `rehashing`, pyenv mantiene _shims_ en ese
+directorio para casar con todos los ejecutables de Python: `pip`, `python`, etc.
+En esencia, los _shims_ son ejecutables ligeros, que simplemente pasan el
+programa y los parámetros correspondientes a través de pyenv, así que cuando se
+ejecuta, por ejemplo, `pip`, el sistema operativo hará lo siguiente:
 
 - Buscar en el `PATH` un ejecutable que se llame `pip`
 
@@ -142,11 +153,11 @@ Mediante un proceso llamada `rehashing`, pyenv mantiene _shims_ en ese diretorio
 Fuente: 
 [GitHub - pyenv/pyenv: Simple Python version management](https://github.com/pyenv/pyenv)
 
-## Como compilar la version de Python que queremos si no existen los binarios
 
-Hay que instalar varias librerias de codigo fuente
+## Como compilar la versión de Python que queremos si no existen los binarios
+
+Hay que instalar varias librerías de código fuente:
 
 ```shell
 $ sudo apt install make libssl-dev libedit-dev libreadline-dev openssl-dev libffi-dev libbz2-dev libsqlite3-dev tk-dev liblzma-dev build-dep python3-dev
 ```
-

@@ -1951,7 +1951,7 @@ muy complicados. Eso nos lleva a la segunda solución.
 ### Usar `json_script` para valores complejos
 
 Podemos pasar valores más complicados (como listas, diccionarios y, en
-general, cualquier cosa que se pueda representar en json) con el
+general, cualquier cosa que se pueda representar en JSON) con el
 _tag_ de django `json_script`.
 
 Supongamos que tenemos que pasar el valor:
@@ -1977,7 +1977,7 @@ Y en la plantilla, en este ejemplo `plantilla.html`, haríamos:
 ```html
 {% load static %}
 ...
-{{ saludos|json_script }}
+{{ saludos|json_script:"saludos" }}
 ```
 
 Esto provoca que la salida de la plantilla sea:
