@@ -368,3 +368,98 @@ sudo ufw deny 53/udp
 ```
 
 Fuente: [UFW - Community Help Wiki](https://help.ubuntu.com/community/UFW)
+
+
+## Cómo comprobar puertos abiertos en Linux
+
+Algunos de los puertos más usados son:
+
+- Puerto 22 (SSH)
+- Puerto 80 (HTTP)
+- Puerto 443 (HTTPS)
+- Puerto 21 (FTP)
+- Puerto 25 (SMTP)
+- Puerto 3306 (MySQL)
+- Puerto 5432 (PostgreSQL)
+
+### Con `nmap`:
+
+```shell
+nmap hostname
+```
+
+This command will scan all commonly used ports on your server and return
+information on any that are open. You can also specify a particular
+range of ports if you’re looking for something specific:
+
+```shell
+nmap -p 1-65535 localhost
+```
+
+Nmap’s detailed output helps identify not only open ports but also the
+services running on them, making it a robust tool for security checks.
+
+### Con `lsof`:
+
+The lsof (list open files) command is another useful tool for viewing
+open ports. It shows all active connections by listing open files,
+including network connections. To check for open ports, run:
+
+```shell
+sudo lsof -i -P -n
+```
+
+This command lists all network connections without resolving hostnames
+(`-n`) and displays port numbers rather than service names (`-P`). Look for
+entries marked with “LISTEN” to see which ports are open for incoming
+connections.
+
+### Con netstat:
+
+The netstat command has long been a favorite for checking network status
+on Linux. Although it’s gradually being replaced by newer tools, it’s
+still available on many systems. To view open ports, try:
+
+```shell
+sudo netstat -tuln
+```
+
+This command displays all TCP (`-t`) and UDP (`-u`) ports in a listening
+state (`-l`), without resolving hostnames (`-n`). Each line in the
+output will show the local address and port, making it easy to see which
+ports are open.
+
+### Con `ss`:
+
+El programa `ss` (_socket statistics_) es una alternativa moderna a `netstat`.
+En principio es más ráöido y eficiente. Proporciona la misma información
+que `netstat`, pero de una forma mas condensada. Para ver los puertos
+abiertos, hay que hacer:
+
+```shell
+sudo ss -tuln
+```
+
+The output structure is comparable to netstat, showing active TCP and
+UDP ports in a listening state. This command is highly efficient,
+especially on newer systems, and is a good replacement for netstat:.
+
+### Com `netcat` (`nc`):
+
+`Netcat` (often abbreviated as `nc`) is a flexible tool for network
+exploration, troubleshooting, and port scanning. You can use it to
+see if a specific port is open. For example:
+
+```shell
+nc -zv localhost 22
+```
+
+This command checks if port 22 (SSH) is open on the local machine,
+where `-z` prevents actual data transfer and `-v` provides verbose
+output. Netcat is particularly useful when you want to quickly
+verify the status of specific ports.
+
+Fuentes:
+
+- [How to Check Open Ports in Linux: 6 Essential Methods](https://www.liquidweb.com/blog/how-to-locate-open-ports-in-linux/)
+
