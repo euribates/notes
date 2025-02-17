@@ -85,6 +85,21 @@ Para salir del interprete psql hay que usar:
 \q
 ```
 
+## Cómo mostrar los roles/usuarios ya existentes en PoatgreSQL
+
+El comando `\du` es la forma más rápida.
+
+Otro método puede ser consultar el catalogo del sistema, que almacena en la
+tabla `pg_roles` esa información:
+
+```sql
+SELECT rolname FROM pg_roles;
+```
+
+Fuentes:
+
+- [How to show all users in PostgreSQL: Commands & Examples](https://www.w3resource.com/PostgreSQL/snippets/postgresql-show-users.php)
+
 
 ## Cómo crear un nuevo rol en PostgreSQL
 
