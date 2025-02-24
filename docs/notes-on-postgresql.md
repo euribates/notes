@@ -595,3 +595,17 @@ alter table <nombre_table> alter column {nombre_campo> set data type VARCHAR(75)
 
 Obviamente, la intercalación recomendada para español es `es_ES`.
 
+## Cómo entender los _tablespaces_ en PostgreSQL
+
+PostgreSQL introdujo el concepto de **tablespaces** en la versión 8. En
+PostgreSQL, un _tablespace_ es un enlace a una directorio en el sistema de
+ficheros. Funciona como un contenedor para todos los demás objetos, como tablas,
+índices, etc.
+
+Hay muchos escenarios donde esta capacidad resulta útil. Por ejemplo, si nos
+quedamos sin espacio adicional en el almacenamiento por defecto, podemos crear
+un _tablespace_ en otro disco con capacidad libre. Otro caso de uso puede ser el
+que seamos conscientes de diferentes patrones de uso para diferentes objetos o
+bases de datos, y usemos los _tablespaces_ para mejorar el rendimiento. Por
+ejemplo, si sabemos que una tabla va a ser usada masivamente, podemos alojar en
+un _tablespace_ que este sobre un disco más rápido.
