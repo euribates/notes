@@ -1001,3 +1001,39 @@ después de que los elementos hayan sido colocados, y distribuir de forma
 pareja los elementos para que haya un espacio equitativo entre cada ítem. O
 bien, usamos el valor `space-around` para crear un espacio equitativo
 a la derecha e izquierda de cada ítem.
+
+
+## Cómo user los _media queries_ en CSS
+
+Las _Media queries_ permiten aplicar estilos CSS según el tipo general
+de un dispositivo (como impresión o pantalla) u otras características
+como la resolución de la pantalla o el ancho del _viewport_ del
+navegador. Las _media queries_ se utilizan para lo siguiente:
+
+- Para aplicar estilos condicionalmente utilizando las reglas de arroba CSS
+  `@media` e `@import`.
+
+- Para segmentar medios específicos para `style`, `link`, `source` y otras
+  etiquetas HTML con el atributo `media=`.
+
+- Para probar y monitorear los estados de los medios usando los métodos
+  `Window.matchMedia()` y `EventTarget.addEventListener()`.
+
+La sintaxis de una _media query_ se compone de un **tipo de medio** opcional y
+cualquier cantidad de expresiones de **características** de medios, que pueden
+combinarse opcionalmente de varias maneras usando **operadores lógicos**: `not`,
+`and` y `only`: No se distingue entre mayúsculas y minúsculas.
+
+Los tipos de medios definen la amplia categoría de dispositivos para los que se
+aplica la consulta de medios: `all`, `print`, `screen`.
+
+Muchas características de medios son características de rango, lo que significa
+que pueden tener el prefijo "min-" o "max-" para expresar restricciones de
+"condición mínima" o "condición máxima". Por ejemplo, este CSS aplicará estilos
+solo si el ancho del _viewport_ de su navegador es igual o menor que 1250px: css
+
+```css
+@media (max-width: 1250px) {
+  /* … */
+}
+```

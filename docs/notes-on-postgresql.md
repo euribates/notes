@@ -85,7 +85,7 @@ Para salir del interprete psql hay que usar:
 \q
 ```
 
-## Cómo mostrar los roles/usuarios ya existentes en PoatgreSQL
+## Cómo mostrar los roles/usuarios ya existentes en PostgreSQL
 
 El comando `\du` es la forma más rápida.
 

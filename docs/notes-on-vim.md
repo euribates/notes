@@ -1398,3 +1398,19 @@ asciende por la ruta hasta el directorio de trabajo, luego sigue hasta el
 directorio raíz.
 
 Fuente: [vim - How do I automatically load a tag file from a directory when changing to that directory? - Stack Overflow](https://stackoverflow.com/questions/19330843/)
+
+## Cómo ejecutar Vim y posicionar el cursor en la primera busqueda de una
+
+Al llamar a Vim, hay que usar un parámetro de la forma `+/<expresión>`, donde
+la expresión es una expresión regular para lo que estamos buscando. Si es una
+expresión compleja, es mejor entrecomillarla para que la shell no intente
+interpretarla. Por ejemplo, para abrir el fichero `recetas.txt` y ponernos en la
+primera línea que contenga la palabra `pollo` seguida de `limón`, haríamos:
+
+```shell
+vim  "+/pollo.+limón" recetas.txt
+```
+
+Fuentes:
+
+- [regex - Open vim file with cursor on first search pattern match - Stack Overflow](https://stackoverflow.com/questions/39232615/)
