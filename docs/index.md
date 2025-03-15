@@ -52,6 +52,7 @@
 
 - [HackytoberFest](notes-on-hacktoberfest.md)
 - [Https](notes-on-https.md)
+- [httpx](notes-on-httpx.md)
 
 - [Ideas](notes-on-ideas.md)
 - [Internet of Things (IoT)](notes-on-iot.md)
