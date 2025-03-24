@@ -75,6 +75,7 @@
 - [Matomo](notes-on-matomo.md)
 - [Meilisearch](notes-on-meilisearch.md)
 - [Migrating-from-mercurial-to-git](notes-on-migrating-from-mercurial-to-git.md)
+- [MQTT](notes-on-mqtt.md)
 - [MySQL](notes-on-mysql.md)
 
 - [Neo4j](notes-on-neo4j.md)
