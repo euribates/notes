@@ -51,6 +51,7 @@
 - [Gulp](notes-on-gulp.md)
 
 - [HackytoberFest](notes-on-hacktoberfest.md)
+- [HTML 5](notes-on-html5.md)
 - [Https](notes-on-https.md)
 
 - [Ideas](notes-on-ideas.md)
