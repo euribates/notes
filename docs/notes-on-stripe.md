@@ -2,6 +2,17 @@
 title: Notas sobre Stripe
 ---
 
+## Cómo probar la API de Stripe?
+
+Para realizar pruebas interactivas, usa el número de tarjeta `4242 4242 4242 4242`. 
+Introduce el número de la tarjeta en el Dashboard o en cualquier forma de pago.
+
+- Usa una fecha futura válida, como 12/34
+- Usa cualquier CVC de tres dígitos (cuatro dígitos si usas una tarjeta American Express).
+- Usa cualquier valor para los demás campos del formulario.
+
+
+
 ## ¿Qué es Stripe Checkout?
 
 La API **Checkout** es la forma más rápida de empezar a usar Stripe. Checkout
