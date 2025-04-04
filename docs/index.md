@@ -38,6 +38,7 @@
 - [Font-awesome](notes-on-font-awesome.md)
 - [Freelance](notes-on-freelance.md)
 
+- [GoCardless](notes-on-gocardless.md)
 - [Gcloud](notes-on-gcloud.md)
 - [Migrating-django](notes-on-migrating-django.md)
 - [Git](notes-on-git.md)
@@ -53,7 +54,7 @@
 - [HackytoberFest](notes-on-hacktoberfest.md)
 - [HTML 5](notes-on-html5.md)
 - [Https](notes-on-https.md)
-- [httpx](notes-on-httpx.md)
+- [htmx](notes-on-htmx.md)
 
 - [Ideas](notes-on-ideas.md)
 - [Internet of Things (IoT)](notes-on-iot.md)

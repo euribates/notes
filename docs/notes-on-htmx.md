@@ -1,7 +1,7 @@
 ---
 title: Notas sobre htmx
 labels:
-    - wev
+    - web
     - development
 ---
 

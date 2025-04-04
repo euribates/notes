@@ -287,3 +287,55 @@ para los siguientes casos:
   traducción generados automáticamente a partir de ficherosa partir de
   ficheros  `.csv`. 
 
+## Cómo detectar colisiones
+
+En general hay colisiones cuando utilizamos el motor de físicas,
+movimientos propios, etc. El sistema de colisiones de Godot funciona
+añadiendo formas o zonas de colisión (`CollisionShape2D` para dos
+dimensiones, `CollisionShape3D` par tres) a áreas.  Por ejemplo, en 2D,
+se utiliza un nodo padre de tipo `Area3D`, con uno o más hijos de tipo
+`CollisionShape2D`, que define donde se pueden producir y detectar las
+colisiones.
+
+Para poder gestionar un sistema que nos permite determinar que cosas
+colisionan con que otras, se pueden definir los **capas de colisión**
+(_collision mask_) y **máscaras de colisión** (_collision mask_). La
+idea para entender esto es que si un objeto pertenece a una determinada
+capa, solo colisionará con los objetos que estén situados en la misma
+capa.
+
+## Cómo funcionan las capas y las máscaras de colisión
+
+- Las **Collision Layers** básicamente especifican a que categoría o
+  categorías pertenece un objeto. Por decirlo de otra manera, los
+  objetos solo existen en las capas o _layers_ que se indican.
+
+- Las **Collision Masks**, por otro lado, determinan la _interacción_
+  entre objetos. Los objetos solo interactuan con los objetos que esten
+  en los niveles definidos en la máscara.
+
+Esto permite un control muy preciso sobre qué objetos pueden
+interaccionar con que otros.
+
+Como ejemplo de la utilidad de estas capas, supongamos un juegos de
+aviones, en el que queremos que los aviones del jugador `A` colisionen
+con los del jugador `B`, y viceversa, pero que los aviones de `A` no
+colisiones con los propios, ni los de `B` con los suyos. Además, tenemos
+balas, que pueden colisionar con cualquier avión (Es decir, es válido el
+fuego amigo).
+
+Podríamos resolver este caso usando tres capas o _layers_, una (1) para
+los aviones de `A`, otra (2) para los aviones de `B`. Las balas irían en
+un tercer _layer_, (3).
+
+Los aviones de `A` irían en la capa 1, pero la mascara se ajustaría para
+detectar solo los objetos en la capa 2 (Aviones enemigos, en este caso
+de `B`) y 3 (Balas, de quien sea). La configuración para los aviones de
+`B` sería la contraría, los aviones estarían en la capa 2 pero su
+máscara tendría solo la capa 1 (Aviones enemigos, en este caso de `A`) y
+3 (balas, de quien sea).
+
+Nota: Se le pueden asignar nombres a las capas en _Project settings_ ->
+_General_ -> Layer Names
+
+- Fuente:  [Collision Layers and Masks in Godot 4 - Tutorial](https://www.gotut.net/collision-layers-and-masks-in-godot-4/)
