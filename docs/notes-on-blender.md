@@ -572,4 +572,10 @@ Ajustes recomendados:
 En preferencias -> _Interface_ -> Display, habilitar _Developer extras_ y
 _python tooltips_.
 
+## Cómo copiar los modificadores de un objeto en otro
 
+Seleccionar el objeto sin modificadores, y luego con ++ctrl++ pulsado seleccionar
+el objeto con los modificadores que queremos copiar. Pulsar ++ctrl+l++ y
+seleccionar `Copy modifiers`.
+
+Fuente: [Copy modifiers FAST in Blender](https://youtube.com/shorts/vXG6m5lTeJk?si=CQI3T2ysm6ho1YlI)

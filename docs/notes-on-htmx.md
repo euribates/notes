@@ -9,13 +9,20 @@ labels:
 
 **Htmx** es una libraría que te permite acceder a caracterísiticas avanazadas
 del navegador directamente desde el HTML, sin tener que realiza llamadas a
-javascript.
+javascript. Tomado de la documentación:
+
+> htmx gives you access to AJAX, CSS Transitions, WebSockets and
+> Server Sent Events directly in HTML, using attributes, so you
+> can build modern user interfaces with the simplicity and power
+> of hypertext
 
 Está libre de dependencias, y es orientada al navegador. Esto significa
 que usarla es tan sencillo como añadir una etiqueta `script` en la
 sección `head`. No son necesarios procesos previos antes de usarlo. En otras
 palabras, no hace falta javascript en el servidor: Ni
 [node](https://nodejs.org/es), ni [npm](https://www.npmjs.com/) o similares. 
+
+- [Documentación oficial de htmx](https://htmx.org/docs/)
 
 ## Cómo funciona htmx
 
@@ -119,4 +126,24 @@ el identificador `search-results`.
 Se pueden especificar múltiples atributos de tipo `hx-trigger`, separándolos con
 comas.
 
+## Filtros de activación (_Trigger Filters_)
+
+Se pueden aplicar filtros, usando javascript, pare discriminar si los eventos
+deben activar o no los disparadores. Se especifican usando corchetes cuadrados
+después del nombre del evento. Dentro de los corchetes irá una expresión en
+JavaScript que será evaluada. Si devuelve `true`, el disparador se activará, en caso
+contrario no lo hará.
+
+El siguiente ejemplo solo activará el disparador si al pulsar el evento
+se mantuvo pulsada la tecla Control:
+
+```html
+<div hx-get="/clicked" hx-trigger="click[ctrlKey]">
+    Control Click Me
+</div>
+```
+
+Las propiedades como `ctrlLKey` se resuelve primero contra el evento
+desencadenante, luego en el ámbito global. El valor de `this` estará vinculado
+al elemento actual.
 
