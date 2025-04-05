@@ -339,3 +339,8 @@ Nota: Se le pueden asignar nombres a las capas en _Project settings_ ->
 _General_ -> Layer Names
 
 - Fuente:  [Collision Layers and Masks in Godot 4 - Tutorial](https://www.gotut.net/collision-layers-and-masks-in-godot-4/)
+
+## Cómo ver las áreas de colisión de forma fácil
+
+Solo hay que ir al menú de _Debug_ y habilitar el _checkbox_
+de _Visible Collision Shapes_.
