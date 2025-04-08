@@ -406,4 +406,3 @@ Solo hay que configurar la visibilidad del nodo raíz, todos los nodos
 descendientes heredan la visibilidad del padre.
 
 - [CanvasItem](https://docs.godotengine.org/en/stable/classes/class_canvasitem.html)
->>>>>>> Stashed changes
