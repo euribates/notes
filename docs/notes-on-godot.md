@@ -111,6 +111,50 @@ ejecuta. También podemos fijar la semilla con `seed(int)`.
 - La función `randi_range(int from, int to) -> int` devuelve un entero
   comprendido entre los valores `from` y `to`, ambos inclusive.
 
+
+## El nodo `Node2D`
+
+Un nodo **`Node2d`** representa un objeto pensado para ser usado en un
+juego 2D.  Tiene una posición, una rotación (aplicada en el eje Z), una
+escala para cada eje y una deformación de torsión o _skew_.
+
+La herencia es:
+
+``` mermaid
+graph LR
+
+Node --> CanvasItem;
+CanvasItem --> Node2D;
+```
+
+Todos los demás objetos de tipo 2D, como objetos físicos, _sprites_,
+etc. heredan de este tipo. Un uso habitual de `Node2D` es como nodo
+padre de otros nodos 2D, ya que así todos los hijos heredan la posición,
+rotación, escala, etc. También nos permite controlar de forma sencilla
+el orden de _renderizado_. Los nodos de tipo `Control` también heredan
+de la misma base que `Node2D`, `CanvasItem`, por lo que heredan
+otras propiedades interesantes como `z_index` y `visible`.
+
+### Métodos de `Node2D`
+
+Methods
+
+- `apply_scale(ratio: Vector2)` : Cambia la escala
+
+- `get_angle_to(point: Vector2) -> float` : Obtiene el angulo entre el
+  nodo y el punto indicado `point`.
+
+- `get_relative_transform_to_parent(parent: Node) -> Transform2D` :
+  Obtiene la transformación aplicada (En forma de matriz $2\times 3$) entre el nodo antecesor, indicado
+  con `parent` y el nodo actual.
+
+- `global_translate(offset: Vector2)` : Añade una diferencia u _offset_ a la posiciøn global del nodo.
+
+- `look_at(point: Vector2)` : Rota el nodo de forma queel eje local
+  $x$ del nodo se oriente hacia el punto indicado, que debe estar
+  expresado en el espacio global de coordenadas.
+
+
 ## El nodo `CanvasItem`
 
 La herencia es:
