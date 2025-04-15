@@ -406,3 +406,74 @@ Solo hay que configurar la visibilidad del nodo raíz, todos los nodos
 descendientes heredan la visibilidad del padre.
 
 - [CanvasItem](https://docs.godotengine.org/en/stable/classes/class_canvasitem.html)
+
+
+## Cómo hacer animaciones sencillas con _tweens_
+
+Un **`Tween`** es un objeto ligero usado para crear desde programación
+animaciones sencillas. Funciona modificando un valor numérico e
+interpolando su valor hasta llegar a un valor final. El nombre proviene
+de _in betweening_, una técnica de animación en la que se especifican
+valores claves y el ordenador calcula los _frames_ intermedios.
+
+Su uso es habitual cuando desconocemos los valores finales con
+antelación. Por ejemplo, interpolar el nivel de zoom de una cámara es
+sencillo con un _Tween_, y más complicado usando un `AnimationPlayer`.
+Además, consumen menos recursos que `AnimationPlayer`, por lo que están
+orientados a animaciones sencillas. Se usan con un patrón de **dispara y
+olvídate** (_Fire and forget_).
+
+Nota: Un objeto de la clase `Tween` puede ser creado de dos maneras,
+llamando a `SceneTree.create_tween()` o a `Node.create_tween()`. Los
+_Tweens_ creados manualmente, es decir, usando `Tween.new()` **son
+inválidos** y no se deben utilizar.
+
+La animación en sí es creada añadiendo _tweeners_ al onjeto `Tween`,
+usando alguno de los métodos `tween_property()`, `tween_interval()`,
+`tween_callback()` o `tween_method()`:
+
+```gdscript
+var tween = get_tree().create_tween()
+tween.tween_property($Sprite, "modulate", Color.RED, 1)
+tween.tween_property($Sprite, "scale", Vector2(), 1)
+tween.tween_callback($Sprite.queue_free)
+```
+
+La secuencia anterior hará que el nodo `$Sprite` adquiera un todo rojo
+en el primer segundo, luego reduce su tamaño hasta desaparecer (escala
+0) en el siguiente segundo, y finalmente llama a `$Sprite.queue_free`
+para borrarse automáticamente. Podría valer para hacer desaparecer un
+enemigo en un juego. En principio, los _tweeners_ se ejecuta de forma
+secuencial, cuando termina una empieza el siguiente, pero esto se puede
+modificar y controlar con `parallel`, que hace que el siguiente
+_tweener_ se ejecute en paralelo con el previo, y `set_parallel`, que si
+se llama con `true`, hace que todos los _tweeners_ se ejecuten en
+paralelo.
+
+Una vez creado un _tweener_, se puede usar `.set_trans`, que es un método que
+esta pensado para ser usado en cascada, y que permite modificar la
+transición característica del _tweener_. Por ejemplo, podemos cambiar de una
+animación lineal (por defecto) a otro tipo:
+
+```gdscript
+var tween = get_tree().create_tween()
+tween.tween_property($Sprite, "modulate", Color.RED, 1).set_trans(Tween.TRANS_SINE)
+tween.tween_property($Sprite, "scale", Vector2(), 1).set_trans(Tween.TRANS_BOUNCE)
+tween.tween_callback($Sprite.queue_free)
+```
+
+De forma similar, tenemos el método `set_ease`, que acepta contantes
+definidas en la clase `Trans` como `EASE_IN`, `EASE_OUT`, `EASE_IN_OUT`
+y `EASE_OUT_IN`.
+
+Podemos pasar parámetros a la función a invocar con `tween_callback`
+usando  `bind` en la función:
+
+````gdscript
+    var tween = get_tree().create_tween()
+    tween.tween_property(slot, "modulate", Color(1, 0, 0, 1.0), 0.5)
+    ...
+    tween.tween_callback(print.bind(self.transform))
+```
+
+
