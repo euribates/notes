@@ -2009,3 +2009,28 @@ La salida sería:
 ```html
 <script id="saludos" type="application/json">{"hello": "world\\u003C/script\\u003E\\u0026amp;"}</script>
 ```
+
+## Cómo configurar _Django Debug Toolbar_
+
+Después de instalar el paquete con `pip install django-debug-toolbar`, hay que
+realizar los siguientes cambios:
+
+- Añadir la entrada `debug_toolbar` a la variable `INSTALLED_APPS`, en el
+  fichero `settings.py`.
+
+- Añadir `debug_toolbar.middleware.DebugToolbarMiddleware` a la
+variable `MIDDLEWARE` en el fichero `settings.py`.
+
+- Añadir `127.0.0.1` a la lista `INTERNAL_IPS` en el fichero `settings.py`. Es
+  posible que esta variable no haya sido creada. La barra de _debug_ solo se
+  mostrará en los servidores listados aquí.
+
+- Añadir una línea en el fichero `urls.py` para las rutas del paquete:
+
+    ```py
+    urlpatterns = [
+        ...
+        path('__debug__/', include(debug_toolbar.urls)),
+        ...
+        ]
+    ```
