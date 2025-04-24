@@ -201,7 +201,7 @@ simplemente define un área de colisión estática,  `Area2D` está buscando
 activamente colisiones que se produzcan en esa área.
 
 
-## El nodo RigidBody2D
+## El nodo `RigidBody2D`
 
 ``` mermaid
 graph LR
@@ -249,7 +249,54 @@ las colisiones. Esta es la función principal de este nodo, definir dicho
 incluye formas geométricas como rectángulos, círculos y polígonos, entre
 otras.
 
-## El nodo CharacterBody2D
+## El nodo `AnimationPlayer`
+
+Un nodo **`AnimationPlayer`** sirve para crear animaciones de tipo general,
+permitiendo animar (casi) cualquier característica del **nodo que lo contenga**.
+Contiene un diccionario de recursos de tipo `AnimationLibrary`, al que se puede
+acceder por el nombre de la animación. Para animaciones más sencillas puede ser
+más sencillo usar `tweens`.
+
+En Godot podemos animar cualquier cosa que esté accesible desde el Inspector,
+como las transformaciones de un nodo, _sprites_, elementos de interfaz de
+usuario, partículas, visibilidad, color de los materiales, etc. También se
+pueden modificar valores de variables e incluso llamar a funciones.
+
+Para poder trabajar con las animaciones lo primero es crear un nodo de tipo
+`AnimationPlayer`. Este nodo sirve como contenedor de una o más animaciones.
+Un nodo de tipo `AnimationPlayer` puede contener múltiples animaciones, que
+pueden además transicionar de una a otra.
+
+Después de crear el nodo, hay que pulsar el botón `Animation` en la parte inferior
+del _viewport_. Aparecerá el panel de animaciones, que consta de cuatro partes:
+
+- Los controles de animación, que permiten añadir, cargar, salvar o borrar
+  animaciones
+
+- Las lista de animaciones, o **_tracks_**
+
+- La **línea temporal** o **_timeline_**, con _frames_ claves o _keyframes_
+
+- Los controles del _timeline_ y de los _tracks_
+
+La animación por ordenador se basa en el concepto de _keyframes_. Un _keyframe_
+define el valor de una propiedad en un momento determinado. Se representan en
+forma de diamante en cada pista. Si hay una línea entre dos diamantes, significa
+que los dos _keyframes_ tienen el mismo valor, es decir, que no se produce ningún
+cambio entre ellos. En el resto de los casos, es decir, cuando los valores son
+diferentes, se calculan de forma automática los valores intermedios.
+
+
+A keyframe defines the value of a property at a point in time.
+
+El uso de `AnimationPlayer` está orientado a animaciones más complejas que las que
+se pueden hacer usando solo `tweens`. Puede ser también más cómodo usar la pista
+de animaciones, que es un entorno interactivo, que definir la animación en
+código.
+
+
+
+## El nodo `CharacterBody2D`
 
 La herencia de este nodo es:
 
@@ -505,6 +552,11 @@ tween.tween_property($Sprite, "modulate", Color.RED, 1).set_trans(Tween.TRANS_SI
 tween.tween_property($Sprite, "scale", Vector2(), 1).set_trans(Tween.TRANS_BOUNCE)
 tween.tween_callback($Sprite.queue_free)
 ```
+
+Figure: Esta imagen está sacada de este proyecto: 
+[godotTweeningCheatSheet](https://github.com/wandomPewlin/godotTweeningCheatSheet)
+
+![Godot Tweening Cheat Sheet](godot/godot_tween_cheatsheet_v4.png)
 
 De forma similar, tenemos el método `set_ease`, que acepta contantes
 definidas en la clase `Trans` como `EASE_IN`, `EASE_OUT`, `EASE_IN_OUT`

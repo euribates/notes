@@ -53,6 +53,23 @@ pruebas o para consultar la documentación.
 
 Otra forma posible es al invocar a Blender desde la línea de comandos.
 
+## Cómo aplicar la escala/desplazamiento/rotaciones de un objeto
+
+Antes de exportar un objeto, siempre es conveniente aplicar todas las
+transformaciones realizadas en el objeto, de forma que tengamos una figura
+limpia, con escala $1$, sin rotaciones ni desplazamientos. Para ello, con el
+objeto seleccionado, pulsamos ++ctrl+a++. En el menú emergente podemos
+seleccionar que valores queremos aplicar, incluyendo la opción de aplicarlos
+todos.
+
+![Menú de aplicar transformaciones](blender/apply-menu.png)
+
+
+## Cómo invertir la selección en Blender
+
+Para invertir la selección podemos usar el atajo ++ctrl++i++.
+
+
 ## Conceptos claves para usar Python en Blender
 
 ### Acceso a datos
