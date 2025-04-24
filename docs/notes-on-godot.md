@@ -69,6 +69,27 @@ Simplemente hay que arrastrar el nodo de la rama que queremos que sea la
 raíz de la nueva escena a la sección de Recursos (`FileSystem`), en la esquina
 inferior izquierda.
 
+## La función `get_tree()`
+
+La función **`get_tree()`** nos da acceso al árbol completo de la escena
+actual, en forma de un objeto de tipo
+[SceneTree](https://docs.godotengine.org/en/4.4/classes/class_scenetree.html).
+Esto nos permite controlar la escena en sí, el _viewport_, y el _game
+loop_. 
+
+Se usa normalmente para cambiar, reiniciar o salir de niveles, para
+añadir dinámicamente nodos, o para pausar el juego.
+
+Métodos de uso frecuente:
+
+- `reload_current_scene()` : Carga de nuevo la escena actual
+
+- `change_scene_to_file(filename)` : Carga una nueva escena, desde un
+  fichero. 
+
+- `quit()` : Sale del programa
+
+
 
 ## Cómo cargar una escena en Godot
 
