@@ -345,6 +345,40 @@ detección de colisiones, como por ejemplo, plataformas móviles en un
 juego de plataformas, es más sencillo de usar y configurar el nodo
 [`AnimatableBody2D`](https://docs.godotengine.org/en/stable/classes/class_animatablebody2d.html#class-animatablebody2d)
 
+## Cuándo usar `StaticBody2D`, `RigidBody2D` o `KinematicBody2D`
+
+Godot ofrece tres tipos diferentes de cuerpos físicos, todos agrupados
+bajo la clase base `PyysicsBody2D`. 
+
+- `StaticBody2D`: Los objetos de esto tipo se usan para representar
+  objetos físicos, que interactuan con los demás objetos físicos
+  mediante colisiones, pero que **no se mueven** a causa de estas
+  interacciones. Se suele usar para representar objetos que forman parte
+  del entorno y que no necesitan unsu pripio comportamiento dinámico, como
+  pueden ser muros o el suelo.
+
+- `RigidBody2D`: Representan objetos físicos cuyos movimientos van a ser
+  determinados por el motor de fsicas. Esto significa que no controlamos
+  ni la posición ni la velocidad del objeto, sino que influimos sobre él
+  aplicando fuerzas, como gravedad, impulsos,
+  [torque](https://es.wikipedia.org/wiki/Momento_de_fuerza), etc. y es el
+  motor de fsicas el que calcula el movimiento resultante, incluyendo en
+  sus cálculos colisiones, rebotes, rotaciones y cualquier otro efecto.
+
+- `KinematicBody2D`: Este tipo de datos proporciona detección de
+  colisiones, pero **sin físicas**. Todos los movimientos deben ser
+  calculados y aplicados en código, es decir, son nuestra
+  responsabilidad. Su uso es principalmente para implementaral jugador y
+  otros actores que requieren una física simplificada, tipo arcade, más
+  que una simulación física más realista.
+
+Decidir que tipo de objeto usar en el juego es una desición
+importante: usando el tipo correcto tendremos que escribir
+menos código, mientras que intentar que un tipo se comporte de forma
+diferente de lo que está inicialmente programa puede ser complicado y
+frustrante .
+
+
 ## Gestionando la entrada con `InputEvent`
 
 Las entradas en los juegos son complicadas. `Los eventos, representados en Godot
