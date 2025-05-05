@@ -4,70 +4,73 @@ title: Notes on Godot Engine
 
 ## Sobre Godot
 
-Godot es un motor de vídeo juegos 2D y 3D multi-plataforma, libre y de código
-abierto, publicado bajo la Licencia MIT y desarrollado por la comunidad de
-Godot. El motor es funcional en sistemas Windows, OS X, Linux y BSD. Permite
-exportar los video juegos creados a PC (Windows, OS X y Linux), teléfonos móviles
-(Android, iOS), y HTML5. 
+**Godot** es un motor de vídeo juegos 2D y 3D multiplataforma, libre y
+de código abierto, publicado bajo la Licencia MIT y desarrollado por la
+comunidad de Godot. El motor funciona en sistemas Windows, OS/X, Linux y
+BSD. Permite exportar los vídeo juegos creados a PC (Windows, OS X y
+Linux), teléfonos móviles (Android, iOS), y HTML5. 
 
-En Godot se puede programar en varios lenguajes, pero el recomendado para
-empezar es **GDScript**, que es un lenguaje con una gran influencia de
-**Python**, y con una fuerte integración con el motor.
+En Godot se puede programar en varios lenguajes, pero el recomendado
+para empezar es **GDScript**, que es un lenguaje con una gran influencia
+de **Python**, y con una fuerte integración con el motor.
 
-Godot es si está escrito en **C++**, y es posible escribir extensiones en este
-lenguaje para conseguir aun más rendimiento y control del motor, pero en general
-esto no es necesario, especialmente al principio.
+Godot es si está escrito en **C++**, y es posible escribir extensiones
+en este lenguaje para conseguir aun más rendimiento y control del motor,
+pero en general esto no es necesario, especialmente al principio.
 
 ## Nodos
 
-Los **nodos** son el componente básico de Godot. Hay muchos tipos diferentes de
-nodos, cada uno de ellos especializado en realizar un determinada función dentro
-de un juego. Un tipo de nodo, por ejemplo, se especializa en mostrar una imagen
-en pantalla, otro puede encargarse de realizar una animación, otra puede
-representar un modelo 3D de un objeto.
+Los **nodos** son el componente básico de Godot. Hay muchos tipos
+diferentes de nodos, cada uno de ellos especializado en realizar un
+determinada función dentro de un juego. Un tipo de nodo, por ejemplo, se
+especializa en mostrar una imagen en pantalla, otro puede encargarse de
+realizar una animación, otra puede representar un modelo 3D de un
+objeto.
 
 Los nodos tienen **propiedades**, que permiten definir y personalizar su
-comportamiento. El sistema es modular, de forma que añades al juego solo los
-nodos que necesites. Esto es bueno porque podemos empezar a hacer juegos sin
-tener que conocer todos los tipos de nodos existentes.
+comportamiento. El sistema es modular, de forma que añades al juego solo
+los nodos que necesites. Esto es bueno porque podemos empezar a hacer
+juegos sin tener que conocer todos los tipos de nodos existentes.
 
 En un proyecto, los nodos se organizan en un [**árbol
 jerárquico**](https://es.wikipedia.org/wiki/%C3%81rbol_(inform%C3%A1tica)).
-Todos los nodos son hijos de otros nodos, excepto el nodo raíz. Los nodos pueden
-tener múltiples hijos, o no tener ninguno, pero solo pueden tener un padre.
+Todos los nodos son hijos de otros nodos, excepto el nodo raíz. Los
+nodos pueden tener múltiples hijos, o no tener ninguno, pero solo pueden
+tener un padre.
 
 ## Escenas
 
 El conjunto de nodos agrupados en forma de árbol jerárquico forma lo que
-denominamos la **escena**. El árbol de nodos se conoce normalmente como el
-**árbol de la escena**.
+denominamos la **escena**. El árbol de nodos se conoce normalmente como
+el **árbol de la escena**.
 
 Que el nombre no nos confunda, las escenas no son _solo_ las escenas que
-podríamos pensar como fases de un juego, que lo son, pero también pueden ser
-**cualquier agrupación de nodos en forma de árbol** que nos interese agrupar
-como una escena. Por ejemplo, podemos tener una escena solo para el personaje
-que controle el jugador. Otra escena podría ser un laberinto. Una fase del juego
-sería otra escena, que incluiría en su árbol la escena del jugador y la escena
-del laberinto.
+podríamos pensar como fases de un juego, que lo son, pero también pueden
+ser **cualquier agrupación de nodos en forma de árbol** que nos interese
+agrupar como una escena. Por ejemplo, podemos tener una escena solo para
+el personaje que controle el jugador. Otra escena podría ser un
+laberinto. Una fase del juego sería otra escena, que incluiría en su
+árbol la escena del jugador y la escena del laberinto.
 
-Un aspecto muy importante de los nodos es que, además de las propiedades,
-podemos **asignarles un _script_ o programa** que controle su comportamiento.
+Un aspecto muy importante de los nodos es que, además de las
+propiedades, podemos **asignarles un _script_ o programa** que controle
+su comportamiento.
 
 
 ## Como eliminar un nodo de una escena
 
 **tl/dr**: `self.queue_free()`
 
-La forma correcta es llamando al método `queue_free()` del propio nodo. 
-Si el nodo no está en una escena (lo cual es raro, pero podría pasar)
-se puede eliminar simplemente con el método `free()`.
+La forma correcta es llamando al método `queue_free()` del propio nodo.
+Si el nodo no está en una escena (lo cual es raro, pero podría pasar) se
+puede eliminar simplemente con el método `free()`.
 
 
 ## Como convertir una rama del árbol de nodos en una escena
 
 Simplemente hay que arrastrar el nodo de la rama que queremos que sea la
-raíz de la nueva escena a la sección de Recursos (`FileSystem`), en la esquina
-inferior izquierda.
+raíz de la nueva escena a la sección de Recursos (`FileSystem`), en la
+esquina inferior izquierda.
 
 ## La función `get_tree()`
 
@@ -93,9 +96,9 @@ Métodos de uso frecuente:
 
 ## Cómo cargar una escena en Godot
 
-Usando `get_tree()` podemos obtener el nodo raíz de la escena actual, y luego,
-sobre ese nodo llamar al método `change_scene_to_file(file_path)` para cargar
-la nueva escena.
+Usando `get_tree()` podemos obtener el nodo raíz de la escena actual, y
+luego, sobre ese nodo llamar al método `change_scene_to_file(file_path)`
+para cargar la nueva escena.
 
 Ejemplo:
 
@@ -111,23 +114,25 @@ etiquetado como `Default Clear Color`.
 
 ## Cómo trabajar con números aleatorios
 
-En el espacio global tenemos el método `randomize()`. Este método solo debe
-ser ejecutado al principio, para inicializar el generador de numero
+En el espacio global tenemos el método `randomize()`. Este método solo
+debe ser ejecutado al principio, para inicializar el generador de numero
 pseudo-aleatorios con una semilla diferente, basado en el momento en que
 ejecuta. También podemos fijar la semilla con `seed(int)`.
 
-- La función `randi() -> int` devuelve un número entero al azar entre $0$ y
-  $2^{32-1}$.
+- La función `randi() -> int` devuelve un número entero al azar entre
+  $0$ y $2^{32-1}$.
 
-- La función `randf() -> float` devuelve un número flotante al azar entre $0$ y
-  $1$.
+- La función `randf() -> float` devuelve un número flotante al azar
+  entre $0$ y $1$.
 
-- La función `randfn(float mean, float deviation) -> float` devuelve un número
-  flotante basado en una distribución normal, con media `mean` (Por defecto
-  $0$) y desviación estándar `deviation` (Por defecto $1.0$).
+- La función `randfn(float mean, float deviation) -> float` devuelve un
+  número flotante basado en una distribución normal, con media `mean`
+  (Por defecto $0$) y desviación estándar `deviation` (Por defecto
+  $1.0$).
 
-- La función `randf_range(float from, float to) -> float` devuelve un valor en
-  coma flotante comprendido entre los valores `from` y `to`, ambos inclusive.
+- La función `randf_range(float from, float to) -> float` devuelve un
+  valor en coma flotante comprendido entre los valores `from` y `to`,
+  ambos inclusive.
 
 - La función `randi_range(int from, int to) -> int` devuelve un entero
   comprendido entre los valores `from` y `to`, ambos inclusive.
@@ -153,8 +158,8 @@ etc. heredan de este tipo. Un uso habitual de `Node2D` es como nodo
 padre de otros nodos 2D, ya que así todos los hijos heredan la posición,
 rotación, escala, etc. También nos permite controlar de forma sencilla
 el orden de _renderizado_. Los nodos de tipo `Control` también heredan
-de la misma base que `Node2D`, `CanvasItem`, por lo que heredan
-otras propiedades interesantes como `z_index` y `visible`.
+de la misma base que `Node2D`, `CanvasItem`, por lo que heredan otras
+propiedades interesantes como `z_index` y `visible`.
 
 ### Métodos de `Node2D`
 
@@ -166,14 +171,15 @@ Methods
   nodo y el punto indicado `point`.
 
 - `get_relative_transform_to_parent(parent: Node) -> Transform2D` :
-  Obtiene la transformación aplicada (En forma de matriz $2\times 3$) entre el nodo antecesor, indicado
-  con `parent` y el nodo actual.
+  Obtiene la transformación aplicada (En forma de matriz $2\times 3$)
+  entre el nodo antecesor, indicado con `parent` y el nodo actual.
 
-- `global_translate(offset: Vector2)` : Añade una diferencia u _offset_ a la posiciøn global del nodo.
+- `global_translate(offset: Vector2)` : Añade una diferencia u _offset_
+  a la posición global del nodo.
 
-- `look_at(point: Vector2)` : Rota el nodo de forma queel eje local
-  $x$ del nodo se oriente hacia el punto indicado, que debe estar
-  expresado en el espacio global de coordenadas.
+- `look_at(point: Vector2)` : Rota el nodo de forma que el eje local $x$
+  del nodo se oriente hacia el punto indicado, que debe estar expresado
+  en el espacio global de coordenadas.
 
 
 ## El nodo `CanvasItem`
@@ -186,18 +192,21 @@ graph LR
 Node --> CanvasItem;
 ```
 
-**`CanvasItem`** es una clase abstracta de la que deriva cualquier componente en
-el espacio 2D, como por ejemplo `Control` para nodos relacionados con la
-interfaz de usuario o `Node2D` para elementos en juegos de dos dimensiones.
+**`CanvasItem`** es una clase abstracta de la que deriva cualquier
+componente en el espacio 2D, como por ejemplo `Control` para nodos
+relacionados con la interfaz de usuario o `Node2D` para elementos en
+juegos de dos dimensiones.
 
-Cualquier objeto que herede de `CanvasItem` puede dibujar en pantalla. El
-motor realiza una llamada a `queue_redraw()`, que forzará a todos los nodos
-a volver a dibujarse. A causa de esto, el control **no tiene** que volver a pintarse
-obligatoriamente en cada _frame_, lo que mejora el rendimiento de forma
-significativa. Hay muchos métodos de dibujo disponibles, cuyos nombres empiezan
-por `draw_*`, como por ejemplo `draw_circle`, pero estos métodos **solo pueden ser usados dentro del método
-especial `_draw()`, `_notificacion()` (con el valor `NOTIFICATION_DRAW`) o
-métodos que esten conectados con la señal de `draw`**.
+Cualquier objeto que herede de `CanvasItem` puede dibujar en pantalla.
+El motor realiza una llamada a `queue_redraw()`, que forzará a todos los
+nodos a volver a dibujarse. A causa de esto, el control **no tiene** que
+volver a pintarse obligatoriamente en cada _frame_, lo que mejora el
+rendimiento de forma significativa. Hay muchos métodos de dibujo
+disponibles, cuyos nombres empiezan por `draw_*`, como por ejemplo
+`draw_circle`, pero estos métodos **solo pueden ser usados dentro del
+método especial `_draw()`, `_notificacion()` (con el valor
+`NOTIFICATION_DRAW`) o métodos que estén conectados con la señal de
+`draw`**.
 
 - [CanvasItem](https://docs.godotengine.org/en/stable/classes/class_canvasitem.html)
 - [draw_circle()](https://docs.godotengine.org/en/stable/classes/class_canvasitem.html#class-canvasitem-method-draw-circle)
@@ -234,21 +243,22 @@ CollisionObject2D --> PhysicsBody2D;
 PhysicsBody2D --> RigidBody2D;
 ```
 
-El node **`RigidNode2D`** es un nodo que puede ser afectado por fuerzas y
-que puede ser afectado por otros, reacciona a colisiones, tiene una masa, tiene
-inercia, etc. Es básicamente lo que se podría esperar de un modelo de un objeto
-"real".
+El node **`RigidNode2D`** es un nodo que puede ser afectado por fuerzas
+y que puede ser afectado por otros, reacciona a colisiones, tiene una
+masa, tiene inercia, etc. Es básicamente lo que se podría esperar de un
+modelo de un objeto "real".
 
 Por ejemplo, se le supone sujeto a la fuerza de la gravedad, así que su
-comportamiento por defecto será "caer" en el sentido en que esté configurada la
-gravedad del motor de físicas.
+comportamiento por defecto será "caer" en el sentido en que esté
+configurada la gravedad del motor de físicas.
 
 Necesita un nodo de tipo `CollisionShape2D` para definir su área de
-interacción. Con la propiedad lineal -> Damp podemos definir el rozamiento que
-le afecta en su movimiento. Por defecto está a cero, así que cualquier fuerza
-aplicada provoca un movimiento continuo. 
+interacción. Con la propiedad lineal -> Damp podemos definir el
+rozamiento que le afecta en su movimiento. Por defecto está a cero, así
+que cualquier fuerza aplicada provoca un movimiento continuo. 
 
-Podemos usar el método `apply_force` para aplicar una fuerza sobre el cuerpo.
+Podemos usar el método `apply_force` para aplicar una fuerza sobre el
+cuerpo.
 
 
 ## El nodo `CollisionShape2D`
@@ -272,48 +282,53 @@ otras.
 
 ## El nodo `AnimationPlayer`
 
-Un nodo **`AnimationPlayer`** sirve para crear animaciones de tipo general,
-permitiendo animar (casi) cualquier característica del **nodo que lo contenga**.
-Contiene un diccionario de recursos de tipo `AnimationLibrary`, al que se puede
-acceder por el nombre de la animación. Para animaciones más sencillas puede ser
-más sencillo usar `tweens`.
+Un nodo **`AnimationPlayer`** sirve para crear animaciones de tipo
+general, permitiendo animar (casi) cualquier característica del **nodo
+que lo contenga**.  Contiene un diccionario de recursos de tipo
+`AnimationLibrary`, al que se puede acceder por el nombre de la
+animación. Para animaciones más sencillas puede ser más sencillo usar
+`tweens`.
 
-En Godot podemos animar cualquier cosa que esté accesible desde el Inspector,
-como las transformaciones de un nodo, _sprites_, elementos de interfaz de
-usuario, partículas, visibilidad, color de los materiales, etc. También se
-pueden modificar valores de variables e incluso llamar a funciones.
+En Godot podemos animar cualquier cosa que esté accesible desde el
+Inspector, como las transformaciones de un nodo, _sprites_, elementos de
+interfaz de usuario, partículas, visibilidad, color de los materiales,
+etc. También se pueden modificar valores de variables e incluso llamar a
+funciones.
 
-Para poder trabajar con las animaciones lo primero es crear un nodo de tipo
-`AnimationPlayer`. Este nodo sirve como contenedor de una o más animaciones.
-Un nodo de tipo `AnimationPlayer` puede contener múltiples animaciones, que
-pueden además transicionar de una a otra.
+Para poder trabajar con las animaciones lo primero es crear un nodo de
+tipo `AnimationPlayer`. Este nodo sirve como contenedor de una o más
+animaciones.  Un nodo de tipo `AnimationPlayer` puede contener múltiples
+animaciones, que pueden además transicionar de una a otra.
 
-Después de crear el nodo, hay que pulsar el botón `Animation` en la parte inferior
-del _viewport_. Aparecerá el panel de animaciones, que consta de cuatro partes:
+Después de crear el nodo, hay que pulsar el botón `Animation` en la
+parte inferior del _viewport_. Aparecerá el panel de animaciones, que
+consta de cuatro partes:
 
-- Los controles de animación, que permiten añadir, cargar, salvar o borrar
-  animaciones
+- Los controles de animación, que permiten añadir, cargar, salvar o
+  borrar animaciones
 
 - Las lista de animaciones, o **_tracks_**
 
-- La **línea temporal** o **_timeline_**, con _frames_ claves o _keyframes_
+- La **línea temporal** o **_timeline_**, con _frames_ claves o
+  _keyframes_
 
 - Los controles del _timeline_ y de los _tracks_
 
-La animación por ordenador se basa en el concepto de _keyframes_. Un _keyframe_
-define el valor de una propiedad en un momento determinado. Se representan en
-forma de diamante en cada pista. Si hay una línea entre dos diamantes, significa
-que los dos _keyframes_ tienen el mismo valor, es decir, que no se produce ningún
-cambio entre ellos. En el resto de los casos, es decir, cuando los valores son
-diferentes, se calculan de forma automática los valores intermedios.
+La animación por ordenador se basa en el concepto de _keyframes_. Un
+_keyframe_ define el valor de una propiedad en un momento determinado.
+Se representan en forma de diamante en cada pista. Si hay una línea
+entre dos diamantes, significa que los dos _keyframes_ tienen el mismo
+valor, es decir, que no se produce ningún cambio entre ellos. En el
+resto de los casos, es decir, cuando los valores son diferentes, se
+calculan de forma automática los valores intermedios.
 
 
 A keyframe defines the value of a property at a point in time.
 
-El uso de `AnimationPlayer` está orientado a animaciones más complejas que las que
-se pueden hacer usando solo `tweens`. Puede ser también más cómodo usar la pista
-de animaciones, que es un entorno interactivo, que definir la animación en
-código.
+El uso de `AnimationPlayer` está orientado a animaciones más complejas
+que las que se pueden hacer usando solo `tweens`. Puede ser también más
+cómodo usar la pista de animaciones, que es un entorno interactivo, que
+definir la animación en código.
 
 
 
@@ -330,10 +345,10 @@ graph LR
   PhysicsBody2D --> CharacterBody2D;
 ```
 
-El nodo **`CharacterBody2D`** un objeto especializado en representar personajes
-2D controlados por un _script_. Sus movimiento no se ven afectados por la
-física, pero ellos si que pueden afectar físicamente a otros cuerpos físicos
-que se encuentren por el camino.
+El nodo **`CharacterBody2D`** un objeto especializado en representar
+personajes 2D controlados por un _script_. Sus movimiento no se ven
+afectados por la física, pero ellos si que pueden afectar físicamente a
+otros cuerpos físicos que se encuentren por el camino.
 
 Proporciona una API de alto nivel para mover objetos que queremos que
 detecten muros y reaccionen a pendientes (Véase el método
@@ -345,46 +360,52 @@ detección de colisiones, como por ejemplo, plataformas móviles en un
 juego de plataformas, es más sencillo de usar y configurar el nodo
 [`AnimatableBody2D`](https://docs.godotengine.org/en/stable/classes/class_animatablebody2d.html#class-animatablebody2d)
 
-## Cuándo usar `StaticBody2D`, `RigidBody2D` o `KinematicBody2D`
+## Cuándo usar `StaticBody2D`, `RigidBody2D` o `CharacterBody2D`
 
 Godot ofrece tres tipos diferentes de cuerpos físicos, todos agrupados
-bajo la clase base `PyysicsBody2D`. 
+bajo la clase base `PhysicsBody2D`. 
 
 - `StaticBody2D`: Los objetos de esto tipo se usan para representar
   objetos físicos, que interactuan con los demás objetos físicos
   mediante colisiones, pero que **no se mueven** a causa de estas
   interacciones. Se suele usar para representar objetos que forman parte
-  del entorno y que no necesitan unsu pripio comportamiento dinámico, como
-  pueden ser muros o el suelo.
+  del entorno y que no necesitan unsu pripio comportamiento dinámico,
+  como pueden ser muros o el suelo.
 
 - `RigidBody2D`: Representan objetos físicos cuyos movimientos van a ser
   determinados por el motor de fsicas. Esto significa que no controlamos
   ni la posición ni la velocidad del objeto, sino que influimos sobre él
   aplicando fuerzas, como gravedad, impulsos,
-  [torque](https://es.wikipedia.org/wiki/Momento_de_fuerza), etc. y es el
-  motor de fsicas el que calcula el movimiento resultante, incluyendo en
-  sus cálculos colisiones, rebotes, rotaciones y cualquier otro efecto.
+  [torque](https://es.wikipedia.org/wiki/Momento_de_fuerza), etc. y es
+  el motor de fsicas el que calcula el movimiento resultante, incluyendo
+  en sus cálculos colisiones, rebotes, rotaciones y cualquier otro
+  efecto.
 
-- `KinematicBody2D`: Este tipo de datos proporciona detección de
+- `CharacterBody2D`: Este tipo de datos proporciona detección de
   colisiones, pero **sin físicas**. Todos los movimientos deben ser
   calculados y aplicados en código, es decir, son nuestra
   responsabilidad. Su uso es principalmente para implementaral jugador y
   otros actores que requieren una física simplificada, tipo arcade, más
   que una simulación física más realista.
 
-Decidir que tipo de objeto usar en el juego es una desición
-importante: usando el tipo correcto tendremos que escribir
-menos código, mientras que intentar que un tipo se comporte de forma
-diferente de lo que está inicialmente programa puede ser complicado y
-frustrante .
+Decidir que tipo de objeto usar en el juego es una decisión importante:
+usando el tipo correcto tendremos que escribir menos código, mientras
+que intentar que un tipo se comporte de forma diferente de lo que está
+inicialmente programa puede ser complicado y frustrante .
 
+## Cómo saber las dimensiones de la pantalla
+
+Llamando a [`screen_get_size`](https://docs.godotengine.org/en/stable/classes/class_displayserver.html#class-displayserver-method-screen-get-size) en el módulo `DisplayServer`.
+
+También podemos preguntar cuantos monitores hay disponibles.
 
 ## Gestionando la entrada con `InputEvent`
 
-Las entradas en los juegos son complicadas. `Los eventos, representados en Godot
-Engine con objetos de la clase `InputEvent` nos permiten detectar cosas como
-pulsaciones del teclado, movimiento del _joystick_, ratón, etc. Los eventos
-pueden ser recibidos en múltiples lugares, dependiendo de su proposito.
+Las entradas en los juegos son complicadas. `Los eventos, representados
+en Godot Engine con objetos de la clase `InputEvent` nos permiten
+detectar cosas como pulsaciones del teclado, movimiento del _joystick_,
+ratón, etc. Los eventos pueden ser recibidos en múltiples lugares,
+dependiendo de su proposito.
 
 Por ejemplo, podemos añadir una función para cerrar el juego si se pulsa la
 tecla `escape` con el siguiente código:
@@ -397,13 +418,14 @@ func _unhandled_input(event):
 ```
 
 Sin embargo, hay un sistema más flexible, que usa un mecanismo llamado
-`InputMap`. Con este sistema, definimos las acciones de entrada que queremos
-usar y las asignamos a múltiples eventos del sistema. Por ejemplo, podemos crear
-el evento `goLeft` y asignarlo a la tecla `A`, a la tecla con la flecha hacia la
-izquierda y a determinada tecla del _gamepad_. De esta forma se puede cambiar
-estas correspondencias en los ajustes del proyecto sin tener que modificar el
-código, e incluso permitir, dentro del juego, cambiar estas asignaciones a gusto
-del jugador.
+`InputMap`. Con este sistema, definimos las acciones de entrada que
+queremos usar y las asignamos a múltiples eventos del sistema. Por
+ejemplo, podemos crear el evento `goLeft` y asignarlo a la tecla `A`, a
+la tecla con la flecha hacia la izquierda y a determinada tecla del
+_gamepad_. De esta forma se puede cambiar estas correspondencias en los
+ajustes del proyecto sin tener que modificar el código, e incluso
+permitir, dentro del juego, cambiar estas asignaciones a gusto del
+jugador.
 
 Para cambiar los ajustes, hay que ir al menú 
     
@@ -505,10 +527,14 @@ de `B`) y 3 (Balas, de quien sea). La configuración para los aviones de
 máscara tendría solo la capa 1 (Aviones enemigos, en este caso de `A`) y
 3 (balas, de quien sea).
 
-Nota: Se le pueden asignar nombres a las capas en _Project settings_ ->
-_General_ -> Layer Names
+!!! Note "Nombre de las capas" 
 
-- Fuente:  [Collision Layers and Masks in Godot 4 - Tutorial](https://www.gotut.net/collision-layers-and-masks-in-godot-4/)
+    Se le pueden asignar nombres a las capas en:
+    
+    _Project settings_ -> _General_ -> Layer Names
+
+- Fuente:  [Collision Layers and Masks in Godot 4 -
+  Tutorial](https://www.gotut.net/collision-layers-and-masks-in-godot-4/)
 
 
 ## Cómo ver las áreas de colisión de forma fácil
@@ -519,9 +545,10 @@ de _Visible Collision Shapes_.
 
 ## Cómo usar los _Timers_ en Godot
 
-Un **_Timer_** en Godot es un nodo que realiza una cuenta atrás a partir de un
-valor predeterminado, y que cuando llega a cero emite una señal, que nosotros
-podemos capturar para realizar cualquier acción en nuestro juego.
+Un **_Timer_** en Godot es un nodo que realiza una cuenta atrás a partir
+de un valor predeterminado, y que cuando llega a cero emite una señal,
+que nosotros podemos capturar para realizar cualquier acción en nuestro
+juego.
 
 Usos típicos son, entre otros:
 
@@ -543,10 +570,10 @@ atrás con una función.
 
 ## Cómo hacer un nodo visible / invisible
 
-Se puede usar o bien el método `set_visible(false|true)` o bien asignar a la
-propiedad `visible`. Por ejemplo `visible = false` oculta el objeto. La
-propiedad y el método están definidos en la clase `CanvasItem`, que es base de
-cualquier nodo que se pinte en 3D.
+Se puede usar o bien el método `set_visible(false|true)` o bien asignar
+a la propiedad `visible`. Por ejemplo `visible = false` oculta el
+objeto. La propiedad y el método están definidos en la clase
+`CanvasItem`, que es base de cualquier nodo que se pinte en 3D.
 
 Solo hay que configurar la visibilidad del nodo raíz, todos los nodos
 descendientes heredan la visibilidad del padre.
@@ -569,10 +596,12 @@ Además, consumen menos recursos que `AnimationPlayer`, por lo que están
 orientados a animaciones sencillas. Se usan con un patrón de **dispara y
 olvídate** (_Fire and forget_).
 
-Nota: Un objeto de la clase `Tween` puede ser creado de dos maneras,
-llamando a `SceneTree.create_tween()` o a `Node.create_tween()`. Los
-_Tweens_ creados manualmente, es decir, usando `Tween.new()` **son
-inválidos** y no se deben utilizar.
+!!! Note "Formas corectas de crear un _tween_"
+
+    Un objeto de la clase `Tween` puede ser creado de dos maneras,
+    llamando a `SceneTree.create_tween()` o a `Node.create_tween()`. Los
+    _Tweens_ creados manualmente, es decir, usando `Tween.new()` **son
+    inválidos** y no se deben utilizar.
 
 La animación en sí es creada añadiendo _tweeners_ al onjeto `Tween`,
 usando alguno de los métodos `tween_property()`, `tween_interval()`,
@@ -596,10 +625,10 @@ _tweener_ se ejecute en paralelo con el previo, y `set_parallel`, que si
 se llama con `true`, hace que todos los _tweeners_ se ejecuten en
 paralelo.
 
-Una vez creado un _tweener_, se puede usar `.set_trans`, que es un método que
-esta pensado para ser usado en cascada, y que permite modificar la
-transición característica del _tweener_. Por ejemplo, podemos cambiar de una
-animación lineal (por defecto) a otro tipo:
+Una vez creado un _tweener_, se puede usar `.set_trans`, que es un
+método que esta pensado para ser usado en cascada, y que permite
+modificar la transición característica del _tweener_. Por ejemplo,
+podemos cambiar de una animación lineal (por defecto) a otro tipo:
 
 ```gdscript
 var tween = get_tree().create_tween()
@@ -620,11 +649,146 @@ y `EASE_OUT_IN`.
 Podemos pasar parámetros a la función a invocar con `tween_callback`
 usando  `bind` en la función:
 
-````gdscript
-    var tween = get_tree().create_tween()
-    tween.tween_property(slot, "modulate", Color(1, 0, 0, 1.0), 0.5)
-    ...
-    tween.tween_callback(print.bind(self.transform))
+```gdscript
+var tween = get_tree().create_tween()
+tween.tween_property(slot, "modulate", Color(1, 0, 0, 1.0), 0.5)
+...
+tween.tween_callback(print.bind(self.transform))
 ```
 
+## Cómo usar las señales (_signals_) en Godot
+
+Las **señales** (**_signals_**) son mensajes que pueden emitir los
+nodos, para indicar que algo les ha sucedido, como por ejemplo, un botón
+que ha sido pulsado. Otros nodos pueden subscribirse a esta señal y
+ejecutar una función en respuesta a ese evento.
+
+Las señales son un mecanismo de delegación incorporado en Godot que
+permite a un objeto del juego reaccionar a un cambio en otro sin
+necesidad de que ninguno de los objetos se relacione directamente entre
+si. Usando señales se reduce el acoplamiento y mantiene la flexibilidad
+del código.
+
+Por ejemplo, podemos actualizar una barra de estado de vida en pantalla
+que represente el daño infligido al jugador. Cuando el jugador sufre un
+impacto, o cuando se cure tomando una poción, queremos que la barra
+refleje ese cambio. Podemos hacer esto mediante señales.
+
+!!! Note "Cambios en Godot 4.*"
+
+    Al igual que los métodos, las señales son un tipo de datos de
+    primera clase desde la versión 4.0 de Godot. Esto significa que se
+    pueden pasar como argumentos directamente, en vez de usando cadenas
+    de texto como se hacia antes.
+
+Los _signals_ en Godot son una implementación del [Patrón
+Observador (_Observer_)](https://es.wikipedia.org/wiki/Observer_(patr%C3%B3n_de_dise%C3%B1o)). 
+
+Cuando conectamos una señal con el método receptor, Godot crea
+automáticamente un nombre para el método, siguiendo la convención
+`_on_<nombre del nodo>_<nombre de la señal>`. Por ejemplo, si conectamos
+la señal `pressed` de un `Button2D` llamada `button` usando la interfaz,
+está creará (Si no existía previamente) la función `_on_button_pressed`.
+
+En resumen, cualquier nodo puede emitir señales específicas cuando le
+pase algo (como un botón al ser pulsado , por ejemplo). Otros nodos
+pueden conectarse o suscribirse a señales individuales y reaccionar
+frente a estos eventos. Un `Area2D` que represente monedas emitirá una
+señal `body_entered` cuando el jugador colisione con ella,
+permitiéndonos saber que se ha capturado la moneda.
+
+### Cómo conectar una señal con una función mediante código
+
+Se pueden conectar una función con una señal (En términos del patrón
+_Observer_, una suscripción). Un caso habitual es cuando se crean o
+instancian nuevos nodos desde el programa.
+
+Por ejemplo, supongamos que tenemos un objeto `Timer`, llamado
+igualmente `Timer`. Estos objetos definen varias señales, supongamos que
+nos interesa la señal `timeout`, u que queremos conectar dicha señal con
+nuestra función `_on_timer_timeout()`:
+
+Se necesita realizar dos operaciones para poder realizar la conexión
+mediante código: 
+
+- Obtener una referencia al nodo que define la señal
+- Llamar al método `connect()` de la señal 
+
+En el caso propuesto de ejemplo:
+
+```gdscript
+
+func _on_timer_timeout():
+    print('Timer timeout')
+
+func _ready():
+    var timer := get_node("Timer")
+    timer.timeout.connect(_on_timer_timeout)
+```
+
+## Cómo crear y trabajar con tus propias señales
+
+Se pueden crear señales personales un un _script_, por ejemplo, supongamos que
+queremos mostrar una pantalla de "_Game over_" cuando la salud del jugador
+llegue a cero. Podríamos crear una señal propio, por ejemplo ``died`` o
+``terminado`` (o el nombre que se nos ocurra), y emitir esa señal cuando la salud
+llegue a cero. Lo primero será definir la señal usando la palabra
+reservada `signal`:
+
+```gdscript
+extends Node2D
+
+signal terminado
+
+var health = 20
+```
+
+!!! Note "Sobre los nombres de las señales"
+
+    Dado que las señales representan eventos que acaban de ocurrir, la
+    recomendación para darles nombre es incluir un verbo en pasado.
+
+Las señales creadas por nosotros son iguales que las incluidas por
+defecto en el lenguaje. Aparecen en la pestaña de `Node` y se pueden
+conectar igualmente al toque de ratón.
+
+Para **emitir** la señal (es decir, notificar a todos los suscriptores)
+desde código, hay que llamar al método `emit` de la propia señal:
+
+```GDScript
+
+func take_damage(amount):
+	health -= amount
+	if health <= 0:
+        health = 0
+		health_depleted.emit()
+
+```
+
+Una señal puede declarar, de forma opcional, uno o más parámetros,
+incluyéndolos como una lista separada por comas, entre paréntesis,
+después del nombre de la señal:
+
+```GDScript
+signal health_changed(old_value, new_value)
+```
+
+!!! Note "Parámetros de las señales"
+
+    Los argumentos declarados aparecen en en editor, en la pestaña
+    `Node``, y Godot los usará para generar de forma automática el
+    código de la función receptora, si hace falta.  Pero al llamar a
+    `emit`, no se comprueban estos parámetros, es decir, que debemos
+    asegurarnos de que estamos pasándole a la función los parámetros
+    adecuados.
+
+Para emitir la señal con los argumentos, los pasaremos como parámetros
+adicionales a la llamada a `emit`:
+
+```GDScript
+func take_damage(amount):
+	var old_health = health
+	health -= amount
+	health_changed.emit(old_health, health)
+```
 
