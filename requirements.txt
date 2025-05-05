@@ -2,6 +2,7 @@ meilisearch
 mkdocs
 mkdocs-material
 mkdocs-table-reader-plugin
+mkdocs-autolinks-plugin
 pygments
 python-markdown-math
 pyyaml

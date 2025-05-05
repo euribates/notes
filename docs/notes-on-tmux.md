@@ -26,7 +26,16 @@ Conceptos básicos:
     ```
 
   El cambio sera temporal, y  durará lo que la sesión en curso. Para hacerlo
-  fijo ver [Cómo configurar Tmux](#como_configurar_tmux).
+  fijo ver [Cómo configurar Tmux](#como-configurar-tmux).
+
+
+## Cómo configurar Tmux
+
+En Linux, el fichero de configuración está normalmente en `~/.tmux.conf`.
+
+Después de hacer un cambio en la configuración, si estamos dentro de Tmux, no
+hace falta salir y volver a entrar para que los cambios se apliquen, podemos
+hacer [Prefix] + `:source-file ~/.tmux.conf`.
 
 
 ## Cómo renombrar las sesions de Tmux
@@ -89,7 +98,7 @@ Una vez dentro de una sesión, veremos que aparece una barra verde en la última
 línea de la terminal.
 
 
-## Cómo recuperar una sesión despues de un corte de comunicación
+## Cómo recuperar una sesión después de un corte de comunicación
 
 Una vez que la conexión se ha restablecido, volvemos a conectarnos
 y volvemos a activar o pasar a primer plano alguna de las sesiones
@@ -110,15 +119,6 @@ $ tmux ls
 $ tmux attach -t 0
 Back in the tmux sesion
 ```
-
-## Cómo configurar Tmux
-
-En Linux, el fichero de configuración está normalmente en `~/.tmux.conf`.
-
-Después de hacer un cambio en la configuración, si estamos dentro de Tmux, no
-hace falta salir y volver a entrar para que los cambios se apliquen, podemos
-hacer [Prefix] + `:source-file ~/.tmux.conf`.
-
 
 ## Cómo pasar una sesión Tmux a segundo plano. 
 

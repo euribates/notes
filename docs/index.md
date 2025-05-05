@@ -18,7 +18,7 @@
 - [CookieCutter](notes-on-cookiecutter.md)
 - [CRA (_Cyber Resilience Act_)](notes-on-cra.md)
 - [CSS](notes-on-css.md)
-- [ctags](notes-on-ctags.md]
+- [ctags](notes-on-ctags.md)
 - [cURL](notes-on-curl.md)
 
 - [Discord](notes-on-discord.md)
@@ -133,6 +133,7 @@
 - [Swagger](notes-on-swagger.md)
 - [SystemD](notes-on-systemd.md)
 
+- [Tableau](notes-on-tableau.md)
 - [Taking notes](notes-on-taking-notes.md)
 - [Teaching](notes-on-teaching.md)
 - [Telegram](notes-on-telegram.md)
