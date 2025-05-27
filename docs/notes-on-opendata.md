@@ -8,6 +8,13 @@ tags:
 
 ## Términos
 
+### SAS
+
+**SAS++ (anteriormente conocido como _Statistical Analysis System_; sistema de análisis estadístico)
+es un paquete de software estadístico desarrollado por SAS Institute. Este software
+se utiliza para la gestión de datos, el análisis avanzado, el análisis multivariante,
+la inteligencia empresarial, la investigación criminal y el análisis predictivo.
+
 ### RDF
 
 **[RDF](http://www.w3.org/RDF/)** (_Resource Description Framework_) es un
