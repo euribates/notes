@@ -792,3 +792,45 @@ func take_damage(amount):
 	health_changed.emit(old_health, health)
 ```
 
+## Cómo usar un GridMap
+
+Un **`GridMap`** es el equivalente en 3D del `TimeMap`.
+
+La herencia de este nodo es:
+
+``` mermaid
+graph LR
+  Node --> Object;
+  Node3D --> Node;
+  GridMap --> Node3D;
+```
+
+Para usar un `GridMap`, se debe crear un recurso llamado `MeshLibrary`, que
+básicamante es el conjunto de elementos que podemos usar para posicionar usando
+el Grid Map. Para crear un `MeshLibrary`, creamos una escena nueva, conteniendo
+los _Mesh_ válidos. Para convertir la escena en un `MeshLibrary` solo tenemos
+que usar la opción de exportar. Los materiales y las formas de colisión que se
+definan en la escena también se conservan en la librería.
+
+Al exportar, debemos usar la extensión `tres` (_text resource_).
+
+## Que es y para que sirve el nodo `Path3D`
+
+Un objeto de tipo **`Path3D`** almacena una curva de Bézier en tres
+dimensiones. Tiene muchos usos: definir rutas que seguir, sitios de
+generación de elementos, combinarse con un `CSG Shape` para construir
+una carretera,
+
+## Que es y para que sirve el nodo `PathFollow3D`
+
+Muy vinculado con el nodo anterior, `Path3d`, el nodo `PathFollow3D`**
+nos permite mover cosas a lo largo de una curva descrita por un
+`Path3D`. Los nodos `PathFollow3D` deben ser **obligatoriamente hijos de
+un nodo `Path3D`**. Tienen una propiedad `progress` que determina la
+posición dentro de la curva, en metros. También podemos usar
+`progress_ratio`, que es un valor que va de $0$ a $1$, siendo el cero el
+principio de la curva y el uno el final.
+
+Si hacemos que un nodo sea hijo de un `PathFollow3D`, este nodo se movera
+siguiendo la curva.
+
