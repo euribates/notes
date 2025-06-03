@@ -6,6 +6,26 @@ tags:
     - api
 ---
 
+## Heramientas
+
+### Tableau
+
+Tableau Public es una plataforma gratuita donde cualquiera puede crear una visualización de datos. Los datos se pueden importar desde una hoja de cálculo o también se pueden ingresar manualmente.
+
+Las principales diferencias entre Tableau Desktop (TD) y Tableau Public (TP) son las siguientes.
+
+Privacidad: Todas las visualizaciones de datos creadas con TP están disponibles para cualquiera en la comunidad de Tableau y también fuera de ella. La TD tiene parámetros de privacidad para crear proyectos con protección por contraseña o completamente privados.
+Herramientas de visualización: TD tiene más herramientas y capacidades que TP. Pero TP sigue siendo bastante potente y puede crear piezas de visualización muy interesantes. 
+Fuentes de datos: Al utilizar TD, tiene numerosas fuentes de datos que se pueden integrar con la herramienta. Por otro lado, TP solo le permite importar hojas de Excel y archivos de texto.
+¿Qué puedes hacer con Tableau?
+Según Tableau, puedes crear prácticamente cualquier tipo de visualización de datos en su plataforma. Desde un simple gráfico hasta visualizaciones de datos súper creativas e interactivas
+
+Tableau Public es completamente gratuito.
+
+Tableau Desktop comienza en $70 por usuario al mes y se puede usar como Tableau Online con un servidor de Tableau, pero también se puede alojar en un servidor privado.
+
+- [Top 10 herramientas de visualización de datos para usar en 2024 / Visme Blog](https://visme.co/blog/es/visualizacion-de-datos/)
+
 ## Términos
 
 ### SAS
@@ -14,6 +34,14 @@ tags:
 es un paquete de software estadístico desarrollado por SAS Institute. Este software
 se utiliza para la gestión de datos, el análisis avanzado, el análisis multivariante,
 la inteligencia empresarial, la investigación criminal y el análisis predictivo.
+
+### RAT
+
+El **RAT** o **Registro de Actividades de Tratamiento** es un documento, obligatorio
+según el artículo 30 del Reglamento General de Protección de Datos, que debe mantenerse
+acualizado por cualquier organismo público que trate datos personales. Su finalidad es
+proporcionar un control sobre qué datos se gestionan, con qué finalidad, quién tiene acceso
+y qué medidas de seguridad se aplican.
 
 ### RDF
 
