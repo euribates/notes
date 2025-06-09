@@ -11,6 +11,7 @@ copyright = '2025, Juan Ignacio Rodríguez de León'
 author = 'Juan Ignacio Rodríguez de León'
 release = 'MIT NON-IA License (https://github.com/non-ai-licenses/non-ai-licenses/blob/main/LICENSE)'
 
+
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
