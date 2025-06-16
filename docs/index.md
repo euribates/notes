@@ -90,7 +90,7 @@
 - [Oauth2](notes-on-oauth2.md)
 - [Oracle](notes-on-oracle.md)
 - [OpenData](notes-on-opendata.md)
-
+- [OpenTelemetry](notes-on-opentelemetry.md)
 
 - [Pandas](notes-on-pandas.md)
 - [Patrones de diseñó](notes-on-patterns.md)
@@ -124,6 +124,7 @@
 
 - [Samba](notes-on-samba.md)
 - [Selenium](notes-on-selenium.md)
+- [Shiny](notes-on-shiny.md)
 - [Slack](notes-on-slack.md)
 - [Soft skills](notes-on-soft-skills.md)
 - [Sphinx](notes-on-sphinx.md)

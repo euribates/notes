@@ -26,7 +26,135 @@ Tableau Desktop comienza en $70 por usuario al mes y se puede usar como Tableau 
 
 - [Top 10 herramientas de visualización de datos para usar en 2024 / Visme Blog](https://visme.co/blog/es/visualizacion-de-datos/)
 
+## Diferencias entre la LOPDGDD y el RGPD
+
+La LOPDGDD (Ley Orgánica de Protección de Datos y Garantía de Derechos
+Digitales), adapta el RGPD de la Unión Europea al marco español. La legislación
+española fue la primera en adecuar el reglamento comunitario, manteniendo las
+líneas generales del mismo, pero introduciendo novedades importantes como la
+aprobación de una carta de derechos digitales. Además, restringe y especifica de
+manera más clara las infracciones y multas derivadas de la misma.
+
+En términos generales, los requisitos recogidos en la nueva legislación
+establecen que a la hora de recoger datos personales es necesario al menos
+facilitar la siguiente información:
+
+- Tratamiento, finalidad y destinatarios
+- Ejercicio de derechos
+- Identidad y datos de contacto del responsable
+- Legitimación para el tratamiento
+- Plazos de conservación de la información
+- La utilización de los datos para la elaboración de perfiles
+- Adecuación de la transferencia internacional al marco legal
+
+Tomando como referencia esta información, el afectado debe dar su consentimiento
+inequívoco y previo al tratamiento de dichos datos.  El consentimiento se define
+como: **toda manifestación de voluntad libre específica, informada e
+inequívoca** por la que éste acepta, ya sea mediante **una declaración o una
+clara acción afirmativa**, el tratamiento de datos personales que le conciernen.
+(Título II, Artículo 6).
+
+La Ley también incorpora figuras legales significativas respecto al reglamento.
+Las principales novedades son:
+
+- Eleva la edad de consentimiento de un menor de 13 a 14 años
+
+- Amplía los individuos que pueden acceder a los datos de personas fallecidas.
+  Dentro de los supuestos incluidos se encuentra que personas jurídicas en
+  conflicto con el fallecido puedan acceder a esos datos, de ahí la polémica de
+  este supuesto
+
+- Impone la obligatoriedad de designar un delegado de protección de datos (DPD)
+  en caso de:
+
+  1.- Si el procesamiento de dichos datos se efectúa a través de una autoridad u
+  organismo público
+
+  2.- Si las actividades del organismo incluyen seguimiento continuado y a gran
+  escala
+
+  3.- Si las operaciones del organismo o la autoridad en cuestión tienen
+  relación con el procesamiento y seguimiento a gran escala de datos referentes
+  a delitos y condenas judiciales. Ante la imprecisión del RGPD, la ley española
+  especifica 16 supuestos en los que de manera taxativa es necesario nombrar esa
+  figura jurídica
+
+- Reconocimiento de una carta de derechos digitales
+
+- Precisión a la hora de exponer las infracciones y la cuantía de las mismas legal
+
+Fuentes: 
+
+- [Comparativa entre la LOPDGDD y el RGPD | Cookiebot](https://www.cookiebot.com/es/lopdgdd/)
+- [Texto RGPD](https://gdpr-text.com/es/)
+- [Texto LOPDGDD](https://boe.es/boe/dias/2018/12/06/pdfs/BOE-A-2018-16673.pdf)
+- [AEPD - Agencia Española de Protección de Datos](https://www.aepd.es/)
+
+
+## La AEPD y su Guía sobre el uso de _cookies_
+
+El 31 de octubre de 2020 entró en vigor la nueva y actualizada [Guía sobre el
+uso de cookies de la
+AEPD](https://www.aepd.es/sites/default/files/2020-07/guia-cookies.pdf) que
+recoge las orientaciones, garantías y obligaciones que empresas, organismos y
+sitios _web_ deben tener en cuenta para el cumplimiento del marco legal actual.
+El documento pretende allanar el camino en un tema tan complejo y llenar el
+vacío a la espera de la aprobación del reglamento de ePrivacy, hasta ahora sólo
+una directiva comunitaria.
+
+Entre los principales puntos tratados en esta nueva Guía se encuentran los siguientes:
+
+- La opción de “seguir navegando” ya **no se considera una forma válida de
+  prestar el consentimiento** por parte de los usuarios, ya que no implica una
+  decisión en la que se preste el consentimiento de forma inequívoca.
+
+- Los _muros de cookies_ no están permitidos a no ser que se informe previamente
+  al usuario y se ofrezca una alternativa equivalente al acceso al servicio sin
+  prestar el consentimiento al uso de _cookies_.
+
+- Se recomienda la renovación del consentimiento cada 24 meses, no es
+  obligatorio, pero se considera buena práctica por parte de las empresas.
+
+- Por último, se **amplía el tipo de _cookies_ que se consideran estrictamente
+  necesarias** para el funcionamiento de una web, incluyendo las cookies de
+  preferencias (elección de idioma y otros ajustes realizados de manera
+  voluntaria y consciente por parte del usuario).
+
+## Garantía de Derechos digitales
+
+La inclusión de la carta de derechos digitales dentro de la LOPDGDD supone una medida pionera en este terreno además de ser la primera de esta naturaleza a nivel comunitario. Dentro de estos derechos, la ley hace una doble distinción entre derechos digitales de carácter personal y aquellos que afectan a las personas en el ámbito laboral. Podríamos dividir estos derechos de la manera siguiente:
+
+### Ámbito personal
+
+- Neutralidad de internet
+- Acceso universal a la red
+- Seguridad digital
+- Educación digital y protección de menores
+- Derecho al olvido
+- Portabilidad
+- Testamento digital
+
+### Ámbito laboral
+
+- Derecho a la intimidad y utilización de dispositivos digitales
+- Derecho a la desconexión digital
+- Intimidad, derecho ligado a la utilización de dispositivos de vigilancia en el espacio de trabajo
+- Intimidad frente al uso de localizadores geográficos
+
+
 ## Términos
+
+### Ciberseguridad
+
+La **ciberseguridad** es el área relacionada con la informática que se enfoca en
+la protección de la infraestructura computacional y todo lo vinculado con la
+misma, y especialmente la información contenida en una computadora o circulante
+a través de las redes de computadoras. Engloba todas las tecnologías, prácticas
+y políticas para prevenir ciberataques o mitigar su impacto. Tiene como objetivo
+proteger los sistemas informáticos, las aplicaciones, los dispositivos, los
+datos, los activos financieros y las personas de ciberamenazas como el _ransomware_
+y otros _malware_, las estafas de _phishing_, el robo de datos y otras.
+
 
 ### SAS
 

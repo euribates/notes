@@ -609,3 +609,91 @@ que seamos conscientes de diferentes patrones de uso para diferentes objetos o
 bases de datos, y usemos los _tablespaces_ para mejorar el rendimiento. Por
 ejemplo, si sabemos que una tabla va a ser usada masivamente, podemos alojar en
 un _tablespace_ que este sobre un disco más rápido.
+
+
+## Vistas materializadas en PostgreSQL
+
+Las **vistas materializadas** (_Materialized views_) en PostgreSQL proporcionan
+los mismos resultados que una vista normal, pero persisten los resultado en una
+estructura de datos similar a una tabla. Para crear una vista materializada
+hacemos:
+
+```sql
+CREATE MATERIALIZED VIEW mymatview AS SELECT * FROM mytab;
+```
+
+Esto crea aparentemente una tabla `mymatview`, pero a diferencia de una tabla
+normal, esta tabla **no puede ser modificada directamente**. La consulta
+realizada originalmente para crear la vista se mantiene internamente, de forma
+que es posible refrescar la vista con la orden:
+
+```sql
+REFRESH MATERIALIZED VIEW mymatview;
+```
+
+La información sobre la vista almacenada en el catálogo del sistema es igual que
+la de cualquier otra tabla, por lo que para el usuario, una vista materializada
+es igual que cualquier otra relación. Cuando se accede a ella, los datos se
+toman directamente, como si fuera una tabla. La definición de la vista solo se
+usa para la carga inicial de los datos.
+
+Dado que los accesos son locales, la velocidad de acceso es normalmente mucho
+mayor que acceder directamente a la tabla original o a una vista normal. El
+inconveniente es que es posible que los datos almacenados no estén actualizados
+en todo momento. Según la importancia que pueda tener este desfase, hay que
+programar la actualización de la vista materializada. Esto puede variar desde un
+proceso periódico que refresque la vista a intervalos fijos de tiempo, a la
+implementación de _triggers_ que refresquen la vista cuando se modifiquen las
+tablas originales.
+
+Por ejemplo, supongamos que tenemos la siguiente tabla de pedidos:
+
+```sql
+CREATE TABLE invoice (
+    invoice_no    integer        PRIMARY KEY,
+    seller_no     integer,       -- ID of salesperson
+    invoice_date  date,          -- date of sale
+    invoice_amt   numeric(13,2)  -- amount of sale
+);
+```
+
+Si quisiéramos presentar una gráfica diaria con los ventas acumuladas por
+vendedor, podríamos crear la siguiente vista materializada:
+
+```sql
+CREATE MATERIALIZED VIEW sales_summary AS
+  SELECT
+      seller_no,
+      invoice_date,
+      sum(invoice_amt)::numeric(13,2) as sales_amt
+    FROM invoice
+    WHERE invoice_date < CURRENT_DATE
+    GROUP BY
+      seller_no,
+      invoice_date;
+
+CREATE UNIQUE INDEX sales_summary_seller
+  ON sales_summary (seller_no, invoice_date);
+```
+
+Nota: Obsérvese la creación de un índice especifico para realizar la consulta,
+lo que hará el acceso y filtrado aun más rápido.
+
+Podemos programar un trabajo para actualizar la vista cada noche, que
+simplemente debe ejecutar:
+
+```sql
+REFRESH MATERIALIZED VIEW sales_summary;
+```
+
+- Fuente: [PostgreSQL: Documentation: 17: 39.3. Materialized Views](https://www.postgresql.org/docs/current/rules-materializedviews.html)
+
+
+## ¿Qué es Apache Age?
+
+Es una extensión a PostgreSQL que permite el uso y consulta de grafos, junto con los
+sistemas de consulta relacionales ya incluidos en POstgresSQL.
+
+- [Apache AGE Homepage](https://age.apache.org/)
+
+

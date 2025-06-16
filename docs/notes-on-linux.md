@@ -463,3 +463,20 @@ Fuentes:
 
 - [How to Check Open Ports in Linux: 6 Essential Methods](https://www.liquidweb.com/blog/how-to-locate-open-ports-in-linux/)
 
+## Cómo saber en que terminal (`tty`) estamos
+
+Solo hay que ejecutar el comando `tty`. Saldrá algo como `/dev/pts/1`,
+por ejemplo.
+
+```shell
+❯ tty
+/dev/pts/1
+```
+
+Si ahora, desde otra terminal, hacemos:
+
+```shell
+echo matraka > /dev/pts/0
+```
+
+El texto `matraka` aparecerá en la primera terminal. 
