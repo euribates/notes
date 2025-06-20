@@ -124,6 +124,7 @@
 
 - [Samba](notes-on-samba.md)
 - [Selenium](notes-on-selenium.md)
+- [Sede electrónica](notes-on-sede.md)
 - [Shiny](notes-on-shiny.md)
 - [Slack](notes-on-slack.md)
 - [Soft skills](notes-on-soft-skills.md)
