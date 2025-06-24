@@ -8,3 +8,5 @@ python-markdown-math
 pyyaml
 requests
 typer[all]
+myst-parser
+sphinxcontrib-mermaid
