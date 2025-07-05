@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 from pathlib import Path
 from typing import Optional
@@ -14,7 +14,7 @@ from rich.table import Table
 
 from models import load_note_from_file
 
-DOCS = Path('./docs')
+DOCS = Path('./source/')
 
 OK = "[green]✓[/green]"
 ERROR = "[red]✖[/red]"

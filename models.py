@@ -27,7 +27,7 @@ class Point:
 
 
 def load_lines(filename):
-    with open(filename, 'r') as f_input:
+    with open(filename, 'r', encoding='utf/8') as f_input:
         for line in f_input:
             line = line.rstrip()
             yield line

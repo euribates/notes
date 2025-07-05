@@ -21,6 +21,7 @@
 - [ctags](notes-on-ctags.md)
 - [cURL](notes-on-curl.md)
 
+- [Gestión de datos](notes-on-data-governance.md)
 - [Discord](notes-on-discord.md)
 - [Django](notes-on-django.md)
   - [Django Admin](notes-on-django-admin.md)
