@@ -39,6 +39,7 @@
 - [Font-awesome](notes-on-font-awesome.md)
 - [Freelance](notes-on-freelance.md)
 
+- [Game development](notes-on-game-development.md)
 - [GoCardless](notes-on-gocardless.md)
 - [Gcloud](notes-on-gcloud.md)
 - [Migrating-django](notes-on-migrating-django.md)
@@ -150,7 +151,6 @@
 - [Unicode](notes-on-unicode.md)
 - [Uwsgi](notes-on-uwsgi.md)
 
-- [Videgames-development](notes-on-videogames-development.md)
 - [Vim](notes-on-vim.md)
 - [VirtualEnvWrapper](notes-on-virtualenvwrapper.md)
 - [Vscode](notes-on-vscode.md)

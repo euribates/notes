@@ -836,3 +836,18 @@ por ejemplo:
 
 disable=locally-disabled, multiple-statements
 ```
+
+## El concepto de ámbito o _scope_ en Python. La regla LEGB
+
+El concepto de ámbito o _scope_ determina la visibilidad de una variable
+dentro del código. Concretamente, se define de que manera, y en que
+orden, se buscan las variables en un determinado momento y lugar. El
+_scope_ varía dependiendo del lugar en que estamos y del lugar en que
+está definida la variable. Las siglas LEGB son una regla nemotécnica
+para recordar las reglas usadas en la determinación del ámbito.
+
+Las  letras del acrónimo significan _Local_, _Enclosing_, _Global_ y
+_Built-in_. De esta manera, se recuerdan tanto los diferentes _scopes_
+como el orden que se sigue para realizar la búsqueda.
+
+
