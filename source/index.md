@@ -23,6 +23,7 @@
 
 - [Gestión de datos](notes-on-data-governance.md)
 - [Discord](notes-on-discord.md)
+- [DIR3](notes-on-dir3.md)
 - [Django](notes-on-django.md)
   - [Django Admin](notes-on-django-admin.md)
   - [Django-crispy-forms](notes-on-django-crispy-forms.md)
