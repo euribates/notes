@@ -39,10 +39,13 @@ por Celia Hodent
 - **Godot from Zero to Proficiency (5 books)**, por Patrick Felicia
 
 
-Advanced Game Design" by Michael Sellers.
-"Achievement Relocked: Loss Aversion and Game Design" by Geoffrey Engelstein.
-"Game Balance" by Ian Schreiber, Brenda Romero. 
+- Advanced Game Design" by Michael Sellers.
+- "Achievement Relocked: Loss Aversion and Game Design" by Geoffrey Engelstein.
+- "Game Balance" by Ian Schreiber, Brenda Romero. 
 
+Fuentes:
+
+- [Books for Game Designers &#8211; Playtank](https://playtank.io/2022/05/18/books-for-game-designers/)
 
 ## Reality check
 
