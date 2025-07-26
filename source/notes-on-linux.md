@@ -493,7 +493,7 @@ grupo primario (`gid`) y cualquier grupo secundario al que pertenezca el
 usuario.
 
 En este ejemplo, se muestra que el usuario actual̀, `jileon`, tiene como
-grupo principal un grupo llamado igual `jileon`, y que también pertenece
+grupo principal un grupo llamado igualmente `jileon`, y que también pertenece
 a los grupos `adm`, `cdrom`, `sudo`, `dip`, `plugdev`, `users`,
 `lpadmin`, `sambashare` y `docker`.
 
@@ -503,3 +503,5 @@ uid=1000(jileon) gid=1000(jileon) groups=1000(jileon),4(adm),24(cdrom),27(sudo),
 $ id -nG
 jileon adm cdrom sudo dip plugdev users lpadmin sambashare docker
 ```
+
+- Fuente: [How to List All Groups in Linux](https://kodekloud.com/blog/how-to-list-all-groups-in-linux/)
