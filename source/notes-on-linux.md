@@ -480,3 +480,26 @@ echo matraka > /dev/pts/0
 ```
 
 El texto `matraka` aparecerá en la primera terminal. 
+
+## Cómo saber a que grupos pertenece un usuario
+
+Podemos usar el comando `id`, con la opción `-nG`, para mostrar a que
+grupos pertenece un usuario del sistema. Si no se indica el login del
+usuario, se muestra la información del usuario actual. El primer grupo
+mostrado es el grupo primario.
+
+El comando `id` sin opciones muestra el `ID` del usuario (`uid`), su
+grupo primario (`gid`) y cualquier grupo secundario al que pertenezca el
+usuario.
+
+En este ejemplo, se muestra que el usuario actual̀, `jileon`, tiene como
+grupo principal un grupo llamado igual `jileon`, y que también pertenece
+a los grupos `adm`, `cdrom`, `sudo`, `dip`, `plugdev`, `users`,
+`lpadmin`, `sambashare` y `docker`.
+
+```shell
+$ id
+uid=1000(jileon) gid=1000(jileon) groups=1000(jileon),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),100(users),105(lpadmin),125(sambashare),984(docker)
+$ id -nG
+jileon adm cdrom sudo dip plugdev users lpadmin sambashare docker
+```
