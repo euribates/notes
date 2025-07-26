@@ -152,6 +152,7 @@
 
 - [Ultisnips](notes-on-ultisnips.md)
 - [Unicode](notes-on-unicode.md)
+- [uv](notes-on-uv.md)
 - [Uwsgi](notes-on-uwsgi.md)
 
 - [Vim](notes-on-vim.md)
