@@ -741,19 +741,27 @@ la base de datos**. Ver Impedir estados imposibles. Por la misma razón, hay que
 especificar siempre `unique` a `True` si tiene sentido, y eliminar o reducir al
 mínimo los campos con `required` a `False`.
 
-Si tenemos un valor o conjunto de valores que forman una clave candidata
-natural, podemos crear un índice indicando que la combinación de valores es
-única. Además, es conveniente usar el concepto de
-[`natural_key`](https://docs.djangoproject.com/fr/4.2/topics/serialization/#natural-keys)
-para facilitar las migraciones. Una clave natural es una tupla de valores que
-identifican un registro, de forma equivalente pero alternativa a una clave
-primaria.
+## Como hacer que Django trabaje con claves naturales (`natural keys`)
 
-Para usarlo, debemos definir un gestor (`models.Manager`) personalizado, y este
-gestor debe implementar una función `get_by_natural_key`, que aceptará como
-parámetros los campos que forman la clave natural. Supongamos que queremos usar
-como clave natural el nombre y apellidos de una persona, podríamos hacer algo
-como:
+Tldr: Para usar claves naturales o *natural keys*, hay que definir un
+método ``natural_key`` en la clase Modelo, y un método
+``get_natural_key`` en una clase *Manager* especializada para el modelo.
+
+
+Si tenemos un valor o conjunto de valores que forman una **clave
+candidata natural**, podemos crear un índice indicando que la
+combinación de valores es única. Además, es conveniente usar el concepto
+de
+[`natural_key`](https://docs.djangoproject.com/fr/4.2/topics/serialization/#natural-keys)
+para facilitar las migraciones. Una clave natural es una tupla de
+valores que identifican un registro, de forma equivalente pero
+alternativa a una clave primaria.
+
+Para usarlo, debemos definir un gestor (`models.Manager`) personalizado,
+y este gestor debe implementar una función `get_by_natural_key`, que
+aceptará como parámetros los campos que forman la clave natural.
+Supongamos que queremos usar como clave natural el nombre y apellidos de
+una persona, podríamos hacer algo como:
 
 ```py
 class PersonManager(models.Manager):
@@ -790,9 +798,28 @@ clave natural:
 ```
 
 Cuando fuéramos a cargar este libro, Django usará el método
-`get_by_natural_key` con los parámetros `["Douglas", "Adams"]` para localizar
-el autor, en vez de la clave primaria.
+`get_by_natural_key` con los parámetros `["Douglas", "Adams"]` para
+localizar el autor, en vez de la clave primaria.
         
+Además, tenemos que definir, en la propia clase del modelo, un método
+que se debe llamar ``natural_key``, que debe devolver siempre una tupla
+con los valores de la clave natural. En nuestro caso, una tupla con los
+apellidos y nombre de la persona. De esta forma, cuando se llame a la
+función ``serializers.serialize()``, se puede indicar el parámetro
+``use_natural_foreign_keys=True`` o ``use_natural_primary_keys=True``.
+
+Cuando especificamos ``use_natural_foreign_keys=True``, Django usará el
+método ``natural_key()`` para seriallizar cualquier referencia como
+clave foranea a objetos de la clase del modelo, en este caso,
+``Person``.
+
+Cuando especificamos ``use_natural_primary_keys=True``, Django **no**
+proporcionara la clave primaria en los datos serializados, ya que esta
+puede ser calculada a partir de los valores del objeto durante la
+deserialización.
+
+
+- Fuente: [Serializing Django objects | Django documentation](https://docs.djangoproject.com/en/4.2/topics/serialization/#natural-keys)
 
 ## Cómo obtener el primer/último elemento de un modelo
 
