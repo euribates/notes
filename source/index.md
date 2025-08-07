@@ -21,7 +21,9 @@
 - [ctags](notes-on-ctags.md)
 - [cURL](notes-on-curl.md)
 
+- [Gestión de datos](notes-on-data-governance.md)
 - [Discord](notes-on-discord.md)
+- [DIR3](notes-on-dir3.md)
 - [Django](notes-on-django.md)
   - [Django Admin](notes-on-django-admin.md)
   - [Django-crispy-forms](notes-on-django-crispy-forms.md)
@@ -34,11 +36,13 @@
 - [Elastic search](notes-on-elasticsearch.md)
 - [English](notes-on-english.md)
 - [ePub](notes-on-epub.md)
+- [ENS: Esquema Nacional de Seguridad](notes-on-ens.md)
 
 - [Flask](notes-on-flask.md)
 - [Font-awesome](notes-on-font-awesome.md)
 - [Freelance](notes-on-freelance.md)
 
+- [Game development](notes-on-game-development.md)
 - [GoCardless](notes-on-gocardless.md)
 - [Gcloud](notes-on-gcloud.md)
 - [Migrating-django](notes-on-migrating-django.md)
@@ -90,7 +94,7 @@
 - [Oauth2](notes-on-oauth2.md)
 - [Oracle](notes-on-oracle.md)
 - [OpenData](notes-on-opendata.md)
-
+- [OpenTelemetry](notes-on-opentelemetry.md)
 
 - [Pandas](notes-on-pandas.md)
 - [Patrones de diseñó](notes-on-patterns.md)
@@ -124,6 +128,8 @@
 
 - [Samba](notes-on-samba.md)
 - [Selenium](notes-on-selenium.md)
+- [Sede electrónica](notes-on-sede.md)
+- [Shiny](notes-on-shiny.md)
 - [Slack](notes-on-slack.md)
 - [Soft skills](notes-on-soft-skills.md)
 - [Sphinx](notes-on-sphinx.md)
@@ -146,9 +152,9 @@
 
 - [Ultisnips](notes-on-ultisnips.md)
 - [Unicode](notes-on-unicode.md)
+- [uv](notes-on-uv.md)
 - [Uwsgi](notes-on-uwsgi.md)
 
-- [Videgames-development](notes-on-videogames-development.md)
 - [Vim](notes-on-vim.md)
 - [VirtualEnvWrapper](notes-on-virtualenvwrapper.md)
 - [Vscode](notes-on-vscode.md)

@@ -25,7 +25,7 @@ son:
 - Coloreado sintáctico del código, usando [Pygments](https://pygments.org/)
 
 - [Extensiones](https://www.sphinx-doc.org/en/master/usage/extensions/index.html),
-  que amplían enormemente las posibilidades de Sphinx.  Algunos ejemplo
+    que amplían enormemente las posibilidades de Sphinx.  Algunos ejemplo
   pudrían ser: Testeo automático de fragmentos de código, inclusión de
   las _docstrings_ en el caso de Python, y muchas otras [extensiones de
   terceros](https://github.com/sphinx-contrib/). La mayoría de las
@@ -356,7 +356,7 @@ ficheros con extensiones como `.rst` o `.md`.
 ## Como crear un glosario en Sphinx
 
 Crearemos un fichero `glosario.rst`, por ejemplo (Puede ser el nombre
-que queramos, o incluso tener máß de un archivo, pero lo normal es tener
+que queramos, o incluso tener más de un archivo, pero lo normal es tener
 solo uno y con este nombre o similar. Necesitamos incluirlo en algún `toctree`
 para que Sphinx lo integre en la documentación. Dentro de este fichero
 usaremos la directiva `glossary`. El contenido de esta directiva debe

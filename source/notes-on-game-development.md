@@ -2,6 +2,51 @@
 title: Notes on videogame development
 ---
 
+## Libros sobre desarrollo de juegos
+
+- **The Art of Game Design**, de Jesse Schell.
+
+- **Designing games**, de Tynan Sylvester.
+
+- **Situational Game Design**, de Brian Upton.
+
+- **Sid Meier's Memoir!: A Life in Computer Games**, de Sid Meier
+
+  - [Amazon UK](https://www.amazon.co.uk/gp/product/039386829X/)
+
+- **Procedural Generation in Game Design**, por Tanya Short (_Kitfox Games_) y
+  Tarn Adams (_Dwarf Fortress_)
+
+- **Masters Of Doom: How two guys created an empire and transformed pop
+  culture**, por David Kushner
+
+- **Video Game Writing: From Macro to Micro**, por Maurice Suckling,
+
+- **A Playful Production Process**, por Richard Lemarchand,
+
+- **Doom Guy: Life in First Person**, por John Romero.
+
+- **LevelUp!**, por  Scott Rogers for game design
+
+- **The Gamer's Brain: How Neuroscience and -X Can Impact Video Game Design**,
+por Celia Hodent
+
+- **Game Programming Patterns**, por Bob Nystrom
+
+- **Theory of Fun for Game Design**, por Raph Koster
+
+
+- **Godot from Zero to Proficiency (5 books)**, por Patrick Felicia
+
+
+- Advanced Game Design" by Michael Sellers.
+- "Achievement Relocked: Loss Aversion and Game Design" by Geoffrey Engelstein.
+- "Game Balance" by Ian Schreiber, Brenda Romero. 
+
+Fuentes:
+
+- [Books for Game Designers &#8211; Playtank](https://playtank.io/2022/05/18/books-for-game-designers/)
+
 ## Reality check
 
 - <https://www.gamespot.com/shows/reality-check/>
