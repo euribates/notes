@@ -1,3 +1,4 @@
+# Notas sobre Django
 ---
 title: Notas sobre Django
 tags:
@@ -7,7 +8,6 @@ tags:
     - database
     - javascript
 ---
-
 
 ## Cómo obtener la fecha o _timestamp_ en Django, con el _timezone_ correcto
 
@@ -160,6 +160,18 @@ class FooConfig(AppConfig):
 Fuente: [StackOverflow - How to resolve
 "django.core.exceptions.ImproperlyConfigured: Application labels aren't unique,
 duplicates: foo" in Django 1.7?](https://stackoverflow.com/questions/24319558/how-to-resolve-django-core-exceptions-improperlyconfigured-application-labels)
+
+## Cómo enlazar a la página de un modelo en el admin
+
+Se puede hacer una inversión de la URL con:
+
+```python
+reverse('admin:app_model_change', kwargs={'object_id': pk})
+```
+
+Donde `app` es la etiqueta de la app, y `model` el nombre del modelo, y
+`pk` es la clave primaria del objeto.
+
 
 ## Cómo migrar a 3.1.1
 
