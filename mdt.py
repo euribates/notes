@@ -139,7 +139,7 @@ class Handler:
         query = options.query
         topics = options.topic
         if not topics:
-            filenames = glob.glob(DOCS / 'notes-on-*.md')
+            filenames = DOCS.glob('notes-on-*.md')
             self.out(f"Buscando «[b][green]{query}[/green][/b]»")
         else:
             filenames = [

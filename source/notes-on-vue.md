@@ -4,6 +4,7 @@ tags:
   - javascript
   - framework
   - frontend
+  - vue.js
 ---
 
 ## Notas sobre Vue.js
@@ -150,3 +151,53 @@ Pero es más corto y legible la opción anterior:
 La directiva `v-model` puede ser usada con diferentes tipos ed entrada, como
 `input`, `textarea` y `select`.
 
+## Cómo iterar correctamente en Vue.js
+
+Podemos usar la directiva **`f-for`** para representar una lista
+de elementos a partir de un _array_. Esta directiva usa una sintaxis
+especial de la forma `item in items`, donde `items` es el `array` o
+fuente de datos y `item` es un alias al elemento del _array_ siendo iterado en
+ese momento.
+
+Por ejemplo, si tenemos esta fuente de datos:
+
+```javascript
+data() {
+  return {
+    turtles: [
+        { name: 'Leonardo', 'skill': 'Katana' },
+        { name: 'Raphael', 'skill': 'Sai' },
+        { name: 'Michelangelo', 'skill': 'Nunchaku' },
+        { name: 'Donatello', 'skill': 'Bastón Bō' },
+  }
+}
+```
+
+Podemos representarlo en HTML como:
+
+````html
+<li v-for="turtle in turtles">
+  [[ turtle.name ]] prefers [[ item.skill ]]
+</li>
+```
+
+Vue.js es capaz de detectar cuando se producen cambios en un array mediante
+determinados métodos, y realizar las llamadas correspondientes para actualizar
+el DOM. Los métodos que reconoce son:
+
+- `push()`
+- `pop()`
+- `shift()`
+- `unshift()`
+- `splice()`
+- `sort()`
+- `reverse()`
+
+Además, el bucle `v-for` también soporta una sintaxis adicional
+que añade la opción de acceder al índice del elemento actual:
+
+```html
+<li v-for="(item, index) in items">
+  [[ inted ]] : [[ turtle.name ]] prefers [[ item.skill ]]
+</li>
+```

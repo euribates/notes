@@ -2073,3 +2073,25 @@ variable `MIDDLEWARE` en el fichero `settings.py`.
         ...
         ]
     ```
+
+## Cómo hacer que un campo sea de solo lectura en el admin de Django
+
+Primero hay que definir el campo con el atributo `editable=False` y
+luego, en el fichero `admin.py` definir el campo como de solo lectura,
+usando la variable `readonly_fields`. 
+
+Ejemplo:
+
+```python
+class PersonData(BaseModel):
+    person = models.ForeignKey(Person, editable=False)
+    data = models.TextField()
+```
+
+Y en el `admin.py`:
+
+```python
+class PersonDataAdmin(admin.ModelAdmin):
+    readonly_fields=('person',)
+```
+

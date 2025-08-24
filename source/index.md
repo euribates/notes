@@ -18,6 +18,7 @@
 - [CookieCutter](notes-on-cookiecutter.md)
 - [CRA (_Cyber Resilience Act_)](notes-on-cra.md)
 - [CSS](notes-on-css.md)
+  - [CSS para impresoras](notes-on-css-for-printers.md)
 - [ctags](notes-on-ctags.md)
 - [cURL](notes-on-curl.md)
 
