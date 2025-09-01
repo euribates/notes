@@ -50,6 +50,7 @@ documentation for details.
    
    notes-on-ebooks.md
    notes-on-elasticsearch.md
+   notes-on-eli.md
    notes-on-english.md
    notes-on-epub.md
    notes-on-ens.md
