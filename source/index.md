@@ -46,7 +46,6 @@
 - [Game development](notes-on-game-development.md)
 - [GoCardless](notes-on-gocardless.md)
 - [Gcloud](notes-on-gcloud.md)
-- [Migrating-django](notes-on-migrating-django.md)
 - [Git](notes-on-git.md)
 
   - [Git-actions](notes-on-git-actions.md)
@@ -98,6 +97,7 @@
 - [OpenTelemetry](notes-on-opentelemetry.md)
 
 - [Pandas](notes-on-pandas.md)
+- [Pandoc](notes-on-pandoc.md)
 - [Patrones de diseñó](notes-on-patterns.md)
 - [Postgresql](notes-on-postgresql.md)
   - [pgsql](notes-on-pgsql.md)
@@ -124,12 +124,13 @@
 - [Redis](notes-on-redis.md)
 - [Restructured Text](notes-on-restructured-text.md)
 - [RQ](notes-on-rq.md)
-- [Rust](notes-on-rust.md)
 - [Rsync](notes-on-rsync.md)
+- [Rust](notes-on-rust.md)
 
 - [Samba](notes-on-samba.md)
-- [Selenium](notes-on-selenium.md)
+- [SAS Viya](notes-on-sas-viya)
 - [Sede electrónica](notes-on-sede.md)
+- [Selenium](notes-on-selenium.md)
 - [Shiny](notes-on-shiny.md)
 - [Slack](notes-on-slack.md)
 - [Soft skills](notes-on-soft-skills.md)
