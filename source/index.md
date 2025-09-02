@@ -129,7 +129,7 @@
 - [Rust](notes-on-rust.md)
 
 - [Samba](notes-on-samba.md)
-- [SAS Viya](notes-on-sas-viya)
+- [SAS Viya](notes-on-sas-viya.md)
 - [Sede electrónica](notes-on-sede.md)
 - [Selenium](notes-on-selenium.md)
 - [Shiny](notes-on-shiny.md)
