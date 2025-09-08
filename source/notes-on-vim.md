@@ -1414,3 +1414,57 @@ vim  "+/pollo.+limón" recetas.txt
 Fuentes:
 
 - [regex - Open vim file with cursor on first search pattern match - Stack Overflow](https://stackoverflow.com/questions/39232615/)
+
+## Cómo editar una macro ya grabada en Vim
+
+Una macro no es más que el contenido en un registro. Si queremos cambiar
+el registro grabado en la letra `q`, es simplemente el registro `@q`.
+Para simplemente ver el contenido de la macro `q`:
+
+```
+:echo @q
+```
+
+Igual que cualquier otro registro. También se puede usar `:registers` para ver
+todos los registros.
+
+Ahora, para editarlo, se puede hacer de varias maneras. La más sencilla
+es simplemente volver a asignar el contenido al registro, como en el
+siguiente ejemplo:
+
+```
+:let @a='iasd<1b>'
+```
+
+La parte que se muestra como `<1b>` no es literalmente ese texto; es el
+código para `Escape` (también se puede mostrar como `^[`,
+dependiendo de tu configuración). Para insertarlo hay que usar la
+combinación ++ctrl+v++ y luego ++esc++.
+
+La macro del ejemplo pasa a modo de inserción (`i`), inserta el texto
+`asd`, y pulsa `Escape` para volver al modo normal `<1b>`.
+
+Aunque es factible hacerlo así para macros cortas, no es práctico para
+macros más extensas.  En estos casos es mejor iniciar un nuevo _buffer_,
+con `:split` o `:tabnew`, insertar en él el contenido del
+registro, editarlo y luego volver a asignarlo al registro.
+
+Podemos insertar el contenido del registro `a` con:
+
+```
+"ap
+```
+
+Tras realizar los cambios que consideremos oportunos, copiaremos
+(_yank_) el contenido del buffer_ de regreso al registro `a` con:
+
+```
+^v$"ay
+``` 
+
+Explicado:
+
+- `^` ir al principio de la línea
+- `v` pasa a modo visual
+- `$` para ir al final de la línea
+- `"ay` pega (_yank_) el texto seleccionado en el registro `a`
