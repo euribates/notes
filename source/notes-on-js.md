@@ -190,6 +190,22 @@ Abrir la consola del navegador con ++ctrl+shift+i++ y ejecutar:
 restrictCopyPasteByKeyboard = function () { return true; };
 ```
 
+Si no funciona:
+
+```js
+javascript:(function(){
+  allowCopyAndPaste = function(e){
+  e.stopImmediatePropagation();
+  return true;
+  };
+  document.addEventListener('copy', allowCopyAndPaste, true);
+  document.addEventListener('paste', allowCopyAndPaste, true);
+  document.addEventListener('onpaste', allowCopyAndPaste, true);
+})();
+```
+
+Fuente: [Enable copy and paste in a webpage from the browser console · GitHub](https://gist.github.com/Gustavo-Kuze/32959786ce55b2c3751629e40c75c935)
+
 Fuente: [javascript - Enable copy and paste for a site that doesn&#39;t allow it - Stack Overflow](https://stackoverflow.com/questions/55315209/enable-copy-and-paste-for-a-site-that-doesnt-allow-it)
 
 ## Cómo reactivar el menu derecho del ratón
