@@ -388,51 +388,80 @@ Algunos de los puertos más usados son:
 nmap hostname
 ```
 
-This command will scan all commonly used ports on your server and return
-information on any that are open. You can also specify a particular
-range of ports if you’re looking for something specific:
+El programa realizará una comprobación de los puertos más usados en el
+servidor, y devuelve información de los que estén abiertos. También
+podemos especificar un rango de puertos con el parámetro `-p`:
 
 ```shell
 nmap -p 1-65535 localhost
 ```
 
-Nmap’s detailed output helps identify not only open ports but also the
-services running on them, making it a robust tool for security checks.
+La forma más recomendada de uso es:
+
+```shell
+sudo nmap -n -PN -sT -sU -p- localhost
+```
+
+Donde:
+
+- `-n`: Se salta la resolución de nombres por DNS.
+
+- `-PN`: Se salta la fase de descubrimiento, asumiendo que el _host_
+  objetivo esta activo sin necesidad de comprobarlo.
+
+- `-sT`: Inicia un _TCP connect scan_, que intenta establecer una
+  conexión completa TCP con cada puerto.
+
+- `-sU`: Realiza un escaneo también con el protocolo UDP
+
+- `-p-`: Escanea todos los puertos, sin especificar rangos.
+
+La salida identifica tanto los puertos abiertos como los servicios que
+están utilizándolos.
 
 ### Con `lsof`:
 
-The lsof (list open files) command is another useful tool for viewing
-open ports. It shows all active connections by listing open files,
-including network connections. To check for open ports, run:
+El comando `lsof` (_list open files_) tembién se puede usar para descubrir puertos abiertos. Muestra todas las conexiones activas, ya que unix las mentiene como un tipo especial de ficheros ([_everything is a file_](https://en.wikipedia.org/wiki/Everything_is_a_file)). La forma más usada es:
 
 ```shell
-sudo lsof -i -P -n
+sudo lsof -P -n
 ```
 
-This command lists all network connections without resolving hostnames
-(`-n`) and displays port numbers rather than service names (`-P`). Look for
-entries marked with “LISTEN” to see which ports are open for incoming
-connections.
+Donde:
+
+- `-n`: No intenta resolver los nombres
+
+- `-P`: Muestro los números de los puertos, en vez de los nombres de los
+  servicios.
+
+- `-i`: Permite especificar una dirección IP. Si no se indica ninguna,
+  se interpreta como cualquier dirección IP. Las formas `-i4` y `-i6`
+  permite indicar conexiones IP4 o IP6.
+
+Podemos filtrar el resuiltado buscando por `LISTEN` para ver los puertos
+abiertos.
+
 
 ### Con netstat:
 
-The netstat command has long been a favorite for checking network status
-on Linux. Although it’s gradually being replaced by newer tools, it’s
-still available on many systems. To view open ports, try:
+Esta herramienta se ha quedao un poco antigua, pero si está instalada
+podemos usarla también para ver los puertos abiertos en local:
 
 ```shell
 sudo netstat -tuln
 ```
 
-This command displays all TCP (`-t`) and UDP (`-u`) ports in a listening
-state (`-l`), without resolving hostnames (`-n`). Each line in the
-output will show the local address and port, making it easy to see which
-ports are open.
+Donde:
+
+- `-t`: Muestra los puertos TCP
+- `-u`: Muestra los puertos UDP
+- `-l`: Muestra los puertos abiertos en modo `LISTEN`
+- `-n`: No resuelve los nombres mediante DNS
 
 ### Con `ss`:
 
 El programa `ss` (_socket statistics_) es una alternativa moderna a `netstat`.
-En principio es más ráöido y eficiente. Proporciona la misma información
+En principio es más rápido y eficiente. Proporciona la misma información
 que `netstat`, pero de una forma mas condensada. Para ver los puertos
 abiertos, hay que hacer:
 
@@ -440,11 +469,9 @@ abiertos, hay que hacer:
 sudo ss -tuln
 ```
 
-The output structure is comparable to netstat, showing active TCP and
-UDP ports in a listening state. This command is highly efficient,
-especially on newer systems, and is a good replacement for netstat:.
+Los parámetros toman el mismo significado que en `netstat`.
 
-### Com `netcat` (`nc`):
+### Con `netcat` (`nc`):
 
 `Netcat` (often abbreviated as `nc`) is a flexible tool for network
 exploration, troubleshooting, and port scanning. You can use it to
@@ -505,3 +532,94 @@ jileon adm cdrom sudo dip plugdev users lpadmin sambashare docker
 ```
 
 - Fuente: [How to List All Groups in Linux](https://kodekloud.com/blog/how-to-list-all-groups-in-linux/)
+
+### Cómo montar una unidad USB en Linux
+
+Mounting USB drive is no different than mounting USB stick or even a regular SATA drive.In Linux, you can mount all file systems including ext4, FAT, and NTFS.
+
+Los pasos son:
+
+- Detectar/identificar la unidad USB
+- Crear un directorio que sirva como punto de montaje
+- Montar la unidad
+
+- **Detecting USB hard drive**: After you plug in your USB device to the
+  USB port, Linux system adds a new block device into `/dev/` directory.
+  At this stage, you are not able to use this device as the USB
+  filesystem needs to be mounted before you can retrieve or store any
+  data. To find out what name your block device file have you can run
+  `fdisk -l` command (Probablemente con `sudo`):
+
+      ```
+      Disk /dev/sdc: 7.4 GiB, 7948206080 bytes, 15523840 sectors
+      Units: sectors of 1 * 512 = 512 bytes
+      Sector size (logical/physical): 512 bytes / 512 bytes
+      I/O size (minimum/optimal): 512 bytes / 512 bytes
+      Disklabel type: dos
+      Disk identifier: 0x00000000
+
+      Device     Boot Start      End  Sectors  Size Id Type
+      /dev/sdc1  *     8192 15523839 15515648  7.4G  b W95 FAT32
+      ```
+
+  The above output will most likely list multiple disks attached to your
+  system. Look for your USB drive based on its size and filesystem. Once
+  ready, take a note of the **block device name** of the partition you
+  intent to mount. For example in our case that will be `/dev/sdc1` with
+  FAT32 filesystem.
+
+- **Crear un direcotrio como punto de montaje**: Un simple `mkdir`, si
+  no tenemos uno creado previamente. Las unidades USB suelen montarse en
+  una carpeta dentro de `/media/`.
+
+      ```
+      mkdir -p /media/usb-drive
+      ```
+
+-- **Montar la unidad USB**: At this stage we are ready to mount our USB’s partition `/dev/sdc1` into `/media/usb-drive` mount point:
+
+      ```
+      mount /dev/sdc1 /media/usb-drive/
+      ```
+
+To check whether your USB drive has been mounted correctly execute mount
+command again without any arguments and use grep to search for USB block
+device name:
+
+```
+$ mount | grep sdc1
+/dev/sdc1 on /media/usb-drive type vfat (rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=utf8,shortname=mixed,errors=remount-ro
+```
+
+#### Montar la unidad USB de forma permanente en Linux
+
+In order to mount your USB in Linux permanently after reboot add the
+following line into your /etc/fstab config file:
+
+```
+/dev/sdc1     /media/usb-drive        vfat    defaults     0    0
+```
+
+For any other file system type simply set correct type. For example the
+bellow command will mount USB driver with NTFS file system:
+
+```
+/dev/sdc1     /media/usb-drive        ntfs    defaults     0    0
+```
+
+
+#### NTFS Filesystem Unsupported
+
+Al intentar montar una unidad formateada con NTFS, podemos encontrarnos
+con el siguiente error:
+
+```
+mount: /mnt/usb: unknown filesystem type 'ntfs'.
+```
+
+Hay que instalar el paquete `ntfs-3g` para añadir soporte NTFS al
+sistema de archivos de Linux: `sudo apt install ntfs-3g`.
+
+
+- Fuente: 
+[Mount USB Drive in Linux: Step-by-step guide | Cloudflare](https://linuxconfig.org/howto-mount-usb-drive-in-linux)
