@@ -47,8 +47,9 @@ Aquí se ha usado la primera aproximación, hay una hoja de estilos base
 (`print.css`).
 
 
-De forma alternativa, una única hoja de estilos puede incluir los estilos
-para impresi'on, usando la regla `@media`. Por ejemplo:
+Otra forma de hacerlo es usar una única hoja de estilos, que puede
+incluir los estilos para impresión, usando la regla `@media`. Por
+ejemplo:
 
 ```css
 body {  /* main.css */
@@ -218,6 +219,142 @@ De esta forma, la imagen el web:
 Se imprime como:
 
 ![Gráfico con fondo claro](css-for-printers/chart-inverted.png)
+
+
+## Añadir contenido adicional
+
+Las versiones impresas puede que necesiten información extra que no es
+necesario en la pantalla. Su pueden usar las propiedades `content` para
+añadir esta información, con los pseudo-elementos `::before` y
+`::after`. Por ejemplo, podemos mostrar la URL de un enlace añadiéndolo
+después del texto del enlace, entre paréntesis, con el siguiente código:
+
+```css
+/* print.css */
+a::after {
+  content: " (" attr(href) ")";
+}
+```
+
+O podemos añadir mensajes que solo se verán en la versión impresa:
+
+```css
+/* print.css */
+main::after {
+  content: "Copyright site.com";
+  display: block;
+  text-align: center;
+}
+```
+
+En situaciones más complicadas, puede ser conveniente definir una clase
+`print` para identificar los elementos que queremos que se vean en la
+versión impresa:
+
+```html
+<p class="print">Article printed at 1:23pm 5 September 2020. Please see https://site.com/page for the latest version.</p>
+```
+
+Con el css:
+
+```css
+/* hidden on-screen */
+.print {
+  display: none;
+}
+
+@media print {
+
+  /* visible when printed */
+  .print {
+    display: block;
+  }
+
+}
+```
+
+Nota: La mayoría de los navegadores ya incluyen, o pueden incluir, la
+URL y la fecha y hora de la impresión, ya sea en la cabecera o en el
+pie, así que este ejemplo puede no ser el más afortunado.
+
+## Saltos de página
+
+Las propiedades CSS3 `break-before` y `break-after` permiten definir
+como incluir un salto de páŋina las paginas, antes o después de un
+elemento. El soporte de estas propiedades es muy bueno, excepto en
+navegadores realmente antiguos.
+
+Las propiedades de `break-after` y `break-before` pueden aceptar los
+siguientes valores:
+
+- `auto`: El valor por defecto, el salto de página se permite pero no se
+  fuerza.
+
+- `avoid`: Impide el salto de página, columna o región.
+
+- `avoid-page`: Impide el salto de página.
+
+- `page`: fuerza un salto de página.
+
+- `always`: un alias alternativa de `page`.
+
+- `left`: Fuerza un salto de página de forma que la próxima página sea
+  un página izquierda.
+
+- `right`: Fuerza un salto de página de forma que la próxima página sea
+  un página derecha.
+
+El siguiente ejemplo fuerza un salto de página inmediatamente antes
+de cualquier elemento `h1`:
+
+```css
+/* print.css */
+h1 {
+  break-before: always;
+}
+```
+
+La propiedad `break-inside` (Y su versión anterior, `page-break-inside`)
+permite especificar si se permite un salto de página dentro de un
+elemento. Los valores más usados son:
+
+- `auto`: El valor por defecto, se permite el salto, pero no se fuerza.
+
+- `avoid`: Evita un salto de página/columna/región siempre que sea posible.
+
+- `avoid-page`: Evita un salto de página siempre que sea posible.
+
+Esta modalidad puede ser preferible a la de especificar los saltos de
+página, porque normalmente lleva a un menor uso de papel, agrupando en
+lo posibles elementos como tablas o imágenes.
+
+```css
+/* print.css */
+table, img, svg {
+  break-inside: avoid;
+}
+```
+
+La propiedad `windows` permite especificar el número mínimo de líneas
+dentro de un bloque que se deben mostrar al inicio de una sección.
+Imaginemos un párrafo con cinco líneas de texto. El navegador puede que
+intente partir el párrafo después de la cuarta línea, lo que dejaría una
+solo línea de texto en la siguiente página. Esto se conoce en tipografía
+como una **línea viuda**: la última línea de un párrafo, que queda
+maquetada al comienzo de una página nueva y, por tanto, separada del
+resto del párrafo. Si ajustamos `windows` al valor `3`, el salto de
+línea se hará de forma que se mantengan juntas al menos 3 líneas de
+texto.
+
+El valor de la propiedad `orphans` se refiere al número de **líneas
+huérfanas** permitidas. Es similar a las líneas viudas, pero en este caso
+se refiere al número  mínimo de líneas a incluir al final de la pagina
+
+The box-decoration-break property controls element borders across pages. When an element with a border has an inner page break:
+
+    slice: the default, splits the layout. The top border is shown on the first page and the bottom border is shown on the second page.
+    clone: replicates the margin, padding, and border. All four borders are shown on both pages.
+
 
 
 ## Fuentes
