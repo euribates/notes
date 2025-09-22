@@ -12,3 +12,4 @@ requests
 typer[all]
 myst-parser
 sphinxcontrib-mermaid
+fpdf2==2.8.4
