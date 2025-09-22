@@ -6,3 +6,4 @@ site
 .python-version
 build/
 *~
+tags

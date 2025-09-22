@@ -6,9 +6,9 @@ tags:
     - sso
 ---
 
-## Notas sobre CAS  (Central Authentication Service)
+# Notas sobre CAS  (Central Authentication Service)
 
-### ¿Qué es CAS?
+## Qué es CAS
 
 **CAS** es un protocolo de _SSO_ (_Single Sign-On_) pensado para la web.
 Su propósito es permitir a un usuario acceder a múltiples aplicaciones
@@ -17,7 +17,7 @@ una única vez. También permite que las aplicaciones web puedan
 autenticar al usuario sin tener nunca acceso a su contraseña o
 acreditación equivalente.
 
-### ¿Qué se entiende por _Single Sign-On_?
+## Qué se entiende por _Single Sign-On_
 
 El **SSO** (_Single Sign-On_), **inicio de sesión único** o **inicio de sesión
 unificado** es un procedimiento de autenticación que habilita a un usuario
@@ -28,7 +28,7 @@ identificación.
 - [_How does single sign-on work?_](https://www.onelogin.com/learn/how-single-sign-on-works)
 
 
-### ¿Cómo funciona CAS?
+## Cómo funciona CAS
 
 El protocolo de CAS implica a, al menos, tras participantes: El
 navegador web, la aplicación web en la que se quiere identificar el
@@ -50,7 +50,7 @@ informaciøn adicional y confiable acerca del usuario en particular, que
 de esta manera ya se ha identificado correctamente.
 
 
-### Librerías para usar CAS
+## Librerías para usar CAS
 
 En Django tenemos:
 
@@ -68,7 +68,7 @@ En Django tenemos:
 
   Repo: [https://github.com/jbittel/django-mama-cas](https://github.com/jbittel/django-mama-cas)
 
-### Notas sobre la especificación del protocolo CAS 3.0
+## Notas sobre la especificación del protocolo CAS 3.0
 
 CAS es un protocolo que funciona sobre HTTP, y que requiere que sus
 componentes sean accesibles a través de unas URL específicas:
@@ -85,7 +85,7 @@ componentes sean accesibles a través de unas URL específicas:
 | `/p3/proxyValidate`   | service/proxy ticket validation [CAS 3.0] |
 
 
-### La URI /login
+## La URI /login
 
 La URI `/login` realiza dos papeles diferentes: Es la URI que se usa
 para solicitar una credencial, y también actua como un receptor de dicha
@@ -125,13 +125,14 @@ solicitante de identificación son:
   se soportan las peticiones `POST`
 
 
-Otros paræmetros no comentados aquí: 
-  The method to be used when sending
-  responses. While native HTTP redirects (GET) may be utilized as the
-  default method, applications that require a POST response can use this
-  parameter to indicate the method type. It is up to the CAS server
-  implementation to determine whether or not POST responses are
-  supported.
+Otros parámetros no comentados aquí: 
+
+    The method to be used when sending
+    responses. While native HTTP redirects (GET) may be utilized as the
+    default method, applications that require a POST response can use this
+    parameter to indicate the method type. It is up to the CAS server
+    implementation to determine whether or not POST responses are
+    supported.
 
 
 2.1.2. URL examples of /login

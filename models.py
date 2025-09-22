@@ -3,6 +3,7 @@
 
 import yaml
 
+
 class Note:
 
     def __init__(self, filename, title=''):
@@ -46,6 +47,8 @@ def load_note_from_file(filename):
         if line == '---' and header_lines:
             in_header = False
             note.metadata = yaml.safe_load('\n'.join(header_lines))
+            if 'title' in note.metadata:
+                note.title = note.metadata['title']
             continue
         if in_header:
             header_lines.append(line)

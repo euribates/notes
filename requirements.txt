@@ -1,4 +1,6 @@
 meilisearch
+markdown
+markdown.extensions
 mkdocs
 mkdocs-material
 mkdocs-table-reader-plugin

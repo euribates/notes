@@ -1,15 +1,20 @@
 ---
-title: Notes on CSS
+title: Notas sobre CSS (Hojas de estilo en cascada)
+tags:
+    - html
+    - css
+    - web
+    - design
 ---
 
 ## Variables CSS (Custom Properties)
 
 Las variables en CSS antes no eran posibles, teníamos que usar
-transpiladores como SASS o LESS. Ahora ya se soportan de forma
+transpiladores como _SASS_ o _LESS_. Ahora ya se soportan de forma
 nativa.
 
 Las variables se declaran anteponiendo dos caracteres `-` al nombre de la
-variable, seguido del caracter `:` y finalmente el valor, con la forma:
+variable, seguido del carácter `:` y finalmente el valor, con la forma:
 
 ```css
   --<nombre de la variable>: <valor>;
@@ -60,7 +65,7 @@ Esta variable solo puede ser usada por la clase `alert` o sus hijos:
 ```
 
 Una ventaja de las variables/propiedades es que tienen **acceso al
-DOM**, algo que los procesadores como LESS o SASS no pueden hacer. Por
+DOM**, algo que los procesadores como _LESS_ o _SASS_ no pueden hacer. Por
 ejemplo, podemos cambiar el valor de una variable basándonos en el ancho
 de la ventana, por ejemplo:
  
@@ -77,7 +82,7 @@ media all and (max-width: 600px) {
 ```
 
 El código CSS anterior actualiza el tamaño principal de las fuentes en
-caso de que el área de visualización sea pequeña (600 _pixels_ o menos,
+caso de que el área de visualización sea pequeña (600 pixeles o menos,
 para ser precisos).
 
 Otra gran ventaja es que podemos acceder e incluso modificar estas
@@ -108,7 +113,7 @@ Fuente: [Learn CSS Variables in 5 minutes - A tutorial for beginners](https://ww
 
 Una transición (`transition`) es una regla que indica, para una propiedad
 determinada, el tiempo que llevara cambiar el valor y la forma de la curva
-que seguira esa transofmración. Por ejemplo:
+que seguirá esa transformación. Por ejemplo:
 
 ```css
 transition: background 0.5s linear;
@@ -117,7 +122,7 @@ transition: background 0.5s linear;
 Esto le indica que, siempre que se cambie la propiedad `backgroud`, el cambio
 deberá realizarse de forma gradual, durante medio segundo, y con una
 animación lineal. En el siguiente ejemplo podemos ver como cambia
-el forndo del boton al pasar el cursor por encima:
+el fondo del botón al pasar el cursor por encima:
 
 ```html
 <style>
@@ -133,9 +138,9 @@ button:hover {
 <button> Pon el raton encima para cambiar el fondo</button
 ```
 
-Observese que esta transicion es automática. Podemos desencadenarla de forma
-activa mediate javascript, cambiado al atributo `background`, o como en el caso
-mostrado, al cambier el propio navegador el fondo en respuesta a la interacción
+Obsérvese que esta transición es automática. Podemos desencadenarla de forma
+activa mediante javascript, cambiado al atributo `background`, o como en el caso
+mostrado, al cambiar el propio navegador el fondo en respuesta a la interacción
 con el usuario.
 
 
@@ -154,10 +159,10 @@ los correspondientes parámetros animados. Este es un ejemplo:
 }
 ```
 
-La animación de este ejemplo se llama `stretching` (Podriamos llamarla como
+La animación de este ejemplo se llama _stretching_ (Podemos llamarla como
 queramos) y describe los cambios en los estilos desde un momento inicial hasta
 un momento final. Esta animación puede ser aplicada a cualquier elemento. Para
-ello, necesitamos definir el nombre de la animacion (Con `animation-name` y la
+ello, necesitamos definir el nombre de la animación (Con `animation-name` y la
 duración (con `animation-duration`), como en el siguiente ejemplo:
 
 ```css
@@ -174,17 +179,17 @@ valores `0%` y `100%`, como ya vimos, o con las palabras reservadas `from` y
 `to`. Podemos definir valores intermedios usando cualquier valor comprendido
 entre el `0%` y el `100%`.
 
-Si omitimos el keyframe inicial, la animación se ejecuta desde el estilo
+Si omitimos el _keyframe_ inicial, la animación se ejecuta desde el estilo
 inicial que tenga el elemento, siguiendo los pasos definidos.
 
 Si omitimos el valor final, la animación se ejecuta hasta el último paso, y
 luego retrocede hasta volver a su estado inicial.
 
-la duración de la animación puede espedificarse usando diferentes unidades,
+la duración de la animación puede especificarse usando diferentes unidades,
 segundos, como en `2s`, o milisegundos: `250ms`.
 
-El siguiente ejemplo no define un estado inicial (No hay ningun paso definido
-en el valor `0%` o `from`), pero aplica una trasformacion que rota -90º
+El siguiente ejemplo no define un estado inicial (No hay ningún paso definido
+en el valor `0%` o `from`), pero aplica una trasformación que rota -90º
 a la mitad de la animación (`50%`) y finaliza con una rotación completa de 360º
 grados:
 
@@ -199,12 +204,12 @@ grados:
 }
 ```
 
-El estado inicial será el del objeto al que aplicamos la trasformación; si no
-ha sido modificado, será de 0º.
+El estado inicial será el del objeto al que aplicamos la trasformación;
+si no ha sido modificado, será de 0º.
 
-El siguiente ejemplo define una animación del color de fondo (`background-color`) en 4 fases. Usamos
-`to` y `from`, pero podríamos haberla heccho exactamente igual con `0%` y
-`100%`:
+El siguiente ejemplo define una animación del color de fondo
+(`background-color`) en 4 fases. Usamos `to` y `from`, pero podríamos
+haberla hecho exactamente igual con `0%` y `100%`:
 
 ```css
 @keyframes coloring {
@@ -215,7 +220,7 @@ El siguiente ejemplo define una animación del color de fondo (`background-color
 }
 ```
 
-Si borraramos el estado final, `to`, el color pasararia de rojo a amarillo,
+Si borramos el estado final, `to`, el color pasaría de rojo a amarillo,
 verde y azul y luego, retrocede volviendo a verde, amarillo y finalmente de
 nuevo al color rojo.
 
@@ -255,36 +260,37 @@ la primera mitad, y en la segunda se irá incrementado hasta el valor final de
 
 ### Animaciones complejas
 
-Se puede aplicar varias animaciónes diferentes al mismo elemento. Los cambios
-se realizarán simultaneamente.
+Se puede aplicar varias animaciones diferentes al mismo elemento. Los
+cambios se realizarán simultáneamente.
 
-Para ello, se asignan varias animaciones, separadas com coma, en la propiedad
-`animation-name`. Si queremos que todas las animaciones duren lo mismo, podemos
-dejar un único valor en `animation-duration`, pero también podemos asignar
-diferentes duraciones para cada animación, de nuevo usando comas para separa
-cada posible valor.
+Para ello, se asignan varias animaciones, separadas por coma, en la
+propiedad `animation-name`. Si queremos que todas las animaciones duren
+lo mismo, podemos dejar un único valor en `animation-duration`, pero
+también podemos asignar diferentes duraciones para cada animación, de
+nuevo usando comas para separa cada posible valor.
 
 ### Repetir animaciones
 
-Hasta ahora, las animaciones solo se han ejecutado una vez. Podemos usar la
-propiedad `animation-iteration-count` para especificar el número de
-repeticiones que queremos. Acepta números positivos (o incluso el cero, en ese
-caso no se ejecutará) o la palabra clave `infinite` para que se repita de forma
-cíclica sin fin.
+Hasta ahora, las animaciones solo se han ejecutado una vez. Podemos usar
+la propiedad `animation-iteration-count` para especificar el número de
+repeticiones que queremos. Acepta números positivos (o incluso el cero,
+en ese caso no se ejecutará) o la palabra clave `infinite` para que se
+repita de forma cíclica sin fin.
 
 ### Sentido de la animación
 
-Con el atributo `animation-direction` definimos el sentido de la animación; por
-defecto vale `normal`, que es ejecutar la animación desde el valor `from` hasta
-el valor `to`, pero si la cambiamos a `reverse`, la animación se ejecuta al
-contrario, desde `to` hasta `from`.
+Con el atributo `animation-direction` definimos el sentido de la
+animación; por defecto vale `normal`, que es ejecutar la animación desde
+el valor `from` hasta el valor `to`, pero si la cambiamos a `reverse`,
+la animación se ejecuta al contrario, desde `to` hasta `from`.
 
-Además de `normal` y `reverse`, hay otros dos posibles valores, que solo tiene
-sentido usar cuando el número de repeticiones de la animación
+Además de `normal` y `reverse`, hay otros dos posibles valores, que solo
+tiene sentido usar cuando el número de repeticiones de la animación
 (`animation-iteration-count`) es mayor que 1: Si usamos `alternate`, las
 animaciones impares se ejecutan en el orden normal, y las pares en orden
 inverso. Con el valor `alternate-reverse` es justo al contrario, las
-animaciones impares se ejecutan en orden inverso y las pares en orden normal.
+animaciones impares se ejecutan en orden inverso y las pares en orden
+normal.
 
 ```css
 @keyframes clockwise {
@@ -314,52 +320,56 @@ animaciones impares se ejecutan en orden inverso y las pares en orden normal.
 }
 ```
 
-### Asigna un retraso o _delay_ a una animación
+### Como asignar un retraso o _delay_ a una animación
 
-Podemos asignara un retraso o _delay_ con la propiedad `animation-delay`. Eso
-nos permite encadenar animaciónes sin que se ejecuten simultaneamente, o
-solapándose. Admite las mismas unidades que `animation-duration`, esto es,
-segundos con `s` o milisegundos con `ms`.
+Podemos asignara un retraso o _delay_ con la propiedad
+`animation-delay`. Eso nos permite encadenar animaciones sin que se
+ejecuten simultáneamente, o solapándose. Admite las mismas unidades que
+`animation-duration`, esto es, segundos con `s` o milisegundos con `ms`.
 
 ### definiendo el estado final de la animación
 
-Hasta ahora las animaciones volvian al estado original después de ejecutada la
-animación, pero definiendo la propieddad `animation-fill-mode` a `forwards`
-podemos hacer que el elemento se quede con los valores finales después de la
-animación.
+Hasta ahora las animaciones volvían al estado original después de
+ejecutada la animación, pero definiendo la propiedad
+`animation-fill-mode` a `forwards` podemos hacer que el elemento se
+quede con los valores finales después de la animación.
 
-Otro valor posible es `backwards`. Este valor define el estado del elemento antes de la ejecución de la animacion; si un elemento tiene asignada una animación con un _delay_ y el parámetro 
-`animation-fill-mode` a `backwards`, los estilos descritos en el primer paso de
-la animación, ya sea usando `from` o `0%` serán aplicados al principio, entes
-de que la aplicación se ejecute.
+Otro valor posible es `backwards`. Este valor define el estado del
+elemento antes de la ejecución de la animación; si un elemento tiene
+asignada una animación con un _delay_ y el parámetro
+`animation-fill-mode` a `backwards`, los estilos descritos en el primer
+paso de la animación, ya sea usando `from` o `0%` serán aplicados al
+principio, entes de que la aplicación se ejecute.
 
-El tercer valor posible es `both`: Combina los dos anteriores, es decir, antes
-de la animación, el elemento adquiere los valores definidos en el primer paso,
-`from` o `0%`, y después de la animación, se queda con los valores definod en
-el último paso, `to` o `100%`.
+El tercer valor posible es `both`: Combina los dos anteriores, es decir,
+antes de la animación, el elemento adquiere los valores definidos en el
+primer paso, `from` o `0%`, y después de la animación, se queda con los
+valores definidos en el último paso, `to` o `100%`.
 
-### Parar (pause) y continuar una animación
+### Como parar (pause) y continuar una animación
 
 Hay una propiedad `animation-play-state`, con dos posibles valores, `running` y
-`paused`, que nos permite pausar y continuar la animación
+`paused`, que nos permite pausar y continuar la animación.
 
 
 ### Definiendo la forma de la animación
 
-La propiedad más importante de la animación es `animation-timing-function`, y
-define la forma en que la animación es ejecutada; las aceleraciones y
-velocidades con las que se animan las propiedades. El valor por defecto es
-`ease`, que proporciona una animación suave, con una aceleración al principio y
-una desaceleración al final.  Otros posibles valore son: `linear` para realizar
-un movimiento lineal, sin ninguna aceleración ni al principio ni al final; el
-típico movimiento "robótico". Los valores `ease-in` y `ease-out` realizan una
-aceleración suave al principio o una desaceleracion suave al final,
-respectivamente. El valor `ease-in-out` es similar a `ease`, pero con cambios
-de velocidad algo más rápidos.
+La propiedad más importante de la animación es
+`animation-timing-function`, y define la forma en que la animación es
+ejecutada; las aceleraciones y velocidades con las que se animan las
+propiedades. El valor por defecto es `ease`, que proporciona una
+animación suave, con una aceleración al principio y una desaceleración
+al final.  Otros posibles valore son: `linear` para realizar un
+movimiento lineal, sin ninguna aceleración ni al principio ni al final;
+el típico movimiento "robótico". Los valores `ease-in` y `ease-out`
+realizan una aceleración suave al principio o una desaceleracion suave
+al final, respectivamente. El valor `ease-in-out` es similar a `ease`,
+pero con cambios de velocidad algo más rápidos.
 
-Tambien podemos asignarle a esta propiedad una curva con la función
-`cubic-bezier`; de hecho todos los nombres `ease`, `ease-in`, etc. son solo
-alias para llamar a esa función con ciertos parámetros predefinidos.
+También podemos asignarle a esta propiedad una curva con la función
+`cubic-bezier`; de hecho todos los nombres `ease`, `ease-in`, etc. son
+solo alias para llamar a esa función con ciertos parámetros
+predefinidos.
 
 ```css
 animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
@@ -367,33 +377,33 @@ animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
 
 
 Usando las transiciones de CSS3, podemos aplicar estas animaciones a objetos
-cuando eston cambien de estado; por ejemplo cuando el ratón se situa encima,
+cuando estos cambien de estado; por ejemplo cuando el ratón se sitúa encima,
 (`hovered over`), cuando adquiere el foco (`focused on`), cuando se activa
-(`active`) o se fija como objetivo (`targeted`)
-With CSS3 transitions you have the potential to alter the appearance and
-behavior of an element whenever a state change occurs, such as when it is
-**hovered over**, **focused on**, **active**, or **targeted**.
-
-Animations within CSS3 allow the appearance and behavior of an element to be
-altered in multiple keyframes. **Transitions** provide a change from one state
-to another, while **animations** can set multiple points of transition upon
-different keyframes.
-
+(`active`) o se fija como objetivo (`targeted`)...
 
 ### Transiciones
 
-As mentioned, for a transition to take place, an element must have a change in
-state, and different styles must be identified for each state. The easiest way
-for determining styles for different states is by using the `:hover`, `:focus`,
-`:active`, and `:target` pseudo-classes.
+Las animaciones en CSS3 permiten alterar la apariencia y comportamiento
+de un elemento en diferentes _keyframes_. Las **transiciones**
+proporcionan un cambio de un estado a otro, donde las animaciones pueden
+definir distintos puntos de transición a lo largo de diferentes
+_keyframes_.
 
-There are **four transition related properties in total**, including
-`transition-property`, `transition-duration`, `transition-timing-function`, and
-`transition-delay`. Not all of these are required to build a transition, with
-the first three are the most popular.
+Por tanto, para definir una transición, debemos partir de los dos
+estados, el inicial y el final, cada uno de los cuales puede tener
+asignados diferentes estilos. La forma más sencilla de determinar los
+estilos aplicar a los diferentes estados es usando las psuedo-clases
+`:hover`, `:focus`, `:active` y `:target`.
 
-In the example below the box will change its background color over the course of
-1 second in a linear fashion.
+Hay cuatro propiedades disponibles para definir transiciones, que son
+`transition-property`, `transition-duration`,
+`transition-timing-function` y `transition-delay`. No todas son
+obligatorias a la hora de definir una transición, siendo las tres
+primeras las usadas con frecuencia.
+
+En el siguiente ejemplo la caja cambia su color de fondo cuando el
+cursor está encima, durante un segundo, y el cambio se hace de
+forma lineal:
 
 ```
 .box {
@@ -408,17 +418,12 @@ In the example below the box will change its background color over the course of
 }
 ```
 
-**Vendor Prefixes**
+En el código anterior, no se han usado prefijos especificos del navegador. Si
+queremos curarnos en salud, y que funcione en la mayoría de los navegadores,
+deberiamos usar estos prefijos. Por ejemplo, en el caso anterior, añadiendo los
+prefijos, quedaría:
 
-The code above, as with the rest of the code samples in this lesson, are not
-vendor prefixed. This is intentionally un-prefixed in the interest of keeping
-the code snippet small and comprehensible. For the best support across all
-browsers, use vendor prefixes.
-
-For reference, the prefixed version of the code above would look like the
-following:
-
-```
+```css
 .box {
     background: #2db34a;
     -webkit-transition-property: background;
@@ -440,34 +445,19 @@ following:
 }
 ```
 
-**Transitional Property**
+## Qué propiedades son aptas para una transición
 
-The `transition-property` property determines exactly what properties will be
-altered in conjunction with the other transitional properties. By default, all
-of the properties within an element’s different states will be altered upon
-change. However, only the properties identified within the transition-property
-value will be affected by any transitions.
+Solo se pueden usar las propiedades que pueden tener valores
+intermedios.  Colores, o tamaños de fuente, pueden ser usadas sin
+problema ya que se pueden calcular los valores intermedios a partir de
+los valores inicial y final. 
 
-In the example above, the `background` property is identified in the
-`transition-property` value. Here the background property is the only property
-that will change over the duration of 1 second in a linear fashion. Any other
-properties included when changing an element’s state, but not included within
-the transition-property value, will not receive the transition behaviors as set
-by the transition-duration or transition-timing-function properties.
+Sin embargo, una propiedad como `display`, que solo puede tomar valores
+discretos, **no puede ser usada**, ya que no se pueden calcular valores
+discretos entre, digamos, los valores `None` y `block`.
 
-If multiple properties need to be transitioned they may be comma separated
-within the transition-property value. Additionally, the keyword value `all` may
-be used to transition all properties of an element.
-
-
-**Transitional Properties**
-
-It is important to note, not all properties may be transitioned, only properties
-that have an identifiable halfway point. Colors, font sizes, and the alike may
-be transitioned from one value to another as they have recognizable values
-in-between one another. The display property, for example, may not be
-transitioned as it does not have any midpoint. A handful of the more popular
-transitional properties include the following:
+Algunas de las propiedades que más a menudo son usadas para aplicarles
+transiciones son:
 
 - `background-color`
 - `background-position`
@@ -543,7 +533,7 @@ speeds up in the middle, then slows down again before ending.
 Each timing function has a cubic-bezier curve behind it, which can be
 specifically set using the cubic-bezier(x1, y1, x2, y2) value. Additional
 values include step-start, step-stop, and a uniquely identified
-`steps(number_of_steps, direction)` value.
+`steps(number_of_+---steps, direction)` value.
 
 When transitioning multiple properties, you can identify multiple timing
 functions. These timing function values, as with other transition property
@@ -589,7 +579,7 @@ values.
 
 **Customizing Animations**
 
-Animations also provide the ability to further customize an element’s behavior,
+Animations also provide the ability to further customize an element's behavior,
 including the ability to declare the number of times an animation runs, as well
 as the direction in which an animation completes.
 
@@ -668,34 +658,34 @@ Links:
 
 - [Transitions &amp; Animations - Learn to Code Advanced HTML &amp; CSS](https://learn.shayhowe.com/advanced-html-css/transitions-animations/)
 
-- [Zooming Background Images | CSS-Tricks - CSS-Tricks](https://css-tricks.com/zooming-background-images/)
+- [Zooming Background Images - CSS-Tricks](https://css-tricks.com/zooming-background-images/)
 
 - [SMOOTH Image Zoom on Hover Effects with CSS](https://w3bits.com/css-image-hover-zoom/)
 
-- [Understanding CSS3 Transitions &#8211; A List Apart](http://www.alistapart.com/articles/understanding-css3-transitions/)
+- [Understanding CSS3 Transitions - A List Apart](http://www.alistapart.com/articles/understanding-css3-transitions/)
 
-- [The Guide To CSS Animation: Principles and Examples — Smashing Magazine](http://coding.smashingmagazine.com/2011/09/14/the-guide-to-css-animation-principles-and-examples/)
+- [The Guide To CSS Animation: Principles and Examples - Smashing Magazine](http://coding.smashingmagazine.com/2011/09/14/the-guide-to-css-animation-principles-and-examples/)
 
 - [CSS cubic-bezier Builder](http://www.roblaplaca.com/examples/bezierBuilder/)
 
-- [Using CSS animations - CSS: Cascading Style Sheets | MDN](https://developer.mozilla.org/en-US/docs/CSS/Using_CSS_animations)
+- [Using CSS animations - CSS: Cascading Style Sheets - MDN](https://developer.mozilla.org/en-US/docs/CSS/Using_CSS_animations)
 
 
 ## Cómo hacer un árbol expandible/colapsable con CSS
 
 Se puede hacer usando solo CSS, usando listas anidadas.
 
-Primero, a la lista más externa le ponemos la clase `tree`. Cada elemento de la
-lista estará compuesto por doe elementos,`details` y `summary`, y usaremos el
-atributo `open` de details para controlar cuando el contenido se expande o se
-colapsa.
+Primero, a la lista más externa le ponemos la clase `tree`. Cada
+elemento de la lista estará compuesto por dos elementos,`details` y
+`summary`, y usaremos el atributo `open` de _details_ para controlar
+cuando el contenido se expande o se colapsa.
 
 
 Fuente: [Tree views in CSS](https://iamkate.com/code/tree-views/)
 
 ## Como posicionar texto sobre una imagen
 
-Ponemos en un contendor comun las imagen y el texto:
+Ponemos en un contenedor común las imagen y el texto:
 
 ```html
  <div class="container">
@@ -708,7 +698,7 @@ Ponemos en un contendor comun las imagen y el texto:
 </div>
 ```
 
-Hacemos que el contendor tenga `position` a `relative`:
+Hacemos que el contenedor tenga `position` a `relative`:
 
 ```css
 .container {
@@ -792,11 +782,11 @@ del eje principal quedará a la izquierda, y el margen final a la derecha.
 ```
 flex-direction: row
 
-╭────────────────────────────╮
-│                            │
-│ [A] [B] [C]                │   
-│                            │
-╰────────────────────────────╯
++----------------------------+
+|                            |
+| [A] [B] [C]                |   
+|                            |
++----------------------------+
 ```
 
 Si fuera a trabajar en árabe, usaría `row-reverse` y entonces el margen inicial
@@ -805,11 +795,11 @@ del eje principal queda a la derecha y el margen final a la izquierda.
 ```
 flex-direction: row-reverse
 
-╭────────────────────────────╮
-│                            │
-│                [C] [B] [A] │   
-│                            │
-╰────────────────────────────╯
++----------------------------+
+|                            |
+|                [C] [B] [A] |   
+|                            |
++----------------------------+
 ```
 
 
@@ -860,14 +850,14 @@ box {
 El resultado será:
 
 ```
-╭─────────────────────────────────────────╮
-│ ╭─────╮ ╭─────╮ ╭───────╮               │   
-│ │ One │ │ Two │ │ Three │               │   
-│ │     │ │     │ │ has   │               │   
-│ │     │ │     │ │ extra │               │   
-│ │     │ │     │ │ text  │               │   
-│ ╰─────╯ ╰─────╯ ╰───────╯               │
-╰─────────────────────────────────────────╯
++-----------------------------------------+
+| +-----+ +-----+ +-------+               |   
+| | One | | Two | | Three |               |   
+| |     | |     | | has   |               |   
+| |     | |     | | extra |               |   
+| |     | |     | | text  |               |   
+| +-----+ +-----+ +-------+               |
++-----------------------------------------+
 ```
 
 Como se comento antes, si los elementos exeden el tamaño del contenedor en el
@@ -898,72 +888,76 @@ estas propiedades es cambiar la forma que se distribuye el espacio disponible
 entre nuestros elementos. Este concepto de espacio disponible es también importante
 cuando veamos la alineación de elementos.
 
-Si tenemos tres elementos con un ancho de 100 pixeles en un contenedor de 500
-pixeles de ancho, entonces el espacio que se necesita para colocar nuestros
-elementos es de 300 pixeles. Esto deja 200 pixeles de espacio disponible. Si no
-cambiamos los valores iniciales, flexbox colocará ese espacio después
-del último ítem.
+Si tenemos tres elementos con un ancho de 100 píxeles en un contenedor
+de 500 píxeles de ancho, entonces el espacio que se necesita para
+colocar nuestros elementos es de 300 píxeles. Esto deja 200 píxeles de
+espacio disponible. Si no cambiamos los valores iniciales, flexbox
+colocará ese espacio después del último ítem.
 
 ```
-╭──────────────────────────────────────────╮
-│ ╭──────╮ ╭──────╮ ╭──────╮               │   
-│ │ A    │ │ B    │ │ C    │               │   
-│ ╰──────╯ ╰──────╯ ╰──────╯               │
-╰──────────────────────────────────────────╯
++------------------------------------------+
+| +------+ +------+ +------+               |
+| | A    | | B    | | C    |               |   
+| +------+ +------+ +------+               |
++------------------------------------------+
 ```
 
-La propiedad **flex-basis** define el tamaño de un ítem en términos del espacio
-que deja como espacio disponible. El valor inicial de esta propiedad es `auto`; en
-este caso el navegador revisa si los elementos definen un tamaño. En el ejemplo anterior,
-todos los elementos tienen un ancho de 100 pixeles así que este es usado como `flex-basis`.
-Si los elementos no tiene un tamaño entonces el **tamaño de su contenido** es usado como
-`flex-basis`. 
+La propiedad **flex-basis** define el tamaño de un ítem en términos del
+espacio que deja como espacio disponible. El valor inicial de esta
+propiedad es `auto`; en este caso el navegador revisa si los elementos
+definen un tamaño. En el ejemplo anterior, todos los elementos tienen un
+ancho de 100 píxeles así que este es usado como `flex-basis`.  Si los
+elementos no tiene un tamaño entonces el **tamaño de su contenido** es
+usado como `flex-basis`. 
 
+Con la propiedad `flex-grow` definida como un entero positivo, los
+elementos flex pueden crecer en el eje principal a partir de
+`flex-basis`. Esto hará que el ítem se ajuste y tome todo el espacio
+disponible del eje, o una proporción del espacio disponible si otro ítem
+también puede crecer.
 
-Con la propiedad `flex-grow` definida como un entero positivo, los elementos flex pueden
-crecer en el eje principal a partir de `flex-basis`. Esto hará que el ítem se ajuste
-y tome todo el espacio disponible del eje, o una proporción del espacio disponible
-si otro ítem también puede crecer.
+Si le damos a todos los elementos del ejemplo anterior un valor
+`flex-grow` de $1$ entonces el espacio disponible en el contenedor flex
+será compartido equitativamente entre estos elementos y se ajustarán
+para llenar el contenedor sobre el eje principal.
 
-Si le damos a todos los elementos del ejemplo anterior un valor `flex-grow` de $1$ entonces
-el espacio disponible en el contenedor flex será compartido equitativamente entre estos
-elementos y se ajustarán para llenar el contenedor sobre el eje principal.
+También podemos usar `flex-grow` para distribuir el espacio
+proporcionalmente. Si otorgamos al primer ítem un valor `flex-grow` de
+$2$ y a los otros un valor de $1$, entonces el primer elemento ocupara
+el mismo espacio que los otros dos.
 
-También podemos usar `flex-grow` para distribuir el espacio proporcionalmente. Si
-otorgamos al primer ítem un valor `flex-grow` de $2$ y a los otros un valor de $1$,
-entonces el primer elemento ocupara el mismo espacio que los otros dos.
+Así como la propiedad `flex-grow` se encarga de añadir espacio sobre el
+eje principal, la propiedad `flex-shrink` controla como se contrae. Si
+no contamos con suficiente espacio en el contenedor para colocar los
+elementos y `flex-shrink` posee un valor entero positivo, el ítem puede
+contraerse a partir de flex-basis.  Así como podemos asignar diferentes
+valores de `flex-grow` con el fin que un ítem se expanda más que otros,
+un ítem con un valor más alto de `flex-shrink` se contraerá más que sus
+hermanos que poseen valores menores.
 
-Así como la propiedad `flex-grow` se encarga de añadir espacio sobre el eje
-principal, la propiedad `flex-shrink` controla como se contrae. Si no contamos
-con suficiente espacio en el contenedor para colocar los elementos y `flex-shrink`
-posee un valor entero positivo, el ítem puede contraerse a partir de flex-basis.
-Así como podemos asignar diferentes valores de `flex-grow` con el fin que un ítem
-se expanda más que otros, un ítem con un valor más alto de `flex-shrink` se contraerá
-más que sus hermanos que poseen valores menores.
-
-Hay que considerar el tamaño mínimo del ítem para poder determine un valor de
-contracción, por lo que `flex-shrink` puede comportarse de forma menos
-consistentemente que `flex-grow`.
+Hay que considerar el tamaño mínimo del ítem para poder determine un
+valor de contracción, por lo que `flex-shrink` puede comportarse de
+forma menos consistentemente que `flex-grow`.
 
 Es raro ver la propiedades `flex-grow`, `flex-shrink` y `flex-basis`
-usadas individualmente ya que han sido combinadas en la abreviación `flex`,
-que permite establecer los valores en este orden: `flex-grow`, `flex-shrink` y
-`flex-basis`.
+usadas individualmente ya que han sido combinadas en la abreviación
+`flex`, que permite establecer los valores en este orden: `flex-grow`,
+`flex-shrink` y `flex-basis`.
 
+Una característica clave de flexbox es la capacidad de **alinear y
+justificar elementos sobre los ejes principal y cruzado**, y distribuir
+el espacio entre los elementos flex. La propiedad `align-items` alineará
+los elementos sobre el eje cruzado, mientras que `justify-content` los
+alinea sobre el eje principal.
 
+El valor inicial para `align-items` es `stretch`, razón por la cual los
+elementos se ajustan por defecto a la altura del más alto. En efecto se
+ajustan para llenar el contenedor flex - el ítem más alto define la
+altura de este.
 
-Una característica clave de flexbox es la capacidad de **alinear y justificar
-elementos sobre los ejes principal y cruzado**, y distribuir el espacio entre los
-elementos flex. La propiedad `align-items` alineará los elementos sobre el eje cruzado,
-mientras que `justify-content` los alinea sobre el eje principal.
-
-El valor inicial para `align-items` es `stretch`, razón por la cual los elementos
-se ajustan por defecto a la altura del más alto. En efecto se ajustan para
-llenar el contenedor flex — el ítem más alto define la altura de este.
-
-En cambio usaremos `flex-start` para que los elementos se
-alineen al comienzo del contenedor flex, `flex-end` para alinearlos al
-final, o `center` para alinearlos al centro. 
+En cambio usaremos `flex-start` para que los elementos se alineen al
+comienzo del contenedor flex, `flex-end` para alinearlos al final, o
+`center` para alinearlos al centro. 
 
 Los valores posibles de `align-items` son:
 
@@ -1034,6 +1028,6 @@ solo si el ancho del _viewport_ de su navegador es igual o menor que 1250px: css
 
 ```css
 @media (max-width: 1250px) {
-  /* … */
+  /* ... */
 }
 ```

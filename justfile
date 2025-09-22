@@ -13,3 +13,7 @@ hola:
     python -c "print('Hello from python!')"
 
 
+# Genera el fichero de tags
+tags:
+    cd {{justfile_directory()}} && ctags -R --exclude=*.js --exclude=.venv .
+
