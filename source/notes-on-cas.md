@@ -68,6 +68,32 @@ En Django tenemos:
 
   Repo: [https://github.com/jbittel/django-mama-cas](https://github.com/jbittel/django-mama-cas)
 
+## Las versiones de CAS
+
+CAS 1.0 es un protocolo en texto plano que devuelve
+un simple "yes" o "no", para indicar si un _ticket_
+de validación es correcto o no.
+
+CAS 2.0 devuelve fragmentos XML para la validación de las respuestas
+y permite el uso de _proxy_.
+
+La versión 3.0 expande el protocolo con nuevos parámetros y la
+respuesta ahora vien en formato
+[SAML](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language).
+
+## Qué es el formato SAML
+
+**SAML** es un estándar abierto que define un esquema XML para el
+intercambio de datos de autenticación y autorización. Es utilizado como
+elemento clave en sistemas centralizados de autenticación y
+autorización(_Single Sign-On_).
+
+Usualmente las partes que intervienen en el intercambio son un proveedor
+de identidad (entidad que dispone de la infraestructura necesaria para
+la autenticación de los usuarios) y un proveedor de servicio (entidad
+que concede a un usuario el acceso o no a un recurso).
+
+
 ## Notas sobre la especificación del protocolo CAS 3.0
 
 CAS es un protocolo que funciona sobre HTTP, y que requiere que sus
@@ -87,16 +113,16 @@ componentes sean accesibles a través de unas URL específicas:
 
 ## La URI /login
 
-La URI `/login` realiza dos papeles diferentes: Es la URI que se usa
-para solicitar una credencial, y también actua como un receptor de dicha
-credencial. Dependiendo de si se le añade la credencial, actual en uno
+La URI `/login` realiza **dos papeles diferentes**: Es la URI que se usa
+para solicitar una credencial, y también actua como receptor de dicha
+credencial. Dependiendo de si se le añade la credencial, actual en un
 papel u otro.
 
 Si el cliente ya ha establecido una sesión de indetificación con CAS, el
 navegador web enviará una _cookie_ segura, que contendrá el
-identificador del _ticket_ autorizador (_ticket-granting_) que obtuvo
+identificador del _ticket_ autorizado (_ticket-granting_) que obtuvo
 en dicha sesión. Esta _cookie_ se conoce como _ticket-granting cookie_.
-Si el identificador se refiere a un ticket válido, CAS puede suministrar
+Si el identificador se refiere a un _ticket_ válido, CAS puede suministrar
 un *ticket de servicio**.
 
 Los parámetros que se pueden pasar `/login`, cuando actúa como un
@@ -111,7 +137,7 @@ solicitante de identificación son:
   Si no se especifica el servicio, y no **existe** una sesión previa,
   CAS **debe** iniciar el proceso para iniciar una sesión de
   identificación. Si no se especifica el servicio, pero existe una
-  sesión prevía, CADA **debería** mostrar un mensaje al cliente
+  sesión prevía, CAS **debería** mostrar un mensaje al cliente
   informándole de que ya se ha identificado.
 
   Nota: Se **recomienda encarecidamente** que todas las URL de los servicios

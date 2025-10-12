@@ -3,6 +3,7 @@
 - [ANSI](notes-on-ansi.md)
 - [Ansible](notes-on-ansible.md)
 - [API](notes-on-api-design.md)
+- [AutoKey](notes-on-autokey.md)
 - [Aws-lambdas](notes-on-aws-lambdas.md)
 - [Aws-S3](notes-on-aws-s3.md)
 - [Aws-SQS](notes-on-aws-sqs.md)
@@ -109,6 +110,7 @@
 - [Python-course](notes-on-python-course.md)
 - [Python](notes-on-python.md)
 
+  - [Borb - Generación de PDF](notes-on-borb.md)
   - [Migration-to-python-3](notes-on-migration-to-python-3.md)
   - [Pyenv](notes-on-pyenv.md)
   - [pyinfra](notes-on-pyinfra.md)

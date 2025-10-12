@@ -1468,3 +1468,17 @@ Explicado:
 - `v` pasa a modo visual
 - `$` para ir al final de la línea
 - `"ay` pega (_yank_) el texto seleccionado en el registro `a`
+
+## Cómo reemplazar un carácter por un salto de línea en Vim
+
+Hay que usar `\r` como reemplazo, **no** `\n`.
+
+Ojo, que para buscar si que se una `\n`. El siguiente ejemplo
+sustituye cada salto de línea por dos saltos de línea:
+
+```
+:%s/\n/\r\r/g 
+```
+
+Fuente: [How to replace a character by a newline in Vim - Stack Overflow](https://stackoverflow.com/questions/71323/how-to-replace-a-character-by-a-newline-in-vim)
+

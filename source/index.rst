@@ -18,6 +18,7 @@ documentation for details.
    notes-on-ansi.md
    notes-on-ansible.md
    notes-on-api-design.md
+   notes-on-autokey.md
    notes-on-aws-lambdas.md
    notes-on-aws-s3.md
    notes-on-aws-sqs.md
