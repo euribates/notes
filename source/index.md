@@ -17,6 +17,7 @@
 - [CAS](notes-on-cas.md)
 - [Certbot](notes-on-certbot.md)
 - [Chart.js](notes-on-chartjs.md)
+- [CKAN](notes-on-ckan.md)
 - [CookieCutter](notes-on-cookiecutter.md)
 - [CRA (_Cyber Resilience Act_)](notes-on-cra.md)
 - [CSS](notes-on-css.md)
