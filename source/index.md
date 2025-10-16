@@ -26,6 +26,7 @@
 - [cURL](notes-on-curl.md)
 
 - [Gestión de datos](notes-on-data-governance.md)
+- [Data-star](notes-on-datastar.md)
 - [Discord](notes-on-discord.md)
 - [DIR3](notes-on-dir3.md)
 - [Django](notes-on-django.md)
