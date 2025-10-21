@@ -44,6 +44,7 @@
 - [ENS: Esquema Nacional de Seguridad](notes-on-ens.md)
 - [ePub](notes-on-epub.md)
 
+- [FastAPI](notes-on-fastapi.md)
 - [Flask](notes-on-flask.md)
 - [Font-awesome](notes-on-font-awesome.md)
 - [Freelance](notes-on-freelance.md)
