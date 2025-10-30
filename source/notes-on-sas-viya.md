@@ -28,3 +28,17 @@ personales. Además, cada usuario autenticado tiene dos CASlibs: una para
 su directorio personal (`CASUSER`) y otra para el  directorio
 `/user/userid`  en HDFS (CASUSERHDFS), si se trata de un CAS
 distribuido. 
+
+
+## Servidores de SAS en G.C.
+
+https://cmm.gobiernodecanarias.net/ (Producción)
+https://cmm-pre.gobiernodecanarias.net/ (Pre)
+
+Todos los datos deberían leerse desde el _Data-lake_, pero en la práctica
+no ocurre así, sino que se va a saco a la fuente. La idea es que en la versión 4
+no pase eso.
+
+La idea seria hacer ETL de tipo identidad, para que cojan los datos en origen
+y creen las réplicas en el _data lake_.
+
