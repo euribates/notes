@@ -15,6 +15,32 @@ vectoriales en 2D.
 El soporte de los diferentes navegadores a las diferentes partes del estándar
 SVG actualizado lo puedes ver en [Caniuse](https://caniuse.com/?cats=SVG&statuses=all).
 
+## morphing paths
+
+One of the attributes that can be animated in SMIL (but not in CSS) is the d
+attribute (short for data) of an SVG . The d attribute contains the data which
+defines the outline of the shape that you’re drawing. The path data consists of
+a set of commands and coordinates that tell the browser where and how to draw
+points, arcs, and lines that make up the final path.
+
+Animating this attribute allows us to morph SVG paths and create shape tweening
+effects. But, in order to be able to morph shapes, the start, end, and any
+intermediate path shapes need to have the exact same number of vertices/points,
+and they need to appear in the same order. If the number of vertices doesn’t
+match, the animation wouldn’t work. The reason for this is that the shape
+changing actually happens by moving the vertices, and interpolating their
+positions, so if one vertex is missing or does not match, the paths won’t be
+interpolated anymore.
+
+To animate an SVG path, you specify the attributeName to be d, and then set the
+from and to values that specify the start and end shapes, and you can use the
+values attribute to specify any intermediate values you want the shape to go
+through in between.
+
+For the sake of brevity, I won’t get into the details of how to do this here.
+Instead, you can read this excellent article by Noah Blon, in which he explains
+how he created a shape-tweening kind-of-loading animation using . The live demo
+for Noah’s article is this:
 
 ## Cómo entender las propiedades `width`, `height` y `viewBox`
 
