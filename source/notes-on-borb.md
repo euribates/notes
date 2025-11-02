@@ -24,6 +24,11 @@ l.append_layout_element(Paragraph("Hello World!")) # Add a Paragraph
 PDF.write(what=d, where_to="hello-world.pdf")      # Write the PDF
 ```
 
+NO USAR: Realiza conexiones a un servidor, aparentemente
+con propósitos estadísticos, pero vete tu a saber. Mejor usar fpdf2.
+
+https://pypi.org/project/fpdf2/
+
 
 
 ## Componentes de Borb

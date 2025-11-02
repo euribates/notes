@@ -34,3 +34,52 @@ utilizando Python 3.6 y  versiones superiores. Algunas de sus ventajas son:
 
 - **Type hints**: El módulo de tipos se introdujo en Python 3.5. Esto permite
   declarar el tipo de una variable.
+
+## Los atributos data-*
+
+El núcleo de la funcionalidad de DataStar son los atributos HTML `data-*` (De
+ahí el nombre). Usando estos atributois podemos obtener reactividad en el
+_frontend_ de forma declarativa.
+
+El atributo `data-on-<event>` se pueden usar para
+asignar gestores al evento, y ejecutar expresiones. El valor del
+atributo es una espresión Datastar, en la cual se puede usar
+JavaScript:
+
+
+```html
+<button data-on-click="alert('I’m sorry, Dave. I’m afraid I can’t do that.')">
+
+    Open the pod bay doors, HAL.
+
+</button>
+```
+
+## Parcheos (_Patching_)
+
+With Datastar, the backend drives the frontend by patching (adding, updating and removing) HTML elements in the DOM.
+
+Datastar receives elements from the backend and manipulates the DOM using a morphing strategy (by default). Morphing ensures that only modified parts of the DOM are updated, preserving state and improving performance.
+
+Datastar provides actions for sending requests to the backend. The @get() action sends a GET request to the provided URL using a fetch request.
+
+<button data-on-click="@get('/endpoint')">
+
+    Open the pod bay doors, HAL.
+
+</button>
+
+<div id="hal"></div>
+
+    Actions in Datastar are helper functions that have the syntax @actionName(). Read more about actions in the reference.
+
+
+If the response has a content-type of text/html, the top-level HTML elements will be morphed into the existing DOM based on the element IDs.
+
+<div id="hal">
+
+    I’m sorry, Dave. I’m afraid I can’t do that.
+
+</div>
+
+We call this a “Patch Elements” event because multiple elements can be patched into the DOM at once.

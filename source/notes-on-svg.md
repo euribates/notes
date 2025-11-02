@@ -69,11 +69,11 @@ En el siguiente ejemplo:
 
 La imagen ocupara en la pantalla o página del browser $100x100$ pixels.
 Internamente, desde el punto de vista de la imagen, la esquina superior
-izquierda se corresponde con el centr de coordenadas, y el lienzo  o _canvas_
+izquierda se corresponde con el centro de coordenadas, y el lienzo  o _canvas_
 en el que se va a pintar mide $200x200$ unidades. El factor de escala será, por
 tanto, $\frac{1}{2}$.
 
-El siguiente ejmplo desplaza el eje de coordenadas al centro de la imagen:
+El siguiente ejemplo desplaza el eje de coordenadas al centro de la imagen:
 
 ```svg
 <svg 
@@ -89,9 +89,9 @@ Fuente: [SVG Tutorial](https://svg-tutorial.com/)
 
 ## Cómo usar el ellento `polygon`
 
-A polygon is the easiest way to draw a freeform shape. Polygons
-have a `points` property that sets a list of coordinates that are
-connected with straight lines.
+Un polígono es la forma más sencilla de dibujar una forma irregular. Tienen
+un atributo `points` que definen una lista de coordenadas que serán conectados
+por segmentos rectos.
 
 ```svg
 <svg 
@@ -107,4 +107,87 @@ connected with straight lines.
 ```
 Fuente: [Day 2: How to Build a Christmas Tree with SVG - SVG Tutorial](https://svg-tutorial.com/svg/polygon)
 
+## Cómo usar el elemento `Path`
 
+El elemento `path` es el elemento mas potente y versatil de las formas
+básicas. Se puede usar para crear líneas, curvas, arcos, etc. Un _path_
+permite combinar múltiples líneas rectas o curvas.
+
+La forma de un elemento `path` se define mediante un único parámetro,
+`d`, sobre cuyo contenido se hablara extensamente más adelante. El valor
+del parámetro es básicamente una serie de comandos de dibujo, con sus
+parámetros correspondientes.
+
+Cada comando de dibujo se representa con una única letra. Por ejemplo,
+podemos usar `M` (de _move_) para movernos a unas coordenadas `x` e `y`.
+
+Todos los comandos vienen en dos versiones, una con la letra en
+mayúscula y otra en minúscula, la versión en mayúsculas trabaja con
+coordanadas absolutas, mientras que la versión en minúsculas lo hace con
+coordenadas relativas. Las unidades son implícitas, relativas al sistema
+de coordenadas del usuario.
+
+Las ordenes son mover a (M/m), dibujar una línea (L/l), dibujar una
+línea horizontal (H/h), dibujar una línea vertical (V/v), cerrar la
+ruta (Z/z). Para hacer líneas curvas hay 3 comandos, curvas de
+Bezier, en versiones cuadrática, `Q/q` o cúbica `C/c` y arcos `A/a`.
+
+
+
+
+|  Comando  |  Significado                           |
+|-----------|----------------------------------------|
+| `M x y`   | Mueve a la posición absoluta x, y      |
+| `m dx dy` | Mueve a la posición relativa dx, dy    |
+| `L x y`   | Dibuja una línea desde la posición actual a la posición absoluta x, y |
+| `l dx dy` | Dibuja una línea desde la posición actual a la relativa dx, dy    |
+| `H x`     | Dibuja una línea horizontal hasta posición absoluta x |
+| `h dx`    | Dibuja una línea horizontal hasta posición relativa dx |
+| `V x`     | Dibuja una línea vertical hasta posición absoluta y |
+| `v dx`    | Dibuja una línea vertical hasta posición relativa dy |
+| `Z` o `z` | Cierra la ruta, uniendo el último punto con el primero |
+| `C dx1 dy1 dx2 dy2 x y` | Curva de Bezier cúbica, con coordenadas absolutas |
+| `c dx1 dy1 dx2 dy2 x y` | Curva de Bezier cúbica, con coordenadas relativas |
+| `S dx1 dy1 x y` | Curva de Bezier cúbica, encadenada |
+| `s dx1 dy1 x y` | Curva de Bezier cúbica, encadenada |
+| `Q x1 y1 x y` | Curva de Bezier cuadrática, con coordenadas absolutas |
+| `q x1 y1 x2 y2 x y` | Curva de Bezier cuadrática, con coordenadas relativas |
+
+
+The last set of coordinates here (x, y) specify where the line should
+end. The other two are control points. (x1, y1) is the control point for
+the start of the curve, and (x2, y2) is the control point for the end.
+The control points essentially describe the slope of the line starting
+at each point. The Bézier function then creates a smooth curve that
+transfers from the slope established at the beginning of the line, to
+the slope at the other end.
+
+
+The other type of Bézier curve, the quadratic curve called with Q, is
+actually a simpler curve than the cubic one. It requires one control
+point which determines the slope of the curve at both the start point
+and the end point. It takes two parameters: the control point and the
+end point of the curve.  As with the cubic Bézier curve, there is a
+shortcut for stringing together multiple quadratic Béziers, called with
+T.
+
+`T` This shortcut looks at the previous control point used and infers a
+new one from it. This means that after the first control point, fairly
+complex shapes can be made by specifying only end points. This only
+works if the previous command was a `Q` or a T command. If not, then the
+control point is assumed to be the same as the previous point, and only
+lines will be drawn.
+
+
+Arcs
+
+El otro tipo de línea curva que puede ser creada con SVG es el arco,
+creado con los comandos `A` o `a`. Los arcos son **secciones de un
+círculo o una elipse**. Dados dos puntos cualquiera localizados en
+la elipse o círculo, hay dos arcos posibles que los unen, uno dibujado
+en el sentido de las agujas del reloj y el otro en el sentido contrario.
+
+
+For a given x-radius and y-radius, there are two ellipses that can connect any two points (as long as they're within the radius of the circle). Along either of those circles, there are two possible paths that can be taken to connect the points—so in any situation, there are four possible arcs available.
+
+Because of that, arcs require quite a few parameters:

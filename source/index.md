@@ -115,6 +115,7 @@
 - [Python](notes-on-python.md)
 
   - [Borb - Generación de PDF](notes-on-borb.md)
+  - [FDPF2 - Generación de PDF](notes-on-fpdf2.md)
   - [Migration-to-python-3](notes-on-migration-to-python-3.md)
   - [Pyenv](notes-on-pyenv.md)
   - [pyinfra](notes-on-pyinfra.md)
