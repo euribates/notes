@@ -108,7 +108,7 @@ La opción de `AUTOINCREMENT` implica un cálculo más complejo, así que si no
 importa que se reutilizan claves primarias y la eficiencia es importante, se
 puede omitir.
 
-## Para que sirve la extensión FTS5 de Sqlite
+## Como usar la extensión FTS5 de Sqlite para búsqueda de texto
 
 La extensión **FTS5** proporciona la funcionalidad de búsqueda de texto
 avanzada. Esto permite realizar búsquedas de forma eficiente, ya que se
@@ -121,7 +121,7 @@ fts5:
 CREATE VIRTUAL TABLE email USING fts5(sender, title, body);
 ```
 
-Obsérvese que no se especifican los tipos de datos, de hacho, da un
+Obsérvese que **no** se especifican los tipos de datos, de hacho, da un
 error si se intenta. Igualmente está prohibido el uso de _constraints_,
 y tampoco se pueden definir claves primarias. Una vez creada la tabla,
 se pueden insertar, actualizar y borrar registros como en cualquier otra
@@ -129,12 +129,12 @@ tabla. Aunque no permite definir una clave primaria, existe una clave
 primaria implícita, llamada `rowid`.
 
 Existen algunas opciones más avanzadas, que no se han mostrado en el
-ejemplo inicial. Algunas de las cosas qu epodmos hacer son> definir como
+ejemplo inicial. Algunas de las cosas que podemos hacer son definir como
 se extrae los términos del texto original, crear índices extra en disco
 para acelerar las consultas, o crear una tabla virtual FTS4 que actue
-como índice deun contenido almacenado en otro sitio.
+como índice de un contenido almacenado en otro sitio.
 
-Una vez cargados los dotos, hay tres tipos de consultas quep odemos
+Una vez cargados los datos, hay tres tipos de consultas que podemos
 hacer:
 
 - Usar un operador `MATCH` en el `WHERE` de una sentencia ``SELECT`
@@ -151,21 +151,21 @@ SELECT * FROM email WHERE email = 'fts5';
 SELECT * FROM email('fts5');
 ```
 
-Por defecto, todas las búsquedas con FTS5 **no** distinguen entre mayúsculas
-y minúsculas. Si no se ha especificado un orden, los resultados
-vendrán, como en cualquier otra consulta, en un orden arbitrario. Se
-puden ordenar los resultados por **relevancia** usando la palabra clave
-`rank`, como en el siguiente ejemplo:
+Por defecto, todas las búsquedas con FTS5 **no** distinguen entre
+mayúsculas y minúsculas. Si no se ha especificado un orden, los
+resultados vendrán, como en cualquier otra consulta, en un orden
+arbitrario. Se pueden ordenar los resultados por **relevancia** usando
+la palabra clave `rank`, como en el siguiente ejemplo:
 
 ```sql
 SELECT * FROM email WHERE email MATCH 'fts5' ORDER BY rank;
 ```
 
- Ademas de los campos definidos en la tabla, se pueden usar una serie de
- funciones axiliares para ampoliar la información. Por ejemplo, la
- función auxiliar `highlight` devuelve una copia del texto original con
- las ocurrencias encotradas rodeadas por las marcas que queramos, como por ejemplo `<b>`
- y `</b>`:
+Además de los campos definidos en la tabla, se pueden usar una serie de
+funciones axiliares para ampliar la información. Por ejemplo, la
+función auxiliar `highlight` devuelve una copia del texto original con
+las ocurrencias encotradas rodeadas por las marcas que queramos, como
+por ejemplo `<b>` y `</b>`:
 
 ```sql
 SELECT highlight(email, 2, '<b>', '</b>') FROM email('fts5');

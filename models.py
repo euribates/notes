@@ -22,9 +22,11 @@ class Point:
     def add_line(self, line):
         self.lines.append(line)
 
+    def body(self):
+        return '\n'.join(self.lines)
+
     def __str__(self):
-        text = '\n'.join(self.lines)
-        return f'## {self.title}\n\n{text}'
+        return f'## {self.title}\n\n{text.self.body()}'
 
 
 def load_lines(filename):

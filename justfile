@@ -9,9 +9,9 @@ BUILDDIR := "build"
 html:
     sphinx-build -M html {{SOURCEDIR}} {{BUILDDIR}}
 
-hola:
-    python -c "print('Hello from python!')"
-
+# Cliente de base de datos
+dbshell:
+    sqlite3 notes.db
 
 # Genera el fichero de tags
 tags:
