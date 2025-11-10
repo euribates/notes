@@ -623,3 +623,70 @@ sistema de archivos de Linux: `sudo apt install ntfs-3g`.
 
 - Fuente: 
 [Mount USB Drive in Linux: Step-by-step guide | Cloudflare](https://linuxconfig.org/howto-mount-usb-drive-in-linux)
+
+## Cómo crear un disco vistual en memoria (RAMdisk) en Linux
+
+Hay que ejecutar las dos ordenes siguientes, cambiando `4096M` por el
+tamaño de disco que queramos. Recuerda que este disco no será
+persistente y habrá desaparecido, junto con todo su contenido, en el
+siguiente arranque del sistema.
+
+```shell
+sudo mkdir -p /media/ramdisk
+
+sudo mount -t tmpfs -o size=4096M tmpfs /media/ramdisk
+```
+
+Fuente: [Linux Mint Commands: A Cheatsheet For Linux Mint With Examples - Kompulsa](https://www.kompulsa.com/linux-mint-commands-a-cheatsheet-for-linux-mint-with-examples/)
+
+
+## Cómo enviar notificaciones de escritorio con notify-send (DBus)
+
+Cada entorno de escritorio en Linux tiene su propio sistema de
+notificaciones que implementa las especificaciones de
+[Freedesktop](https://www.freedesktop.org/wiki/). Algunos, como GNOME o
+KDE, utilizan sistemas integrados que no se pueden reemplazar; otros,
+como Xfce o Mate, utilizan componentes más modulares: el demonio de
+notificaciones de Xfce y el demonio de notificaciones de Mate,
+respectivamente.
+
+También existen sistemas de notificaciones independientes del entorno de
+escritorio (como [dunst](https://wiki.archlinux.org/title/Dunst)):
+generalmente se utilizan en configuraciones mínimas (por ejemplo, al
+usar un gestor de ventanas simple en lugar de entornos de escritorio
+completos).
+
+La utilidad **`notify-send`** viene instalada normalmente por defecto
+en la mayoría de los casos, como parte de la librería `libnotify`. Si no
+fuera el caso, podemos instalarla con:
+
+```shell
+sudo apt install libnotify-bin
+```
+
+La forma más simple de usarla es con un solo parámetro:
+
+```shell
+notify-send "Este es el mensaje"
+```
+
+Con dos parámetros, se interpreta el primero como el título y el segundo
+como el cuerpo del mensaje:
+
+```shell
+notify-send "Este es el título" "Este es el cuerpo del mensaje"
+```
+
+Se puede usar un conjunto muy limitado de etiquetas HTML dentro del
+cuerpo: `b`, `i`, `u`, `a` e `img`.
+
+Se puede indicar la urgencia del mensaje con el parámetro `-u/--urgency`
+que acepta los niveles `low`, `normal` (por defecto) y `critical`. Si se
+usa este último, el mensaje no desaparece pasado un cierto tiempo, sino
+que tiene que ser cerrado manualmente por el usuario. Hablando del
+tiempo que se muestra el mensaje, algunos sistemas aceptan el parámetro
+`-t/--expire-time` con un valor de segundos.
+
+Fuente: [How to send desktop notifications using notify-send](https://linuxconfig.org/how-to-send-desktop-notifications-using-notify-send)
+
+

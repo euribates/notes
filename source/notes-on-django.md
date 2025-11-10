@@ -31,6 +31,13 @@ from django.utils import timezone
 timezone.now().date()
 ```
 
+## Usar `DecimalField` para almacenar cantidades de dinero
+
+**Nunca se debe usar un campo `FloatField` para almacenar información sobre
+cantidades de dinero**. Usa `DecimalField` mejor. Otras opciones habituales
+para evitar perdidas por redondeo es usar enteros y almacenar las cantidades
+como céntimos, centavos, peniques, etc.
+
 
 ## Como representar números con comas, por ejemplo, dineritos, en Django
 
@@ -753,6 +760,7 @@ la base de datos**. Ver Impedir estados imposibles. Por la misma razón, hay que
 especificar siempre `unique` a `True` si tiene sentido, y eliminar o reducir al
 mínimo los campos con `required` a `False`.
 
+
 ## Como hacer que Django trabaje con claves naturales (`natural keys`)
 
 Tldr: Para usar claves naturales o *natural keys*, hay que definir un
@@ -874,13 +882,6 @@ resulta muy útil, ya que es accesible tanto para desarrolladores
 como para administradores (Si usas el `admin`).
 
 
-## Usar `DecimalField` para almacenar cantidades de dinero
-
-**Nunca usar un campo `FloatField` para almacenar información sobre
-cantidades de dinero**. Usa `DecimalField` mejor. Otras opciones habituales
-para evitar perdidas por redondeo es usar enteros y almacenar las cantidades
-como céntimos, centavos, peniques, etc.
-
 
 ## No usar `null=true` a menos que realmente lo necesites
 
@@ -915,12 +916,15 @@ a los campos que usará el formulario. Por la misma razón, no usar nunca el
 valor especial `__all__`.
 
 
-## Do not heap all files loaded by user in the same folder
+## No almacenar todos los ficheros subidos por usuario en la misma carpeta
 
-Sometimes even a separate folder for each FileField will not be enough
-if a large amount of downloaded files is expected. Storing many files in
-one folder means the file system will search for the needed file more
-slowly. To avoid such problems, you can do the following:
+Almacenar muchos ficheros en una misma carpeta es generalmente una mala
+idea. Como el sistema
+necesita realizar una búsqueda para encontrar las entrada en el directorio, esto
+significa que cuantas más entradas hay, mas se tarda. Esto
+hace que el acceso sea más lento. Además, algunos S.O. imponen un límite
+máximo al numero de entradas dentro de una carpeta. Podemos evitar todos estos
+problemas usando, por ejemplo la fecha de subida:
 
 ```python
 def get_upload_path(instance, filename):
@@ -931,14 +935,15 @@ class User(AbstractUser):
     avatar = models.ImageField(blank=True, upload_to=get_upload_path)
 ```
 
-## Use custom Manager and QuerySet
+## Cómo usar gestores personalizados (_Custom Manager_)
 
-The bigger project you work on, the more you repeat the same code in
-different places. To keep your code DRY and allocate business logic in
-models, you can use custom Managers and Queryset.
+Podemos sacar funcionalidad de la clase modelo y ponerla en el
+gestor de la clase. Esto simplifica la clase y permite reutilizar
+mejor el código.
 
-For example. If you need to get comments count for posts, from the
-example above:
+Por ejemplo, podemos crear un gestor personalizado para una clase que
+nos devuelva el _queryset_ por defecto con un atributo aplicado (Usando
+`anotate`) que lleve la cuenta de los registros en la base de datos:
 
 ```python
 class CustomManager(models.Manager):
@@ -947,7 +952,7 @@ class CustomManager(models.Manager):
         return self.get_queryset().annotate(comments_count=Count('comment_set'))
 ```
 
-Now you can use:
+Ahora podemos hacer:
 
 ```python
 posts = Post.objects.with_comments_counter()
