@@ -2,29 +2,32 @@
 title: Notas sobre SSH
 tags:
   - unix
+  - python
+  - security
 ---
 
-## Sobreo SSH
+## Sobre SSH
 
 **SSH** (_Secure SHell_) es un protocolo y programa cuya principal
 función es el acceso remoto a un servidor por medio de un canal seguro
 en el que toda la información está cifrada.
 
 
-## Use Your SSH Agent in a Crontab
+## Cómo usar SSH Agent junto con crontan
 
-Getting access to SSH inside a Crontab is often a problem for many as
-the environment in which your cron runs **is not the same as your normal
-shell**. Simply running `ssh-add` will not allow you to use your SSH
-Agent inside your crontab. Follow the below guide to setup your crontab
-to use your ssh-agent:
+Obtener acceso a ssh dentro de una tarea de crontab es a menudo
+problemático, ya que las tareas de crontab se ejecutan en un entorno
+**diferente** al del usuario normal. No podemos simplemente ejecutar
+`ssh-add` y esperar que los trabajos dentro de crontab tengan acceso al
+mismo. Tenemos que realizar una serie de pasos antes:
 
-1) Install Keychain.
+1) Instalar `[Keychain](https://linux.die.net/man/1/keychain)`.
 
-2) Add the following to your `~/.zlogin` file which will be invoked on
-each login. This will allow your crontab (and normal shell) to use your
-ssh keys and bypass needing to punch in your password each time you need
-SSH. This will also span across multiple sessions and shells.
+2) Añadir la siguiente línea en `.bashrc` o similar que 
+se ejecute en cada _login_. Esto permite que tanto tu crontab
+como al shell usar tus claves ssh y obviar la necesidad de
+tener que teclear la contraseña cada vez que se necesite usar
+la clave. Esto funciona también entre múltiples sesiones y _shells_.
 
 ```shell
 # Use keychain to keep ssh-agent information available in a file
@@ -32,8 +35,8 @@ SSH. This will also span across multiple sessions and shells.
 source "$HOME/.keychain/${HOSTNAME}-sh"
 ```
 
-3) Finally, prepend the following to your cron job command to allow it
-access to your new keychain:
+3) Finalmente, poner al inicio del fichero crontab la siguiente orden, que
+permitirá a los trabajos acceder al keychain:
 
 ```bash
 source "$HOME/.keychain/${HOSTNAME}-sh"
@@ -42,45 +45,48 @@ source "$HOME/.keychain/${HOSTNAME}-sh"
 Fuente: [Use Your SSH Agent in a Crontab](https://gist.github.com/Justintime50/297d0d36da40834b037a65998d2149ca)
 
 
-## About ssh-agent and ssh-add in Unix
+## Cómo usar `ssh-agent` y `ssh-add` en Unix
 
-In Unix, **ssh-agent** is a background program that handles passwords
-for SSH private keys. The ssh-add command prompts the user for a private
-key password and adds it to the list maintained by ssh-agent. Once you
-add a password to ssh-agent, you will not be prompted for it when using
-SSH or scp to connect to hosts with your public key.
+En Unix, **ssh-agent**  es un programa que está ejecutándose en segundo
+plano, y que gestiona las contraseñas para acceder a las claves. La
+orden `ssh-add` pregunta al usuario por la contraseña de una clave
+privada y la almacena internamente en una lista. Una vez que se ha
+añadido la clave privada al `ssh-agent`, no se te volverá a preguntar
+por la contraseña cuando usemos `ssh`, `scp` para conectarnos a
+ordenadores que tengan tu clave pública.  La parte pública de la clave
+debe estar almacenada en el fichero `~/.ssh/authorized_keys` del
+ordenador al que queremos acceder (Ver `ssh-copy-id`). 
 
-The public part of the key loaded into the agent must be put on the
-target system in `~/.ssh/authorized_keys`; see Set up SSH public key
-authentication to connect to a remote system.
+Para usar `ssh-agent` y `ssh-add`, debemos seguir los siguientes pasos:
 
-To use `ssh-agent` and `ssh-add`, follow the steps below:
-
-At the Unix prompt, enter:
+En la _shell_, ejecutamos:
 
 ```shell
 eval `ssh-agent`
 ```
 
-Make sure you use the backquote (`), located under the tilde (~), rather
-than the single quote (').
+!!! Note "Atención"
+    Hay que tener cuidado de usar las comillas simples invertidas
+    (`backquote`) (`), no las comillas simples normales (').
 
-Enter the command:
+Con el agente ya ejecutándose en segundo plano, damos la orden:
 
 ```shell
 ssh-add
 ```
 
-Enter your private key password.
-When you log out, enter the command:
+Que nos preguntará por la contraseña de la clave privada.
+
+Por seguridad, al salir de la sesión, se debería ejecutar:
 
 ```shell
 kill $SSH_AGENT_PID
 ```
 
-To run this command automatically when you log out, place it in your
-`.logout` file (if you are using csh or tcsh) or your `.bash_logout` file
-(if you are using bash).
+Para ejecutar esta orden de forma automática cuando nos desconectamos de
+la sesión (_log out_), podemos ponerla en el fichero `.logout` (Si
+estamos usando `csh` o `tcsh`) o en el fichero `.bash_logout` si estamos
+usando `bash`.
 
 Fuente: [Indiana University - About ssh-agent and ssh-add in Unix](https://kb.iu.edu/d/aeww)
 
@@ -121,14 +127,14 @@ $ openssl x509 -in secureweb2025.crt -checkend 252288000
 Certificate will expire
 ```
 
-El valor $7862400$ viende de 91 días: 
+El valor $7862400$ viene de 91 días: 
 
 $$ 91 \times 24 \times 60 \times 60 =  7862400 $$ 
 
 El significado del número $252288000$ se deja como ejercicio para el lector.
 
 
-#### Verificar un fichero Usando
+#### Verificar un fichero usando Python
 
 Para verificar las fechas de validez de un certificado x509 tienes 
 que instalar la librería [cryptography](https://cryptography.io/en/latest/):

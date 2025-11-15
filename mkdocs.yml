@@ -8,7 +8,6 @@ plugins:
     - table-reader
     - autolinks  
     - tags:
-        tags_file: tags.md
 
 markdown_extensions:
     - toc
