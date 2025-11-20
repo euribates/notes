@@ -223,6 +223,59 @@ Donde `app` es la etiqueta de la app, y `model` el nombre del modelo, y
 - Fuente: [CSRF_TRUSTED_ORIGINS - Django settings](https://docs.djangoproject.com/en/4.0/ref/settings/#csrf-trusted-origins) 
 
 
+
+## Cómo migrar a 6.xx
+
+Since Django’s inception, the web has gradually moved from HTTP to HTTPS, a welcome move for security. But the history has meant older parts of Django have had a lingering HTTP bias. Many of these have been migrated to default to HTTPS instead in previous versions. Django 5.0 starts the migration of another, tiny HTTP bias in forms.URLField.
+
+The old behaviour: when URLField is provided a URL without a scheme, it assumes it to be “http”:
+
+```
+from django import forms
+
+assert forms.URLField().to_python('example.com') == 'http://example.com'
+```
+
+Django 5.0 has started a deprecation process to change this default to “https”
+
+Here’s that warning message in a more readable format:
+
+> RemovedInDjango60Warning: The default scheme will be changed 
+> from 'http' to 'https' in Django 6.0. Pass the 
+> `forms.URLField.assume_scheme argument` to silence this warning,
+> or set the `FORMS_URLFIELD_ASSUME_HTTPS` transitional setting
+> to True to opt into using 'https' as the new default scheme.
+
+Django 5.1 lo trata como un _DeprecationWarning_ pero en Django 6.0
+cambiará el valor por defecto y eliminara el aviso.
+
+Hasta Django 6.0, seguira existiendo el aviso. Esto se puede controlar
+de dos maneras:
+
+- Adoptar el comportamiento futuro con el valor de configuración
+  `FORMS_URLFIELD_ASSUME_HTTPS`.
+
+    ```
+    FORMS_URLFIELD_ASSUME_HTTPS = True
+    ```
+
+    Esto hará que **todos** los campos de tipo URLField asumen que el
+    esquema por defecto es `https`.
+
+- Migrar individualmente los campos de tipo `forms.URLField` añadiendo
+  el esquema por defecto.
+
+    Con esta opcion, hay que aãdir el parámetro opcional `assume_schema`
+    a cada instancia de `URL Field`. Se puede ajustar el valor a `https`, que el
+    el comportamiento futuro por defecto, o `http` para mantener el
+    comportamiento anterior.
+
+De cualquiera de las dos maneras desactivaremos el aviso.
+
+Fuente: [Django: Fix version 5.0’s URLField.assume_scheme warnings - Adam
+Johnson](https://adamj.eu/tech/2023/12/07/django-fix-urlfield-assume-scheme-warnings/)
+
+
 ## Configurar VIM para trabajar con plantillas de Django
 
 Escribir `:setfiletype htmldjango` para que Vim resalte automáticamente las
@@ -789,11 +842,6 @@ class PersonManager(models.Manager):
         return self.get(first_name=first_name, last_name=last_name)
 
 class Person(models.Model):
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    birthdate = models.DateField()
-
-    objects = PersonManager()
 
     class Meta:
         constraints = [
@@ -802,6 +850,19 @@ class Person(models.Model):
                 name="unique_first_last_name",
             ),
         ]
+
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    birthdate = models.DateField()
+
+    objects = PersonManager()
+
+    def natural_key(self):
+        '''Se debe devolver una tupla con los valores de la clave
+        natural, en el mismo orden es que las espera
+        el método `get_by_natural_key` del Manager.
+        '''
+        return (self.first_name, sefl.last_name)
 ```
 
 Al exportar, donde antes se usaría la clave primaria, ahora se usa la

@@ -26,7 +26,7 @@ class Point:
         return '\n'.join(self.lines)
 
     def __str__(self):
-        return f'## {self.title}\n\n{text.self.body()}'
+        return f'## {self.title}\n\n{self.body()}'
 
 
 def load_lines(filename):
