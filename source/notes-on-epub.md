@@ -111,8 +111,8 @@ folder with your XHTML files.
 
 ### Hojas de estilo
 
-Add your style sheets. You should create two style sheets for your book one
-for the pages called `pages.css`:
+Se pueden usar hojas de estilo. Se suelen crear dos, uno para las
+páginas del liboe, `pages.css`:
 
 ```
 @page {
@@ -121,17 +121,18 @@ for the pages called `pages.css`:
 } 
 ```
 
-And one for the book styles called `book.css`. You can give them other names,
-you'll just need to remember what they are. Save these files in the same
-directory with your XHTML and mimetype files.
+Y una para el libro en si, `book.css`. Se les puede dar otros nombres, pero
+estos son los estándares. Tienen que estar en el mismo directorio
+que el fichero XHTML y los ficheros _mimetypes_.
 
 
-### Página de título
+### Como crear la página de título.
 
-Build your title page. You don't have to use the cover image as your title
-page, but most people do. To add your title page, create an XHTML file called
-`titlepage.xhtml`. Here is an example of a title page using SVG for the image.
-Change the highlighted part to point to your cover image:
+Hay una página que se usa como página de título. Lo normal
+(aunque no es obligatorio) es usar la imagen de la portada. Si queremos
+personalizar esta página, hay que crear un fichero y llamarlo
+`titlepage.xhtml`. Este podría ser un ejemplo válido, cambiando la
+ruta de la imagen por la que corresponda:
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
