@@ -1,7 +1,7 @@
 ---
 title: Notas sobre SAS Viya
 tags:
-    - stats
+    - statistics
     - api
     - ia
 ---

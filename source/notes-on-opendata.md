@@ -1,6 +1,7 @@
 ---
 title: Notas sobre OpenData, transparencia, etc.
 tags:
+    - administracion
     - opendata
     - transparencia
     - api

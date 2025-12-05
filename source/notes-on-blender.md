@@ -3,6 +3,7 @@ title: Notas sobre Blender
 tags:
     - python
     - games
+    - foss
 ---
 
 ## Introducción a Blender

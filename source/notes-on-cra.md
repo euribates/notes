@@ -1,12 +1,13 @@
 ---
-title: Notas sobre CRA (_yber Resilience Act_)
+title: Notas sobre CRA (_Cyber Resilience Act_)
 tags:
-    - eu
-    - law
+    - administracion
+    - europa
+    - normativa
     - security
 ---
 
-## Qué es la CRA (_yber Resilience Act_)
+## Qué es la CRA (_Cyber Resilience Act_)
 
 La **_Cyber Resilience Act_** (CRA) es una nueva ley europea que define los
 requerimientos necesarios para productos digitales. Aunque la empresa que

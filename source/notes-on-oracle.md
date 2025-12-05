@@ -1,8 +1,9 @@
 ---
 title: Notas sobre Oracle
 tags:
-    - Database
+    - database
     - sql
+    - sistemas
 ---
 
 ## Sobre Oracle

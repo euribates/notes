@@ -1,7 +1,8 @@
 ---
 title: Notas sobre SQLite
 tags: 
-    - db
+    - database
+    - foss
     - sql
     - python
     - c

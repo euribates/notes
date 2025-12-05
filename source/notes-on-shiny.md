@@ -1,12 +1,12 @@
 ---
 title: Notas sobre Shiny
 tags:
-    - Python
-    - R
-    - DataScience
-    - Statistics
-    - Graphs
-    - Web
+    - python
+    - r
+    - datascience
+    - statistics
+    - graphs
+    - web
 ---
 
 ## Qué es Shiny

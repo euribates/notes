@@ -1,7 +1,7 @@
 ---
 title: Notas sobre citas
 tags:
-  - pythoncanarias
+  - python
 ---
 
 Statisticians, like artists, have the bad habit of falling in love with their models.

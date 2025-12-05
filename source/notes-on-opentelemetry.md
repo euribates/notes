@@ -1,11 +1,11 @@
 ---
 title: Notas sobre OpenTelemetry
 tags:
-    - API
-    - Tools
-    - Python
-    - Logs
-    - Metrics
+    - api
+    - tools
+    - python
+    - logs
+    - metrics
 ---
 
 ## ¿Qué es OpenTelemetry?

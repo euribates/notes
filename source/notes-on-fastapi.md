@@ -5,7 +5,7 @@ tags:
     - api
     - python
     - framework
-    - dev
+    - development
 ---
 
 ## Qué es FastAPI

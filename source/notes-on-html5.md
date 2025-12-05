@@ -2,7 +2,7 @@
 title: Notas sobre Html 5
 tags:
     - html
-    - dev
+    - development
     - web
 ---
 

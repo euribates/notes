@@ -1,7 +1,8 @@
 ---
 title: Notas sobre DIR3
 tags:
-    - DIR3
+    - administracion
+    - dir3
 ---
 
 ## ¿Qué relación tiene DIR3 con FACE?

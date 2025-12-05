@@ -11,7 +11,7 @@ workaround anymore. The syntax is also very simple. It is the same as
 latex math, but without the enclosing `$`. So you can
 simply write the following for a math block:
 
-```latex
+```ou   atex
 .. math::
     \frac{ \sum_{t=0}^{N}f(t,k) }{N}
 ```

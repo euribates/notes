@@ -3,8 +3,8 @@ title: Notas sobre Ansible
 tags:
     - os
     - linux
-    - infrastructure
-    - ic
+    - sistemas
+    - cloud
 ---
 
 ## ¿Qué es Ansible?

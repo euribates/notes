@@ -1,7 +1,6 @@
 ---
 title: Notes on javascript
 tags:
-    - js
     - javascript
     - html
     - web
