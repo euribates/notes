@@ -108,6 +108,7 @@
 - [Patrones de diseñó](notes-on-patterns.md)
 - [Postgresql](notes-on-postgresql.md)
   - [pgsql](notes-on-pgsql.md)
+- [Prometheus](notes-on-prometheus.md)
 - [Puppet](notes-on-puppet.md)
 - [Pycharm](notes-on-pycharm.md)
 - [Pycones](notes-on-pycones.md)

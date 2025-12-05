@@ -2,8 +2,10 @@
 
 from pathlib import Path
 from typing import Optional
+from collections import defaultdict
 import argparse
 import glob
+import yaml
 import json
 import re
 
@@ -24,6 +26,27 @@ def is_note(filename: str|Path) -> bool:
     filename = Path(filename)
     name = filename.name
     return name.startswith('notes-on-') and name.endswith('.md')
+
+
+def get_metadata(filename: str) -> dict:
+    with open(filename, 'r', encoding="utf-8") as f_in:
+        line = f_in.readline().strip()
+        if line == '---': #  YAML header
+            buff = []
+            for line in f_in:
+                line = line.strip()
+                if line == '---':
+                    break
+                buff.append(line)
+            else:
+                raise ValueError(
+                    "Encuentro la marca de inicio de metadata"
+                    f" en el fichero {filename}, pero no la marca"
+                    " de final."
+                    )
+            return yaml.safe_load('\n'.join(buff))
+    return {}
+
 
 
 def get_title(filename: str) -> Optional[str]:
@@ -90,6 +113,10 @@ class Handler:
         parser_search.add_argument('query', action='store')
         parser_search.add_argument('--topic', nargs='*')
         parser_search.set_defaults(func=self.cmd_search)
+        # Tags
+        parser_tags = subparsers.add_parser('tags', help='Listar etiquetas')
+        parser_tags.add_argument('tags', nargs='*')
+        parser_tags.set_defaults(func=self.cmd_tags)
         # Export
         parser_export = subparsers.add_parser(
             'export',
@@ -190,6 +217,41 @@ class Handler:
             outcome.append(note)
         self.out(json.dumps(outcome))
         return 0
+
+    def cmd_tags(self, options):
+        '''Listar las etiquetas.
+        '''
+        catalog = defaultdict(list)
+        for filename in sorted(DOCS.iterdir()):
+            if is_note(filename):
+                metadata = get_metadata(filename)
+                metadata['filename'] = filename
+                if 'tags' in metadata:
+                    for tag in metadata['tags']:
+                        catalog[tag].append(metadata)
+        if options.tags:
+            for tag in options.tags:
+                notes = catalog[tag]
+                table = Table(title=f'{tag} ({len(notes)} notas)', show_header=True)
+                table.add_column("Título")
+                table.add_column("Fichero")
+                table.add_column("Otras etiquetas")
+                for metadata in notes:
+                    table.add_row(
+                        metadata.get('title', 'Sin título'),
+                        str(metadata['filename']),
+                        ', '.join(metadata.get('tags', [])),
+                        )
+                self.out(table)
+
+        else:
+            table = Table(title='Etiquetas', show_header=True)
+            table.add_column("Etiqueta")
+            table.add_column("Nº topics")
+            for name, notes in sorted(catalog.items()):
+                table.add_row(name, str(len(notes)))
+            self.out(table)
+
 
     def run(self):
         parser = self.get_parser()

@@ -10,8 +10,34 @@ tags:
 
 ## ¿Qué es SAS Viya?
 
-**SAS Viya** es una plataforma de anælisis, gestión de datos e
-inteligencia artificical desarrollado por [SAS Institute]().
+**SAS Viya** es una plataforma de análisis, gestión de datos e
+inteligencia artificial desarrollado por [SAS Institute]().
+
+## Cómo listar los grupos de usuarios
+
+```
+$ sudo sas-viya identities list-groups
+```
+
+
+## Cómo ver los detalles de un grupo
+
+```
+$ sudo sas-viya identities show-group --id <id. del grupo>
+```
+
+
+## Cómo listar los usuarios
+
+```
+$ sudo sas-viya identities list-users
+```
+
+## Cómo ver los detalles de un usuario
+
+```
+$ sudo sas-viya identities show-user --id <username>
+```
 
 ## ¿Qué es un CASLIB?
 
