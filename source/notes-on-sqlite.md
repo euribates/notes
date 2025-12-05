@@ -48,7 +48,42 @@ Hay [más rarezas y cosas curiosas de SQLite
 aquí](https://sqlite.org/quirks.html).
 
 
-## Cómo ver las tablas e índices en una base de datos SQLite
+## Como ver los índices en una base de datos SQLite
+
+La forma más sencilla es usar el comando `.indexes`
+
+```sql
+sqlite> .indexes
+auth_group_permissions_group_id_b120cbf9                      
+auth_group_permissions_group_id_permission_id_0cd325b0_uniq   
+auth_group_permissions_permission_id_84c5c92e                 
+auth_permission_content_type_id_2f476e4b                      
+auth_permission_content_type_id_codename_01ab375a_uniq        
+auth_user_groups_group_id_97559544                            
+auth_user_groups_user_id_6a12ed8b
+...
+```
+
+Se puede indicar el nombre del indice o un patrón de tipo SQL, con `%` como
+comodín:
+
+```sql
+sqlite> .indexes auth_user_user%
+auth_user_user_permissions_permission_id_1fbb5f2c             
+auth_user_user_permissions_user_id_a95ead1b                   
+auth_user_user_permissions_user_id_permission_id_14a6b632_uniq
+```
+
+La otra es haciendo una consulta a la tabla `sql_master`:
+
+```sql
+SELECT name 
+  FROM sqlite_master 
+ WHERE type = 'index';
+```
+
+
+## Cómo ver las tablas en una base de datos SQLite
 
 Con la orden `.tables` listamos todas las tablas de la base de datos.  Si
 queremos más información, `.schema` muestras información adicional, como los
