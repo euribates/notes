@@ -55,6 +55,11 @@ su directorio personal (`CASUSER`) y otra para el  directorio
 `/user/userid`  en HDFS (CASUSERHDFS), si se trata de un CAS
 distribuido. 
 
+## Qué nodos de SAS-Viya necesitan acceso a las servidores de bases de datos
+
+Desde los servidores **Compute**, **CAS Controller**, y **CAS Workers**. Esta
+conectividad ya está pedida dado que las Caslibs ya están creadas y validadas
+su acceso a las fuentes de datos correspondientes. 
 
 ## Cómo saber que `plugins` tiene instalados el cliente de SAS-Viya
 
@@ -92,3 +97,34 @@ partir de la una de la tarde.
 ```shell
 $ sudo ./sas-viya --output text identities list-groups --after 2025-10-27T13:00:00Z
 ```
+
+## Relación de máquinas respectivamente en PRE y EXP: 
+
+PIAD - PRE 
+
+    Stateful 1
+    Stateful 2
+    Stateless
+    Compute
+    CAS Controller
+    CAS Worker 1
+    CAS Worker2
+    Bastion host
+
+PIAD - EXP
+
+    Stateful 1
+    Stateful 2
+    Stateful 3
+    Stateless1
+    Stateless2
+    Compute1
+    Compute2
+    CAS Controller1
+    CAS Controller2
+    CAS Worker 1
+    CAS Worker 2
+    CAS Worker 3
+    CAS Worker 4
+    CAS Worker 5
+    Bastion host

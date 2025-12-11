@@ -1,9 +1,0 @@
-.obsidian
-.venv
-**/__pycache__/
-.*.swp
-site
-.python-version
-build/
-*~
-tags
