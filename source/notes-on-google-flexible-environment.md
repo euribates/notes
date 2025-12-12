@@ -1,7 +1,7 @@
 ---
 title: Notas sobre Google Flex Environment
 tags:
-  - google
+  - Google
   - cloud
 ---
 

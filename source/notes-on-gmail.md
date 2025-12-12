@@ -1,7 +1,7 @@
 ---
 title: Notas sobre GMail
 tags:
-  - google
+  - Google
   - email
 ---
 

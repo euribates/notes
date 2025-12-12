@@ -45,7 +45,7 @@ documentation for details.
    notes-on-django-admin.md
    notes-on-django-crispy-forms.md
    notes-on-migrating-django.md
-   Docker](notes-on-docker.md)
+   notes-on-docker.md
    notes-on-docker-compose.md
    notes-on-documenting.md
    
@@ -88,6 +88,7 @@ documentation for details.
    
    notes-on-kafka.md
    notes-on-kivy.md
+   notes-on-kubernetes.md
    
    notes-on-learn-to-draw.md
    notes-on-linux.md

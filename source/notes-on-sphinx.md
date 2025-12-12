@@ -41,7 +41,7 @@ superconjunto de Markdown--, usando una extensión (ver [nota
 correspondiente](#como-usar-markdown-en-sphinx)).
 
 
-## Empezar un projecto con Sphinx
+## Empezar un proyecto con Sphinx
 
 Conviene crear un entorno virtual para eso, con la herramienta que
 prefieras. Aquí vamos a usar `venv`, disponible en la librería estándar
@@ -195,8 +195,8 @@ Aquí podemos ver:
 ## Qué es un rol
 
 Un **rol** es un mecanismo que proporciona ReST para poder ser extendido, igual
-que las directivas. En el caso de rol, estaríamos trabajando a nivel de elemento
-en línea. Normalmente se ejecutan como:
+que las directivas. En el caso de rol, estaríamos trabajando a nivel de **elemento
+en línea**. Normalmente se ejecutan como:
 
 ```
 :rolename:`content`
@@ -210,12 +210,12 @@ Si queremos incrementas la variable :code:`a`, haremos :code:`a = a + 1`.
 ```
 
 Existen múltiples roles predefinidos ya en Sphinx, como `math` para incluir
-expresiones matemáticas, `abbr` para abrebiaturas...
+expresiones matemáticas, `abbr` para abreviaturas...
 
 
 ## Secciones o estructura en Sphinx / RestructuredText
 
-Las secciones se definen con una serie de caracteres a modo de subrayado (Y, a
+Las secciones se definen con una serie de caracteres a modo de subrayado (y, a
 veces, también a modo de superrayado) del texto de la sección. La longitud
 de la línea de subrayado / superrayado debe ser como mínimo igual a la del
 texto de la sección.
@@ -277,14 +277,15 @@ Donde los parámetros significan:
 ## Qué es una directiva en Sphinx?
 
 Las directivas son la forma mas potente de ampliar las posibilidades de
-ReEstructuredText.
+ReEstructuredText, similares a los roles. En el caso de una directiva,
+estaríamos trabajando a nivel de **elemento de bloque**.
 
 Un ejemplo de directiva es `.. toctree::`, que se genera en la pagina de
 `index.rst` por defecto al crear el proyecto. Todas las directivas se
 ejecutan escribiendo antes los dos puntos (No el carácter `:`, sino dos
 veces el carácter `.`), un espacio, el nombre de la directiva y dos
 veces el carácter "dos puntos" (Ahora sí, el carácter `:`). Suena más
- confuso de lo que es; si quieremos ejecutar `toctree`, escribimos::
+ confuso de lo que es; si queremos ejecutar `toctree`, escribimos::
 
 
 ```
@@ -328,9 +329,8 @@ Las características principales de las directivas son:
 
 Como vemos, lo único realmente obligatorio es el nombre.
 
-El sistema incluye un conjunto de
-varias directivas predefinidas, y este conjunto puede ser ampliado con
-directivas de terceras partes.
+El sistema incluye un conjunto de varias directivas predefinidas, y este
+conjunto puede ser ampliado con directivas de terceras partes.
 
 
 ## Cómo añadir contenido a la documentación.
