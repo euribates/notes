@@ -1,3 +1,14 @@
+---
+title: Notas sobre miugrar desde mercurial a Git
+tags:
+    - development
+    - git
+    - mercurial
+    - development
+---
+
+## Cómo migrar desde Mercurial a Git
+
 Add to the system paython the hg-git extensions:
 
     pip install hg-git

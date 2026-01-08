@@ -4,6 +4,8 @@ tags:
   - python
 ---
 
+## Citas
+
 Statisticians, like artists, have the bad habit of falling in love with their models.
 -- George Box
 

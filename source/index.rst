@@ -12,38 +12,23 @@ documentation for details.
 
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
    :caption: Contents:
 
-   notes-on-ansi.md
-   notes-on-ansible.md
-   notes-on-api-design.md
-   notes-on-autokey.md
-   notes-on-aws-lambdas.md
-   notes-on-aws-s3.md
-   notes-on-aws-sqs.md
+   a.rst
+   b.rst
+   c.rst
    
-   notes-on-bash.md
-   notes-on-black.md
-   notes-on-blender.md
-   notes-on-bulma.md
    
-   notes-on-cache.md
-   notes-on-certbot.md
-   notes-on-chartjs.md
-   notes-on-cookiecutter.md
-   notes-on-cra.md
-   notes-on-css.md
-   notes-on-css-for-printers.md
-   notes-on-ctags.md
-   notes-on-curl.md
    
    notes-on-data-governance.md
    notes-on-discord.md
    notes-on-dir3.md
+   notes-on-datastar.md
    notes-on-django.md
    notes-on-django-admin.md
    notes-on-django-crispy-forms.md
+   notes-on-django-rest-framework
    notes-on-migrating-django.md
    notes-on-docker.md
    notes-on-docker-compose.md
@@ -57,6 +42,9 @@ documentation for details.
    notes-on-ens.md
    
    notes-on-flask.md
+   notes-on-fastapi
+   notes-on-find
+   notes-on-fpdf2
    notes-on-font-awesome.md
    notes-on-freelance.md
    
@@ -87,6 +75,7 @@ documentation for details.
    notes-on-jwt.md
    
    notes-on-kafka.md
+   notes-on-keycloack
    notes-on-kivy.md
    notes-on-kubernetes.md
    
@@ -117,11 +106,15 @@ documentation for details.
    notes-on-pandas.md
    notes-on-pandoc.md
    notes-on-patterns.md
-   notes-on-postgresql.md
    notes-on-pgsql.md
+   notes-on-postgresql.md
+   notes-on-prometheus
    notes-on-puppet.md
    notes-on-pycharm.md
+   notes-on-plugin-architecture
+   notes-on-pydantic
    notes-on-pycones.md
+   notes-on-pygame
    notes-on-python-course.md
    notes-on-python.md
    
@@ -137,16 +130,11 @@ documentation for details.
    
    notes-on-quotes.md
    
-   notes-on-rabbit-mq.md
-   notes-on-reactjs.md
-   notes-on-redis.md
-   notes-on-restructured-text.md
-   notes-on-rq.md
-   notes-on-rsync.md
-   notes-on-rust.md
-   
+   r.rst
+
    notes-on-samba.md
    notes-on-sas-viya
+   notes-on-sass
    notes-on-sede.md
    notes-on-selenium.md
    notes-on-shiny.md
@@ -175,7 +163,7 @@ documentation for details.
    notes-on-uv.md
    notes-on-uwsgi.md
    
-   notes-on-vim.m
+   notes-on-vim.md
    notes-on-virtualenvwrapper.md
    notes-on-vscode.md
    notes-on-vue.md

@@ -17,6 +17,7 @@ release = 'MIT NON-IA License (https://github.com/non-ai-licenses/non-ai-license
 
 extensions = [
     'myst_parser',
+    'sphinx_tags',
     'sphinxcontrib.mermaid',
     ]
 
@@ -25,9 +26,14 @@ templates_path = ['_templates']
 exclude_patterns = []
 
 language = 'es'
+master_doc = 'index'
+
+# -- Tags options ------------------------------------------------------------
+tags_create_tags = True
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'alabaster'
+html_theme = 'haiku'
 html_static_path = ['_static']
+show_related = True
