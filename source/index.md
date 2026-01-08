@@ -79,6 +79,7 @@
 
 - [Kafka](notes-on-kafka.md)
 - [Kivy](notes-on-kivy.md)
+- [Kuberbetes](notes-on-kubernetes.md)
 
 - [Learn-to-draw](notes-on-learn-to-draw.md)
 - [Linux](notes-on-linux.md)
@@ -118,6 +119,7 @@
 
   - [Borb - Generación de PDF](notes-on-borb.md)
   - [FDPF2 - Generación de PDF](notes-on-fpdf2.md)
+  - [Pydantic](notes-on-pydantic.md)
   - [Migration-to-python-3](notes-on-migration-to-python-3.md)
   - [Pyenv](notes-on-pyenv.md)
   - [pyinfra](notes-on-pyinfra.md)

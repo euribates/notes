@@ -248,6 +248,12 @@ y que puede ser afectado por otros, reacciona a colisiones, tiene una
 masa, tiene inercia, etc. Es básicamente lo que se podría esperar de un
 modelo de un objeto "real".
 
+Cosas que hay que saber de `RigidBody3D`:
+
+    - Utiliza el motor de físicas de Godot
+    - Necesita un `CollisionShape`
+    - Normalmente tendrá un `Sprite2D` o algo para que sea visible.
+
 Por ejemplo, se le supone sujeto a la fuerza de la gravedad, así que su
 comportamiento por defecto será "caer" en el sentido en que esté
 configurada la gravedad del motor de físicas.
