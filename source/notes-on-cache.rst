@@ -50,7 +50,7 @@ tenemos:
    decir, la más recientemente usada. Esta estrategia es muy eficiente
    si sabemos, ya sea por el diseño del sistema o por algún tipo de
    heurística, que una vez accedido al recurso es muy poco probable que
-   se vaya a solitar otra vez.
+   se vaya a solicitar otra vez.
 
 -  **LFU**: (*Least Frequently Used*) Elimina la entrada que se haya
    usado menos veces.

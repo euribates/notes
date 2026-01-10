@@ -18,21 +18,10 @@ documentation for details.
    a.rst
    b.rst
    c.rst
+   d.rst
    
    
    
-   notes-on-data-governance.md
-   notes-on-discord.md
-   notes-on-dir3.md
-   notes-on-datastar.md
-   notes-on-django.md
-   notes-on-django-admin.md
-   notes-on-django-crispy-forms.md
-   notes-on-django-rest-framework
-   notes-on-migrating-django.md
-   notes-on-docker.md
-   notes-on-docker-compose.md
-   notes-on-documenting.md
    
    notes-on-ebooks.md
    notes-on-elasticsearch.md
@@ -74,10 +63,7 @@ documentation for details.
    notes-on-just.md
    notes-on-jwt.md
    
-   notes-on-kafka.md
-   notes-on-keycloack
-   notes-on-kivy.md
-   notes-on-kubernetes.md
+   k.rst
    
    notes-on-learn-to-draw.md
    notes-on-linux.md
@@ -163,13 +149,8 @@ documentation for details.
    notes-on-uv.md
    notes-on-uwsgi.md
    
-   notes-on-vim.md
-   notes-on-virtualenvwrapper.md
-   notes-on-vscode.md
-   notes-on-vue.md
-   
-   notes-on-wsl.md
-   notes-on-webdesign.md
-   notes-on-websockets.md
-   notes-on-writting.md
+   v.rst 
+   w.rst
 
+   meta-notes
+   tags.md

@@ -17,10 +17,10 @@ Cómo limpiar la caché de Redis y borrar todo el contenido con el CLI
 Puedes limpiar toda la cache/database y borrar todas las claves y
 valores que contenga usando una de las dos siguientes ordenes:
 
--  ``FLUSHDB`` Borra todas las claves y valores de la base de datos
+- ``FLUSHDB`` Borra todas las claves y valores de la base de datos
   actual
 
--  ``FLUSHALL`` Borra todas las claves y valores de **todas las bases de
+- ``FLUSHALL`` Borra todas las claves y valores de **todas las bases de
   datos**.
 
 La sintaxis para hacerlo desde la línea de comandos es:
@@ -82,7 +82,7 @@ exit the transaction.
 
 The following example increments keys foo and bar atomically:
 
-.. code:: redis
+.. code::
 
    > MULTI
    OK
@@ -309,9 +309,7 @@ Implementando una colas de trabajos simple
 Vamos a implementar primero al consumidor, y lo probaremos usando el
 cliente básico de Redis.
 
-.. code:: python
-
-.. include: source/redis-subscriber.py
+.. literalinclude:: redis/redis-subscriber.py
 
 El siguiente paso es crear un repartidor de trabajos, vamos a hacer un
 *script* que envíe varios trabajos a esta cola. Le pasaremos como
@@ -319,11 +317,7 @@ parámetro opcional el número de la primera tarea (por defecto 1) para
 poder ver como los trabajos se distribuyen entre los diferentes
 suscriptores:
 
-.. code:: python
-
-   --8<--
-   notes/redis-publisher.py
-   --8<--
+.. literalinclude:: redis/redis-publisher.py
 
 Podemos ahora abrir varios suscriptores y varios publicadores y podemos
 ver como la carga de trabajos se distribuye de forma equitativa entre
