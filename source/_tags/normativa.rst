@@ -7,4 +7,5 @@ My tags: normativa
     :maxdepth: 1
     :caption: With this tag
 
+    ../notes-on-cra.rst
     ../notes-on-eli.rst

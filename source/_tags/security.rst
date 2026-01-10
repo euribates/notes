@@ -1,11 +1,10 @@
-.. _sphx_tag_europa:
+.. _sphx_tag_security:
 
-My tags: europa
-###############
+My tags: security
+#################
 
 .. toctree::
     :maxdepth: 1
     :caption: With this tag
 
     ../notes-on-cra.rst
-    ../notes-on-eli.rst

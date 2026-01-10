@@ -7,13 +7,13 @@ C
 
    notes-on-curl
    notes-on-cache
-   notes-on-cas.md
-   notes-on-certbot.md
-   notes-on-chartjs.md
-   notes-on-chip8.md
-   notes-on-cookiecutter.md
-   notes-on-cra.md
-   notes-on-ckan.md
-   notes-on-css-for-printers.md
-   notes-on-css.md
-   notes-on-ctags.md
+   notes-on-cas
+   notes-on-certbot
+   notes-on-chartjs
+   notes-on-chip8
+   notes-on-cookiecutter
+   notes-on-cra
+   notes-on-ckan
+   notes-on-css-for-printers
+   notes-on-css
+   notes-on-ctags

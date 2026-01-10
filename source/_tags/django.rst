@@ -7,6 +7,7 @@ My tags: django
     :maxdepth: 1
     :caption: With this tag
 
+    ../notes-on-cookiecutter.rst
     ../notes-on-datastar.rst
     ../notes-on-django.rst
     ../notes-on-websockets.rst

@@ -7,5 +7,6 @@ My tags: linux
     :maxdepth: 1
     :caption: With this tag
 
+    ../notes-on-certbot.rst
     ../notes-on-curl.rst
     ../notes-on-wsl.rst

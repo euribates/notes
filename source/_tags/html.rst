@@ -7,4 +7,6 @@ My tags: html
     :maxdepth: 1
     :caption: With this tag
 
+    ../notes-on-css-for-printers.rst
+    ../notes-on-css.rst
     ../notes-on-websockets.rst

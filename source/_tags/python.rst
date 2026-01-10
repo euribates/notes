@@ -7,6 +7,8 @@ My tags: python
     :maxdepth: 1
     :caption: With this tag
 
+    ../notes-on-ckan.rst
+    ../notes-on-cookiecutter.rst
     ../notes-on-django.rst
     ../notes-on-docker.rst
     ../notes-on-websockets.rst

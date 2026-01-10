@@ -1,13 +1,11 @@
-.. _sphx_tag_web:
+.. _sphx_tag_css:
 
-My tags: web
+My tags: css
 ############
 
 .. toctree::
     :maxdepth: 1
     :caption: With this tag
 
-    ../notes-on-cas.rst
     ../notes-on-css-for-printers.rst
     ../notes-on-css.rst
-    ../notes-on-curl.rst
