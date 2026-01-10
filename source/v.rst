@@ -1,13 +1,12 @@
 ====================================
-V
+W
 ====================================
 
 
 .. toctree::
    :maxdepth: 2
 
-   notes-on-wsl
-   notes-on-webdesign
-   notes-on-websockets
-   notes-on-writting
-
+   notes-on-vim.md
+   notes-on-virtualenvwrapper.md
+   notes-on-vscode.md
+   notes-on-vue.md

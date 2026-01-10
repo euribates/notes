@@ -19,16 +19,11 @@ documentation for details.
    b.rst
    c.rst
    d.rst
+   e.rst
    
    
    
    
-   notes-on-ebooks.md
-   notes-on-elasticsearch.md
-   notes-on-eli.md
-   notes-on-english.md
-   notes-on-epub.md
-   notes-on-ens.md
    
    notes-on-flask.md
    notes-on-fastapi

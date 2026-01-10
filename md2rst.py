@@ -78,6 +78,9 @@ def main():
     check(f'Existe {md_filename.name}', md_filename.exists())
     check(f'No existe {rst_filename.name}', not rst_filename.exists())
     metadata = get_metadata(md_filename)
+    if 'tags' in metadata:
+        tags = f','.join(metadata['tags'])
+        print(f'tags: {tags}')
     markdown_to_rst(md_filename, rst_filename)
     check(f'Existe {rst_filename}', rst_filename.exists())
     add_topic(options.topic, metadata, rst_filename)
