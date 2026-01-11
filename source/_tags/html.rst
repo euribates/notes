@@ -9,4 +9,5 @@ My tags: html
 
     ../notes-on-css-for-printers.rst
     ../notes-on-css.rst
+    ../notes-on-js.rst
     ../notes-on-websockets.rst

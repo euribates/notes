@@ -11,3 +11,5 @@ My tags: web
     ../notes-on-css-for-printers.rst
     ../notes-on-css.rst
     ../notes-on-curl.rst
+    ../notes-on-js.rst
+    ../notes-on-prometheus.rst

@@ -1,11 +1,10 @@
-.. _sphx_tag_docker:
+.. _sphx_tag_ide:
 
-My tags: docker
-###############
+My tags: ide
+############
 
 .. toctree::
     :maxdepth: 1
     :caption: With this tag
 
-    ../notes-on-docker.rst
     ../notes-on-pycharm.rst

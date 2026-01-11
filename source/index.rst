@@ -21,10 +21,6 @@ documentation for details.
    d.rst
    e.rst
    
-   
-   
-   
-   
    notes-on-flask.md
    notes-on-fastapi
    notes-on-find
@@ -32,18 +28,8 @@ documentation for details.
    notes-on-font-awesome.md
    notes-on-freelance.md
    
-   notes-on-game-development.md
-   notes-on-gocardless.md
-   notes-on-gcloud.md
-   notes-on-git.md
+   g.rst
    
-   notes-on-git-actions.md
-   notes-on-github.md
-   
-   notes-on-gmail.md
-   notes-on-godot.md
-   notes-on-google-flexible-environment.md
-   notes-on-gulp.md
    
    notes-on-hacktoberfest.md
    notes-on-html5.md
@@ -53,7 +39,7 @@ documentation for details.
    notes-on-ideas.md
    notes-on-iot.md
    
-   notes-on-js.md
+   notes-on-js
    notes-on-jupyter.md
    notes-on-just.md
    notes-on-jwt.md
@@ -84,31 +70,8 @@ documentation for details.
    notes-on-opendata.md
    notes-on-opentelemetry.md
    
-   notes-on-pandas.md
-   notes-on-pandoc.md
-   notes-on-patterns.md
-   notes-on-pgsql.md
-   notes-on-postgresql.md
-   notes-on-prometheus
-   notes-on-puppet.md
-   notes-on-pycharm.md
-   notes-on-plugin-architecture
-   notes-on-pydantic
-   notes-on-pycones.md
-   notes-on-pygame
-   notes-on-python-course.md
-   notes-on-python.md
-   
-   notes-on-migration-to-python-3.md
-   notes-on-pyenv.md
-   notes-on-pyinfra.md
-   notes-on-pypi.md
-   notes-on-pytest.md
-   notes-on-python-ast.md
-   notes-on-python-wheels.md
-   notes-on-python-3x.md
-   notes-on-teaching-python.md
-   
+   p.rst 
+
    notes-on-quotes.md
    
    r.rst

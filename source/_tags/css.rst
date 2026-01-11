@@ -9,3 +9,4 @@ My tags: css
 
     ../notes-on-css-for-printers.rst
     ../notes-on-css.rst
+    ../notes-on-django-crispy-forms.rst

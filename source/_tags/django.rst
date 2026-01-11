@@ -9,5 +9,6 @@ My tags: django
 
     ../notes-on-cookiecutter.rst
     ../notes-on-datastar.rst
+    ../notes-on-django-crispy-forms.rst
     ../notes-on-django.rst
     ../notes-on-websockets.rst

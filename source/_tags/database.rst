@@ -8,3 +8,5 @@ My tags: database
     :caption: With this tag
 
     ../notes-on-django.rst
+    ../notes-on-pgsql.rst
+    ../notes-on-postgresql.rst

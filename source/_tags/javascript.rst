@@ -8,3 +8,4 @@ My tags: javascript
     :caption: With this tag
 
     ../notes-on-datastar.rst
+    ../notes-on-js.rst

@@ -71,15 +71,15 @@ ancho de la ventana, por ejemplo:
 
 .. code:: css
 
-   :root {
-     --main-font-size: 16px;
-   }
-   
-   media all and (max-width: 600px) {
-     :root {
-       --main-font-size: 12px;
-     }
-   }
+    :root {
+      --main-font-size: 16px;
+      }
+    
+    media all and (max-width: 600px) {
+      :root {
+        --main-font-size: 12px;
+      }
+    }
 
 
 El código CSS anterior actualiza el tamaño principal de las fuentes en
@@ -120,7 +120,7 @@ de la curva que seguirá esa transformación. Por ejemplo:
 
 .. code:: css
 
-transition: background 0.5s linear;
+    transition: background 0.5s linear;
 
 Esto le indica que, siempre que se cambie la propiedad ``backgroud``, el
 cambio deberá realizarse de forma gradual, durante medio segundo, y con
@@ -129,17 +129,17 @@ fondo del botón al pasar el cursor por encima:
 
 .. code:: html
 
-   <style>
-   button {
-     background: white;
-     transition: background 0.5s linear;
-     }
-   
-   button:hover {
-     background: green;
-     }
-   </style>
-   <button> Pon el raton encima para cambiar el fondo</button
+    <style>
+    button {
+      background: white;
+      transition: background 0.5s linear;
+      }
+    
+    button:hover {
+      background: green;
+      }
+    </style>
+    <button>Pasa el ratón por encima para cambiar el fondo</button>
 
 Obsérvese que esta transición es automática. Podemos desencadenarla de
 forma activa mediante :doc:`notes-on-js`, cambiado al atributo
@@ -171,10 +171,10 @@ animación (Con ``animation-name`` y la duración (con
 
 .. code:: css
 
-.button {
-  animation-name: stretching;
-  animation-duration: 1s;
-  }
+    .button {
+      animation-name: stretching;
+      animation-duration: 1s;
+    }
 
 Para cada animación, necesitas asignarle un nombre y describir como
 mínimo un valor, aunque normalmente definiremos más. Podemos especificar
@@ -200,14 +200,14 @@ rotación completa de 360º grados:
 
 .. code:: css
 
-@keyframes rotate {
-  50% {
-    transform: rotate(-90deg);
+    @keyframes rotate {
+    50% {
+        transform: rotate(-90deg);
+        }
+    100% {
+        transform: rotate(360deg);
+        }
     }
-  100% {
-    transform: rotate(360deg);
-    }
-  }
 
 El estado inicial será el del objeto al que aplicamos la trasformación;
 si no ha sido modificado, será de 0º.
@@ -218,12 +218,12 @@ podríamos haberla hecho exactamente igual con ``0%`` y ``100%``:
 
 .. code:: css
 
-   @keyframes coloring {
-     from { background-color: red; }
-     33%  { background-color: yellow; }
-     66%  { background-color: green; }
-     to   { background-color: blue; }
-     }
+    @keyframes coloring {
+      from { background-color: red; }
+      33%  { background-color: yellow; }
+      66%  { background-color: green; }
+      to   { background-color: blue; }
+      }
 
 Si borramos el estado final, ``to``, el color pasaría de rojo a
 amarillo, verde y azul y luego, retrocede volviendo a verde, amarillo y
@@ -236,17 +236,17 @@ girar sobre el eje Z, también podemos desplazar el objeto, con
 
 .. code:: css
 
-   @keyframes lift-up {
-     from {
-       transform: translateY(0px);
-       }
-     50% {
-       transform: translateY(-250px);
-       }
-     to {
-       transform: translateY(-300px);
-       }
-     }
+    @keyframes lift-up {
+      from {
+        transform: translateY(0px);
+        }
+      50% {
+        transform: translateY(-250px);
+        }
+      to {
+        transform: translateY(-300px);
+        }
+      }
 
 
 Los ``keyframes`` pueden ser agrupados simplemente usando comas. El
@@ -256,14 +256,14 @@ hasta el valor final de 200 pixels:
 
 .. code:: css
 
-   @keyframes stretching {
-     0%, 50% {
-       width: 100px;
-       }
-     100% {
-       width: 200px;
-       }
-     }
+    @keyframes stretching {
+      0%, 50% {
+        width: 100px;
+        }
+      100% {
+        width: 200px;
+        }
+      }
 
 Animaciones complejas
 ~~~~~~~~~~~~~~~~~~~~~
@@ -305,31 +305,32 @@ orden normal.
 
 .. code:: css
 
-   @keyframes clockwise {
-   to {
-     transform: rotate(180deg);
-     }
-   }
-
-   @keyframes counterclockwise {
-     to {
-       transform: rotate(-180deg);
-       }
-     }
-
+    @keyframes clockwise {
+    to {
+      transform: rotate(180deg);
+      }
+    }
+ 
+    @keyframes counterclockwise {
+      to {
+        transform: rotate(-180deg);
+        }
+      }
+ 
     .gear-big {
       animation-name: clockwise;
       animation-duration: 2s;
       animation-iteration-count: infinite;
       animation-direction: alternate-reverse;
       }
-    
+     
     .gear-small {
       animation-name: counterclockwise;
       animation-duration: 2s;
       animation-iteration-count: infinite;
       animation-direction: alternate-reverse;
       }
+
 
 Como asignar un retraso o *delay* a una animación
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -389,7 +390,7 @@ predefinidos.
 
 .. code:: css
 
-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
 
 Usando las transiciones de CSS3, podemos aplicar estas animaciones a
 objetos cuando estos cambien de estado; por ejemplo cuando el ratón se
@@ -424,16 +425,16 @@ lineal:
 
 .. code:: css
 
-   .box {
-     background: #2db34a;
-     transition-property: background;
-     transition-duration: 1s;
-     transition-timing-function: linear;
-     }
-   
-   .box:hover {
-     background: #ff7b29;
-     }
+    .box {
+      background: #2db34a;
+      transition-property: background;
+      transition-duration: 1s;
+      transition-timing-function: linear;
+      }
+    
+    .box:hover {
+      background: #ff7b29;
+      }
 
 En el código anterior, no se han usado prefijos específicos del
 navegador. Si queremos curarnos en salud, y que funcione en la mayoría
@@ -442,25 +443,25 @@ caso anterior, añadiendo los prefijos, quedaría:
 
 .. code:: css
 
-   .box {
-     background: #2db34a;
-     -webkit-transition-property: background;
-     -moz-transition-property: background;
-     -o-transition-property: background;
-     transition-property: background;
-     -webkit-transition-duration: 1s;
-     -moz-transition-duration: 1s;
-     -o-transition-duration: 1s;
-     transition-duration: 1s;
-     -webkit-transition-timing-function: linear;
-     -moz-transition-timing-function: linear;
-     -o-transition-timing-function: linear;
-     transition-timing-function: linear;
-     }
-   
-   .box:hover {
-     background: #ff7b29;
-     }
+    .box {
+      background: #2db34a;
+      -webkit-transition-property: background;
+      -moz-transition-property: background;
+      -o-transition-property: background;
+      transition-property: background;
+      -webkit-transition-duration: 1s;
+      -moz-transition-duration: 1s;
+      -o-transition-duration: 1s;
+      transition-duration: 1s;
+      -webkit-transition-timing-function: linear;
+      -moz-transition-timing-function: linear;
+      -o-transition-timing-function: linear;
+      transition-timing-function: linear;
+      }
+    
+    .box:hover {
+      background: #ff7b29;
+      }
 
 
 Qué propiedades son aptas para una transición
@@ -478,40 +479,40 @@ valores discretos entre, digamos, los valores ``None`` y ``block``.
 Algunas de las propiedades que más a menudo son usadas para aplicarles
 transiciones son:
 
--  ``background-color``
--  ``background-position``
--  ``border-color``
--  ``border-width``
--  ``border-spacing``
--  ``bottom``
--  ``clip``
--  ``color``
--  ``crop``
--  ``font-size``
--  ``font-weight``
--  ``height``
--  ``left``
--  ``letter-spacing``
--  ``line-height``
--  ``margin``
--  ``max-height``
--  ``max-width``
--  ``min-height``
--  ``min-width``
--  ``opacity``
--  ``outline-color``
--  ``outline-offset``
--  ``outline-width``
--  ``padding``
--  ``right``
--  ``text-indent``
--  ``text-shadow``
--  ``top``
--  ``vertical-align``
--  ``visibility``
--  ``width``
--  ``word-spacing``
--  ``z-index``
+- ``background-color``
+- ``background-position``
+- ``border-color``
+- ``border-width``
+- ``border-spacing``
+- ``bottom``
+- ``clip``
+- ``color``
+- ``crop``
+- ``font-size``
+- ``font-weight``
+- ``height``
+- ``left``
+- ``letter-spacing``
+- ``line-height``
+- ``margin``
+- ``max-height``
+- ``max-width``
+- ``min-height``
+- ``min-width``
+- ``opacity``
+- ``outline-color``
+- ``outline-offset``
+- ``outline-width``
+- ``padding``
+- ``right``
+- ``text-indent``
+- ``text-shadow``
+- ``top``
+- ``vertical-align``
+- ``visibility``
+- ``width``
+- ``word-spacing``
+- ``z-index``
 
 **Transition Duration**
 
@@ -585,16 +586,16 @@ transition values.
 
 .. code:: css
 
-   .box {
-     background: #2db34a;
-     border-radius: 6px;
-     transition: background .2s linear, border-radius 1s ease-in 1s;
-     }
-   
-   .box:hover {
-     color: #ff7b29;
-     border-radius: 50%;
-     }
+    .box {
+      background: #2db34a;
+      border-radius: 6px;
+      transition: background .2s linear, border-radius 1s ease-in 1s;
+      }
+    
+    .box:hover {
+      color: #ff7b29;
+      border-radius: 50%;
+      }
 
 
 **Customizing Animations**
@@ -677,26 +678,19 @@ animation property should be ``animation-name``, ``animation-duration``,
 
 Links:
 
--  `Transitions & Animations - Learn to Code Advanced HTML &
-CSS <https://learn.shayhowe.com/advanced-html-css/transitions-animations/>`_
+- `Transitions & Animations - Learn to Code Advanced HTML & CSS <https://learn.shayhowe.com/advanced-html-css/transitions-animations/>`_
 
--  `Zooming Background Images -
-CSS-Tricks <https://css-tricks.com/zooming-background-images/>`_
+- `Zooming Background Images - CSS-Tricks <https://css-tricks.com/zooming-background-images/>`_
 
--  `SMOOTH Image Zoom on Hover Effects with
-CSS <https://w3bits.com/css-image-hover-zoom/>`_
+- `SMOOTH Image Zoom on Hover Effects with CSS <https://w3bits.com/css-image-hover-zoom/>`_
 
--  `Understanding CSS3 Transitions - A List
-Apart <http://www.alistapart.com/articles/understanding-css3-transitions/>`_
+- `Understanding CSS3 Transitions - A List Apart <http://www.alistapart.com/articles/understanding-css3-transitions/>`_
 
--  `The Guide To CSS Animation: Principles and Examples - Smashing
-Magazine <http://coding.smashingmagazine.com/2011/09/14/the-guide-to-css-animation-principles-and-examples/>`_
+- `The Guide To CSS Animation: Principles and Examples - Smashing Magazine <http://coding.smashingmagazine.com/2011/09/14/the-guide-to-css-animation-principles-and-examples/>`_
 
--  `CSS cubic-bezier
-Builder <http://www.roblaplaca.com/examples/bezierBuilder/>`_
+- `CSS cubic-bezier Builder <http://www.roblaplaca.com/examples/bezierBuilder/>`_
 
--  `Using CSS animations - CSS: Cascading Style Sheets -
-MDN <https://developer.mozilla.org/en-US/docs/CSS/Using_CSS_animations>`_
+- `Using CSS animations - CSS: Cascading Style Sheets - MDN <https://developer.mozilla.org/en-US/docs/CSS/Using_CSS_animations>`_
 
 
 Cómo hacer un árbol expandible/colapsable con CSS
@@ -741,45 +735,46 @@ Y para posicionar el texto en las esquinas o en el centro:
 
 .. code:: css
 
-   .bottom-left {
-     position: absolute;
-     bottom: 8px;
-     left: 16px;
-     }
-   
-   /* Top left text */
-   .top-left {
-     position: absolute;
-     top: 8px;
-     left: 16px;
-     }
-   
-   /* Top right text */
-     .top-right {
-     position: absolute;
-     top: 8px;
-     right: 16px;
-     }
-   
-   /* Bottom right text */
-   .bottom-right {
-     position: absolute;
-     bottom: 8px;
-     right: 16px;
-     }
-   
-   /* Centered text */
-   .centered {
-     position: absolute;
-     top: 50%;
-     left: 50%;
-     transform: translate(-50%, -50%);
-     }
+    .bottom-left {
+      position: absolute;
+      bottom: 8px;
+      left: 16px;
+      }
+    
+    /* Top left text */
+    .top-left {
+      position: absolute;
+      top: 8px;
+      left: 16px;
+      }
+    
+    /* Top right text */
+      .top-right {
+      position: absolute;
+      top: 8px;
+      right: 16px;
+      }
+    
+    /* Bottom right text */
+    .bottom-right {
+      position: absolute;
+      bottom: 8px;
+      right: 16px;
+      }
+    
+    /* Centered text */
+    .centered {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      }
 
 Fuente: `How To Position Text Over an
 Image <https://www.w3schools.com/howto/howto_css_image_text.asp>`_
 
-El modelo Flexbox en CSS
+
+El modelo :index:`Flexbox` en CSS
 ------------------------------------------------------------------------
 
 El modelo **flexbox** es un modelo de composición unidimensional (Es
@@ -1065,7 +1060,7 @@ Muchas características de medios son características de rango, lo que
 significa que pueden tener el prefijo “min-” o “max-” para expresar
 restricciones de “condición mínima” o “condición máxima”. Por ejemplo,
 este CSS aplicará estilos solo si el ancho del *viewport* de su
-navegador es igual o menor que 1250px: css
+navegador es igual o menor que 1250px:
 
 .. code:: css
 
