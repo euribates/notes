@@ -1,10 +1,10 @@
 Inteligencia Artificial (AI)
-============================
+=======================================================================
 
 .. tags: ia, machine-learning, law, science
 
 Reglamento europeo de Inteligencia Artificial
----------------------------------------------
+------------------------------------------------------------------------
 
 Esta norma, también conocida como **Ley Europea de Inteligencia
 Artificial**, constituye la primera regulación general a nivel mundial y
@@ -25,7 +25,7 @@ destinadas a incentivar un desarrollo de estas tecnologías sostenible en
 términos sociales.
 
 Entrada en vigor de la Ley Europea de Inteligencia Artificial
--------------------------------------------------------------
+------------------------------------------------------------------------
 
 La publicación del texto definitivo en el DOUE pone en marcha el
 mecanismo para su plena entrada en vigor. El reglamento no será
@@ -51,7 +51,7 @@ son aplicables en plazos distintos:
    ejemplo, máquinas, juguetes, ascensores o productos sanitarios-).
 
 Contenido básico del reglamento: mecanismos de control y regulación
--------------------------------------------------------------------
+------------------------------------------------------------------------
 
 En el ámbito de control y regulación, el Reglamento de IA clasifica los
 sistemas de inteligencia artificial en **función del riesgo** que pueden
@@ -160,7 +160,7 @@ a códigos de buenas prácticas para demostrar el cumplimiento de estas
 obligaciones.
 
 Estructura administrativa de control y régimen sancionador
-----------------------------------------------------------
+------------------------------------------------------------------------
 
 El reglamento obliga a los Estados miembros a fijar uno o varios órganos
 competentes para la supervisión del cumplimiento de las obligaciones que

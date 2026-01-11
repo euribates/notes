@@ -22,15 +22,10 @@ documentation for details.
    e.rst
    f.rst 
    g.rst
+   h.rst 
    
    
-   notes-on-hacktoberfest.md
-   notes-on-html5.md
-   notes-on-https.md
-   notes-on-htmx.md
-   
-   notes-on-ideas.md
-   notes-on-iot.md
+   i.rst
    
    notes-on-js
    notes-on-jupyter.md
@@ -38,10 +33,7 @@ documentation for details.
    notes-on-jwt.md
    
    k.rst
-   
-   notes-on-learn-to-draw.md
-   notes-on-linux.md
-   notes-on-logging.md
+   l.rst 
    
    notes-on-mac.md
    notes-on-make.md
@@ -52,15 +44,11 @@ documentation for details.
    notes-on-migrating-from-mercurial-to-git.md
    notes-on-mqtt.md
    notes-on-mysql.md
-   
 
    n.rst
-
-   notes-on-quotes.md
-   
+   o.rst
    p.rst 
-
-   
+   q.rst
    r.rst
 
    notes-on-samba.md
@@ -89,11 +77,7 @@ documentation for details.
    notes-on-typer.md
    notes-on-typesense.md
    
-   notes-on-ultisnips.md
-   notes-on-unicode.md
-   notes-on-uv.md
-   notes-on-uwsgi.md
-   
+   u.rst 
    v.rst 
    w.rst
 

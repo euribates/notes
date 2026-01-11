@@ -15,62 +15,14 @@ from rich.panel import Panel
 from rich.table import Table
 
 from models import load_note_from_file
+from core import get_metadata, get_title
+from core import is_note, main_topic
+from core import read_all_lines
 
 DOCS = Path('./source/')
 
 OK = "[green]✓[/green]"
 ERROR = "[red]✖[/red]"
-
-
-def is_note(filename: str|Path) -> bool:
-    filename = Path(filename)
-    name = filename.name
-    return name.startswith('notes-on-') and name.endswith('.md')
-
-
-def get_metadata(filename: str) -> dict:
-    with open(filename, 'r', encoding="utf-8") as f_in:
-        line = f_in.readline().strip()
-        if line == '---': #  YAML header
-            buff = []
-            for line in f_in:
-                line = line.strip()
-                if line == '---':
-                    break
-                buff.append(line)
-            else:
-                raise ValueError(
-                    "Encuentro la marca de inicio de metadata"
-                    f" en el fichero {filename}, pero no la marca"
-                    " de final."
-                    )
-            return yaml.safe_load('\n'.join(buff))
-    return {}
-
-
-
-def get_title(filename: str) -> Optional[str]:
-    pat_title = re.compile('^title: (.+)$')
-    with open(filename, 'r', encoding="utf-8") as f_in:
-        for line in f_in:
-            if _match := pat_title.match(line):
-                return _match.group(1)
-    return None
-
-
-def main_topic(filename: str|Path) -> str:
-    if not isinstance(filename, Path):
-        filename = Path(filename)
-    assert is_note(filename)
-    name = filename.name
-    return name.removeprefix("notes-on-").removesuffix('.md')
-
-
-def read_all_lines(filename: str) -> list:
-    if filename.exists():
-        with open(filename, 'r', encoding='utf-8') as f_in:
-            return [line.strip() for line in f_in.readlines()]
-    return []
 
 
 class Handler:
@@ -141,7 +93,9 @@ class Handler:
                     table.add_row(topic, title)
             self.out(table)
             return -1
-        filename = DOCS / f'notes-on-{topic}.md'
+        filename = DOCS / f'notes-on-{topic}.rst'
+        from icecream import ic; ic(filename)
+        from icecream import ic; ic(filename.exists())
         if not filename.exists():
             self.failure(f'NO existe el tema [yellow]{topic}[/]')
             return -1
@@ -209,7 +163,7 @@ class Handler:
         '''
         outcome = []
         for topic in options.topic:
-            filename = DOCS / f'notes-on-{topic.lower()}.md'
+            filename = DOCS / f'notes-on-{topic.lower()}.rst'
             if not filename.exists():
                 self.failure(f'NO existe el tema [yellow]{topic}[/]')
                 return -1

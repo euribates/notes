@@ -10,9 +10,9 @@ A
    notes-on-analytics
    notes-on-ansi
    notes-on-ansible
-   notes-on-api-design.md
+   notes-on-api-design
    notes-on-asciidoc
    notes-on-autokey
-   notes-on-aws-lambdas.md
-   notes-on-aws-s3.md
+   notes-on-aws-lambdas
+   notes-on-aws-s3
    notes-on-aws-sqs

@@ -1,7 +1,7 @@
-.. _sphx_tag_linux:
+.. _sphx_tag_systemd:
 
-My tags: Linux
-##############
+My tags: systemd
+################
 
 .. toctree::
     :maxdepth: 1

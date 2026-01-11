@@ -1,7 +1,7 @@
 Amazon Web Services: SQS
-========================
+========================================================================
 
-..tags:: deploy, os
+..tags:: deploy, os, aws
 
 Para usar los servicios de Amazon (*Amazon Web Services*, AWS) desde
 Python podemos usar la librería :index:`boto`. Los servicios incluidos

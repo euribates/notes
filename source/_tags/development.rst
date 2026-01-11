@@ -12,8 +12,10 @@ My tags: development
     ../notes-on-django.rst
     ../notes-on-fastapi.rst
     ../notes-on-find.rst
+    ../notes-on-html5.rst
     ../notes-on-js.rst
     ../notes-on-plugin-architecture.rst
     ../notes-on-pydantic.rst
     ../notes-on-python.rst
+    ../notes-on-ultisnips.rst
     ../notes-on-websockets.rst

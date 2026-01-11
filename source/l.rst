@@ -1,12 +1,11 @@
 ====================================
-N
+L
 ====================================
 
 
 .. toctree::
    :maxdepth: 2
-   
-   notes-on-neo4j.rst
-   notes-on-nfs.rst
-   notes-on-nginx.rst
-   notes-on-nix.rst
+
+   notes-on-learn-to-draw
+   notes-on-linux
+   notes-on-logging

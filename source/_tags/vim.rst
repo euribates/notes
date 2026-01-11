@@ -8,3 +8,4 @@ My tags: vim
     :caption: With this tag
 
     ../notes-on-django.rst
+    ../notes-on-ultisnips.rst

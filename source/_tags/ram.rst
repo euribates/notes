@@ -1,7 +1,7 @@
-.. _sphx_tag_linux:
+.. _sphx_tag_ram:
 
-My tags: Linux
-##############
+My tags: ram
+############
 
 .. toctree::
     :maxdepth: 1

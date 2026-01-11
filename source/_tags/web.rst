@@ -12,6 +12,9 @@ My tags: web
     ../notes-on-css.rst
     ../notes-on-curl.rst
     ../notes-on-fastapi.rst
+    ../notes-on-html5.rst
+    ../notes-on-https.rst
     ../notes-on-js.rst
     ../notes-on-nginx.rst
     ../notes-on-prometheus.rst
+    ../notes-on-uwsgi.rst

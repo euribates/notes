@@ -1,6 +1,6 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 
+import re
 import yaml
 
 
@@ -22,6 +22,9 @@ class Point:
     def add_line(self, line):
         self.lines.append(line)
 
+    def pop(self):
+        return self.lines.pop()
+
     def body(self):
         return '\n'.join(self.lines)
 
@@ -38,26 +41,17 @@ def load_lines(filename):
 
 
 def load_note_from_file(filename):
+    pat_point = re.compile('^----+$')
     note = Note(filename)
-    in_header = False
-    header_lines = []
     point = Point(filename)
+    prev_line = None
     for line in load_lines(filename):
-        if line == '---' and not header_lines:
-            in_header = True
-            continue
-        if line == '---' and header_lines:
-            in_header = False
-            note.metadata = yaml.safe_load('\n'.join(header_lines))
-            if 'title' in note.metadata:
-                note.title = note.metadata['title']
-            continue
-        if in_header:
-            header_lines.append(line)
+        line = line.rstrip()
+        if pat_point.match(line):
+            assert prev_line == point.pop()
+            point = Point(prev_line)
+            note.content.append(point)
         else:
-            if line.startswith('## '):
-                point = Point(line[3:])
-                note.content.append(point)
-            else:
-                point.add_line(line)
+            point.add_line(line)
+        prev_line = line
     return note

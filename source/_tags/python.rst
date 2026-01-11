@@ -14,6 +14,7 @@ My tags: python
     ../notes-on-docker.rst
     ../notes-on-fastapi.rst
     ../notes-on-fpdf2.rst
+    ../notes-on-iot.rst
     ../notes-on-pandas.rst
     ../notes-on-pandoc.rst
     ../notes-on-plugin-architecture.rst
@@ -22,4 +23,8 @@ My tags: python
     ../notes-on-pycones.rst
     ../notes-on-pydantic.rst
     ../notes-on-python.rst
+    ../notes-on-quotes.rst
+    ../notes-on-ultisnips.rst
+    ../notes-on-uv.rst
+    ../notes-on-uwsgi.rst
     ../notes-on-websockets.rst

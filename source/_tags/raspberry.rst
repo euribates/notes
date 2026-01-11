@@ -1,11 +1,10 @@
-.. _sphx_tag_os:
+.. _sphx_tag_raspberry:
 
-My tags: os
-###########
+My tags: raspberry
+##################
 
 .. toctree::
     :maxdepth: 1
     :caption: With this tag
 
     ../notes-on-iot.rst
-    ../notes-on-wsl.rst

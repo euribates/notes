@@ -1,10 +1,10 @@
-.. _sphx_tag_linux:
+.. _sphx_tag_tests:
 
-My tags: Linux
+My tags: tests
 ##############
 
 .. toctree::
     :maxdepth: 1
     :caption: With this tag
 
-    ../notes-on-linux.rst
+    ../notes-on-uv.rst

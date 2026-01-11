@@ -4,12 +4,34 @@ import subprocess
 from pathlib import Path
 import argparse
 
-from mdt import get_metadata
+import yaml
 
 OK = "\u001b[32m[✓]\u001b[0m"
 ERROR = "\u001b[31m[✖]\u001b[0m"
 
 DOCS = Path('./source/')
+
+
+def get_metadata(filename: str) -> dict:
+    '''Devuelve los metadatos de un fichero.
+    '''
+    with open(filename, 'r', encoding="utf-8") as f_in:
+        line = f_in.readline().strip()
+        if line == '---': #  YAML header
+            buff = []
+            for line in f_in:
+                line = line.strip()
+                if line == '---':
+                    break
+                buff.append(line)
+            else:
+                raise ValueError(
+                    "Encuentro la marca de inicio de metadata"
+                    f" en el fichero {filename}, pero no la marca"
+                    " de final."
+                    )
+            return yaml.safe_load('\n'.join(buff))
+    return {}
 
 
 def check(msg, condition: bool):
