@@ -9,6 +9,8 @@ My tags: linux
 
     ../notes-on-certbot.rst
     ../notes-on-curl.rst
+    ../notes-on-find.rst
+    ../notes-on-nix.rst
     ../notes-on-postgresql.rst
     ../notes-on-python.rst
     ../notes-on-wsl.rst

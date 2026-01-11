@@ -20,14 +20,7 @@ documentation for details.
    c.rst
    d.rst
    e.rst
-   
-   notes-on-flask.md
-   notes-on-fastapi
-   notes-on-find
-   notes-on-fpdf2
-   notes-on-font-awesome.md
-   notes-on-freelance.md
-   
+   f.rst 
    g.rst
    
    
@@ -60,19 +53,13 @@ documentation for details.
    notes-on-mqtt.md
    notes-on-mysql.md
    
-   notes-on-neo4j.md
-   notes-on-nfs.md
-   notes-on-nginx.md
-   notes-on-nix.md
-   
-   notes-on-oauth2.md
-   notes-on-oracle.md
-   notes-on-opendata.md
-   notes-on-opentelemetry.md
+
+   n.rst
+
+   notes-on-quotes.md
    
    p.rst 
 
-   notes-on-quotes.md
    
    r.rst
 

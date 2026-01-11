@@ -11,5 +11,7 @@ My tags: web
     ../notes-on-css-for-printers.rst
     ../notes-on-css.rst
     ../notes-on-curl.rst
+    ../notes-on-fastapi.rst
     ../notes-on-js.rst
+    ../notes-on-nginx.rst
     ../notes-on-prometheus.rst

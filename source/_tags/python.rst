@@ -12,6 +12,8 @@ My tags: python
     ../notes-on-django-crispy-forms.rst
     ../notes-on-django.rst
     ../notes-on-docker.rst
+    ../notes-on-fastapi.rst
+    ../notes-on-fpdf2.rst
     ../notes-on-pandas.rst
     ../notes-on-pandoc.rst
     ../notes-on-plugin-architecture.rst
