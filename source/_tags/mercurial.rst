@@ -1,11 +1,10 @@
-.. _sphx_tag_git:
+.. _sphx_tag_mercurial:
 
-My tags: git
-############
+My tags: mercurial
+##################
 
 .. toctree::
     :maxdepth: 1
     :caption: With this tag
 
-    ../notes-on-github.rst
     ../notes-on-migrating-from-mercurial-to-git.rst

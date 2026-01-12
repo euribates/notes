@@ -27,17 +27,7 @@ documentation for details.
    j.rst 
    k.rst
    l.rst 
-   
-   notes-on-mac.md
-   notes-on-make.md
-   notes-on-marshmallow.md
-   notes-on-maths.md
-   notes-on-matomo.md
-   notes-on-meilisearch.md
-   notes-on-migrating-from-mercurial-to-git.md
-   notes-on-mqtt.md
-   notes-on-mysql.md
-
+   m.rst   
    n.rst
    o.rst
    p.rst 

@@ -14,6 +14,7 @@ My tags: development
     ../notes-on-find.rst
     ../notes-on-html5.rst
     ../notes-on-javascript.rst
+    ../notes-on-migrating-from-mercurial-to-git.rst
     ../notes-on-plugin-architecture.rst
     ../notes-on-pydantic.rst
     ../notes-on-python.rst

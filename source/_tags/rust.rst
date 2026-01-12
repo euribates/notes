@@ -7,4 +7,5 @@ My tags: rust
     :maxdepth: 1
     :caption: With this tag
 
+    ../notes-on-meilisearch.rst
     ../notes-on-uv.rst

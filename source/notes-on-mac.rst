@@ -1,17 +1,14 @@
-mac
+MAC
 ========================================================================
 
 
-Notes on MAC
-------------
-
 Apps utiles
-~~~~~~~~~~~
+-----------------------------------------------------------------------
 
 - Itsycal: ``brew cask install itsycal``
 
 How to enter directory paths when in open/save dialogs
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------------------------------------------------
 
 While in an open/save dialog, pressing ``Command`` + ``Shift`` + ``G``
 will allow you to type in a directory path.
@@ -24,7 +21,7 @@ Fuente:
 https://www.engadget.com/2008/12/30/mac-101-enter-directory-paths-when-in-open-save-dialogs
 
 How to delete process
-~~~~~~~~~~~~~~~~~~~~~
+-----------------------------------------------------------------------
 
 1) Use a Keyboard Shortcut for “Force Quit Applications” on Mac
 
@@ -57,31 +54,32 @@ If all else fails, using the command line is a surefire way to force an
 app or process to quit by issuing the low-level kill command. Launch the
 Terminal and type one of the following commands:
 
-::
+.. code:: shell
 
-killall [processname]
+    killall [processname]
 
 For example, “killall Safari” would kill all instances of the Safari
 process. If you know the process id, which you can find with the ``ps``
 or ``ps aux`` command. Aim kill at that process specifically:
 
-::
+.. code:: shell
 
-kill -9 [pid]
+    kill -9 [pid]
 
 Source: http://osxdaily.com/2012/03/02/force-quit-mac-apps/
 
-How to set the terminal fopr cammand line applicationes (like fc)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Cómo cpnfigurar la terminal para desarrollo
+-----------------------------------------------------------------------
 
-Define var ``EDITOR`` in ``~/.bashrc``:
+Definir la variable ``EDITOR`` en ``~/.bashrc``:
 
-::
+.. code:: bash
 
-export EDITOR=/Applications/MacVim.app/Contents/MacOS/Vim
+    export EDITOR=/Applications/MacVim.app/Contents/MacOS/Vim
+
 
 How to Copy and Paste To/From the Clipboard on the Command Line
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------------------------------------------------
 
 You use the **``pbcopy``** and **``pbpaste``** commands.
 
@@ -92,31 +90,31 @@ You use the **``pbcopy``** and **``pbpaste``** commands.
 To add the standard output from any command to the clipboard, pipe it to
 the pbcopy command:
 
-::
+.. code:: bash
 
-curl -L "http://coolsite.com" | pbcopy
+    curl -L "http://coolsite.com" | pbcopy
 
 To paste text from the clipboard to the standard output stream, use the
 pbpaste command:
 
-::
+.. code:: bash
 
-pbpaste
+    pbpaste
 
 The clipboard text will be printed out. If you’d like to do more with
 it, you can pipe the data to any other application that accepts the
 standard input stream. For instance, to create paginated output from a
 large block of text, you can pipe it to less:
 
-::
+.. code:: bash
 
-pbpaste | less
+    pbpaste | less
 
 Source:
 http://sweetme.at/2013/11/17/copy-to-and-paste-from-the-clipboard-on-the-mac-osx-command-line/
 
 How to Capture a Screen Shot with Mac OS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------------------------------------------------
 
 A) To **capture the entire screen**:
 
@@ -172,7 +170,7 @@ capture, just click the mouse button and you can paste the screen shot
 into another application.
 
 Input unicode HEX with the MAC
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------------------------------------------------
 
 Source https://poynton.ca/notes/misc/mac-unicode-hex-input.html
 
@@ -204,6 +202,7 @@ to the normal option-key behaviour, access the “flag” menu and choose
 your usual input method.
 
 Common used unicode chars
+-----------------------------------------------------------------------
 
 ===================== ==== ===============
 Desc                  Char Sequence
@@ -222,24 +221,25 @@ IDENTITY              ≡    ``option`` 2261
 ===================== ==== ===============
 
 How to Change Sudo Password Timeout
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------------------------------------------------
 
 From the command line, edit the sudoers file with the help of visudo –
 do not attempt to edit /etc/sudoers without visudo
 
-::
+.. code:: bash
 
-sudo visudo
+    sudo visudo
 
 Use the arrow keys to navigate to the end of the sudoers file then enter
 the following syntax on a new line (feel free to include a comment by
 preceding with a hash # so you can reference it later)
 
-::
 
-Defaults timestamp_timeout=30
+.. code:: bash
 
-In this example we’re using ``30`` as the timeout grace period, meaning
-minutes.
+    Defaults timestamp_timeout=30
+
+En este ejemplo usamos el valor de ``30``, que significa 30 minutos.
+
 
 Source: http://osxdaily.com/2016/05/05/change-sudo-password-timeout/

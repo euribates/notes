@@ -15,6 +15,7 @@ My tags: web
     ../notes-on-html5.rst
     ../notes-on-https.rst
     ../notes-on-javascript.rst
+    ../notes-on-meilisearch.rst
     ../notes-on-nginx.rst
     ../notes-on-prometheus.rst
     ../notes-on-uwsgi.rst

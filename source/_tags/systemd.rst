@@ -8,3 +8,4 @@ My tags: systemd
     :caption: With this tag
 
     ../notes-on-linux.rst
+    ../notes-on-meilisearch.rst
