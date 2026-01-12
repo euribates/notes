@@ -14,7 +14,7 @@ My tags: web
     ../notes-on-fastapi.rst
     ../notes-on-html5.rst
     ../notes-on-https.rst
-    ../notes-on-js.rst
+    ../notes-on-javascript.rst
     ../notes-on-nginx.rst
     ../notes-on-prometheus.rst
     ../notes-on-uwsgi.rst

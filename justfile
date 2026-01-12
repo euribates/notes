@@ -17,3 +17,6 @@ dbshell:
 tags:
     cd {{justfile_directory()}} && ctags -R --exclude=*.js --exclude=.venv .
 
+find target:
+    @echo 'Buscando {{ target }}'
+    pss --color --smart-case --textonly --ignore-dir build "{{ target }}"

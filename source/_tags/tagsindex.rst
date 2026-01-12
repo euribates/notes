@@ -16,6 +16,7 @@ Tags overview
     api (1) <api.rst>
     arduino (1) <arduino.rst>
     aws (1) <aws.rst>
+    bigdata (1) <bigdata.rst>
     blender (1) <blender.rst>
     calidad (1) <calidad.rst>
     cli (1) <cli.rst>
@@ -41,6 +42,7 @@ Tags overview
     hardware (1) <hardware.rst>
     hosting (1) <hosting.rst>
     html (5) <html.rst>
+    ia (1) <ia.rst>
     ide (1) <ide.rst>
     javascript (2) <javascript.rst>
     learning (1) <learning.rst>
@@ -56,11 +58,12 @@ Tags overview
     pdf (1) <pdf.rst>
     postgresql (1) <postgresql.rst>
     print (1) <print.rst>
-    python (21) <python.rst>
+    python (22) <python.rst>
     ram (1) <ram.rst>
     raspberry (1) <raspberry.rst>
     rust (1) <rust.rst>
     scale (1) <scale.rst>
+    science (1) <science.rst>
     security (1) <security.rst>
     seguridad (2) <seguridad.rst>
     server (1) <server.rst>

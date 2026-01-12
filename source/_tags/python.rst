@@ -15,6 +15,7 @@ My tags: python
     ../notes-on-fastapi.rst
     ../notes-on-fpdf2.rst
     ../notes-on-iot.rst
+    ../notes-on-jupyter.rst
     ../notes-on-pandas.rst
     ../notes-on-pandoc.rst
     ../notes-on-plugin-architecture.rst

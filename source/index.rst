@@ -23,15 +23,8 @@ documentation for details.
    f.rst 
    g.rst
    h.rst 
-   
-   
    i.rst
-   
-   notes-on-js
-   notes-on-jupyter.md
-   notes-on-just.md
-   notes-on-jwt.md
-   
+   j.rst 
    k.rst
    l.rst 
    
