@@ -1,11 +1,11 @@
-rust
+Rust
 ========================================================================
 
-.. tags:: rust,languages,devops
+.. tags:: rust,development,devops
 
 
 Sobre Rust
-----------
+-----------------------------------------------------------------------
 
 Rust es un lenguaje de programación compilado, de propósito general y
 multiparadigma que está siendo desarrollado por la `Fundación
@@ -26,7 +26,7 @@ En 2022, Rust se convirtió en el tercer lenguaje de programación usado
 en el núcleo Linux, después de C y ensamblador.
 
 Instalar el compilador de Rust y el resto de herramientas
----------------------------------------------------------
+-----------------------------------------------------------------------
 
 Para instalar Rust, vamos a descargar una utilidad de línea de comandos
 llamada ``rustup``, que nos permite gestionar las versiones de Rust y
@@ -34,29 +34,29 @@ herramientas vinculadas.
 
 .. code:: shell
 
-curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
+    curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
 
 También nos hace falta un *linker*, la forma más fácil en Linux es
 instalar el compilador de C que viene con uno incorporado. Para ello:
 
 .. code:: shell
 
-sudo apt install build-essential
+    sudo apt install build-essential
 
 Para verificar que Rust está instalado, podemos hacer:
 
 .. code:: shell
 
-rustc --version
+    rustc --version
 
 Una vez instalado, podemos actualizar a la última versión estable con:
 
 .. code:: shell
 
-rustup update
+    rustup update
 
 Acceder a la documentación local de Rust
-----------------------------------------
+-----------------------------------------------------------------------
 
 Al instalar Rust, se incluye tambiéñ una copia local de la
 documentación, para que se pueda consultar incluso sin conexión a
@@ -64,10 +64,10 @@ Internet. Para acceder a ella:
 
 .. code:: shell
 
-rustup doc
+    rustup doc
 
 El sistema de tipos de Rust
----------------------------
+-----------------------------------------------------------------------
 
 El sistema de tipos soporta un mecanismo similar a las clases de tipos,
 llamado *traits*, inspirados directamente por el lenguaje **Haskell**.
@@ -89,13 +89,13 @@ de declaraciones de tipo sin dejar de hacer uso de los métodos y
 operadores de los parámetros.
 
 Hola, Mundo en Rust
--------------------
+-----------------------------------------------------------------------
 
 .. code:: rust
 
-fn main() {
-println!("¡Hola, mundo!");
-}
+    fn main() {
+        println!("¡Hola, mundo!");
+    }
 
 Estas líneas definen una función llamada ``main``. La función ``main``
 es especial: Es siempre la primera función que se ejecuta en un programa

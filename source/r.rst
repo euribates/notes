@@ -11,4 +11,4 @@ R
    notes-on-restructured-text.md
    notes-on-rq.md
    notes-on-rsync.md
-   notes-on-rust.md
+   notes-on-rust
