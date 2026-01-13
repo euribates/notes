@@ -4,13 +4,14 @@ IoT (*Internet of Thinhs*)
 .. tags:: arduino,raspberry,os,python
 
 
-Qué es *Internet of Things*
+Qué es :index:`IoT` (*Internet of Things*)
 ------------------------------------------------------------------------
 
-El **Internet de las Cosas** (IdC) describe objetos físicos (o grupos de
-estos) con sensores, capacidad de procesamiento, software y otras que se
-conectan e intercambian datos con otros dispositivos y sistemas a través
-de Internet u otras redes de comunicación.
+El **Internet de las Cosas** (*Internet of Things* - IOT) describe objetos
+físicos (o grupos de estos) con sensores, capacidad de procesamiento,
+software y otras que se conectan e intercambian datos con otros
+dispositivos y sistemas a través de Internet u otras redes de
+comunicación.
 
 ¿Qué es MQTT?
 ------------------------------------------------------------------------

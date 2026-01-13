@@ -61,7 +61,7 @@ desde la perspectiva de la imagen.
 
 En el siguiente ejemplo:
 
-.. code:: svg
+.. code:: xml
 
     <svg width="100" height="100" viewBox="0 0 200 200">
     <circle cx="100" cy="100" r="50" />
@@ -76,7 +76,7 @@ unidades. El factor de escala será, por tanto, :math:`\frac{1}{2}`.
 El siguiente ejemplo desplaza el eje de coordenadas al centro de la
 imagen:
 
-.. code:: svg
+.. code:: xml
 
     <svg width="200" height="200" viewBox="-100 -100 200 200">
     <circle cx="0" cy="0" r="50" />
@@ -91,7 +91,7 @@ Un polígono es la forma más sencilla de dibujar una forma irregular.
 Tienen un atributo ``points`` que definen una lista de coordenadas que
 serán conectados por segmentos rectos.
 
-.. code:: svg
+.. code:: xml
 
     <svg width="200" height="400" viewBox="-100 -200 200 400">
     <polygon points="0,0 80,120 -80,120" fill="#234236" />

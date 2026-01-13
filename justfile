@@ -19,4 +19,4 @@ tags:
 
 find target:
     @echo 'Buscando {{ target }}'
-    pss --color --smart-case --textonly --ignore-dir build "{{ target }}"
+    pss --color --smart-case --textonly --ignore-dir build --ignore-dir=.venv "{{ target }}"

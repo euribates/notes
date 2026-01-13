@@ -22,9 +22,9 @@ P
    notes-on-migration-to-python-3
    notes-on-pyenv
    notes-on-pyinfra
-   notes-on-pypi.md
-   notes-on-pytest.md
+   notes-on-pypi
+   notes-on-pytest
    notes-on-python-ast
-   notes-on-python-wheels.md
-   notes-on-python-3x.md
-   notes-on-teaching-python.md
+   notes-on-python-wheels
+   notes-on-python-3x
+   notes-on-teaching-python

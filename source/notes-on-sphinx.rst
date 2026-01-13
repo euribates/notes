@@ -35,7 +35,7 @@ son:
 Sphinx por defecto utiliza el formato `reStructuredText`_ (normalmente
 abreviado como ReST), pero puede también trabajar con `MyST markdown`_
 que es un superconjunto de Markdown, usando una extensión
-(ver :ref:`Cómo usar Markdown en Sphinx`).
+(ver :ref:`Cómo usar MarkDown en Sphinx`).
 
 Empezar un proyecto con Sphinx
 ------------------------------------------------------------------------
@@ -395,7 +395,7 @@ necesitemos, solo hay que usar el rol ``term``:
     llama de la punta de su cola se vuelve de color azul claro.
 
 
-Cómo usar Markdown en Sphinx
+Cómo usar MarkDown en Sphinx
 ------------------------------------------------------------------------
 
 Para poder usar MarkDown, Sphinx utiliza una extensión de terceros
@@ -565,7 +565,7 @@ Se puede enlazar a cualquier encabezado del documento usando el comand
 ``:ref:``, usando el propio texto de la cabecera como parámetro, como en
 el siguiente ejemplo:
 
-.. code:: resst
+.. code:: rest
 
     :ref:`Cross-References to Locations in the Same Document`
 
@@ -603,7 +603,7 @@ Por ejemplo:
 También podemos separar en dos el texto del enlace y la definición de la
 URL destino:
 
-.. code:: resst
+.. code:: rest
 
     Aprende e programar en `Python`_.
 

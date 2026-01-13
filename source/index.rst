@@ -35,13 +35,12 @@ Notas
   w.rst
 
   meta-notes
+  glosario
   tags.md
 
 Índices y tables
 ==================
 
 - :ref:`genindex`
-
-- :ref:`modindex`
-
 - :ref:`search`
+
