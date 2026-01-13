@@ -87,7 +87,7 @@ especialmente la traza de ejecución (*traceback*).
 Originalmente era una excepción de tipo ``OSError``, pero esa información
 ha desaparecido. Asumimos que el problema iba a ser un tema de permisos,
 pero en realidad puede producirse cualquier tipo de error: no existe el
-fichero, es un directorio, no un fichero, error de tipo de datos (Como en
+fichero, es un directorio, no un fichero, error de tipo de datos (como en
 el ejemplo), etc.
 
 Ahora podemos incorporar la información de la excepción original
@@ -95,9 +95,9 @@ usando la sintaxis ``raise ... from``:
 
 .. code:: python
 
-    >>> raise NotImplementedError from OSError
+    raise NotImplementedError from OSError
 
-La salida es algo similar a::
+La salida es algo similar a:
 
 .. code::
 
@@ -118,13 +118,13 @@ La implementación podría quedar así:
             raise NotImplementedError("No permissions") from err
 
 
-Iterator por todos lados
+Iteradores por todos lados
 -----------------------------------------------------------------------
 
 En Python 3, ``range``, ``zip``, ``map``, ``dict.values``, etc. son
 todos iteradores. Si se necesita una lista, hay que envolver el interador
-con una llamada a``list``. Aquí se ha seguido el principio de explícito
-es mejor que implícito. De esta forma, se dificulta el escribir código
+con una llamada a ``list``. Aquí se ha seguido el principio de **explícito
+es mejor que implícito**. De esta forma, se dificulta el escribir código
 que utilice accidentalmente demasiada memoria, porque la entrada es mayor
 de lo esperado.
 
@@ -171,7 +171,7 @@ E incluso mejor:
         for i in range(n):
             yield from (i, i)
 
-*Data Classes*
+*Data Classes* (3.7)
 -----------------------------------------------------------------------
 
 One of the most tedious parts about working with Python prior to 3.7 in
