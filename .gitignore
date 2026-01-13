@@ -1,3 +1,4 @@
 tags
 build/*
 .python-version
+source/_tags/*

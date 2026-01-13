@@ -18,10 +18,10 @@ P
    notes-on-pycones
    notes-on-pygame
    notes-on-python-course
-   notes-on-python.md
-   notes-on-migration-to-python-3.md
-   notes-on-pyenv.md
-   notes-on-pyinfra.md
+   notes-on-python
+   notes-on-migration-to-python-3
+   notes-on-pyenv
+   notes-on-pyinfra
    notes-on-pypi.md
    notes-on-pytest.md
    notes-on-python-ast
