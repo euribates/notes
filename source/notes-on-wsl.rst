@@ -1,4 +1,4 @@
-WSL (Windows Subsystem for Linux)
+WSL (*Windows Subsystem for Linux*)
 ========================================================================
 
 .. tags:: linux, os, windows
