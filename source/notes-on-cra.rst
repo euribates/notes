@@ -1,7 +1,7 @@
 CRA (*Cyber Resilience Act*)
 ========================================================================
 
-.. tags:: administracion,europa,normativa,security
+.. tags:: administración,europa,normativa,seguridad
 
 
 Qué es la CRA (*Cyber Resilience Act*)

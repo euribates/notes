@@ -1,7 +1,7 @@
 SSH (*Secure Shell*)
 ========================================================================
 
-.. tags:: unix,python,security,devops
+.. tags:: unix,python,seguridad,devops
 
 
 Sobre SSH

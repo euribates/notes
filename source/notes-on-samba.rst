@@ -1,7 +1,7 @@
 Samba
 ========================================================================
 
-.. tags:: samba,linux,widnwod,devops
+.. tags:: samba,linux,windows,devops
 
 
 Sobre Samba

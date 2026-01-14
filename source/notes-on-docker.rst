@@ -1,7 +1,7 @@
 Docker
 ========================================================================
 
-.. tags:: python, docker, dev-ops
+.. tags:: python, docker, devops
 
 
 Introduction to Docker

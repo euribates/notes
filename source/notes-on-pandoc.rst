@@ -1,7 +1,7 @@
 Pandoc
 ========================================================================
 
-.. tags:: python,documentation,pandoc
+.. tags:: python,documentación,pandoc
 
 
 Qué es PanDoc

@@ -1,7 +1,7 @@
 ckan
 ========================================================================
 
-.. tags:: opendata,free-software,python
+.. tags:: opendata,foss,python
 
 
 Qué es :index:`CKAN`

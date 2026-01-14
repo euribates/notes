@@ -1,7 +1,7 @@
 ELI (Identificador Europeo de Legislación)
 ========================================================================
 
-.. tags:: europa,administracion,normativa
+.. tags:: europa,administración,normativa
 
 
 Qué es ELI

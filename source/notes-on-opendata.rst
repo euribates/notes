@@ -1,7 +1,7 @@
 opendata
 ========================================================================
 
-.. tags:: administracion,opendata,transparencia,api
+.. tags:: administración,opendata,transparencia,api
 
 
 Heramientas
