@@ -617,7 +617,7 @@ Algunos ejemplos de ``When``:
    ).exclude(pk=OuterRef('pk')).values('pk')
    When(Exists(non_unique_account_type), then=Value('non unique'))
 
-Una expresión **``Case``** usa varios objetos ``When()``, que son
+Una expresión ``Case`` usa varios objetos ``When()``, que son
 evaluados por orden.Cuando uno de ellos se evalúa como verdadero, se
 devolverá el valor correspondiente.
 

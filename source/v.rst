@@ -1,12 +1,12 @@
 ====================================
-W
+V
 ====================================
 
 
 .. toctree::
    :maxdepth: 2
 
-   notes-on-vim.md
-   notes-on-virtualenvwrapper.md
-   notes-on-vscode.md
-   notes-on-vue.md
+   notes-on-vim
+   notes-on-virtualenvwrapper
+   notes-on-vscode
+   notes-on-vue
