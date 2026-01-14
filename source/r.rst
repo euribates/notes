@@ -5,10 +5,10 @@ R
 .. toctree::
    :maxdepth: 2
 
-   notes-on-rabbit-mq.md
-   notes-on-reactjs.md
+   notes-on-rabbit-mq
+   notes-on-reactjs
    notes-on-redis
-   notes-on-restructured-text.md
-   notes-on-rq.md
-   notes-on-rsync.md
+   notes-on-restructured-text
+   notes-on-rq
+   notes-on-rsync
    notes-on-rust
