@@ -16,6 +16,15 @@ Glosario de términos
 
         https://es.wikipedia.org/wiki/Fotogramas_por_segundo
 
+    Grafana
+
+        **Grafana** es un software libre basado en licencia de Apache
+        2.0, permite la visualización y el formato de datos
+        métricos. Permite crear cuadros de mando y gráficos a partir de
+        múltiples fuentes, incluidas bases de datos de series de tiempo
+        como Graphite, InfluxDB y OpenTSDB.
+
+        https://es.wikipedia.org/wiki/Grafana
         
     RDF (*Resource Description Framework*)
 
@@ -28,4 +37,4 @@ Glosario de términos
         web utilizando una variedad de notaciones de sintaxis
         y formatos de serialización de datos.
 
-        - ttps://es.wikipedia.org/wiki/Resource_Description_Framework
+        https://es.wikipedia.org/wiki/Resource_Description_Framework

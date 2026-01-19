@@ -9,6 +9,7 @@ T
    notes-on-taking-notes
    notes-on-teaching
    notes-on-telegram
+   notes-on-telemetry
    notes-on-tmux
    notes-on-totp
    notes-on-typer
