@@ -39,7 +39,8 @@ virtual compuesta de muchos servicios y que está compuesta por los
 diferentes contenedores corriendo en paralelo.
 
 En Kubernetes, los nodos (que pueden ser máquinas físicas o máquinas
-virtuales) contienen *Pods*, y los *Pods* contiene contenedores.
+virtuales) contienen *pods*, y los *pods* contienen contenedores. Los
+contenedores son máquinas, ya sea físicas o virtuales.
 
 Los contenedores dentro de un *pod* pueden comunicarse entre si usando
 cualquier sistema de comunicación entre procesos (IPC, *Interprocess
@@ -135,20 +136,20 @@ Para listar todos los contenedores, estén ejecutándose o no:
 Esto puede ser muy importante, ya que los contenedores que no se están
 ejecutando siguen ocupando espacio en disco.
 
-Qué es un Pod en Kubernetes
+Qué es un pod en Kubernetes
 ------------------------------------------------------------------------
 
 Un **{index}\ ``Pod``** es la mínima unidad de despliegue de Docker. Es
 una envoltura alrededor de uno o más contenedores, que comparten
 recursos de almacenamiento y de red.
 
-Casi siempre un Pod conteniene un único contenedor, pero a veces se
-configura con un contendor principal y otros de apoyo: Un agente de
+Casi siempre un *pod* contiene un único contenedor, pero a veces se
+configura con un contenedor principal y otros de apoyo: Un agente de
 *logging*, un *proxy*, un servicio de caché, etc. Todos los contenedores
 que están dentro de un mismo Pod pueden conectarse entre si usando
 ``localhost`` y comparten los sistemas de archivos montados.
 
-Podemos pensar en un Pod como un apartamento compartido: Los contendores
+Podemos pensar en un Pod como un apartamento compartido: Los contenedores
 son los habitantes, que comparten la cocina y el salón, pero cada uno de
 ellos tiene su propio dormitorio.
 
@@ -169,6 +170,15 @@ Un ejemplo de descripción de un Pod podría ser el siguiente:
       # Second container
       - name: sidecar
         image: fluent/fluent-bit
+
+Cómo escala Kubernetes. Qué es el plano de control
+========================================================================
+
+Para poder escalar, Kubernetes añade nuevos *pods* a su clúster.  Los
+*pods* se ejecutan en el hardware subyacente, que a su vez se puede
+escalar añadiendo nuevos nodos al clúster. La parte del clúster de
+Kubernetes que administra y facilita la orquestación de los *pods* se
+denomina **plano de control**.
 
 
 El cliente de kubernetes

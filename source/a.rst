@@ -7,6 +7,7 @@ A
    :maxdepth: 2
 
    notes-on-ai
+   notes-on-airflow
    notes-on-analytics
    notes-on-ansi
    notes-on-ansible

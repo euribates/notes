@@ -2,3 +2,4 @@ tags
 build/*
 .python-version
 source/_tags/*
+__pycache__/
