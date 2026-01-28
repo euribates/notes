@@ -1,7 +1,7 @@
 opendata
 ========================================================================
 
-.. tags:: administración,opendata,transparencia,api
+.. tags:: administración,opendata,foss,transparencia,api
 
 
 Heramientas
@@ -157,7 +157,7 @@ dividir estos derechos de la manera siguiente:
 Ámbito personal
 ~~~~~~~~~~~~~~~
 
-- Neutralidad de internet
+- Neutralidad de Internet
 - Acceso universal a la red
 - Seguridad digital
 - Educación digital y protección de menores

@@ -86,7 +86,7 @@ Luego necesitamos la parte de JavaScript:
 Ahora, para que esto funcione, necesitamos definir el siguiente código
 HTML:
 
-.. code:: xml
+.. code:: html
 
     <div id="app">
       <button @click="incrementCounter">Counter is: [[ counter ]]</button>

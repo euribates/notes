@@ -18,6 +18,7 @@ S
    notes-on-ssh
    notes-on-static-resources
    notes-on-stripe
+   notes-on-superset
    notes-on-svg
    notes-on-swagger
    notes-on-systemd

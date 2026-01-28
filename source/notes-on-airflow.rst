@@ -5,6 +5,14 @@ Sobre  airflow
 de código abierto escrita en Python, donde los flujos de trabajo se crean
 a través de *scripts* de Python.
 
+Apache Airflow es una plataforma para la creación, programación y
+monitoreo central de flujos de trabajo por lotes de datos. Esta
+herramienta resuelve problemas como la ejecución de tareas con un
+planificador, la gestión de reintentos en caso de errores, el manejo de
+errores personalizados, el establecimiento de relaciones de dependencia
+entre tareas para optimizar los tiempos de ejecución de toda la
+canalización y mucho más.
+
 Fue creada por Airbnb en octubre de 2014 como solución para la gestión de
 flujos de trabajo dentro de la empresa.  Desde el principio, el proyecto
 fue distribuido como código abierto, se convirtió en un proyecto de la
@@ -33,6 +41,14 @@ Se escriben en Python, pero pueden usar componentes escritos en otros
 lenguajes. Compuestos de tareas **tasks*). Las dependencias entre tareas
 se define explicita o implicitamente.
 
+Algunos atributos comunes  a todos los DAG son:
+
+- ``schedule``: Cuando se debería ajecutar
+
+- ``owner``: El propietario de la tarea
+
+- ``start_date``: Fecha de la primera ajecución (Puede haber más
+  ejecuciones dependiendo del parámetro ``schedule``).
 
 .. code:: python
 
