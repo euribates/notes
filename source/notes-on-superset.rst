@@ -8,26 +8,30 @@ platform.  Superset can replace or augment proprietary business
 intelligence tools for many teams. Superset integrates well with a variety
 of data sources.
 
-Superset provides:
+Ventajas de Superset
+------------------------------------------------------------------------
 
-- A no-code interface for building charts quickly
 
-- A powerful, web-based SQL Editor for advanced querying
+- Posibilidad de crear gráficas con una interfazvisual, sin código.
 
-- A lightweight semantic layer for quickly defining custom dimensions and
-  metrics
+- Un editor web, basado en SQL, para consultas avanzadas.
 
-- Out of the box support for nearly any SQL database or data engine
+- Un nivel semántico ligero para definir de forma rápida métricas y
+  dimensiones personalizadas.
 
-- A wide array of beautiful visualizations to showcase your data, ranging
-  from simple bar charts to geospatial visualizations
+- Soporte para casi todas las bases de datos.
 
-- Lightweight, configurable caching layer to help ease database load
+- Un catálogo de diferentes diagramas, desde sencillas gráficas de barras
+  a visualizaciones geo-espaciales.
 
-- Highly extensible security roles and authentication options
+- Sistema de caches ligero y configurable, para aliviar la carga de las
+  bases de datos.
 
-- An API for programmatic customization
+- Autenticación y roles de seguridad, extensibles.
 
-- A cloud-native architecture designed from the ground up for scale
+- Una API para personalización mediante programas
+
+- Una rquitectura nativa *cloud*, diseñada desde un principio pensando en
+  la escalabilidad.
 
 

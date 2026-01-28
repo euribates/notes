@@ -94,8 +94,6 @@ class Handler:
             self.out(table)
             return -1
         filename = DOCS / f'notes-on-{topic}.rst'
-        from icecream import ic; ic(filename)
-        from icecream import ic; ic(filename.exists())
         if not filename.exists():
             self.failure(f'NO existe el tema [yellow]{topic}[/]')
             return -1
