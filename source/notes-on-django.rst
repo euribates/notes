@@ -2271,3 +2271,24 @@ Y en el ``admin.py``:
 
    class PersonDataAdmin(admin.ModelAdmin):
        readonly_fields=('person',)
+
+Cómo obtener la URL de la página actual, con parámetros, en la plantilla
+------------------------------------------------------------------------
+
+Una forma sencilla en con un *Custom Context Processor*:
+
+.. code:: python
+
+    def get_current_path(request):
+        return {
+        'current_path': request.get_full_path()
+        }
+
+Añadimos la llamada a esta función en la lista ``TEMPLATE_CONTEXT_PROCESSORS``
+del ficheor ``settings``, y luego podemos acceder desde la platilla:
+
+.. code: django_template
+
+    {{ current_path }}
+
+Fuente: Stackoverflow `How to get URL of current page, including parameters ... <https://stackoverflow.com/questions/3248682/how-to-get-url-of-current-page-including-parameters-in-a-template>_`
