@@ -20,6 +20,7 @@ extensions = [
     'sphinx_tags',
     'sphinx_copybutton',
     'sphinxcontrib.mermaid',
+    'sphinx.ext.todo',
     'sphinx_immaterial.kbd_keys',
     ]
 
@@ -39,3 +40,6 @@ tags_create_tags = True
 html_theme = 'alabaster'
 html_static_path = ['_static']
 show_related = True
+
+# -- ToDo options ------------------------------------------------------------
+todo_include_todos = True

@@ -3,6 +3,8 @@ Vim
 
 .. tags:: unix,linux,vim,development
 
+.. contents:: Relación de contenidos
+    :depth: 3
 
 Cómo hacer que Vim copie al porta papeles del sistema, ademas del interno
 -------------------------------------------------------------------------

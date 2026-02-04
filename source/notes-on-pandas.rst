@@ -3,6 +3,9 @@ Pandas
 
 .. tags:: python,pandas,math
 
+.. contents:: Relación de contenidos
+    :depth: 3
+
 
 Notas sobre :index:`Pandas`
 ------------------------------------------------------------------------
@@ -17,27 +20,196 @@ funciones necesarias para cargar datos, limpiarlos, modelarlos,
 analizarlos, manipularlos y prepararlos.
 
 
-Usar pandas para hacer un (inner) join
+Estructuras de datos de Pandas
 ------------------------------------------------------------------------
 
-**tldr**: Usa la función `merge`_ de
-pandas.
+Pandas añade dos contenedores: **Series** y **DataFrame**. 
 
+Una **serie** es un vector unidimensional etiquetado (es
+decir, indexado).
+
+Un **dataframe** es una tabla con filas y columnas etiquetadas, similar
+a una hoja de cálculo de Excel o una tabla MySQL. Cada columna de un
+marco es una serie. Todas las valores en las filas se corresponden con
+el mismo índice. Con algunas excepciones, Pandas trata los marcos y las
+series de forma similar.
+
+Tanto las series como los *dataframes* son más que contenedores de
+almacenamiento. Ambos Ofrecen diversas operaciones de manipulación de
+datos, como:
+
+- Indexación de un solo nivel y jerárquica
+
+- Gestión de datos faltantes
+
+- Operaciones aritméticas y booleanas en columnas y tablas completas
+
+- Operaciones de base de datos (como fusión y agregación)
+
+- Representación gráfica de columnas individuales y tablas completas
+
+- Lectura y escritura de datos de archivos
+
+Qué es una serie en Pandas
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Una :index:`serie (Pandas)` es un vector unidimensional etiquetado (es
+decir, indexado).
+
+Una serie es un vector de datos unidimensional. Tiene dos diferencias
+importantes frente a una lista normal de Python:
+
+- Son **homogéneas**: todos sus elementos deben pertenecer al mismo tipo
+  de dato.
+
+- Tienen un índice, que no tiene qué ser necesariamente un entero.
+
+Se puede crear una serie simple a partir de cualquier secuencia: una lista, una tupla o un array.
+Usemos una tupla de datos recientes de inflación de EE. UU. para ilustrar una serie de datos de Pandas.
+
+
+Qué es un *Dataframe* en Pandas
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Pandas proporciona una clase de objetos para trabajar con datos
+multidimensionales, llamadas :index:`Dataframe|Dataframes`, muy
+similares a los que podemos encontrar en ``R`` y en otros lenguajes.
+
+Un *dataframe* está compuesto de una matriz de columnas y filas. Las
+columnas están identificadas por un nombre; las filas, por un índice.
+Podemos pensar en ellas como en un conjunto de series, todas
+compartiendo el mismo índice. Al igual que con las series, el índice de
+un *dataFrame* **no** tiene por qué ser un número entero --aunque muchas
+veces lo es--, solo debe ser diferente para cada fila.
+
+
+Operaciones básicas con un *Dataframe*
+------------------------------------------------------------------------
+
+.. note::
+
+   Hay muchas formas posibles de crear un *dataframe*,
+   aquí vamos a crear uno a partir de un diccionario
+   de listas. Véase :ref:`diferentes_formas_de_crear_un_Dataframe`.
+   
+Supongamos que creamos el siguiente *dataframe*:
+
+.. code:: python
+
+    import pandas as pd
+    df = pd.DataFrame({
+        'label': ['A', 'B', 'C', 'A', 'B', 'C'],
+        'value': [1, 2, 3, 4, 5, 6],
+        })
+
+Que nos da un *dataframe* como el siguiente:
+
+===== ===== =====
+index label value
+===== ===== =====
+0     A     1
+1     B     2
+2     C     3
+3     A     4
+4     B     5
+5     C     6
+===== ===== =====
+
+Algunas operaciones que podemos hacer con este *dataframe* son:
+
+Seleccionar por columnas
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+.. code:: python
+
+    >>> df['label']
+    0   A
+    1   B
+    2   C
+    3   A
+    4   B
+    5   C
+
+Si queremos seleccionar por varias columnas, hay que tener en cuenta
+que usando el acceso mediante corchetes solo se puede pasar un valor.
+La solución es pasar una lista con los nombres de las columnas:
+
+.. code:: python
+
+    >>> df[['value', 'label']]
+
+    value 	label
+    0 	1 	A
+    1 	2 	B
+    2 	3 	C
+    3 	4 	A
+    4 	5 	B
+    5 	6 	C
+
+
+Aplicar funciones a toda una columna
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> df['label'].str.lower()
+    0   a
+    1   b
+    2   c
+    3   a
+    4   b
+    5   c
+    >>> df['value'] * 2
+    0     2
+    1     4
+    2     6
+    3     8
+    4    10
+    5    12
+
+Aplicar funciones de agregación sobre columnas numéricas
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> print(df['value'].sum())
+    21
+
+Realizar operaciones de agregación con agrupamiento
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> df.groupby('label').sum()
+
+            value
+    label       
+    A          5
+    B          7
+    C          9
+
+
+
+Cómo hacer un (*inner*) *join* en Pandas
+------------------------------------------------------------------------
+
+**tldr**: Usa la función `merge`_ de pandas.
 
 Supongamos las siguientes tablas:
 
 .. code:: python
 
     pesos = pd.DataFrame.from_dict({
-        'palabra': ['economia', 'educacion', 'turismo', 'videojuego'],
+        'palabra': ['economía', 'educación', 'turismo', 'videojuego'],
         'pesos': [.12, .33, .88, -0.73]
         })
 
 == ========== =====
 \  palabra    pesos
 == ========== =====
-0  economia   0.12
-1  educacion  0.33
+0  economía   0.12
+1  educación  0.33
 2  turismo    0.88
 3  videojuego -0.73
 == ========== =====
@@ -45,9 +217,11 @@ Supongamos las siguientes tablas:
 .. code:: python
 
     muestra = pd.DataFrame.from_dict({
-        'palabra': ['el', 'videojuego', 'del', 'gran', 'turismo', 'es', 'fantastico'],
+        'palabra': ['el', 'videojuego', 'del', 'gran', 'turismo', 'es', 'fantástico'],
         'total': [1, 1, 1, 1, 1, 1, 1]
         })
+
+Que debería dar:
 
 == ========== =====
 \  palabra    total
@@ -58,7 +232,7 @@ Supongamos las siguientes tablas:
 3  gran       1
 4  turismo    1
 5  es         1
-6  fantastico 1
+6  fantástico 1
 == ========== =====
 
 Podemos hacer un *join* usando la función ``merge``. Los dos primeros
@@ -139,18 +313,160 @@ Fuente: https://towardsdatascience.com/25-pandas-functions-you-didnt-know-existe
 Cheatsheets
 ------------------------------------------------------------------------
 
--  `Python <http://www.utc.fr/~jlaforet/Suppl/python-cheatsheets.pdf>`_
--  `Numpy <https://s3.amazonaws.com/assets.datacamp.com/blog_assets/Numpy_Python_Cheat_Sheet.pdf>`_
--  `Pandas <https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf>`_
+- `Python <http://www.utc.fr/~jlaforet/Suppl/python-cheatsheets.pdf>`_
+- `Numpy <https://s3.amazonaws.com/assets.datacamp.com/blog_assets/Numpy_Python_Cheat_Sheet.pdf>`_
+- `Pandas <https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf>`_
 
 
-Cómo crear un *DataFrame* de pandas a partir de una tabla Html
+.. _diferentes_formas_de_crear_un_Dataframe:
+
+Diferentes formas de crear un *Dataframe*
 ------------------------------------------------------------------------
 
-The basic usage is of pandas ``read_html`` is pretty simple and works
-well on many Wikipedia pages since the tables are not complicated. To
-get started, I am including some extra imports we will use for data
-cleaning for more complicated examples:
+Existe muchas formas diferentes de crear un *DataFrame*:
+
+A partir de una **lista de listas**:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Cada una de las listas contiene los valores de una columna. Hay que usar
+el parámetro ``columns`` para poder dar nombre a la columna.
+
+.. code:: python
+
+    data = [
+        ['Flash Gordon', 1934],
+        ['Mandrake', 1934],
+        ['Popeye', 1929],
+        ['Archie Andrews', 1941],
+        ]
+    df = pd.DataFrame(data, columns = ['name', 'publication_year']) 
+
+Que debería conducir a este *dataframe*:
+
+========  ===============  ================
+index     name 	           publication_year
+========  ===============  ================
+0   	  Flash Gordon 	               1934
+1   	  Mandrake 	                   1934
+2   	  Popeye 	                   1929
+3   	  Archie Andrews  	           1941
+========  ===============  ================
+
+
+A partir de un **diccionario de listas**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Los valores claves del diccionario serán los que definen y dan nombre a
+las columnas. Las listas deben ser todas de igual longitud.
+
+.. code:: python
+
+    data = {
+        'Name': ['Tom', 'nick', 'krish', 'jack'],
+        'Age': [20, 21, 19, 18],
+        }
+    df = pd.DataFrame(data)
+
+Si se le pasa el parámetro ``index``, este también debe ser de la misma
+longitud que las listas de datos. Si no se le pasa índice, se usara la
+secuencia de enteros empezando por cero.
+
+.. code:: python
+
+    data = {
+      'Name': ['Tom', 'Jack', 'nick', 'juli'],
+      'marks': [99, 98, 95, 90],
+      }
+    df = pd.DataFrame(data, index =['rank1', 'rank2', 'rank3', 'rank4'])
+
+
+A partir de una **lista de diccionario**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+También se puede crear un *dataframe* a partir de una lista de
+diccionarios. En este caso, los diccionarios tienen que tener todos
+la misma estructura. Las claves de los diccionarios definen las
+columnas.
+
+.. code:: python
+
+    data = [
+        {'a': 1, 'b': 2, 'c':3},
+        {'a':10, 'b': 20, 'c': 30},
+        ]
+    df = pd.DataFrame(data)
+
+A partir de un **diccionario de series**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Los valores en las claves definen las columnas. Las series pasan a ser
+las filas del *dataframe*. El índice de las series pasa a ser el índide
+del *dataframe*, asi que tiene que ser el mismo para todas las series:
+
+.. code:: python
+
+    d = {
+        'one' : pd.Series([10, 20, 30, 40], index =['a', 'b', 'c', 'd']),
+        'two' : pd.Series([10, 20, 30, 40], index =['a', 'b', 'c', 'd'])
+    }
+    df = pd.DataFrame(d)
+
+A partir de un **fichero CSV**:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Sólo hay que llamar el método ``load_csv``.
+
+.. code:: python
+  
+    df = pd.read_csv('example.csv')
+
+Funciona también con URLS:
+
+.. code:: python
+
+    df = pd.read_csv('http://web.stanford.edu/class/archive/cs/cs109/cs109.1166/stuff/titanic.csv')
+
+Si el fichero CVS no tiene una primera línea con cabeceras:
+
+.. code:: python
+
+    df = pd.read_csv('example.csv', header=None)
+
+
+A partir de una **consulta a la base de datos**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    db = MySQLdb.connect(host='localhost', db='comics', user='stan.lee', passwd='marvel')
+    sql = 'SELECT * FROM comics_collection'
+    df1 = pd.read_sql_query(sql, db, index_col='holding_id')
+
+
+A partir de un fichero .ods (LibreOffice)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Hay que instalar un paquete adicional, ``odfpy``:
+
+.. code:: shell
+
+    pip insall odfpy
+
+Y luego indicar el formato usando el parámetro ``engine`` de
+la función ``read_excel``:
+
+.. code:: python
+
+    pd.read_excel("fichero-de-libre-office.ods", engine="odf")
+
+
+A partir de una tabla Html
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+El método ``read_html`` es muy sencillo y funciona especialmente bien
+con las tablas en las páginas de la `Wikipedia`_, ya que sus tablas no
+suelen ser complicadas. En el siguiente ejemplo se usan unas librerías
+adicionales para limpiar los datos:
 
 .. code:: python
 
@@ -161,18 +477,18 @@ cleaning for more complicated examples:
 
     table_MN = pd.read_html("https://en.wikipedia.org/wiki/Minnesota")
 
-The unique point here is that ``table_MN`` is a list of all the tables
-on the page:
+Hay que tener en cuenta que ``table_MN`` contiene ahora la lista de
+todas las tablas en la página.
 
 .. code:: python
 
     print(f"Total tables: {len(table_MN)}")
     Total tables: 38
 
-With **38** tables, it can be challenging to find the one you need. To
-make the table selection easier, use the ``match`` parameter to select a
-subset of tables. We can use the caption "Election results from
-statewide races" to select the table:
+¿Cómo seleccionamos la que nos interesa de las 38? Podemos usar el
+parámetro ``match`` para seleccionar un subconjunto de las tablas. En el
+siguiente ejemplo se usa el texto del ``caption`` «*Election results from
+statewide races*»:
 
 .. code:: python
 
@@ -182,104 +498,8 @@ statewide races" to select the table:
         )
     assert len(table_MN) == 1
 
-Source: `Reading HTML tables with Pandas - Practical Business <https://pbpython.com/pandas-html-table.html>`_
+Fuente: `Reading HTML tables with Pandas - Practical Business <https://pbpython.com/pandas-html-table.html>`_
 
-Diferentes formas de crear un *Dataframe*
-------------------------------------------------------------------------
-
-Existe muchas formas diferentes de crear un *DataFrame*:
-
--  A partir de una **lista da listas**:
-
-  .. code:: python
-  
-      data = [['tom', 10], ['nick', 15], ['juli', 14]]
-      df = pd.DataFrame(data, columns = ['Name', 'Age'])
-
-- A partir de un **diccionario de listas**:
-
-  To create DataFrame from dict of narray/list, all the narray must be
-  of **same length**. If index is passed then the length index should be
-  equal to the length of arrays. If no index is passed, then by default,
-  index will be ``range(n)`` where ``n`` is the array length.
-
-  .. code:: python
-
-      data = {'Name':['Tom', 'nick', 'krish', 'jack'], 'Age':[20, 21, 19, 18]}
-      df = pd.DataFrame(data)
-
-- Creates a indexes DataFrame **using arrays**:
-
-  .. code:: python
-  
-      data = {'Name':['Tom', 'Jack', 'nick', 'juli'], 'marks':[99, 98, 95, 90]}
-      df = pd.DataFrame(data, index =['rank1', 'rank2', 'rank3', 'rank4'])
-
-- A partir de una **lista de diccionario**:
-
-  Pandas DataFrame can be created by passing lists of dictionaries as a
-  input data. By default dictionary keys taken as columns.
-
-  .. code:: python
-  
-      data = [{'a': 1, 'b': 2, 'c':3}, {'a':10, 'b': 20, 'c': 30}]
-      df = pd.DataFrame(data)
-
-- Creating DataFrame **from Dicts of series**:
-
-  To create DataFrame from Dicts of series, dictionary can be passed to
-  form a DataFrame. The resultant index is the union of all the series
-  of passed indexed.
-
-.. code:: python
-
-    d = {
-    'one' : pd.Series([10, 20, 30, 40], index =['a', 'b', 'c', 'd']),
-    'two' : pd.Series([10, 20, 30, 40], index =['a', 'b', 'c', 'd'])
-    }
-    df = pd.DataFrame(d)
-
-- A partir de un **fichero CSV**:
-
-  Sólo hay que llamar el método ``load_csv``.
-
-  .. code:: python
-  
-      df = pd.read_csv('example.csv')
-
-  Funciona también con URLS:
-
-  .. code:: python
-
-      df = pd.read_csv('http://web.stanford.edu/class/archive/cs/cs109/cs109.1166/stuff/titanic.csv')
-
-  Si el fichero CVS no tiene una primera línea con cabeceras:
-
-  .. code:: python
-
-      df = pd.read_csv('example.csv', header=None)
-
-- A partir de una **consulta a la base de datos**:
-
-  .. code:: python
-
-      db = MySQLdb.connect(host='localhost', db='comics', user='stan.lee', passwd='mske')
-      df1 = pd.read_sql_query(sql, db, index_col='holding_id')
-
-
-Cómo cambiar el tamaño de las imágenees creadas con matplotlib
-------------------------------------------------------------------------
-
-Hay que usar el parámetro ``figsize``, pero la clave es que hay que
-hacerlo antes de empezar a dibujar:
-
-.. code:: python
-
-    from matplotlib import pyplot as plt
-    plt.figure(figsize=(1,1))
-    x = [1,2,3]
-    plt.plot(x, x)
-    plt.show()
 
 
 Cómo usar una columna de un *DataFrame* como índice
@@ -326,7 +546,7 @@ Cómo añadir una columna a un *DataFrame*
 ------------------------------------------------------------------------
 
 A partir de Pandas 0.16.0, se puede usar el método ``assign``, que añade
-columnas nuevas al **DataFrame**, devolviendo una copia del nuevo con las
+columnas nuevas al *DataFrame*, devolviendo una copia del nuevo con las
 nuevas columnas. El siguiente código:
 
 .. code:: python
@@ -337,18 +557,20 @@ nuevas columnas. El siguiente código:
 
 Devuelve:
 
-===== = == ==== =====
-index a b  suma media
-===== = == ==== =====
-0     1 3  4    2.0
-1     2 4  6    3.0
-2     7 21 28   14.0
-===== = == ==== =====
 
-Cómo visualizar datos
+====== === ==== ====== ========
+index  a   b    suma   media  
+====== === ==== ====== ========
+0      1    3    4     2.0    
+1      2    4    6     3.0    
+2      7    21   28    14.0   
+====== === ==== ====== ========
+
+Cómo visualizar datos con Pandas
 ------------------------------------------------------------------------
 
-We use the standard convention for referencing the matplotlib API:
+Es una convención ampliamente usada importar las librerías de ``matplotlib``
+con el alias ``plt``:
 
 .. code:: python
 
@@ -356,18 +578,18 @@ We use the standard convention for referencing the matplotlib API:
     plt.close('all')
 
 Cómo usar plot
-------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The plot method on Series and DataFrame is just a simple wrapper around
-plt.plot():
+El método ``plot``, definido tanto en las series como en los
+*dataframes*, es solo un recubrimiento de la llamada a `plt.plot` :
 
-Example using series:
+Por ejemplo, si usamos series:
 
 .. code:: python
 
     ts = pd.Series(
         np.random.randn(1000),
-        index=pd.date_range('1/1/2000', periods=1000),
+        index=pd.date_range('1/1/2026', periods=1000),
         )
     ts = ts.cumsum()
     ts.plot()
@@ -391,6 +613,21 @@ representar todas las columnas con sus etiquetas:
 
 .. figure:: ./pandas/sample-dataframe-plot.png
    :alt: Ejemplo de una llamada al método plot
+
+
+Cómo cambiar el tamaño de las imágenes creadas con matplotlib
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Hay que usar el parámetro ``figsize``, pero la clave es que hay que
+hacerlo antes de empezar a dibujar:
+
+.. code:: python
+
+    from matplotlib import pyplot as plt
+    plt.figure(figsize=(1,1))
+    x = [1,2,3]
+    plt.plot(x, x)
+    plt.show()
 
 
 Como hacer un select o filtrado por columnas un Pandas
@@ -444,13 +681,14 @@ modificados.
 
 Debería devolver:
 
-== ==== ====
-\  Alfa Beta
-== ==== ====
-0  1    4
-1  2    5
-2  3    6
-== ==== ====
+======= ====== =======
+index   Alfa   Beta  
+======= ====== =======
+0       1      4
+1       2      5
+2       3      6
+======= ====== =======
+
 
 Cómo ordenar las filas de un DataFrame
 ------------------------------------------------------------------------
@@ -467,7 +705,9 @@ Por ejemplo:
     df.sort_values(by='column_name', ascending=True)
 
 .. _hasnans: https://pandas.pydata.org/docs/reference/api/pandas.Series.hasnans.html#pandas.Series.hasnans
+
 .. _ciencia de datos: https://es.wikipedia.org/wiki/Ciencia_de_datos
-.. _`merge`: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.merge.html
-.. _`Joins in Pandas`: https://www.analyticsvidhya.com/blog/2020/02/joins-in-pandas-master-the-different-types-of-joins-in-python/
+
+.. _merge: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.merge.html
+.. _Joins in Pandas: https://www.analyticsvidhya.com/blog/2020/02/joins-in-pandas-master-the-different-types-of-joins-in-python/
 .. _rename: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rename.html

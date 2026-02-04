@@ -6,7 +6,7 @@ serve:
 SOURCEDIR := "source"
 BUILDDIR := "build"
 
-html:
+docs:
     sphinx-build -M html {{SOURCEDIR}} {{BUILDDIR}}
 
 # Cliente de base de datos
