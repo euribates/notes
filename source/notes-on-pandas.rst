@@ -711,3 +711,4 @@ Por ejemplo:
 .. _merge: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.merge.html
 .. _Joins in Pandas: https://www.analyticsvidhya.com/blog/2020/02/joins-in-pandas-master-the-different-types-of-joins-in-python/
 .. _rename: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rename.html
+.. _Wikipedia: https://en.wikipedia.org/

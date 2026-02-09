@@ -142,7 +142,7 @@ fondo del botón al pasar el cursor por encima:
     <button>Pasa el ratón por encima para cambiar el fondo</button>
 
 Obsérvese que esta transición es automática. Podemos desencadenarla de
-forma activa mediante :doc:`notes-on-js`, cambiado al atributo
+forma activa mediante :doc:`notes-on-javascript`, cambiado al atributo
 ``background``, o como en el caso mostrado, al cambiar el propio
 navegador el fondo en respuesta a la interacción con el usuario.
 

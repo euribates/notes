@@ -3,6 +3,9 @@ Sphinx
 
 .. tags:: python,documentación
 
+.. contents:: Tabla de contenidos
+   :depth: 2
+   :local:
 
 Sobre :index:`Sphinx`
 ------------------------------------------------------------------------
@@ -608,6 +611,20 @@ URL destino:
     Aprende e programar en `Python`_.
 
     .. _Python: https://python.org/
+
+Como incluir una tabla de contenidos en un documento
+------------------------------------------------------------------------
+
+La directiva ``.. contents::`` es la vía. Genera todos los
+contenidos donde quiera que la pongamos. Si se usa el modificado
+``:local:`` Se genera la tabla de contenidos pero solo para los niveles
+que estén por debajo del actual en que esté la directiva. Esto es muy
+útil para tablas de contenidos de subsecciones.
+
+Puede aceptar un parámetro para definir un título específico.
+
+Puede usarla opción `depth` para definir cuantos niveles de profundidad
+se van a alcanzar para generar el contenido.
 
 
 .. rubric:: Enlaces

@@ -21,6 +21,7 @@ extensions = [
     'sphinx_copybutton',
     'sphinxcontrib.mermaid',
     'sphinx.ext.todo',
+    'sphinx.ext.graphviz',
     'sphinx_immaterial.kbd_keys',
     ]
 
@@ -37,7 +38,7 @@ tags_create_tags = True
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'alabaster'
+html_theme = 'sphinx_nefertiti'
 html_static_path = ['_static']
 show_related = True
 

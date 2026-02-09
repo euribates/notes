@@ -4,15 +4,15 @@ Glosario de términos
 .. glossary::
     :sorted:
 
-    FPS (*Frapes Per Second*)
+    FPS
 
         La **tasa de fotogramas** (en inglés *frame rate*), expresada como
-        **fotogramas por segundo** (sigla FPS, símbolo f/s, también
-        conocida como *frames por segundo* o *cuadros por segundo*) es la
-        frecuencia (tasa) a la cual un dispositivo muestra imágenes
-        llamadas fotogramas o cuadros. El término se aplica por igual a
-        películas y cámaras de vídeo, gráficos por computadora y sistemas
-        de captura de movimiento.
+        **fotogramas por segundo** (sigla FPS, *Frames per second*,
+        símbolo f/s, también conocida como *frames por segundo* o
+        *cuadros por segundo*) es la frecuencia (tasa) a la cual un
+        dispositivo muestra imágenes llamadas fotogramas o cuadros. El
+        término se aplica por igual a películas y cámaras de vídeo,
+        gráficos por computadora y sistemas de captura de movimiento.
 
         https://es.wikipedia.org/wiki/Fotogramas_por_segundo
 
@@ -26,7 +26,7 @@ Glosario de términos
 
         https://es.wikipedia.org/wiki/Grafana
         
-    RDF (*Resource Description Framework*)
+    RDF
 
         El Marco de Descripción de Recursos (del inglés *Resource
         Description Framework*, RDF) es una familia de especificaciones
@@ -38,3 +38,14 @@ Glosario de términos
         y formatos de serialización de datos.
 
         https://es.wikipedia.org/wiki/Resource_Description_Framework
+
+
+    linaje de datos:
+
+        El linaje de datos (*lineage* o *data lineage*) es el proceso de
+        seguimiento del flujo de datos a lo largo del tiempo,
+        proporcionando una imagen clara de dónde se originaron los
+        datos, cómo han cambiado y su destino final dentro del pipeline
+        de datos.
+
+        https://www.ibm.com/es-es/think/topics/data-lineage
