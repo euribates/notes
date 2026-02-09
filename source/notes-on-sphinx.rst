@@ -615,16 +615,16 @@ URL destino:
 Como incluir una tabla de contenidos en un documento
 ------------------------------------------------------------------------
 
-La directiva ``.. contents::`` es la vía. Genera todos los
-contenidos donde quiera que la pongamos. Si se usa el modificado
-``:local:`` Se genera la tabla de contenidos pero solo para los niveles
-que estén por debajo del actual en que esté la directiva. Esto es muy
-útil para tablas de contenidos de subsecciones.
+La directiva ``.. contents::`` es la vía. Genera todos los contenidos
+donde quiera que la pongamos.  Puede acepta un opcional para definir el
+título.
 
-Puede aceptar un parámetro para definir un título específico.
+Si se usa la opción ``:local:`` Se genera la tabla de contenidos pero
+solo para los niveles que estén por debajo del actual en que esté la
+directiva. Esto es muy útil para tablas de contenidos de subsecciones.
 
-Puede usarla opción `depth` para definir cuantos niveles de profundidad
-se van a alcanzar para generar el contenido.
+Puede usar la opción ``:depth:`` para definir cuantos niveles de
+profundidad se van a alcanzar para generar el contenido.
 
 
 .. rubric:: Enlaces
