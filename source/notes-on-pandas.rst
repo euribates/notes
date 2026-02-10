@@ -7,10 +7,10 @@ Pandas
     :depth: 3
 
 
-Notas sobre :index:`Pandas`
+Notas sobre Pandas
 ------------------------------------------------------------------------
 
-La librería **Pandas** es una biblioteca de código abierto muy popular
+La librería :index:`Pandas` es una biblioteca de código abierto muy popular
 entre los desarrolladores de Python, especialmente en los campos de la
 `ciencia de datos`_ y el aprendizaje automático, porque proporciona
 estructuras de datos muy potentes y flexibles.
