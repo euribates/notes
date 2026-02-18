@@ -869,12 +869,13 @@ misma razón, hay que especificar siempre ``unique`` a ``True`` si tiene
 sentido, y eliminar o reducir al mínimo los campos con ``required`` a
 ``False``.
 
+
 Como hacer que Django trabaje con claves naturales (``natural keys``)
 ---------------------------------------------------------------------
 
 Tldr: Para usar claves naturales o *natural keys*, hay que definir un
 método ``natural_key`` en la clase Modelo, y un método
-``get_natural_key`` en una clase *Manager* especializada para el modelo.
+``get_by_natural_key`` en una clase *Manager* especializada para el modelo.
 
 Si tenemos un valor o conjunto de valores que forman una **clave
 candidata natural**, podemos crear un índice indicando que la
