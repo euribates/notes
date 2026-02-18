@@ -704,6 +704,9 @@ Por ejemplo:
 
     df.sort_values(by='column_name', ascending=True)
 
+
+
+
 .. _hasnans: https://pandas.pydata.org/docs/reference/api/pandas.Series.hasnans.html#pandas.Series.hasnans
 
 .. _ciencia de datos: https://es.wikipedia.org/wiki/Ciencia_de_datos

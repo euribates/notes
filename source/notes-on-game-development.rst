@@ -32,23 +32,23 @@ culture**, por David Kushner
 -  **The Gamer’s Brain: How Neuroscience and -X Can Impact Video Game
 Design**, por Celia Hodent
 
--  **Game Programming Patterns**, por Bob Nystrom
+- *Game Programming Patterns*, por Bob Nystrom
 
--  **Theory of Fun for Game Design**, por Raph Koster
+- *Theory of Fun for Game Design*, por Raph Koster
 
--  **Godot from Zero to Proficiency (5 books)**, por Patrick Felicia
+- *Godot from Zero to Proficiency (5 books)*, por Patrick Felicia
 
--  Advanced Game Design” by Michael Sellers.
+- *Advanced Game Design* by Michael Sellers.
 
--  “Achievement Relocked: Loss Aversion and Game Design” by Geoffrey
-Engelstein.
+- *Achievement Relocked: Loss Aversion and Game Design* by Geoffrey
+  Engelstein.
 
--  “Game Balance” by Ian Schreiber, Brenda Romero.
+- *Game Balance* by Ian Schreiber, Brenda Romero.
 
 Fuentes:
 
--  `Books for Game Designers –
-Playtank <https://playtank.io/2022/05/18/books-for-game-designers/>`__
+- `Books for Game Designers`_ / `Playtank`_
+
 
 Reality check
 -------------
@@ -100,51 +100,74 @@ Space strategy game where coding is your extra weapon
 A Brief, Early History of Computer Graphics in Film
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-John Whitney, Sr., also known for the slit-scan technique that produced
-the visually powerful “into the monolith” imagery of 2001: A Space
-Odyssey, is often credited with bringing computer graphics to the film
-industry. He experimented with war-surplus analog computer control
-mechanisms from antiaircraft weapons to control the motion of a camera
-in the late 1950s and 1960s, producing a number of short animations and
-television commercials. He continued his work with computer imagery,
-always seeking to create harmonic, algorithmic motions, producing some
-very attractive mandala-like imagery in a series of short animations
-through the 1970s and 1980s.
+A menudo se atribuye a `John Whitney`_, conocido por haber inventado
+la técnica *split-scan*, que produjo las poderosas imágenes del monolito
+de `2001\: Una odisea en el Espacio`_ , el haber usado por primera vez
+ordenadores en la industria del cine. Empezó experimentando con
+ordenadores analógicos, excedentes de la guerra, que habían sido usados
+para el control de armas antiaéreas, para controlar el movimiento de la
+cámara.
 
-Ivan Sutherland’s 1962 MIT thesis on an interactive computer graphics
-interface, called Sketchpad, demonstrated for the first time the power
-of computer graphics as a method for controlling and interacting with
-computers, and served as a great inspiration to other researchers. The
-University of Utah and the New York Institute of Technology fostered
-rich environments for this fledgling science, producing a crop of
-computer graphics researchers and techniques that have helped to shape
-the field.
+A finales de los años cincuenta y sesenta, produjo una serie de
+animaciones cortas y anuncios de televisión. Continuó trabajando con
+ordenadores, siempre buscando crear movimientos armónicos basados en
+algoritmos, produciendo algunos imágenes muy atractivas de mándalas en
+una serie de animaciones cortas a lo largo de los años setenta y
+ochenta.
 
-The first feature film to use digital image processing was Westworld, in
-1973–the same year as the first SIGGRAPH conference. John Whitney
-Jr. and Gary Demos at Information International Inc. (III; aka “Triple
-I”) provided digitally processed, pixellated versions of motion
-photography to portray an android point of view. The same group used
-digital compositing to materialize characters over a background in the
-1976 sequel, Futureworld. These efforts were recognized with a
-Scientific & Engineering Academy Award in 1994.
+El pionero de Internet `Ivan Sutherland`_, en su tesis para el MIT de 1962, 
+titulada *Sketchpad: A Man-machine Graphical Communications System*,
+inventó el **Sketchpad**, el primer interfaz gráfico de usuario.
+La Universidad de Utah y el Instituto de Tecnología de Nueva York
+produjeron una generación de investigadores de gráficos por 
+ordenador y técnicas que ayudado a dar forma al campo.
 
-In 1977 Star Wars used what was probably the first example of 3D
-computer graphics in film, albeit in the form of vector or wireframe,
-rather than shaded, imagery. Larry Cuba, in what was then called the
-Circle Graphics Habitat (now the Electronic Visualization Laboratory, or
-EVL) at the University of Illinois at Chicago Circle, created a 3D
-wireframe view of the trench of the Death Star that was used to train
-rebel pilots. This film also featured a rare example of analog 3D
-computer graphics–a very brief, false color image of the Deathstar
-emerging from behind a planet–created using the Scanimate system.
 
-In 1979 Ridley Scott’s Alien was released and made limited, but
-effective use of 3D computer graphics, again in the form of vector or
-wireframe graphics. Systems Simulation Ltd. of London created a computer
-monitor sequence showing a terrain fly-over, rendering
-computer-generated mountains as wireframe images, with hidden line
-removal.
+El primer largometraje en utilizar procesamiento digital de imágenes fue
+`Westworld`_, de 1973, el mismo año que la primera conferencia de
+`SIGGRAPH`_. John Whitney y `Gary Demos`_, de *Information International
+Inc*. (III, también conocido como "Triple I") produjeron versiones
+pixeladas y procesadas digitalmente de secuencias usadas para retratar
+el punto de vista del androide. El mismo grupo utilizó la composición
+digital para materializar personajes sobre un fondo en la secuela de
+1976, `Futureworld`_. Estos esfuerzos fueron reconocidos con un Premio
+de la Academia de Ciencia e Ingeniería en 1994
+
+.. _Star Wars: https://en.wikipedia.org/wiki/Star_Wars
+.. _2001\: Una odisea en el Espacio: https://www.imdb.com/es-es/title/tt0062622/
+.. _John Whitney: https://es.wikipedia.org/wiki/John_Whitney
+.. _Ivan Sutherland: https://es.wikipedia.org/wiki/Ivan_Sutherland
+.. _Larry Cuba: https://en.wikipedia.org/wiki/Larry_Cuba
+.. _Books for Game Designers: https://playtank.io/2022/05/18/books-for-game-designers/
+.. _Playtank: https://playtank.io/
+.. _Scanimate: https://en.wikipedia.org/wiki/Scanimate
+.. _EVL: https://en.wikipedia.org/wiki/Electronic_Visualization_Laboratory
+.. _Alien: https://es.wikipedia.org/wiki/Alien:_el_octavo_pasajero
+
+
+En `Star Wars`_, de 1977, se usaron probablemente por primera vez
+gráficos en 3D determinadas tomas, en forma de gráficos vectoriales (Es
+decir, con modelos "de alambre", no sólidos) . `Larry Cuba`_, en lo que
+entonces se llamaba el *Circle Graphicas Habitat* (ahora el Laboratorio
+de Visualización Electrónica o `EVL`_) de la Universidad de Illinois en
+Chicago, creó una vista 3D de las trincheras de la Estrella de la
+Muerte, utilizada para entrenar a los pilotos rebeldes. Esta película
+también presentó un raro ejemplo de gráficos de computadora 3D
+analógicos: una imagen muy breve en falso color de la Estrella de la
+Muerte emergiendo de detrás de un planeta, creada con el sistema
+`Scanimate`_.
+
+.. image:: game-development/star-wars.png
+
+In 1979 la película `Alien_`, de Ridley Scott hizo un uso limitado, pero
+efectivo, de gráficos por computadora en 3D, también en forma de
+gráficos vectoriales o de estructura alámbrica. La empresa *Systems
+Simulation Ltd.*, de Londres, creó una secuencia de monitorización por
+computadora que mostraba un sobrevuelo del terreno, renderizando
+montañas generadas por computadora como imágenes de estructura
+alámbrica, con eliminación de líneas ocultas.
+
+.. image:: game-development/alien.jpg
 
 The first feature film to use shaded 3D computer graphics imagery,
 rendered in the style used today, was 1981’s Looker. Polygonal models
@@ -167,7 +190,9 @@ none are currently involved in computer graphics production. All of
 these companies produced television commercials for a time during the
 1980s, and Gary Demos, while still at III, produced some unused and
 seldom seen but impressive test footage of an X-wing fighter for Star
-Wars. The polyhedron character, “Bit”, in Tron is probably the first CGI
+Wars.
+
+The polyhedron character, “Bit”, in Tron is probably the first CGI
 “character”, though it was deliberately designed to have a sufficiently
 limited range of controls and animation that it is debatable whether
 this work qualifies as true character animation.
@@ -180,7 +205,7 @@ the years to come. The Genesis Effect made the first onscreen use of a
 particle rendering system to achieve its fiery effects.
 
 In all of the films to this point, computer graphics had been used to
-portray… computer graphics. Throughout its early years in Hollywood,
+portray... computer graphics. Throughout its early years in Hollywood,
 sophisticated CGI of the day was used to show what computers of the
 future might look like, whether from the outside, as in the monitor
 displays of Alien and Khan, or, as in Tron, from the “inside”.
