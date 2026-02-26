@@ -3,6 +3,8 @@ Gobierno de datos (*Data Governance*)
 
 .. tags:: transparencia,calidad
 
+.. contents:: Relación de contenidos
+    :depth: 3
 
 ¿Cuál es la diferencia entre gobernanza de datos y gestión de datos?
 --------------------------------------------------------------------

@@ -1,6 +1,10 @@
 Game development
 ========================================================================
 
+.. tags:: gamedev
+
+.. contents:: Relación de contenidos
+    :depth: 3
 
 Libros sobre desarrollo de juegos
 ---------------------------------

@@ -3,18 +3,53 @@ Docker
 
 .. tags:: python, docker, devops
 
+.. contents:: Relación de contenidos
+    :depth: 3
 
-Introduction to Docker
+Introducción a Docker
 ------------------------------------------------------------------------
 
-Docker is an open platform for developing, shipping, and running
-applications. Docker enables you to separate your applications from your
-infrastructure so you can deliver software quickly. With Docker, you can
-manage your infrastructure in the same ways you manage your
-applications. By taking advantage of Docker’s methodologies for
-shipping, testing, and deploying code quickly, you can significantly
-reduce the delay between writing code and running it in production.
+Docker es una plataforma abierta para desarrollar, distribuir y ejecutar
+aplicaciones. Docker permite separar las aplicaciones de la
+infraestructura que debe ejecutarlas para que se pueda entregar software
+más rápido.
 
+
+¿Qué es un contenedor en Docker?
+------------------------------------------------------------------------
+
+Un contenedor es un proceso que se ejecuta en un *sandbox* 
+dentro de una máquina *host* que está aislado de todos los demás
+procesos que se ejecutan en esa máquina *host*. Ese aislamiento
+aprovecha los espacios de nombres del kernel y los *cgroups*,
+características que han estado en Linux durante mucho tiempo. Docker
+hace que estas capacidades sean accesibles y fáciles de usar.
+
+Para resumir, un contenedor:
+
+- Es una instancia ejecutable de una imagen. Puede crear, iniciar,
+  detener, mover o eliminar un contenedor utilizando la API o CLI de
+  Docker.
+
+- Se puede ejecutar en máquinas locales, máquinas virtuales o
+  implementar en la nube.
+
+- Es portátil (y se puede ejecutar en cualquier sistema operativo).
+
+- Está aislado de otros contenedores y ejecuta su propio software,
+  binarios, configuraciones, etc.
+
+.. note:: 
+
+    Si está familiarizado con ``chroot``, piense en un contenedor como una
+    versión extendida de chroot. El sistema de archivos lo proporciona la
+    imagen. El contenedor, no obstante, añade aislamiento adicional, no
+    disponible cuando se utiliza solo ``chroot``.
+
+¿Qué es una imagen en Docker?
+------------------------------------------------------------------------
+
+Un contenedor en ejecución utiliza un sistema de archivos aislado. Este sistema de archivos aislado es proporcionado por una imagen, y la imagen debe contener todo lo necesario para ejecutar una aplicación: todas las dependencias, configuraciones, scripts, binarios, etc. La imagen también contiene otras configuraciones para el contenedor, como variables de entorno, un comando predeterminado para ejecutar y otros metadatos.
 
 How to dockerize Python
 ------------------------------------------------------------------------
@@ -69,42 +104,79 @@ Sources:
    Applications <https://stackabuse.com/dockerizing-python-applications/>`_
 
 
-How to install ps command
+Cómo instalar el comando ``ps``
 ------------------------------------------------------------------------
 
-This is the way:
+Hay que instalar el paquete ``procps``:
 
 .. code:: shell
 
     apt-get update && apt-get install -y procps
 
 
-Get process stats with the top command
+Cómo administrar Docker como usuario no root
 ------------------------------------------------------------------------
 
-The docker ``top`` command is exactly what it sounds like: top that runs
-in the container:
+El demonio Docker escucha en un *socket* Unix, no en un puerto TCP. De
+forma predeterminada, es el usuario ``root`` el que posee el *socket*, y
+otros usuarios solo pueden acceder a él utilizando ``sudo``. El demonio
+Docker siempre se ejecuta como usuario ``root``.
+
+Para poder usar Docker desde otro usuario, se puede crear un grupo de
+Unix llamado ``docker`` y agregarle usuarios.  Esto funciona porque el
+*socket* Unix es accesible también por los miembros del grupo
+``docker``. En algunas distribuciones de Linux, el sistema crea
+automáticamente este grupo al instalar Docker. En ese caso, no hay
+necesidad de crear manualmente el grupo.
+
+Para crear el grupo de ``docker`` y añadir el usuario:
 
 .. code:: shell
 
-    $ docker run -d — name=toptest alpine:3.1 watch “echo ‘Testing top’”
+     sudo groupadd docker
+     sudo usermod -aG docker $USER
+     newgrp docker
+
+.. warning:: 
+
+    La orden ``newgrp`` debería activar los cambios en los grupos.
+    Si no funciona, deberemos cerrar la sesión y volver a iniciarla
+    para que la membresía de grupo sea reevaluada.  Si está ejecutando
+    Linux en una máquina virtual, puede ser incluso necesario reiniciar
+    la máquina virtual para que los cambios surtan efecto.
+
+Pare verificar que podemos usar Docker sin usar sudo, podemos hacer:
+
+.. code:: shell
+
+   docker run hello-world
+
+
+Cómo obtener estadísticas de procesos con el comando ``top``
+------------------------------------------------------------------------
+
+El comando ``top`` de docker es exactamente lo que parecee, ejecuta 
+``top`` dentro del contenedor:
+
+.. code:: shell
+
+    $ docker run -d — name=toptest alpine:3.1 watch "echo 'Testing top'"
     fc54369116fe993ae45620415fb5a6376a3069cdab7c206ac5ce3b57006d4241
     $ docker top toptest
     UID PID … TIME CMD
-    root 26339 … 00:00:00 watch “echo ‘Testing top’”
+    root 26339 … 00:00:00 watch "echo 'Testing top'"
     root 26370 … 00:00:00 sleep 2
 
-Some columns removed to make it fit here. There is also a docker
-``stats`` command that is basically top for all the containers running
-on a host.
+Se imiten en el ejemplo algunas columnas por legibilidad.
 
+También existe el comando ``stats`` que básicamente consiste en ejecutar
+``top`` para cada uno de los contenedores de un *host*.
 
-View container details (including env vars) with the inspect command
+Cómo ver los detalles de un contendor (incluyendo variables de entorno)
 ------------------------------------------------------------------------
 
-The ``inspect`` command returns information about a container or an
-image. Here’s an example of running it on the toptest container from the
-last example above:
+El comando de Docker ``inspect`` devuelve información acerca de un
+contenedor o una imagen. A continuación se muestra un ejemplo de uso:
 
 .. code:: shell
 
@@ -127,29 +199,21 @@ valiosos son:
 
 - Estado actual del contenedor (En la propiedad ``State``)
 
-- La ruta del archivo histórico o ``log`` (En la propiedad ``LogPath``)
+- La ruta del archivo histórico o ``log`` (en la propiedad ``LogPath``)
 
-- Values of set environment vars. (In the ``Config.Env`` field.)
+- Valores de las variables de entorno (en el campo ``Config.Env``)
 
-- Mapped ports. (In the ``NetworkSettings.Ports`` field.)
+- Mapeo de puertos (en el campo ``NetworkSettings.Ports``)
 
-Probably the most valuable use of inspect for me in the past has been
-**getting the values of environment vars**. Even with largely automated
-deployments I’ve run into issues in the past where the wrong arg was
-passed to a command and a container ended up running with vars set to
-incorrect values. When one of your cloud containers starts choking
-commands like inspect can be a quick cure.
-
-Source: `Ten Tips for Debugging Docker
-Contaniers <https://medium.com/@betz.mark/ten-tips-for-debugging-docker-containers-cde4da841a1d>`_
+Fuente: `Ten Tips for Debugging Docker Contaniers`_.
 
 
-Cómo copiar un archivo desde el host al contenedor (Y viceversa)
+Cómo copiar un archivo desde el *host* al contenedor (y viceversa)
 ------------------------------------------------------------------------
 
 La utilidad ``docker cp`` nos permite copiar un archivo desde o hacia
-el contendor. Si usamos ``-`` se utiliza la entrada/salida estándar.
-El contendor puede estar en ejecución o parado. Los parámetros pasados
+el contenedor. Si usamos ``-`` se utiliza la entrada/salida estándar.
+El contenedor puede estar en ejecución o parado. Los parámetros pasados
 pueden ser archivos o directorios.
 
 Ejemplo:
@@ -435,82 +499,73 @@ El punto ``.`` indica el directorio donde se buscará el fichero de
 construcción ``dockerfile``.
 
 
-How to Run an Application in Debug Mode with Auto-Restart
+Cómo ejecutar una aplicación en modo depuración con auto-reinicio
 ------------------------------------------------------------------------
 
-Due to the advantages of containerization described earlier, it makes
-sense to develop applications that will be deployed in containers within
-the container itself. This ensures that from the beginning, the
-environment in which the app is built is clean and thus eliminates
-surprises during delivery.
+Durante la etapa de desarrollo, es importante tener ciclos rápidos de
+reconstrucción y pruebas. Para esto las aplicaciones web dependen de las
+opciones de reinicio automático proporcionadas por *frameworks* como
+Flask o Django. Es posible aprovechar esto desde dentro del contenedor.
 
-However, while developing an app it’s important to have quick re-build
-and test cycles to check each intermediate step during development. For
-this purpose, web-app developers depend on auto-restart facilities
-provided by frameworks like Flask. It’s possible to leverage this from
-within the container as well.
+Para ello, iniciamos el contenedor Docker asignando nuestro directorio
+de desarrollo al directorio de aplicaciones dentro del contenedor. Esto
+significa que Flask o Django verán los archivos en el host y para
+cualquier cambio reiniciarán la aplicación automáticamente.
 
-To enable auto-restart, we start the Docker container mapping our
-development directory to the app directory within the container. This
-means Flask will watch the files in the host (through this mapping) for
-any changes and restart the application automatically when it detects
-any changes.
+Además, necesitamos reenviar los puertos de la aplicación desde el
+contenedor al host. 
 
-Additionally, we also need to forward the application ports from the
-container to the host. This is to enable a browser running on the host
-to access the application.
-
-To achieve this, we start the Docker container with volume-mapping and
-port-forwarding options:
+Para lograr esto, comenzamos el contenedor Docker con opciones de mapeo
+de volumen y de reenvío de puertos:
 
 .. code:: shell
 
-    $ docker run --name flaskapp -v$PWD/app:/app -p5000:5000 docker-flask:latest
+    docker run --name flaskapp -v$PWD/app:/app -p5000:5000 docker-flask:latest
 
-This does the following:
+Esto realiza los siguientes pasos:
 
-- Starts a container based on the docker-flask image we built
-  previously.
+- Arranca un contenedor basándose en la imagen que le hemos
+  indicado, ``docker-flask``.
 
-- This container’s name is set to ``flaskapp``. Without the ``--name``
-  option, Docker chooses an arbitrary (and a very interesting) name for
-  the container. Specifying a name explicitly will help us in locating
-  the container (for stopping etc.,.)
+- Se la da nombre del contenedor (``flaskapp``) usando el *flag*
+  ``--name``. Sin esta opción, el nombre del contenedor sería
+  arbitrario. Esto nos ayuda a gestionarlo.
 
-- The ``-v`` option mounts the app folder on the host to the container.
+- La opción ``-v`` monta la carpeta local dentro del contenedor.
 
-- The ``-p`` option maps the port on the container to the host.
+- La opción ``-p`` mapea los puertos de la máquina local y el 
+  contenedor, permitiendo así acceder a la aplicación con la
+  dirección ``http://localhost:5000`` o ``http://0.0.0.0:5000/``.
 
-Now the application can be accessed at ``http://localhost:5000`` or
-``http://0.0.0.0:5000/``.
 
-How to log inside a docker container image running
+Cómo conectarse a un contenedor en ejecución
 ------------------------------------------------------------------------
 
-- First, use ``docker ps`` to get the name of the existing container,
-  if you don’t know it.
+Podemos usar la orden ``docker ps`` para averiguar el nombre del
+contenedor, si no lo sabemos.
 
-- Then, use the command:
+Sabiendo el nombre, podemos hacer simplemente:
 
 .. code:: shell
 
     docker exec -it <name> /bin/bash
 
-Meaning of the flags:
+El significado de los parámetros es:
 
-- ``-i``, ``--interactive`` : Keep STDIN open even if not attached
-- ``-t``, ``--tty`` : Allocate a pseudo-TTY
+- ``-i``, ``--interactive`` : Mantiene abierto ``STDIN``
+- ``-t``, ``--tty`` : Activa un pseudo-TTY
 
 
 Cómo saber si una imagen de docker está en ejecución
 ------------------------------------------------------------------------
 
-Es decir, que hay algún contenedor activo basedo en esta imagen. Es
+Es decir, que hay algún contenedor activo basado en esta imagen. Es
 fácil si sabes el nombre:
 
 .. code:: shell
 
     docker inspect -f '{{.State.Running}}' $container_name
+
 
 Cómo borrar imágenes terminadas (``exited()``) ejecutadas previamente
 ------------------------------------------------------------------------
@@ -662,6 +717,32 @@ Maybe you’ll need to use ``sudo`` for this.
 
 Fuente: https://forums.docker.com/t/solved-docker-error-response-from-daemon-grpc-the-connection-is-unavailable/32510
 
+
+Como ver los contenedores que están ejecutándose
+------------------------------------------------------------------------
+
+Usando el subcomando `ps`:
+
+.. code:: shell
+	
+    sudo docker ps
+ 
+Este es uno de los comandos más básicos de Docker. La salida muestra
+el ID del contenedor, su imagen asociada, el nombre, la fecha de creación,
+el estado actual y en la última columna, el mapeo de puertos que están
+expuestos.
+
+Pero por defecto solo se muestra los contenedores en ejecución y
+los recientemente detenidos. Para ver **todos** los contenedores (incluidos los
+detenidos) hay que usar el flag ``-a`` o ``--all``:
+
+.. code:: shell
+	
+    sudo docker ps --all
+ 
+Fuente: `UDMS_Part_13`_ (*Essential Docker Commands and Time-Saving Aliases*)
+
+
 Como montar un volumen en un contenedor
 ------------------------------------------------------------------------
 
@@ -673,18 +754,30 @@ absolutas**.
 
     docker run -t sandbox -v $(pwd)/sandbox:/sandbox
 
+
+
+
 Learning docker
 ------------------------------------------------------------------------
 
+Best 100+ Docker Containers for Home Server
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Comprehensive list with 100+ docker containers that you can use on your
+home server in 2026.
+
+- https://www.bitdoze.com/docker-containers-home-server/#development-containers
+
+
 Play with Docker
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A simple, interactive and fun playground to learn Docker
 
 -  https://labs.play-with-docker.com/
 
 Play with Docker Classroom
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The Play with Docker classroom brings you labs and tutorials that help
 you get hands-on experience using Docker. In this classroom you will
@@ -695,3 +788,6 @@ your own environment, and resources about best practices for developing
 and deploying your own applications.
 
 -  https://training.play-with-docker.com/mvim
+
+.. _UDMS_Part_13: https://www.simplehomelab.com/udms-13-docker-and-docker-compose-commands/
+.. _Ten Tips for Debugging Docker Contaniers: https://medium.com/@betz.mark/ten-tips-for-debugging-docker-containers-cde4da841a1d

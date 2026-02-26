@@ -3,6 +3,8 @@ Python
 
 .. tags:: python, linux, development
 
+.. contents:: Relación de contenidos
+    :depth: 3
 
 Definir la versión por defecto a usar en Linux (Con apt)
 ------------------------------------------------------------------------

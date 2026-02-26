@@ -3,6 +3,8 @@ Django
 
 .. tags:: vim, django, database, development, python
 
+.. contents:: Relación de contenidos
+    :depth: 3
 
 Cómo obtener la fecha o *timestamp* en Django, con el *timezone* correcto
 -------------------------------------------------------------------------
@@ -1233,8 +1235,9 @@ exception is raised.
 If a file with name already exists, ``get_alternative_name()`` is called
 to obtain an alternative name.
 
-Como hacer migraciones propias
-------------------------------
+
+Cómo hacer migraciones propias en Django
+------------------------------------------------------------------------
 
 Podemos crear nuestras propias migraciones. Este es realmente útil para
 cambios en las bases de datos que ya estén en producción.
@@ -1305,7 +1308,7 @@ Fuentes:
    Dev <https://www.endpointdev.com/blog/2016/09/executing-custom-sql-in-django-migration/>`__
 
 Cómo crear migraciones propias usando código Python en vez de SQL
------------------------------------------------------------------
+------------------------------------------------------------------------
 
 Si las migraciones usando solo SQL se quedan cortas, también podemos
 hacer migraciones personalizadas que usen código Python e incluso, con
@@ -1408,8 +1411,9 @@ ejemplo anterior, quedaría así:
            migrations.RunPython(set_inicial, unset_inicial),
        ]
 
-Como condensar/simplificar (*squash*) las migraciones en Django
----------------------------------------------------------------
+
+Cómo condensar/simplificar (*squash*) las migraciones en Django
+------------------------------------------------------------------------
 
 Existe una opción en el ``manage.py`` llamada **``squashmigrations``**
 que nos permite condensar todas las migraciones aplicadas (o un
@@ -1472,6 +1476,104 @@ Fuentes:
 
 -  `How to Squash and Merge Django Migrations ·
    Coderbook <https://coderbook.com/@marcus/how-to-squash-and-merge-django-migrations/>`__
+
+Cómo *resetear* las migraciones
+------------------------------------------------------------------------
+
+A veces, especialmente al principio del desarrollo, damos varios pasos
+en falso hasta que la estructura de la base de datos queda más o menos
+bien establecida. Esto puede provocar una serie de migraciones que no
+aportan nada realmente. En estos casos, puede ser útil **resetar
+todas las migraciones** y quedarnos con solo una migración inicial para
+cada *app* (O quizá solo algunas de ellas).
+
+Para hacer esto, tenemos que considerar dos escenarios posibles:
+
+- El proyecto todavía está en el entorno de desarrollo y se desea
+  una limpieza completa. No importa descartar toda la base de datos
+
+- Se quiere borrar todo el historial de migración, pero manteniendo
+  la base de datos existente.
+
+Veamos los dos casos.
+
+Escenario 1: Podemos descartar la base de datos
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Paso **Uno**: Quitar todos los archivos de migraciones dentro de
+  cada app. Revise cada una de las carpetas de migración de aplicaciones
+  de proyectos y elimine todo lo que hay dentro, excepto el fichero 
+  ``__init__.py``.
+
+- Paso **Dos**: Borrar la base de datos. Si es *sqlite*, el fichero
+  ``db.sqlite3``.
+
+- Paso **Tres**: Crear las migraciones iniciales y generar el 
+  esquema de la base de datos:
+
+    .. code:: 
+
+        python manage.py makemigrations
+        python manage.py migrate
+
+Y listo.
+
+Escenario 2: No queremos descartar la base de datos
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Paso **Uno**: Verificar que todos los modelos se ajustan al esquema
+  actual de la base de datos. La forma más fácil de hacerlo es tratando
+  de crear nuevas migraciones: ``python manage.py makemigrations``. Si
+  no hay ninguna, ya está. Si no, ejecutamos las migraciones primero.
+
+- Paso **Dos**: Borrar el historial de migración para cada aplicación.
+  Ahora hay que borrar la aplicación del historial de migración por 
+  aplicación. Esto es, la tabla ``django_migrations`` (En el paso
+  anterior no hay que hacer esto porque hemos borrado toda la base de
+  datos).
+
+  Para cada app: Borrar el historial de migración, ejecutar:
+
+  .. code:: shell
+
+        python manage.py migrate --fake <app> zero
+
+  Esto borrará el registro de migraciones para la app, sin hacer
+  realmente ningún otro cambio en la base de datos, por eso
+  es **muy importante** el *flag* ``--fake``.
+
+  El comando ``showmigrations`` debería mostrarnos todas las
+  migraciones de cada app, pero en estado "no aplicada".
+
+- Paso **Tres**: Quitar los archivos de migración reales.
+  Revisar cada una de las carpetas de migración de aplicaciones
+  de proyectos y eliminar todo lo que esté dentro, excepto el
+  fichero ``__init__.py``. El comando ``showmigrations`` debería
+  mostrarnos que no hay ninguna migración.
+
+- Paso **Cuatro**: Crear las migraciones iniciales
+
+  .. code:: python
+
+      python manage.py makemigrations
+
+  Que debe crear migraciones iniciales para cada una de las
+  aplicaciones.  
+
+- Paso **Cinco**: Falsificar la migración inicial. Como las tablas
+  de cada modelo realmente ya existen en la base de datos, lo único que
+  queda por hacer es marcar estas migraciones iniciales como ya
+  aplicadas, pero sin que realmente modifiquen el esquema. Si intentamos
+  aplicarlar realmente, nos darán problemas, por ejemplo al intentar
+  crear una tabla con ``CREATE TABLE ...`` cuando la tabla ya existe.
+  Por eso aplicamos el *flag** ``--fake``:
+
+  .. code:: shell
+
+      python manage.py migrate --fake-initial
+
+Fuente: `Django Reset Migrations`_
+
 
 Cómo saber que base de datos se corresponde con cada modelo
 -----------------------------------------------------------
@@ -2292,4 +2394,8 @@ del ficheor ``settings``, y luego podemos acceder desde la platilla:
 
     {{ current_path }}
 
-Fuente: Stackoverflow `How to get URL of current page, including parameters ... <https://stackoverflow.com/questions/3248682/how-to-get-url-of-current-page-including-parameters-in-a-template>_`
+Fuente: Stackoverflow `How to get URL of current page, including parameters`_
+
+
+.. _How to get URL of current page, including parameters: https://stackoverflow.com/questions/3248682/how-to-get-url-of-current-page-including-parameters-in-a-template
+.. _Django Reset Migrations: https://simpleisbetterthancomplex.com/tutorial/2016/07/26/how-to-reset-migrations.html

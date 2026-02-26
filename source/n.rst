@@ -10,3 +10,4 @@ N
    notes-on-nfs.rst
    notes-on-nginx.rst
    notes-on-nix.rst
+   notes-on-ntfy.rst

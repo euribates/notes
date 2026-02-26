@@ -9,6 +9,7 @@ P
    notes-on-pandoc
    notes-on-patterns
    notes-on-pgsql.md
+   notes-on-portainer
    notes-on-postgresql
    notes-on-prometheus
    notes-on-puppet
