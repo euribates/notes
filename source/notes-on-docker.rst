@@ -14,6 +14,41 @@ aplicaciones. Docker permite separar las aplicaciones de la
 infraestructura que debe ejecutarlas para que se pueda entregar software
 más rápido.
 
+Características principales de Docker
+------------------------------------------------------------------------
+
+- **Entorno de desarrollo integrado**: Docker proporciona un entorno de
+  desarrollo completo que incluye *Docker Engine*, *Docker CLI* y
+  *Docker Compose*, lo que facilita la creación, administración y
+  ejecución de contenedores.
+
+- **Facilidad de uso**: Con una interfaz de usuario intuitiva y comandos
+  de línea de comandos simples, Docker es fácil de aprender y usar
+  incluso para aquellos nuevos en el mundo de la contenedorización.
+
+- **Soporte multiplataforma**: Docker está disponible para
+  Windows, macOS y Linux, lo que permite a los desarrolladores
+  trabajar de manera consistente en diferentes sistemas operativos.
+
+- **Integración con Docker Hub**: Docker se integra perfectamente con
+  *Docker Hub*, el registro de imágenes de Docker, lo que facilita la
+  búsqueda, el acceso y el uso compartido de imágenes de contenedores.
+
+Ventajas de Docker
+------------------------------------------------------------------------
+
+- **Velocidad en desarrollo**: La capacidad de crear y ejecutar
+  contenedores localmente acelera el ciclo de desarrollo al simplificar
+  la creación de entornos de desarrollo complejos.
+
+- **Portabilidad de la aplicación**: Los contenedores creados con
+  Docker son portátiles y se pueden compartir y ejecutar fácilmente
+  en cualquier entorno compatible con Docker.
+
+- **Consistencia en la implementación**: Al garantizar que el entorno
+  de desarrollo sea idéntico al entorno de producción, Docker ayuda a
+  evitar problemas de compatibilidad y errores durante la
+  implementación de la aplicación.
 
 ¿Qué es un contenedor en Docker?
 ------------------------------------------------------------------------

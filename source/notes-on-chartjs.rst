@@ -18,48 +18,48 @@ que admite 8 tipos de gráficos:
 7. polar
 8. dispersión.
 
-Ee representa en HTML5 Canvas y está ampliamente considerado como una de
+Se representa en HTML5 Canvas y está considerada como una de
 las mejores bibliotecas de visualización de datos. Está disponible bajo
 la licencia MIT.
 
 Ejemplo de gráfica de barras con Chartjs
-----------------------------------------
+------------------------------------------------------------------------
 
 Necesitaremos un canvas en nuestra página HTML:
 
 .. code:: html
 
-<div>
-<canvas id="myChart"></canvas>
-</div>
+    <div>
+    <canvas id="myChart"></canvas>
+    </div>
 
 Enlazamos con la libreria Chart.js:
 
 .. code:: html
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 Y finalmente generamos el código con javascript
 
 .. code:: js
 
-const ctx = document.getElementById('myChart');
+    const ctx = document.getElementById('myChart');
 
-new Chart(ctx, {
-type: 'bar',
-data: {
-labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-datasets: [{
-label: '# of Votes',
-data: [12, 19, 3, 5, 2, 3],
-borderWidth: 1
-}]
-},
-options: {
-scales: {
-y: {
-beginAtZero: true
-}
-}
-}
-});
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                label: '# of Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                borderWidth: 1
+                }]
+            },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
