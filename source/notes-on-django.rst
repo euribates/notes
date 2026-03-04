@@ -829,28 +829,29 @@ usa el soporte para ``enum`` disponible desde Django 3.0):
 
 .. code:: python
 
-   from django.db import models
+    from django.db import models
+ 
+ 
+    class Article(models.Model):
+ 
+        class STATUS(models.TextChoices):
+            NEW = ('N', 'Nuevo)
+            VERIFIED = ('V', 'Verificado')
+            PUBLISHED = ('P', 'Publicado')
+ 
+        status = models.IntegerField(choices=STATUS, default=STATUS.NEW)
+ 
+        @property
+        def is_published(self):
+            return self.status == self.STATUS.PUBLISHED
+ 
+        @property
+        def is_verified(self):
+            return self.status in {
+                self.STATUS.VERIFIED,
+                self.STATUS.PUBLISHED,
+            }
 
-
-   class Article(models.Model):
-
-       class STATUS(models.TextChoices):
-           NEW = ('N', 'Nuevo)
-           VERIFIED = ('V', 'Verificado')
-           PUBLISHED = ('P', 'Publicado')
-
-       status = models.IntegerField(choices=STATUS, default=STATUS.NEW)
-
-       @property
-       def is_published(self):
-           return self.status == self.STATUS.PUBLISHED
-
-       @property
-       def is_verified(self):
-           return self.status in {
-               self.STATUS.VERIFIED,
-               self.STATUS.PUBLISHED,
-           }
 
 No añadir nombres redundantes en los campos de un modelo
 --------------------------------------------------------
@@ -2375,6 +2376,7 @@ Y en el ``admin.py``:
    class PersonDataAdmin(admin.ModelAdmin):
        readonly_fields=('person',)
 
+
 Cómo obtener la URL de la página actual, con parámetros, en la plantilla
 ------------------------------------------------------------------------
 
@@ -2388,14 +2390,54 @@ Una forma sencilla en con un *Custom Context Processor*:
         }
 
 Añadimos la llamada a esta función en la lista ``TEMPLATE_CONTEXT_PROCESSORS``
-del ficheor ``settings``, y luego podemos acceder desde la platilla:
+del fichero ``settings``, y luego podemos acceder desde la platilla:
 
 .. code: django_template
 
     {{ current_path }}
 
-Fuente: Stackoverflow `How to get URL of current page, including parameters`_
+Fuente: `How to get URL of current page, including parameters`_ - StackOverflow
 
 
-.. _How to get URL of current page, including parameters: https://stackoverflow.com/questions/3248682/how-to-get-url-of-current-page-including-parameters-in-a-template
+Hacer un campo obligatorio, pero solo si no es nulo
+------------------------------------------------------------------------
+
+Django soporta el crear restricciones de tipo único
+(``UniqueConstraints``) con condiciones. Podemos crear una restricción
+única que fuere a comprobar la restricción solo si el campo no es nulo (O
+cualquier otra condición que queramos). Por ejemplo:
+
+.. code:: python
+
+    from django.db import models
+    from django.db.models import Q
+
+    class Ejemplo(models.Model):
+
+        class Meta:
+        constraints = [
+                models.UniqueConstraint(
+                    fields=["serial_number"],
+                    condition=~models.Q(serial_number=""),
+                    name="unique_serial_number",
+                )
+            ]
+
+        serial_number = models.CharField(max_length=32, blank=True)
+        ...
+
+La condición debe ser verdadera para que se aplique la validación. En este
+ejemplo, queremos que se valide que el número de serie es único solo
+cuando el valor sea no vacío (Recordemos que Django almacena por defecto
+los campos vacíos de texto como una cadena vacía, no como ``NULL``). Por
+eso comparamos con la cadena vacía (``models.Q(serial_number="")``) y
+luego negamos el resultado (operador ``~``).
+
+
+Fuente: `Django unique=True except for blank values`_ - StackOverflow
+
+
+
+.. _Django unique=True except for blank values: https://stackoverflow.com/questions/9808202/
+.. _How to get URL of current page, including parameters: https://stackoverflow.com/questions/3248682/
 .. _Django Reset Migrations: https://simpleisbetterthancomplex.com/tutorial/2016/07/26/how-to-reset-migrations.html
