@@ -71,7 +71,7 @@ máquinas, pero no escala bien, es mas proclive a errores y cuando algo
 falla, tú eres la última línea de defensa.
 
 Con Kubernetes, el modelo cambia: en vez de especificar **cómo**
-realizar el despliegue, se especifica **el estado final que deseamos
+realizar el despliegue, se especifica **el estadoe ch final que deseamos
 tener**. La siguiente configuración de Kubernetes:
 
 .. code:: yaml
@@ -171,8 +171,34 @@ Un ejemplo de descripción de un Pod podría ser el siguiente:
       - name: sidecar
         image: fluent/fluent-bit
 
+Cuáles son las diferencias entre un *pod* y un contenedor
+------------------------------------------------------------------------
+
+Las diferencias principales son:
+
+- Los *pods* son la **unidad minima de despliegue**, es decir, nunca
+  podremos desplegar un contenedor solo, este debe ir obligatoriamente
+  dentro de un *pod*. Por lo general, el *pod* contiene varios
+  contenedores.
+
+- Todos los contenedores dentro de un *pod* comparten recursos, como la
+  red, almacenamiento, procesos de comunicación entre contenedores
+  simplificados, etc.
+
+- Los contenedores dentro de un *pod* mantienen un grafo de dependencias.
+
+- El ciclo de vida de un *pod* incluye la creación, escalado y
+  finalización del mismo. Operaciones habituales con *pod* son crear
+  contenedores de inicialización para la configuración previa a la
+  aplicación, contenedores efímeros para depuración en vivo,
+  contenedores para la gestión de las posibles interrupciones de la
+  disponibilidad del servicio, contenedores de control de acceso y de
+  monitorización y *logs* del sistema.
+  
+
+
 Cómo escala Kubernetes. Qué es el plano de control
-========================================================================
+------------------------------------------------------------------------
 
 Para poder escalar, Kubernetes añade nuevos *pods* a su clúster.  Los
 *pods* se ejecutan en el hardware subyacente, que a su vez se puede

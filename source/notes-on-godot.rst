@@ -225,6 +225,45 @@ método especial ``_draw()``, ``_notificacion()`` (con el valor
 - `draw_circle() <https://docs.godotengine.org/en/stable/classes/class_canvasitem.html#class-canvasitem-method-draw-circle>`_
 
 
+El nodo ``CanvasLayer``
+-----------------------------------------------------------------------
+
+Los nodos 2D como ``Node2D`` o ``Control`` heredan de ``CanvasItem``,
+que es la base para todos los nodos 2D. Estos nodos se pueden organizar
+en los árboles y heredan sus transformaciones. Esto significa que al
+mover a los padres, los hijos también se moverán, lo que suele ser muy
+conveniente.
+
+Pero a veces no es lo deseado, hay situaciones en las que se quiere
+estas transformaciones, por ejemplo:
+
+- Fondos de paralaje: Fondos que se mueven más lento que el resto de la
+  etapa.
+
+- El **HUD**: Pantalla frontal o interfaz de usuario. Si el mundo se
+  mueve, el contador de vida, la puntuación, etc. debe permanecer
+  estático.
+
+- Transiciones: Los efectos utilizados para las transiciones
+  (desvanecimientos, mezclas) a veces se desean en una ubicación fija.
+
+La respuesta es ``CanvasLayer``, que es un nodo que agrega una capa de
+representación 2D separada para todos sus hijos y nietos. Los hijos de
+``Viewport`` se dibujan de forma predeterminada en la capa ``0``,
+mientras que un ``CanvasLayer`` puede usar cualquier número de capa. Las
+capas con un número mayor se dibujarán por encima de las que tienen un
+número más pequeño. 
+
+``CanvasLayers`` tienen su propia transformación y no dependen de la
+transformación de otras capas. Esto permite que la interfaz de usuario
+se fije en su lugar mientras el mundo se mueve.
+
+Un ejemplo de esto es crear un fondo de paralaje. Esto se puede hacer
+con una CanvasLayer en la capa “-10”. La pantalla con los puntos, el
+contador de vida y el botón de pausa se pueden crear en la capa
+“10”.
+
+
 El nodo ``Area2D``
 ------------------------------------------------------------------------
 

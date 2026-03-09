@@ -12,7 +12,7 @@ Ventajas de Superset
 ------------------------------------------------------------------------
 
 
-- Posibilidad de crear gráficas con una interfazvisual, sin código.
+- Posibilidad de crear gráficas con una interfaz visual, sin código.
 
 - Un editor web, basado en SQL, para consultas avanzadas.
 

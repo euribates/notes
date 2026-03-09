@@ -10,6 +10,7 @@ S
    notes-on-sass
    notes-on-sede
    notes-on-selenium
+   notes-on-shaders
    notes-on-shiny
    notes-on-slack
    notes-on-soft-skills
