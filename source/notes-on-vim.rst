@@ -6,7 +6,7 @@ Vim
 .. contents:: Relación de contenidos
     :depth: 3
 
-Cómo hacer que Vim copie al porta papeles del sistema, ademas del interno
+Cómo hacer que Vim copie al porta papeles del sistema, además del interno
 -------------------------------------------------------------------------
 
 Este es el camino (Ponerlo en el fichero ``.vimrc``):
@@ -17,10 +17,10 @@ Este es el camino (Ponerlo en el fichero ``.vimrc``):
 
 Referencia: ``help: clipboard``
 
-When the ``"unnamed"`` string is included in the ``clipboard``
-option, the unnamed register is the same as the ``*`` register. Thus
-you can yank to and paste the selection without prepending ``"*`` to
-commands.
+La referencia a ``unnamed`` equivale al registro ``*``. De esta forma, se
+puede pegar a y desde el registro ``*`` sin tener que anteponer el
+asterisco.
+
 
 Cómo incluir caracteres unicode en Vim (*Diagraphs*)
 ------------------------------------------------------------------------
@@ -1629,6 +1629,16 @@ Fuentes:
 
 - Stack Overflow: `How to replace a character by a newline in Vim`_
 
+Cómo mostrar una barra vertical en una posición determinada
+------------------------------------------------------------------------
+
+Por ejemplo, para poner una línea indicando un límite a los 72 
+caracteres:
+
+.. code::
+
+    set colorcolumn=72
+    
 
 .. _Change DOS to Unix text file format in VIM: https://til.hashrocket.com/posts/hu3jlszfrf-change-dos-to-unix-text-file-format-in-vim
 .. _How to replace a character by a newline in Vim: https://stackoverflow.com/questions/71323/how-to-replace-a-character-by-a-newline-in-vim
