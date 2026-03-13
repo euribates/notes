@@ -1,58 +1,191 @@
 Logging
 ========================================================================
 
-How to Configure your logging schema
+Cuáles son los componentes principales de un sistema de *logging*
 ------------------------------------------------------------------------
 
-BasicConfig
-~~~~~~~~~~~
+El sistema de *logging* de Python está organizado en torno a cuatro
+abstracciones principales: *Loggers*, Niveles, Manejadores o *Handler* y
+Formateadores o *Formatters*. Cada uno de ellos tiene una función
+específica. El conjunto de todos ellos determina cómo se clasifican,
+enrutan y formatean los mensajes.
 
-This is by far the simplest way to configure logging. Just doing
-``logging.basicConfig(level="INFO")`` sets up a basic ``StreamHandler``
-that will log everything on the ``INFO`` and above levels to the
-console. There are arguments to customize this basic configuration. Some
-of them are:
+- Los *loggers* son el punto de entrada del sistema. Exponen los métodos
+  ``debug()``, ``info()``, ``warning()``, ``error()`` y ``critical``, que
+  son los que nos permiten enviar mensajes.  Se estructuran en forma de
+  jerarquía de nombres (por ejemplo, ``app.module.submodule``), y tienen
+  un nivel asociado, que filtra los mensajes que se procesan. 
 
-- ``filename``: Specifies that a FileHandler should be created, using
-the specified filename, rather than a StreamHandler.
+- Los **niveles** controlan qué mensajes son aceptados y cuales son
+  descartados, en base a la gravedad del mensaje (por ejemplo,
+  ``CRÍTICA``). Los mensajes por debajo de un determinado nivel son
+  ignorados, Los de nivel igual o superior son procesados. Los niveles
+  están asociado con los *loggers**, pero también con los *handlers*.
+  Podría pasar que un *logger* deje pasar un mensaje de aviso, porque su
+  nivel es, por ejemplo, ``WARNING``, pero que un *handler* asociado a
+  este *logger* lo ignore porque tiene el nivel ``ERROR``.
 
-- ``format`` : Use the specified format string for the handler.
+- Los **manejadores** o *handlers* determinan a dónde va un mensaje de
+  registro. Esto incluye flujos de consola, archivos, archivos giratorios,
+  *blogs*, correo electrónico, *sockets* de red, *búferes de memoria* o
+  colas. Se pueden adjuntar múltiples *handlers* al mismo *logger*, y cada
+  uno puede tener su propio formateador y su propio nivel de gravedad.
 
-- ``datefmt`` : Use the specified date/time format.
+- Los formateadores controlan cómo se representan los mensajes de registro
+  y pueden incluir metadatos (por ejemplo, marcas de tiempo, módulo,
+  número de línea, hilo o ID de proceso). También permiten plantillas de
+  cadena personalizadas o formatos estructurados como JSON. Cada
+  *handler* puede usar un formateador diferente para producir múltiples
+  estilos de salida para el mismo mensaje.
 
-- ``level`` : Set the root logger level to the specified level.
 
-**Warning** ``basicConfig`` only works **the first time it is called**
-in a runtime. If you have already configured your root logger, posterior
-calls to ``basicConfig`` will have no effect.
+Cómo funciona a grandes rasgos el sistema de *logging*
+------------------------------------------------------------------------
 
-DictConfig
-~~~~~~~~~~
+El proceso empieza cuando un desarrollados llama a alguno de los métodos
+del *logger*, por ejemplo ``info("hola, mundo")``. El *logger* en primer
+lugar determina el nivel del mensaje. Si el nivel del mensaje es igual o
+superior a su propio nivel, el mensaje es aceptado, si no, se descarta.
+En caso de ser aceptado, se crea un registro de tipo ``LogRecord`` que
+contiene el mensaje y los metadatos.
 
-The configuration for all elements and how to connect them can be
-specified as a dictionary. This dictionary should have different
-sections for loggers, handlers, formatters, and some basic global
-parameters:
+Este objeto de tipo ``LogRecord`` se le pasa a todos los *handlers* que
+estén vinculados con el *logger*. Como los *handlers* tienen sus propios
+niveles, el mensaje puede ser aceptado o descartado en función del nivel.
+
+Si es aceptado, el ``LogRecord`` se la pasa al formateador para que este
+lo procese y lo convierta en una cadena de texto. Finalmente, el registro
+es emitido a su destino por el *handler*.
+
+Si la propagación está habilitada, el ``LogRecord`` puede continuar de los
+*loggers* hijos hacia los *loggers* padres padres, repitiendo el proceso
+con sus controladores.
+
+Cuáles son los niveles de severidad del sistema de *logging*
+------------------------------------------------------------------------
+
+Python define seis niveles iniciales: ``NOTSET``, ``DEBUG``, ``INFO``,
+``WARNING``, ``ERROR`` y ``CRITICA``. Cada uno de estos niveles implica un
+determinado caso de uso, y define la importancia del mensaje. Los niveles
+nos permite realizar un filtrado de los mensajes.
+
+- ``NOTSET`` (0): Este nivel se usa para indicar que el nivel no ha sido
+  definido explicitamente. Por tanto, su valor nominal es cero, pero
+  hereda el nivel de su *logger* padre. No es muy frecuente usarlo, pero
+  tiene su utilida al permitir definir el nivel de una librería para que
+  asuma el nivel definido externamente.
+
+- ``DEBUG`` (10): Se usa para inspeccionar estados internos, control de
+  flujo, valores de las variables, etc. que sean de interes para el
+  desarrollador. Se usa frecuentemente en las fases de desarrollo. 
+
+- ``INFO`` (20): Se usa para describir operaciones de interés pero que
+  sean parte de la mecánica operacional del sistema, como por ejemplo "El
+  usuario menganito se ha conectado" o "La copia de seguridad ha
+  terminado". Los administradores del sistema puede utilizar los mensajes
+  de nivel ``INFO`` para monitorizar actividad y rendimiento.
+
+- ``WARNING`` (30): Es un aviso para los desarrolladores y administradores
+  de que algo extraño ha pasado, o que existe una condición que puede
+  causar daños futuros. A pesar de eso, la aplicación puede seguir
+  funcionando sin problema. Un ejemplo podría ser "El espacio ocupado en
+  disco está por encima del 90%", o "Falta un valor en el fichero de
+  configuración, se usará el valor por defecto".
+
+- ``ERROR`` (40): Un mensaje de error, que impide que el programa en su
+  totalidad o una parte de el no puede ejecutarse como se esperaba.
+  Normalmente, este tipo de situaciones afectan la lógica del programa o
+  el funcionamiento de ciertas operaciones críticas, como la falta de un
+  fichero de configuración, o la imposibilidad de conectarse con una base
+  de datos.
+
+- ``CRITICAL`` (50): El más alto de los niveles, un mensaje crítico
+  implica un fallo importante, que puede comprometer incluso la integridad
+  o seguridad del sistema en su totalida. Normalmente requiere atención
+  inmediata.
+
+
+Cómo configurar un sistema de *logging*
+------------------------------------------------------------------------
+
+Existen varias formas, vamos a verlas en orden de complejidad creciente.
+
+Usando el *logger* por defecto
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Si empezamos a usar las funciones del módulo ``logging`` directamente, en
+la primera llamada realizada en tiempo de ejecución se creará el *logger*
+raíz por defecto. El *logger* por defecto está configurado para tener un
+único *handler*, que imprime los mensajes (con un formato también asumido
+por defecto) a la salida estándar de errores, ``sys.stderr``.
 
 .. code:: python
 
     import logging
-    # root logger doesn't exists
+    # Todavía no existe un logger raiz
 
     logging.info('this info messages is lost, like tears in rain')
-    # Now root logger exists. But its level by default is WARNING so no messages
+    # Esto crea automáticamente, si no existe, un *logger* raiz
+    # Pero el nivel por defecto en ``WARNING``, así que el mensaje
+    # se descarta
 
     logging.warning('But this must be printed')
-    # Default root log send messages to stderr
+    # Este mensaje si pasa el nivel, así que se envía al *handler*.
+    # En el caso de un *logger* creado por defecto, la salida es ``stderr``
 
     root = logging.getLogger()
-    # If we pass no name, we get the roor logger
-    print(root.name)  # Must be root
+    # Si llamamos a la función ``getLogger`` sin pasarle ningún nombre,
+    # nos devuelve el *logger* raíz.
+    print(root.name)  # Debería ser ``root``
 
-Manually
-~~~~~~~~
 
-Let’s create a new handler, that outputs by stdout:
+BasicConfig
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Esta es la forma más sencilla de configurar un sistema de *logging* más
+complicado que el *logger* por defecto. Solo con la siguiente línea de
+código:
+
+.. code:: python
+
+    logging.basicConfig(level="INFO")
+
+Obtenemos un sistema completamente configurado, con un *handler* de tipo
+``StreamHandler``, que usa la salida estándar de errores de la consola,
+configurado en el nivel ``INFO``. Podemos usar ciertos parámetros que
+nos permite personalizar más el sistema:
+
+- ``filename``: Si se utiliza, indica que se debe usar un fichero con
+  el nombre indicado para los mensajes, en vez de usar la salida
+  estándar.
+
+- ``format`` : Si se especifica, el valor pasado se usará como cadena de
+  texto de formato para los mensajes.
+
+- ``datefmt`` : Permite especificar el formato para fechas y *timestamps*.
+
+- ``level`` : Define el nivel del sistema de *logging*.
+
+.. warning:: 
+
+    Es importante hacer notar que ``basicConfig`` **solo funciona la primera
+    vez que es invocado** en tiempo de ejecución. Si ya existe un **logger**
+    raiz, las llamadas a la función no hacen nada.
+
+
+Configuración usando DictConfig
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Toda la configuración, incluyendo todos los componentes y como se conectan
+entre si se especifica en un diccionario. El diccionario tiene diferentes
+secciones para los *loggers*, manejadores, formateadores y algunos
+parámetros globales.
+
+Montar el sistema de *logging* a mano
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+POdemos crear el sistema de *logging* de forma totalmente manual, como en 
+el siguiente ejemplo:
 
 .. code:: python
 
@@ -63,7 +196,7 @@ Let’s create a new handler, that outputs by stdout:
     root = logging.getLogger()
     root.addHandler(new_handler)
 
-Now Send an info message:
+Ahora enviemos un mensaje de tipo ``INFO``:
 
 .. code:: python
 
@@ -80,14 +213,49 @@ Now Send an info message:
     get_ipython().magic(u'edit 1-24')
 
 
-How to create a Custom Logging Handler Class
+Cuáles son los *handlers* que vienen de serie?
 ------------------------------------------------------------------------
 
-To create your custom logging handler class we create a new class that
-inherits from an existing handler.
+- **Consola** (``StreamHandler``): Directo a la consola, o a un objeto
+  similar a un fichero (concretamente, cualquier objeto que implemente los
+  métodos ``write`` y ``flush``), útil para diagnóstico en tiempo real,
+  desarrollo y depurado.
 
-For example, in my code I inherited from StreamHandler which sends logs
-to a stream:
+- **Manejador Nulo** (``NullHandler``): Basicamente un *handler* que
+  ignora todo tipos de mensajes. Puede ser útil en el caso de desarrollo
+  de librerías.
+
+- **Fichero** (``FileHandler``): Para guardar la información en un único
+  fichero, sin rotación.
+
+- **Ficheros rotantes** (``RotatingFileHandler``,
+  ``TimedRotatingFileHandler``): Para gestionar automáticamente el
+  crecimiento de un fichero. Superado un cierto tamaño o un cierto tiempo,
+  el nombre del fichero cambia, se empieza a usar un fichero nuevo, y el
+  anterior se puede archivar.
+
+- **System logs** (``SysLogHandler``): Para monitorización de sistemas,
+  vía Unix *syslog* o *Windows Event Log*.
+
+- **Email** (``SMTPHandler``): Para comunicar por correo electrónico.
+
+- **Network** (``SocketHandler``, ``DatagramHandler``, ``HTTPHandler``):
+  Para comunicar los eventos por red, usando TCP o UDP, a servidores
+  remotos.
+
+- **Memorias o Colas** (``MemoryHandler``, ``QueueHandler``): Para
+  almacenar temporalmente los mensajes en memoria o en un sistema de colas
+  de forma que el envio no sea bloqueante y los eventos puedan ser
+  procesados más adelante o en otras máquinas.
+
+
+Como crear tu propia clase de *handler* o manejador
+------------------------------------------------------------------------
+
+La forma más sencilla es crear una clase nueva derivandola de un *handler*
+ya existente que se parezca más o menos al que queremos hacer.
+
+En el siguiente ejmplo, se deriva de la clase ``StreamHandler``:
 
 .. code:: python
 
@@ -107,53 +275,80 @@ to a stream:
             msg = self.format(record)
             self.kafka_broker.send(msg, self.topic)
 
-Configuring Logging for a Library
+
+Configurando el sistema de *logging* para una librería
 ------------------------------------------------------------------------
 
-When developing a library which uses logging, you should take care to
-document how the library uses logging - for example, the names of
-loggers used.
+Es importante documentar como usa nuestra librería el sistema de
+*logging*. Lo más importante es poder conocer el nombre bajo el que se
+registran los *loggers* de la librería.
 
-Some consideration also needs to be given to its logging configuration.
-If the using application does not use logging, and library code makes
-logging calls, then (as described in the previous section) events of
-severity ``WARNING`` and greater will be printed to ``sys.stderr``. This
-is regarded as the best default behaviour.
+Si la aplicación que utiliza la librería no utiliza *logging*, pero la
+librería si, los eventos de nivel ``WARNING`` o superior se imprimirán por
+defecto en ``sys.stderr``.  Este se considera el mejor comportamiento
+predeterminado.
 
-If for some reason you don’t want these messages printed in the absence
-of any logging configuration, **you can attach a do-nothing handler to
-the top-level logger for your library**. This avoids the message being
-printed, since a handler will always be found for the library’s events:
-it just doesn’t produce any output.
+Si por alguna razón se desea que estos mensajes no se impriman, se puede
+adjuntar un *handler* nulo (Que no hace nada) al *logger* del nivel
+superior del sistema de *logging* de la librería.  De esta forma, el
+mensaje es capturado y nunca se muestra ninguna salida.
 
-If the library user configures logging for application use, presumably
-that configuration will add some handlers, and if levels are suitably
-configured then logging calls made in library code will send output to
-those handlers, as normal.
+Si el usuario de la biblioteca configura el registro para el uso de la
+aplicación, es de suponer que agregará algunos controladores y, si los
+niveles están configurados adecuadamente, las llamadas de registro
+realizadas en el código de la biblioteca enviarán la salida a esos
+controladores, como de costumbre.
 
-A do-nothing handler is included in the logging package: ``NullHandler``
-(since Python 3.1). An instance of this handler could be added to the
-top-level logger of the logging namespace used by the library:
+Hay un *handler* nulo definido ya en la librería estándar:  ``NullHandler``
+(desde Python 3.1). Veamos un ejemplo:
 
 .. code:: python
 
     import logging
     logging.getLogger('foo').addHandler(logging.NullHandler())
 
-should have the desired effect. If an organisation produces a number of
-libraries, then the logger name specified can be ‘orgname.foo’ rather
-than just ‘foo’.
+
+Si lo organización de la librería es más complicada, se puede usar los
+nombres de los *loggers* como espacio de nombres: ``orgname.foo``, por
+ejemplo, en vez de solo ``foo``.
 
 .. warning::
 
-    It is strongly advised that you **do not add any handlers other than
-    NullHandler to your library's loggers**. This is because the
-    configuration of handlers is the prerogative of the application
-    developer who uses your library. The application developer knows
-    their target audience and what handlers are most appropriate for
-    their application: if you add handlers ‘under the hood’, you might
-    well interfere with their ability to carry out unit tests and
-    deliver logs which suit their requirements.
+    Se recomienda encarecidamente que no se agrega **ningún otro handler
+    que no sea el handler nulo**. Esto es porque la configuración de los
+    controladores es responsabilidad del desarrollador de la aplicación
+    que utiliza la biblioteca. El desarrollador conoce a su público
+    objetivo y qué controladores son los más adecuados para su aplicación.
+    Si se añaden controladores de forma oculta, interferimos con su
+    capacidad para realizar pruebas unitarias y entregar registros que se
+    ajusten a sus requisitos.
+
+Cómo usar los formateadores (``Formatters``)
+------------------------------------------------------------------------
+
+Los formateadores definen cómo se muestra un registro de log (clase
+``LogRecord``), y pueden enriquecer el mensaje con metadatos.  Estos
+metadatos pueden aportar información adicional útil  para la detección de
+errores. Algunos de los metadatos disponibles son:
+
+- **Marcas temporales** ``(%(asctime)s)`` almacenan el momento en en ocurre el evento.
+ 
+- **Nombre del logger**: ``(%(name)s)`` identifica que *logger*, y por tanto, que parte de la aplicación es la que ha geneado este mensaje.
+ 
+- Modules o funciones ``(%(module)s``, ``%(funcName)s)`` identifican especialmente qué función originó el mensaje.
+
+- **Números de línea**: ``(%(lineno)d)``.
+- **Identificador del proceso o del hilo**: ``%(thread)d``, ``%(process)d)``.
+- **Nivel de severidad**: ``(%(levelname)s)``.
+
+
+Cuando se necesitan salidas de registro analizables por máquina e
+integradas con otras máquinas, los formatos estructurados pueden ser una
+buena opción. En tales casos, se puede utilizar JSON o pares clave-valor:
+
+.. code:: python
+
+    '{"time": "%(asctime)s", "logger": "%(name)s", "level": "%(levelname)s", "message": "%(message)s"}'
 
 
 Using ``LoggerAdapters`` to impart contextual information
@@ -170,7 +365,7 @@ two types of instances interchangeably.
 When you create an instance of ``LoggerAdapter``, you pass it a
 ``Logger`` instance and a dict-like object which contains your
 contextual information. When you call one of the logging methods of the
-dapter, it delegates the call to the underlying instance of Logger
+adapter, it delegates the call to the underlying instance of Logger
 passed to its constructor, and arranges to pass the contextual
 information in the delegated call. Here’s a snippet from the code of
 LoggerAdapter:
