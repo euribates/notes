@@ -6,6 +6,7 @@ Django
 .. contents:: Relación de contenidos
     :depth: 3
 
+
 Cómo obtener la fecha o *timestamp* en Django, con el *timezone* correcto
 -------------------------------------------------------------------------
 
@@ -13,7 +14,7 @@ Si en el ``settings.py`` tenemos definido la zona horaria (lo cual es
 totalmente recomendado, ``USE_TZ = True``), esta es la forma correcta de
 obtener fechas y *timestamps*.
 
-Para obtener un timestamp:
+Para obtener un *timestamp*:
 
 .. code:: python
 

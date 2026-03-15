@@ -186,3 +186,36 @@ importe predeterminado, si este fuera superior, y pueden llegar hasta
 los **35 millones de euros** o el **7% del volumen de negocios anual
 total a escala mundial** del infractor durante el ejercicio financiero
 anterior, si este importe fuera superior.
+
+Noticias sobre mal uso de IA
+------------------------------------------------------------------------
+
+La abuela de Tennessee
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Una abuela de Tennessee lucha por rehacer su vida tras un caso de
+identidad equivocada que casi le cuesta todo. Angela Lipps pasó casi
+seis meses en la cárcel después de que la policía de Fargo la vinculara
+con un caso de fraude bancario en el área metropolitana.
+
+Un error de [la IA de ] reconocimiento facial de la policía de Fargo
+provocó que Lipps pasara seis meses en la cárcel de Tennessee.
+
+De los comentarios de Reddit:
+
+    *Don't underestimate how much authority and thinking people will
+    delegate to machines. Not to mention the lengths they'll go to
+    weasel out of taking responsibility for a screw up like this*
+
+    *This keeps happening, and the reason it keeps happening is that
+    shithead cops have these tools and are using them. Until we can find
+    a reliable way to prevent this from happening, which may or may not
+    be possible, cops who may or may not be shitheads should not have
+    access to these tools.*
+
+Enlaces:
+
+- https://www.grandforksherald.com/news/north-dakota/ai-error-jails-innocent-grandmother-for-months-in-north-dakota-fraud-case
+
+- https://news.ycombinator.com/item?id=47356968
+

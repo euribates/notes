@@ -3,6 +3,8 @@ Rust
 
 .. tags:: rust,development,devops
 
+.. contents:: Relación de contenidos
+    :depth: 3
 
 Sobre Rust
 -----------------------------------------------------------------------
@@ -98,7 +100,15 @@ Hola, Mundo en Rust
     }
 
 Estas líneas definen una función llamada ``main``. La función ``main``
-es especial: Es siempre la primera función que se ejecuta en un programa
+es especial: es siempre la primera función que se ejecuta en un programa
 Rust. En este caso, definimos una función sin parámetros y que no
 devuelve nada. Si hubieran parámetros, se listarían dentro de los
 paréntesis.
+
+Enlaces
+------------------------------------------------------------------------
+
+- `Making Python 100x faster with less than 100 lines of Rust`_
+
+
+.. _Making Python 100x faster with less than 100 lines of Rust: https://ohadravid.github.io/posts/2023-03-rusty-python/
