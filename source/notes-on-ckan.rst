@@ -3,6 +3,9 @@ ckan
 
 .. tags:: opendata,foss,python
 
+.. contents:: Relación de contenidos
+    :depth: 3
+
 
 Qué es :index:`CKAN`
 ------------------------------------------------------------------------
@@ -15,10 +18,30 @@ Una vez que los datos han sido publicados, los usuarios pueden realizar
 búsquedas segmentadas para navegar y localizar los datos que necesitan,
 y previsualizarlos usando mapas, gráficos y tablas.
 
-En CKAN, los datos se publican en unidades llamadas **datasets**.
 
-Qué es un DataSet
------------------
+CKAN es `código abierto`_, desarrollado por la Open Knowledge
+Foundation (`OFKN`_).
+
+Algunas caractersitcas claves de CKAN son:
+
+- Publicación y compartición de datos
+
+- Visualización de conjuntos de datos
+
+- Control de acceso y gestión de usuarios
+
+- Acceso mediante API para desarrolladores
+
+- Soporte de plugins para ampliar funcionalidades
+
+
+.. _OFKN: https://okfn.org/en/
+
+
+Qué es un DataSet en CKAN
+------------------------------------------------------------------------
+
+En CKAN, los datos se publican en unidades llamadas **datasets**.
 
 Un **dataset** es un conjunto de datos, por ejemplo, puede ser
 estadísticas de crímenes acumulados por región, los gastos de un
@@ -31,6 +54,9 @@ Un *dataset* consta de dos partes:
 - Los **Metadatos**, es decir, la información acerca de los datos.
   Ejemplos pueden ser el autor, la fecha, el formato o formatos en los
   que están disponibles los datos, la licencia que regula su uso, etc.
+
+  Todos los metadatos en CKAN se almacenan versionados. A cada versión se
+  la llama **revisión**.
 
 - Un número de **recursos** (*resources*) que contiene los datos en si.
   A CKAN no le importa demasiado el formato que se haya usado:
@@ -51,7 +77,13 @@ y ese nombre todavía puede encontrarse en algunas partes, como en la
 documentación, llamadas –especialmente internas– de la API. Hay que
 considerarlos como sinónimos.
 
-Usuario, organización y autorización
+Qué es el catálogo
+------------------------------------------------------------------------
+
+Se denomina **catálogo** a el conjunto de todos los *datasets*.
+
+
+Usuarios, organización y autorización
 ------------------------------------------------------------------------
 
 Los usuarios de CKAN pueden registrar cuentas e iniciar sesión.
@@ -121,3 +153,50 @@ Fuentes:
 
 .. _Configuration and setup files to run a CKAN site: https://github.com/ckan/ckan-docker
 .. _Official Docker images for CKAN: https://github.com/ckan/ckan-docker-base
+
+
+La API de CKAN
+------------------------------------------------------------------------
+
+Las APIs de CKAN están versionadas. Si se hace una solicitud sin
+especificar la versión, CKAN utilizara la última versión publicada.
+
+    http://demo.ckan.org/api/action/package_list
+
+Para especificar la versión, la incluimos en la URL de la petición, como
+en el siguiente ejemplo:
+
+    http://demo.ckan.org/api/3/action/package_list
+
+
+Se pueden agregar *datasets* mediante la interfaz web de CKAN, pero al
+importar muchos conjuntos de datos, generalmente es más eficiente
+y menos propenso a errores automatizar el proceso de alguna manera.
+
+Aquí hay un ejemplo de un *script* de Python que utiliza el paquete
+`ckanapi`_ para importar conjuntos de datos a CKAN.
+
+.. code:: python
+
+    import pprint
+    from ckanapi import RemoteCKAN
+
+    # Create a connection to the CKAN site with your API token
+    # Replace 'your-api-token' with your actual API token
+    ckan = RemoteCKAN('http://www.my_ckan_site.com', apikey='your-api-token')
+
+    # Put the details of the dataset we're going to create into a dict.
+    dataset_dict = {
+        'name': 'my_dataset_name',
+        'notes': 'A long description of my dataset',
+        'owner_org': 'org_id_or_name'
+        }
+
+    # Use the ckanapi action shortcut to create a new dataset
+    created_package = ckan.action.package_create(**dataset_dict)
+
+    # See the result
+    pprint.pprint(created_package)
+
+
+.. _ckanapi: https://github.com/ckan/ckanapi
