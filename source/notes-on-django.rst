@@ -1248,7 +1248,7 @@ Primero creamos una migración vacía (*empty*):
 
 .. code:: shell
 
-   ./manage.py makemigrations --empty --name nombre_que_quieras_para_la_migracion <app>
+   ./manage.py makemigrations --empty --name nombre_que_quieras_para_la_migracion app_name
 
 Esto creará un fichero de migración, que no hace nada, con un contenido
 similar a este:

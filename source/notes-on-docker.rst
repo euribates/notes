@@ -791,8 +791,46 @@ absolutas**.
 
 
 
+Cómo acceder desde el contenedor al *host*
+------------------------------------------------------------------------
 
-Learning docker
+Para MAC y Windows:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+La forma más sencilla es usar ``host.docker.internal`` como un alias a
+la máquina contenedora.  Tanto ``localhost`` como ``127.0.0.1`` se
+refieren siempre al contenedor.
+
+Por ejemplo, si el *host* externo está ejecutando MariaDb, el contendor
+puede acceder al gestor de base de datos usando:
+
+.. code::
+
+    host.docker.internal:3306
+
+Para Linux
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+En Linux, tenemos que activar explícitamente este comportamiento, con
+el parámetro ``--add-host``. Siguiendo el ejemplo anterior, tenemos que
+ejecutar el contenedor de la siguiente manera:
+
+.. code:: shell
+
+    docker run -d --add-host host.docker.internal:host-gateway my-container:latest
+
+El efecto de ``--add-host`` es añadir en el fichero ``/etc/hosts`` del contenedor
+apuntando el nombre ``host.docker.internal`` al *gateway* por defecto
+que nos da acceso a la dirección real del *host*. El nombre ``host.docker.internal``
+puyede ser cualquier otra cosa, se ha usado aquí solo por mantener la
+consistencia con el explicado para Windows y MAC.
+
+Otra posibilidad seria que el contenedor compartiera la misma red que la
+máquina *host*, pero esto da acceso al contenedor a todos los recursos de
+la red local, que es algo que normalmente no se recomienda.
+
+
+Más recursos para aprender Docker
 ------------------------------------------------------------------------
 
 Best 100+ Docker Containers for Home Server

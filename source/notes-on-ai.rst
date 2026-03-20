@@ -24,6 +24,37 @@ medidas a favor del desarrollo por las pymes de sistemas de IA)
 destinadas a incentivar un desarrollo de estas tecnologías sostenible en
 términos sociales.
 
+Principios fundamentales
+------------------------------------------------------------------------
+
+Organismos internacionales como la UNESCO, la OCDE y la Unión Europea
+coinciden en que el ser humano debe permanecer siempre en el centro del
+desarrollo tecnológico, manteniendo la IA como herramienta de apoyo y
+complemento.
+
+Sobre esta idea se asientan los principios para definir un marco seguro
+en el uso de la inteligencia artificial:
+
+- **Evitar sesgos y la no-discriminación**. Evitar que los algoritmos
+  tengan problemas de discriminación y buscar la manera de que los
+  resultados obtenidos sean explicables.
+
+- **Ciberseguridad, solidez y precisión**. Asegurar que los sistemas
+  de IA sean robustos frente a ataques cibernéticos, manipulaciones o
+  alteraciones no autorizadas, y que mantengan un comportamiento
+  estable, predecible y exacto incluso en condiciones
+  adversas.
+
+- Sistema de **gestión de calidad** y sistema de **gestión de
+  riesgos**. Implementar un marco integrado que asegure la
+  documentación, trazabilidad, pruebas y mantenimiento continuo de
+  los sistemas y que permita identificar, evaluar y mitigar los
+  riesgos para la salud, seguridad y los derechos fundamentales, y
+  aplique controles preventivos y correctivos durante todo el ciclo
+  de vida del sistema.
+
+Con el objetivo de garantizar la seguridad y fiabilidad de los sistemas, a la v
+
 Entrada en vigor de la Ley Europea de Inteligencia Artificial
 ------------------------------------------------------------------------
 
@@ -189,6 +220,18 @@ anterior, si este importe fuera superior.
 
 Noticias sobre mal uso de IA
 ------------------------------------------------------------------------
+
+Ayudas a un museo canceladas por ChatGPT
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   DOGE canceled High Point Museum grant for HVAC systems after ChatGPT flagged it as DEI,
+   lawsuit alleges 
+
+
+Fuentes: 
+
+- https://myfox8.com/news/north-carolina/high-point/doge-canceled-high-point-museum-grant-for-hvac-systems-after-chatgpt-flagged-it-as-dei-lawsuit-alleges/
+
 
 La abuela de Tennessee
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

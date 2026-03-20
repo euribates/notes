@@ -8,6 +8,7 @@ platform.  Superset can replace or augment proprietary business
 intelligence tools for many teams. Superset integrates well with a variety
 of data sources.
 
+
 Ventajas de Superset
 ------------------------------------------------------------------------
 
@@ -34,4 +35,13 @@ Ventajas de Superset
 - Una rquitectura nativa *cloud*, diseñada desde un principio pensando en
   la escalabilidad.
 
+
+Ejecutar Superset en Docker
+-----------------------------------------------------------------------
+
+Para crear un usuario administrador:
+
+.. code::
+
+    superset fab create-admin
 
