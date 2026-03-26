@@ -194,6 +194,22 @@ En caso de éxito, obtendremos una salida:
 
 Fuente: `How to Set the Default User Password in PostgreSQLy <https://chartio.com/resources/tutorials/how-to-set-the-default-user-password-in-postgresql/>`__
 
+Cómo saber cual es la conexión activa
+------------------------------------------------------------------------
+
+Desde pgsql, podemos hacer:
+
+.. code::
+
+    \conninfo
+
+O usando sql directamente:
+
+..code:: sql
+
+    Select current_database();
+
+
 Cómo cambiar la longitud de datos de una columna sin perder datos
 ------------------------------------------------------------------------
 

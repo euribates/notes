@@ -1639,6 +1639,14 @@ caracteres:
 
     set colorcolumn=72
     
+Sobre la historia de Vim
+------------------------------------------------------------------------
+
+- `Understanding the Origins and the Evolution of Vi and Vim`_ - Pikuma_
+
+
+.. _Pikuma: https://pikuma.com/blog/
+.. _Understanding the Origins and the Evolution of Vi and Vim: https://pikuma.com/blog/origins-of-vim-text-editor 
 
 .. _Change DOS to Unix text file format in VIM: https://til.hashrocket.com/posts/hu3jlszfrf-change-dos-to-unix-text-file-format-in-vim
 .. _How to replace a character by a newline in Vim: https://stackoverflow.com/questions/71323/how-to-replace-a-character-by-a-newline-in-vim
