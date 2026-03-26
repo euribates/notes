@@ -11,6 +11,7 @@ G
    notes-on-git-actions
    notes-on-github
    notes-on-gmail
+   notes-on-go
    notes-on-gocardless
    notes-on-godot
    notes-on-google-flexible-environment
