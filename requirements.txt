@@ -16,3 +16,4 @@ fpdf2==2.8.4
 sphinx-copybutton
 sphinx-immaterial[keys]
 sphinx_tags
+sphinx-nefertiti==0.9.8

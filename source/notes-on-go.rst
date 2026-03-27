@@ -28,10 +28,12 @@ diseñaron Go como un lenguaje para programadores profesionales que
 desean crear software **confiable, robusto y eficiente**, fácil de
 administrar.  Diseñaron Go pensando en la simplicidad, aunque esto
 significara que no sería un lenguaje de programación para todos ni para
-cualquier propósito.  La siguiente figura muestra los lenguajes de
+cualquier propósito.
+
+La siguiente figura muestra los lenguajes de
 programación que influyeron directa o indirectamente en Go. Por ejemplo,
-la sintaxis de Go se parece a la de `C`_, mientras que el concepto de
-paquete se inspira en `Modula`_.
+su sintaxis se parece a la de `C`_, mientras que el concepto de
+paquete se inspira en `Modula-2`_.
 
 .. graphviz::
 
@@ -39,7 +41,8 @@ paquete se inspira en `Modula`_.
       rankdir=LR;
       "Algol 60" -> "C";
       "Algol 60" -> Pascal;
-      Pascal -> "Modula-2";
+      Pascal -> "Modula";
+      "Modula" -> "Modula-2";
       "Modula-2" -> Oberon;
       Oberon -> "Go";
       "C" -> "Go";
@@ -170,6 +173,20 @@ sea un archivo fuente que puede generar un binario ejecutable: el nombre
 del paquete, que debe ser ``main``, y la presencia de la función
 ``main()``.
 
+Cómo instalar Go en Windows sin necesidad de ser administrador
+------------------------------------------------------------------------
+
+Hay que descargar la versión con los archivos en forma de ``.ZIP`` (No el
+instalador con extensión ``.MSI``), descomprimir en una ruta de tu elección,
+y luego añadir la ruta de los ejecutables al ``PATH`` y definir una
+variable de entorno a nivel usuario en ``GOROOT``. Por ejemplo, si hemos
+copiado los fichero es la ruta ``C:/len/go``, habría que:
+
+- Añadir la ruta ``C:/len/go/bin`` a la variable ``PATH`` del usuario
+
+- Definir una nueva variable de entorno de usuario, con el nombre
+  ``GOROOT``, apuntado a ``C:/len/go``
+
 
 
 
@@ -179,5 +196,5 @@ del paquete, que debe ser ``main``, y la presencia de la función
 .. _Rob Pike: https://en.wikipedia.org/wiki/Rob_Pike
 .. _Ken Thompson: https://en.wikipedia.org/wiki/Ken_Thompson
 .. _C: https://en.wikipedia.org/wiki/C_(programming_language)
-.. _Modula: https://en.wikipedia.org/wiki/Modula
+.. _Modula-2: https://en.wikipedia.org/wiki/Modula-2
 .. _go.dev: https://go.dev/
