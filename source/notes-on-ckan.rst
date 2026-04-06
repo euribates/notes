@@ -119,6 +119,177 @@ organización.
    creen nuevas organizaciones a través de la IU. Puede probar todas las
    funciones descritas en http://demo.ckan.org.
 
+Cómo instalar CKAN (Desde las fuentes)
+------------------------------------------------------------------------
+
+Primero, instalar el software extra necesario
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Suponemos linux Ubuntu o derivado:
+
+.. code::  shell
+
+    $ sudo apt-get install python3-dev libpq-dev python3-pip \
+                   python3-venv git-core redis-server \
+                   libmagic1
+
+Crear un entorno virtual de Python
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Crear un entorno virtual de Python sobre el que ejecutar
+CKAN, y activarlo:
+
+.. code:: shell
+
+    sudo mkdir -p /usr/lib/ckan/default
+    sudo chown `whoami` /usr/lib/ckan/default
+    python3 -m venv /usr/lib/ckan/default
+    source /usr/lib/ckan/default/bin/activate
+    pip install --upgrade pip
+
+
+Instalar el código fuente de CKAN en el entorno virtual
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Nos traemos el repositorio de CKAN:
+
+.. code:: shell
+
+   gh repo clone ckan/ckan
+
+Instalamos las dependencias del fichero de ``requirements.txt`` del repo:
+
+.. code:: shell
+
+    pip install -r ckan/requirements.txt
+
+Y finalmente instalamos CKAN, en modo de desarrollo local:
+
+.. code:: shell
+
+   pip install -r ckan/
+
+Crear la base de datos
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Comprobamos que PostgreSQL está instalado correctamente con la siguiente
+orden:
+
+.. code:: shell
+
+   sudo -u postgres psql -l
+
+Que lista las bases de datos disponibles.
+
+Ahora creamos la base de datos. Es importante especificar la
+codificación como UTF-8. Vamos a crear una base de datos con el
+nombre ``ckan``, con un usuario ``ckan_user``:
+
+.. code:: 
+
+    sudo -u postgres createuser -S -D -R -P ckan_user
+
+Esta línea preguntará por el *password* del usuario. Hay que recordarlo
+para la posterior cobfiguración. Una vez creado el usuario que va a ser
+el propietario de la base de datos, podemos crearla con:
+
+.. code:: 
+
+   sudo -u postgres createdb -O ckan_user ckan -E utf-8
+
+Creamos el fichero de configuración de CKAN
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Creamos un directorio para almacenar los fichero de configuración:
+
+.. code:: shell
+
+   sudo mkdir -p /etc/ckan/default
+   sudo chown -R `whoami` /etc/ckan/
+
+Creamos el fichero de configuración ``ckan.ini``:
+
+.. code:: shell
+
+   ckan generate config /etc/ckan/default/ckan.ini
+
+Cambiar en el fichero de configuración los siguientes valores:
+
+- La ruta de la base de datos:
+
+  .. code::
+
+     sqlalchemy.url = postgresql://ckan_user:<password>@localhost/ckan
+
+- El identificador del sitio:
+
+  Todos los servidores de CKAN necesitan un identificador propio:
+
+  .. code::
+
+      ckan.site_id = pruebas_ckan
+
+- URL pública
+
+  En la variable ``ckan.site_url`` va la URL publica de nuestro servidor
+  CKAN
+
+  .. code::
+
+      ckan.site_url = http://demo.ckan.org
+
+Instalar Solr
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+CKAN utiliza Solr_ como motor de búsqueda. Ahora que tenemos CKAN
+instalado, debemos instalar y configurar Solr.
+
+Vamos a instalarlo con Docker, ya que es la forma más fácil y esta guía se
+centra sobre todo en instalar CKAN:
+
+.. code::
+
+   docker run --name ckan-solr -p 8983:8983 -d ckan/ckan-solr:2.11-solr9
+
+Creamos el esquema de la base de datos
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Con los parámetros correctos en el fichero de configuración, podemos
+crear el esquema en la base de datos con:
+
+.. code:: shell
+
+   ckan -c /etc/ckan/default/ckan.ini db init
+
+Creamo un usuario admin o root
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Las ordenes para gestionar usuario de CKAN son:
+
+- ``ckan user add``         : Añadir un nuevo usuario
+- ``ckan user list``        : Listar todos los usuarios
+- ``ckan user remove``      : Borrar un usuario
+- ``ckan user setpass``     : Asignar un *password* a un usuario
+- ``ckan user show``        : Ver detalles de un usuario
+
+Por ejemplo, para crear un nuevo usuario ``admin``:
+
+.. code::
+
+   ckan -c /etc/ckan/default/ckan.ini user add admin email=admin@localhost
+
+Nota: Falló en mis pruebas, tuve que crear a mano el siguiente
+directorio:
+
+.. code:: 
+
+   sudo mkdir -p /var/lib/ckan/default/storage/uploads/user
+
+
+.. _Solr: https://solr.apache.org/
+
+
+
 Cómo instalar CKAN (Usando Docker)
 ------------------------------------------------------------------------
 

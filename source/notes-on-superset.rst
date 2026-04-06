@@ -39,8 +39,12 @@ Ventajas de Superset
 Ejecutar Superset en Docker
 -----------------------------------------------------------------------
 
-Para crear un usuario administrador:
+.. code:: shell
 
+    $ docker run -i -p 8088:8088 --add-host host.docker.internal:host-gateway --name superset vizdata:latest
+
+Para crear un usuario administrador:
+------------------------------------------------------------------------
 .. code::
 
     superset fab create-admin

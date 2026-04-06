@@ -63,7 +63,7 @@ Cómo aplicar la escala/desplazamiento/rotaciones de un objeto
 Antes de exportar un objeto, siempre es conveniente aplicar todas las
 transformaciones realizadas en el objeto, de forma que tengamos una
 figura limpia, con escala :math:`1`, sin rotaciones ni desplazamientos.
-Para ello, con el objeto seleccionado, pulsamos ++ctrl+a++. En el menú
+Para ello, con el objeto seleccionado, pulsamos :keys:`ctrl+a`. En el menú
 emergente podemos seleccionar que valores queremos aplicar, incluyendo
 la opción de aplicarlos todos.
 
@@ -75,7 +75,7 @@ la opción de aplicarlos todos.
 Cómo invertir la selección en Blender
 ------------------------------------------------------------------------
 
-Para invertir la selección podemos usar el atajo ++ctrl++i++.
+Para invertir la selección podemos usar el atajo :keys:`ctrl+i`.
 
 Conceptos claves para usar Python en Blender
 ------------------------------------------------------------------------
@@ -152,7 +152,7 @@ un atajo de teclado:
 -  Usando el menú: Ir a *Object → Link/Transfer Data → Link Animation
    Data*. Los datos de la animación están ahora *enlazados*
 
--  El atajo de teclado: Pulsar ++ctrl+l++, y en el menú emergente,
+-  El atajo de teclado: Pulsar :keys:`ctrl+l`, y en el menú emergente,
    seleccionar *Link Animation Data*
 
 Los datos de animación están *enlazados*, lo que significa que si
@@ -165,40 +165,40 @@ otra.
 
 Fuente:
 
--  `How to copy animation data from one object to another - Gachoki
-   studios <https://gachokistudios.com/how-to-copy-animation-data-from-one-object-to-another-in-blender/>`__
+- `How to copy animation data from one object to another`_ - Gachoki
+  Studios
 
-How to use an array modifier to create individually manipulatable objects
-------------------------------------------------------------------------
+.. _How to copy animation data from one object to another: https://gachokistudios.com/how-to-copy-animation-data-from-one-object-to-another-in-blender/
 
-I often use an array modifier (or two) to quickly create a grid of
-identical or symmetric objects, which can be really useful when modeling
-all sorts of man-made objects. Once I've made the grid, though, is there
-any way for me to make it so that each of the objects are individually
-manipulatable?
+Cómo usar *array modifier* para crear objetos manipulables individualmente
+--------------------------------------------------------------------------
 
-Simply applying the modifier does not seem to be the full answer, since
-it still only allows me to select the grid-of-objects as a whole in
-object mode. Is there any way to separate them so I work with them each
-individually?
+Es habitual usar uno o más modificador de matriz (*Modifiers -> Array*)
+para generar una serie de objetos idénticos o simétricos, lo que resulta
+muy útil, pero a veces queremos convertir todos esos objetos en
+entidades separadas, para poder manipularlas individualmente. Pero
+simplemente aplicar el modificador no funciona, ya que todos los objetos
+siguen siendo en realidad solo uno, y los necesitamos separados.
 
-This is the way:
+Esta es la manera:
 
-1. Apply the modifier to make the data real
+1. Aplicamos el modificador para que los datos sean reales.
 
-2. Enter edit mode on the object and press ``P`` (Separate by loose
-   parts).
+2. Entramos en el modo de edición del objeto con :keys:`tab`, y
+   pulsamos :keys:`p` (*Separate by loose parts*).
 
-3. Select all separated objects and press
-   ``Shift``\ +\ ``Ctrl``\ +\ ``Alt``\ +\ ``C`` (Origin to Geometry).
+3. Seleccionamos todos los objetos separados y elegimos
+   en el menú *Object -> Set Origin -> Origin to Geometry*
 
-This will make each piece an individual object with the origin located
-at the origin of the original object. Now you can manipulate them as you
-wish.
+Esto hace que cada pieza sea un objeto individual, cada uno con
+su origen correctamente definido, que ahora podemos manipular de forma
+independiente.
 
-Source: `StackExchange - How can I use an array modifier to create
-individually manipulatable
-objects? <https://blender.stackexchange.com/questions/109/how-can-i-use-an-array-modifier-to-create-individually-manipulatable-objects>`_
+Source: `How can I use an array modifier to create individually manipulatable
+objects`_ - StackExchange
+
+.. _How can I use an array modifier to create individually manipulatable objects: https://blender.stackexchange.com/questions/109/how-can-i-use-an-array-modifier-to-create-individually-manipulatable-objects
+
 
 Cómo poner el cursor en el centro de masas de un objeto en Blender
 ------------------------------------------------------------------------
@@ -212,8 +212,9 @@ Otra forma, más sencilla:
 Pulsar :keys:`shift+s` y luego :keys:`u`. Esto funciona tanto en modo objeto
 como en modo edición.
 
-Source: `Blender manual: 3D
-Cursor <https://docs.blender.org/manual/en/dev/editors/3dview/3d_cursor.html?highlight=cursor#using-the-snap-menu>`_
+Source: `3D Cursor`_ - Manual de Blender
+
+.. _3D Cursor: https://docs.blender.org/manual/en/dev/editors/3dview/3d_cursor.html
 
 
 Cómo poner el cursor en un vértice
@@ -226,18 +227,26 @@ Fuente: `How to move 3D cursor in Blender – And other tricks!
 iMeshh <https://blog.imeshh.com/index.php/2022/08/15/how-to-move-3d-cursor-in-blender-and-other-tricks/>`_
 
 
-Cómo hacer que la cámara de Blender se oriente hacia un objeto
+Cómo hacer que la cámara apunte siempre hacia un objeto
 ------------------------------------------------------------------------
 
 Para forzar a una cámara a seguir un objeto, selecciona la cámara y
-añade un *constraint* de tipo *Track to*. Selecciona el objeto en el
-campo *Target*, ``-Z`` en el campo *Field*, e ``Y`` en el campo *Up*.
+añade una restricción o *constraint* de tipo *Track to*. Selecciona el
+objeto en el campo *Target*, ``-Z`` en el campo *Field*, e ``Y`` en el
+campo *Up*. Seleccionar *World Space*. Con la restricción activa, la
+cámara siempre apuntara hacia el objeto, ya sea que se mueva el objeto,
+la cámara o ambos.
 
-La cámara ahora apuntará al objeto en todo momento, ya sea que se mueva
-el objeto, la cámara o ambos.
+Es muy habitual usar un *empty* para tener control total, ya que en este
+caso solo hay un único y claro punto de control. Además, es más
+eficiente desde el punto de vista computacional. Si es un objeto
+completo, usará el origen del objeto.
 
-Por eficiencia computacional, es recomendable hacer que la cámara apunte
-a un *empty*, y usar este para guiar la cámara.
+.. image:: blender/track-to.png
+   width: 314
+   height: 375
+
+
 
 Cómo resetear la rotación, escala y/o translación de un objeto
 ------------------------------------------------------------------------
