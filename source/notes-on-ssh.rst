@@ -196,3 +196,35 @@ Los ficheros ``PEM``\ ̀ se almacenan habitualmente con el sufijo
 privadas, el sufijo ``key``. La etiqueta de la cabecera es más fiable
 del tipo de contenido que el sufijo, ya que se pueden almacenar
 diferentes tipos de contenido usando ``.crt``, por ejemplo.
+
+Comprobar las fechas de un certificado CRT|PEM
+------------------------------------------------------------------------
+
+Para certificados en Formato CRT:
+
+.. code::
+
+   openssl x509 -noout -dates -in certificado.crt
+
+Para certificados en formato PEM:
+
+.. code::
+
+   openssl x509 -noout -dates -in certificado.pem
+
+Si solo nos interesan la fecha de expiración.
+
+
+.. code::
+
+   openssl x509 -enddate -noout -in certificado.crt
+   openssl x509 -enddate -noout -in certificado.pem
+
+Cómo leer la información del certificado SSL de un servidor remoto
+------------------------------------------------------------------------
+
+Usando ``openssl``:
+
+.. code::
+
+    openssl s_client -showcerts -connect www.midominio.com:443

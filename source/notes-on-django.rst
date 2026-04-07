@@ -1306,8 +1306,12 @@ caso, quedaría así:
 
 Fuentes:
 
--  `Executing Custom SQL in Django Migrations \| End Point
-   Dev <https://www.endpointdev.com/blog/2016/09/executing-custom-sql-in-django-migration/>`__
+- `Executing Custom SQL in Django Migrations`_ - End Point Dev
+
+- `A Pony On The Move: How Migrations Work In Django`_ - DjangoCon.eu - Porto - 2020
+
+.. _`A Pony On The Move: How Migrations Work In Django`: https://www.youtube.com/watch?v=u6cVvbuUzlk
+.. _Executing Custom SQL in Django Migrations: https://www.endpointdev.com/blog/2016/09/executing-custom-sql-in-django-migration/
 
 Cómo crear migraciones propias usando código Python en vez de SQL
 ------------------------------------------------------------------------
