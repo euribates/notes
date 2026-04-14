@@ -256,6 +256,30 @@ De los comentarios de Reddit:
     be possible, cops who may or may not be shitheads should not have
     access to these tools.*
 
+`An AI Vibe Coding Horror Story`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Why use an industry-proven solution when you could just build your own
+patient management system? So they did exactly that.
+
+Algunas perlas del artículo:
+
+> Thirty minutes in, I had full read and write access to all patient data.
+> Everything was unencrypted and completely exposed to the open Internet. My
+> first move was to notify the person immediately. **The response I got was
+> 100% AI-generated**, thanking me warmly for reporting
+
+Una joya de la ingeniería de *software*:
+
+> The entire application was **a single HTML file with all JavaScript, CSS,
+> and structure** written inline. The backend was a managed database service
+> with **zero access control** configured, no row-level security, nothing. All
+> "access control" logic lived in the JavaScript on the client side, meaning
+> the data was literally one curl command away from anyone who looked.
+
+
+.. _An AI Vibe Coding Horror Story: https://www.tobru.ch/an-ai-vibe-coding-horror-story/
+
 Enlaces:
 
 - https://www.grandforksherald.com/news/north-dakota/ai-error-jails-innocent-grandmother-for-months-in-north-dakota-fraud-case

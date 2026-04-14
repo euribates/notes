@@ -668,3 +668,14 @@ seleccionar el objeto con los modificadores que queremos copiar. Pulsar
 
 Fuente: `Copy modifiers FAST in
 Blender <https://youtube.com/shorts/vXG6m5lTeJk?si=CQI3T2ysm6ho1YlI>`__
+
+Cómo seleccionar un objeto y todos sus hijos
+------------------------------------------------------------------------
+
+Para seleccionar todos los objetos vinculados a un objeto padre en
+Blender, seleccione el padre, luego presione :keys:`shift+G` y elija Hijos
+(*childdren*).
+
+Alternativamente, en el árbol de la escena, hacer doble clic en el objeto
+padre para seleccionarlo a él y a todos sus hijos anidados.
+

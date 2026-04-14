@@ -220,11 +220,16 @@ Si solo nos interesan la fecha de expiración.
    openssl x509 -enddate -noout -in certificado.crt
    openssl x509 -enddate -noout -in certificado.pem
 
-Cómo leer la información del certificado SSL de un servidor remoto
-------------------------------------------------------------------------
+Para leer la información del certificado SSL de un servidor remoto
 
 Usando ``openssl``:
 
 .. code::
 
     openssl s_client -showcerts -connect www.midominio.com:443
+
+Fuentes:
+
+- `Comprobaciones varias de certificados`_
+
+.. _Comprobaciones varias de certificados: https://tecnocratica.net/wikicratica/books/certificados/page/comprobaciones-varias-de-certificados
