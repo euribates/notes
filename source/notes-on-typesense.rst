@@ -1,7 +1,10 @@
 Typesense
 ========================================================================
 
-.. tags:: systemd,linux,docker
+.. tags:: systemd,linux,docker, server, foss, c++
+
+.. contents:: Relación de contenidos
+    :depth: 3
 
 
 Sobre Typesense

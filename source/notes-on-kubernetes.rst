@@ -1,7 +1,10 @@
 Kubernetes
 ========================================================================
 
-tags: docker, kubernetes, dev-ops
+tags: docker, kubernetes, devops, foss, server
+
+.. contents:: Relación de contenidos
+    :depth: 3
 
 
 Qué es :index:`Kubernetes`
@@ -153,6 +156,8 @@ Podemos pensar en un Pod como un apartamento compartido: Los contenedores
 son los habitantes, que comparten la cocina y el salón, pero cada uno de
 ellos tiene su propio dormitorio.
 
+Un Pod **siempre** se ejecuta sobre un nodo.
+
 Un ejemplo de descripción de un Pod podría ser el siguiente:
 
 .. code:: yaml
@@ -170,6 +175,27 @@ Un ejemplo de descripción de un Pod podría ser el siguiente:
       # Second container
       - name: sidecar
         image: fluent/fluent-bit
+
+Qué es un nodo (*Node*) en Kubernetes
+------------------------------------------------------------------------
+
+Un **Nodo** es una máquina de trabajo en Kubernetes y puede ser virtual
+o física, según el clúster.  Cada Nodo es administrado por el plano de
+control. Un Nodo puede tener varios Pods, y el plano de control de
+Kubernetes se encarga automáticamente de programarlos entre los Nodos
+del clúster. La programación automática del plano de control tiene en
+cuenta los recursos disponibles en cada Nodo.
+
+Cada Nodo de Kubernetes ejecuta al menos:
+
+- ``Kubelet``, un proceso responsable de la comunicación entre el nodo
+  y plano de control de Kubernetes; administra los Pods y los
+  contenedores que se ejecutan en la máquina.
+
+- Un entorno de ejecución de contenedores (como Docker) responsable de
+  descargar la imagen del contenedor de un registro, descomprimirla y
+  ejecutarla.
+
 
 Cuáles son las diferencias entre un *pod* y un contenedor
 ------------------------------------------------------------------------
@@ -210,11 +236,11 @@ denomina **plano de control**.
 El cliente de kubernetes
 ------------------------------------------------------------------------
 
-El cliente oficial de Kubernetes es {index}\ ``kubectl``, una utilidad
-de línea de comandos que interactúa con la API de Kubernetes. Con
+El cliente oficial de Kubernetes es :index:`kubectl`, una utilidad de
+línea de comandos que interactúa con la API de Kubernetes. Con
 ``kubectl`` se puede gestionar la mayoría de los componentes de
 Kubernetes, como *pods*, *replicasets*, servicios, etc. También se puede
-usar para comprobar y verificar la estabilidad y el estado del cluster.
+usar para comprobar y verificar la estabilidad y el estado del clúster.
 
 Podemos comprobar si tenemos instalado el cliente con:
 
@@ -223,7 +249,7 @@ Podemos comprobar si tenemos instalado el cliente con:
     kubectl version
 
 
-Cómo listar los nodos contenidos en un cluster de Kubernetes
+Cómo listar los nodos contenidos en un clúster de Kubernetes
 ------------------------------------------------------------------------
 
 Con ``kubeclt get nodes``.
@@ -232,8 +258,8 @@ En Kubernetes, los nodos se separan en roles. En ``control-plane`` están
 los nodos que contienen los sistemas de gestión como el servicio de API,
 el *scheculer*, etc. Los nodos de tipo *worker* son los que realizan el
 trabajo real. La idea es mantener los nodos en el ``control-plane`` no
+se vean afectados por la carga de trabajo.
 
 
 .. _What on earth is Kubernetes?: https://kylejeong.com/blog/what-is-kubernetes
 .. _Cloud Native Computing Foundation (CNCF): https://www.cncf.io/
-se vean afectados por la carga de trabajo.

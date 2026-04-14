@@ -879,16 +879,15 @@ Como hacer que Django trabaje con claves naturales (``natural keys``)
 
 Tldr: Para usar claves naturales o *natural keys*, hay que definir un
 método ``natural_key`` en la clase Modelo, y un método
-``get_by_natural_key`` en una clase *Manager* especializada para el modelo.
+``get_by_natural_key`` en una clase *Manager* especializada para el
+modelo.
 
 Si tenemos un valor o conjunto de valores que forman una **clave
 candidata natural**, podemos crear un índice indicando que la
 combinación de valores es única. Además, es conveniente usar el concepto
-de
-```natural_key`` <https://docs.djangoproject.com/fr/4.2/topics/serialization/#natural-keys>`__
-para facilitar las migraciones. Una clave natural es una tupla de
-valores que identifican un registro, de forma equivalente pero
-alternativa a una clave primaria.
+de `natural_key`_ para facilitar las migraciones. Una clave natural es
+una tupla de valores que identifican un registro, de forma equivalente
+pero alternativa a una clave primaria.
 
 Para usarlo, debemos definir un gestor (``models.Manager``)
 personalizado, y este gestor debe implementar una función
@@ -923,7 +922,7 @@ el nombre y apellidos de una persona, podríamos hacer algo como:
            natural, en el mismo orden es que las espera
            el método `get_by_natural_key` del Manager.
            '''
-           return (self.first_name, sefl.last_name)
+           return (self.first_name, self.last_name)
 
 Al exportar, donde antes se usaría la clave primaria, ahora se usa la
 clave natural:
@@ -950,8 +949,8 @@ función ``serializers.serialize()``, se puede indicar el parámetro
 ``use_natural_foreign_keys=True`` o ``use_natural_primary_keys=True``.
 
 Cuando especificamos ``use_natural_foreign_keys=True``, Django usará el
-método ``natural_key()`` para seriallizar cualquier referencia como
-clave foranea a objetos de la clase del modelo, en este caso,
+método ``natural_key()`` para serializar cualquier referencia como
+clave foránea a objetos de la clase del modelo, en este caso,
 ``Person``.
 
 Cuando especificamos ``use_natural_primary_keys=True``, Django **no**
@@ -959,8 +958,10 @@ proporcionara la clave primaria en los datos serializados, ya que esta
 puede ser calculada a partir de los valores del objeto durante la
 deserialización.
 
--  Fuente: `Serializing Django objects \| Django
-   documentation <https://docs.djangoproject.com/en/4.2/topics/serialization/#natural-keys>`__
+Fuentes:
+
+- `Serializing Django objects`_ - *Django documentation*
+
 
 Cómo obtener el primer/último elemento de un modelo
 ---------------------------------------------------
@@ -2443,6 +2444,8 @@ Fuente: `Django unique=True except for blank values`_ - StackOverflow
 
 
 
+.. _Django Reset Migrations: https://simpleisbetterthancomplex.com/tutorial/2016/07/26/how-to-reset-migrations.html
 .. _Django unique=True except for blank values: https://stackoverflow.com/questions/9808202/
 .. _How to get URL of current page, including parameters: https://stackoverflow.com/questions/3248682/
-.. _Django Reset Migrations: https://simpleisbetterthancomplex.com/tutorial/2016/07/26/how-to-reset-migrations.html
+.. _natural_key: https://docs.djangoproject.com/fr/4.2/topics/serialization/#natural-keys
+.. _Serializing Django objects: https://docs.djangoproject.com/en/4.2/topics/serialization/#natural-keys

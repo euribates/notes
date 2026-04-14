@@ -1,7 +1,7 @@
 Shiny
 ========================================================================
 
-.. tags:: python,r,datascience,statistics,graphs,web
+.. tags:: python, r, datascience, statistics, graphics, web, framework
 
 
 Qué es Shiny

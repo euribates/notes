@@ -9,6 +9,7 @@ R
    notes-on-reactjs
    notes-on-redis
    notes-on-restructured-text
+   notes-on-rgpd
    notes-on-rq
    notes-on-rsync
    notes-on-rust

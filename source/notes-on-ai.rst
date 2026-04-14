@@ -1,7 +1,11 @@
 Inteligencia Artificial (AI)
 =======================================================================
 
-.. tags: ia, machine-learning, law, science
+.. tags: ia, machine-learning, law, science, ia
+
+.. contents:: Relación de contenidos
+    :depth: 3
+
 
 Reglamento europeo de Inteligencia Artificial
 ------------------------------------------------------------------------

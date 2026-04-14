@@ -143,3 +143,34 @@ Or, to see only log messages for the current boot:
 .. code:: shell
 
     journalctl -u service-name.service -b
+
+
+Cómo limpiar el tamaño de los registros de archivo de systemd
+------------------------------------------------------------------------
+
+Para limitar el tamaño de los archivos de registro, systemd ofrece una
+función de limpieza que elimina la información antigua. Los parámetros
+permitidos son:
+
+- ``--vacuum-size=BYTES``: Reduce el uso del disco por debajo del tamaño
+  especificado.
+
+- ``--vacuum-files=INT``: Conserva solo el número especificado de
+  archivos de registro.
+
+- ``--vacuum-time=TIME``: Elimina los archivos de registro con una
+  antigüedad superior a la especificada.
+
+Por ejemplo, para reducir el consumo de 312 MB a 200 MB (o menos),
+utilice:
+
+.. code::
+    
+   journalctl --vacuum-size=200M
+
+Fuentes:
+
+- `Systemd logs are too large and slow`_ - Ask Ubuntu
+
+
+.. _Systemd logs are too large and slow: https://askubuntu.com/questions/1012912/systemd-logs-journalctl-are-too-large-and-slow

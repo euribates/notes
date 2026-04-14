@@ -1,7 +1,7 @@
 Shaders (Godot)
 ========================================================================
 
-.. tags:: bleder, gamevelopment
+.. tags:: blender, game development
 
 .. contents:: Relación de contenidos
     :depth: 3

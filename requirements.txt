@@ -17,3 +17,4 @@ sphinx-copybutton
 sphinx-immaterial[keys]
 sphinx_tags
 sphinx-nefertiti==0.9.8
+sphinx-design==0.7.0

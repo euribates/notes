@@ -86,32 +86,93 @@ Para resumir, un contenedor:
 
 Un contenedor en ejecución utiliza un sistema de archivos aislado. Este sistema de archivos aislado es proporcionado por una imagen, y la imagen debe contener todo lo necesario para ejecutar una aplicación: todas las dependencias, configuraciones, scripts, binarios, etc. La imagen también contiene otras configuraciones para el contenedor, como variables de entorno, un comando predeterminado para ejecutar y otros metadatos.
 
-How to dockerize Python
+
+Redes en Docker
 ------------------------------------------------------------------------
 
-- Use python:3.7.3-stretch as the base image, to pin the version and OS.
-  Or, python:3.7-stretch if you’re feeling less worried about point
-  releases.
+Por defecto, Docker viene con tres redes predefinidas. Podemos verlas
+con el comando:
 
-- Create ``requirements.txt`` with transitively-pinned versions of all
-  dependencies, e.g. by using pip-tools, poetry, or Pipenv.
+.. code:: shell
 
-- If you want fast builds, you want to rely on Docker’s layer caching.
-  But by copying in the file before running pip install, all later
-  layers are invalidated—this image will be rebuilt from scratch every
-  time. Solution: Copy in files only when they’re first needed.
+   docker network ls
 
-- By default Docker containers **run as root**, which is a security
-  risk. It’s much better to run as a non-root user, and do so in the
-  image itself so that you don’t listen on ports < 1024 or do other
-  operations that require a subset of root’s permissions.
+Que, si no hemos definido ninguna red nosotros, produciría algo similar
+a esto:
 
-Here’s a somewhat better—though still not ideal—Dockerfile that
-addresses the issues above:
+.. code:: 
+
+   NETWORK ID     NAME               DRIVER    SCOPE
+   6702f78d020c   bridge             bridge    local
+   43c7ca7bf5cc   host               host      local
+   8ced7d25285e   none               null      local
+
+Veamos cada red con más detalle:
+
+- ``bridge``: Esta es la red por defecto. Es un *stack* de red
+  completamente diferente de la red que usa el *host*, con diferentes
+  direcciones IP y máscaras. El *host* actúa como un enrutador para
+  todos los contenedores que estén en esta red. Si no se especifica
+  nada, todos los contenedores se conectan automáticamente a ``bridge``.
+
+- ``host``: En esta red, los contenedores comparten la red que utiliza
+  el *host*.
+
+- ``none``: Esta es la más fácil, los contenedores no se conectan a
+  ninguna red.
+
+Redes definidas por el usuario
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+También es posible crear redes personalizadas y aisladas. Esto es
+interesante desde el punto de vista de la seguridad, ya que permite
+segregar diferentes contenedores a nivel de red y así aplicar un mayor
+control de acceso.
+
+Para crear una red, basta con ejecutar el siguiente comando:
+
+.. code::
+
+    docker network create my-network
+
+Docker ofrece opciones para personalizar rangos, máscaras y otros
+parámetros. Las redes definidas por el usuario son de tipo puente.
+Una vez creada la red, puedes ejecutar nuevos contenedores en ella, 
+como se muestra a continuación:
+
+.. code::
+
+    docker run -it --network=my-network busybox /bin/sh
+
+
+
+Cómo *dockerize* Python
+------------------------------------------------------------------------
+
+Se recomienda en princpio usar algo como ``python:3.14.3-trixie`` como
+imagen base, para fijar así tanto la versión de Python como la del
+sistema oprativo. Si no nos preocupan las versiones menores, se pueda
+usar ``python:3.14-trixie``.
+
+Crear un fichero ``requirements.txt``, idealmente con todas las 
+dependecias fijadas y resueltas transitivamente, usando herramientas
+como ``pip-tools``, ``poetry``, ``pipenv`` o :boc:`notes-on-uv`.
+
+Para que la fase de construcción sea lo más rápida posible, hay que usar
+el caché por capas de las imágenes de Docker. Pero copiar el fichero de
+requerimientos invalida todas las posteriores, así que es mejor realizar
+la copia justo antes del ``pip install``.
+
+Es preferible que la imagen no se esté ejecutando como ``root``, sino
+que use un usuario específico (A no ser que tengamos que hacer cosas que
+reuieran esos privilegios, como escuchar en un puerto por debajo de
+1024).
+
+Aquí hay un ejemplo de un Dockerfile inicial:
 
 .. code:: dockerfile
 
-    FROM python:3.7.3-stretch
+    FROM python:3.14.3-trixie
  
     COPY requirements.txt /tmp/
  
@@ -124,18 +185,18 @@ addresses the issues above:
     COPY yourscript.py .
     CMD [ "python", "./yourscript.py" ]
 
-Sources:
+Fuentes:
 
--  `Broken by default: why you should avoid most Dockerfile
-   examples <https://pythonspeed.com/articles/dockerizing-python-is-hard/>`_
+- `Broken by default: why you should avoid most Dockerfile
+  examples <https://pythonspeed.com/articles/dockerizing-python-is-hard/>`_
 
--  `regularly rebuild your images without caching to get security
+- `regularly rebuild your images without caching to get security
    updates <https://pythonspeed.com/articles/docker-cache-insecure-images/>`_
 
--  `Official Dockerfile best
+- `Official Dockerfile best
    practices <https://docs.docker.com/develop/develop-images/dockerfile_best-practices/>`_
 
--  `Dockerizing Python
+- `Dockerizing Python
    Applications <https://stackabuse.com/dockerizing-python-applications/>`_
 
 
@@ -190,7 +251,7 @@ Pare verificar que podemos usar Docker sin usar sudo, podemos hacer:
 Cómo obtener estadísticas de procesos con el comando ``top``
 ------------------------------------------------------------------------
 
-El comando ``top`` de docker es exactamente lo que parecee, ejecuta 
+El comando ``top`` de Docker es exactamente lo que parece, ejecuta 
 ``top`` dentro del contenedor:
 
 .. code:: shell
@@ -202,12 +263,12 @@ El comando ``top`` de docker es exactamente lo que parecee, ejecuta
     root 26339 … 00:00:00 watch "echo 'Testing top'"
     root 26370 … 00:00:00 sleep 2
 
-Se imiten en el ejemplo algunas columnas por legibilidad.
+Se imitan en el ejemplo algunas columnas por legibilidad.
 
 También existe el comando ``stats`` que básicamente consiste en ejecutar
 ``top`` para cada uno de los contenedores de un *host*.
 
-Cómo ver los detalles de un contendor (incluyendo variables de entorno)
+Cómo ver detalles de un contenedor (incluyendo variables de entorno)
 ------------------------------------------------------------------------
 
 El comando de Docker ``inspect`` devuelve información acerca de un
@@ -264,7 +325,7 @@ Cómo ejecutar una imagen pero cambiando el *entrypoint*
 ------------------------------------------------------------------------
 
 Solo hay que usar el parámetro ``--entrypoint`` de la suborden ``run``
-de docker.
+de Docker.
 
 Ejemplo:
 
@@ -273,23 +334,24 @@ Ejemplo:
     docker run -it --entry-point python colend_app
 
 
-How to Purge all unused or dangling Images, Containers, Volumes, and Networks
------------------------------------------------------------------------------
+Cómo borrar recursos descolgados: Imagenes, Containers, Volumes i Redes
+------------------------------------------------------------------------
 
-Docker provides a single command that will clean up any resources —
-images, containers, volumes, and networks — that are dangling (not
-associated with a container):
+Docker proporciona un comando para borra todos los recursos que estén
+huerfanos (*dangling*), esto es, que no están etiquetados y que no están
+asociados a ningún contenedor en activo. Estos recursos pueden ser
+imágenes, contenedores, volúmenes y redes:
 
 .. code:: shell
 
     docker system prune
 
-To additionally remove any stopped containers and all unused images (not
-just dangling images), add the -a flag to the command:
+Si queremos borrar no solo recursos huerfanos, sino también todas las
+imágenes no usadas, podemos añadir el *flag* ``-a`` o ``-all``.
 
 .. code:: shell
 
-    docker system prune -a
+    docker system prune --all
 
 
 
@@ -605,14 +667,14 @@ fácil si sabes el nombre:
 Cómo borrar imágenes terminadas (``exited()``) ejecutadas previamente
 ------------------------------------------------------------------------
 
-This is the way:
+Esta es una forma:
 
 .. code:: shell
 
     docker rm $(docker ps -qa --filter status=exited )
 
 
-Como parar uno (o varios) contenedores que están en ejecucion
+Como parar uno (o varios) contenedores que están en ejecución
 ------------------------------------------------------------------------
 
 Con el siguiente comando podemos parar uno o varios contenedores:

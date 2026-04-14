@@ -1,7 +1,11 @@
 Meilisearch
 ========================================================================
 
-.. tags:: python,web,linux,systemd,rust
+.. tags:: python, web, linux, systemd, rust, server, foss
+
+.. contents:: Relación de contenidos
+    :depth: 3
+
 
 
 Sobre Meilisearch

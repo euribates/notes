@@ -36,7 +36,8 @@ Notas
 
   meta-notes
   glosario
-  tags.md
+  _tags/tagsindex
+
 
 Índices y tables
 ==================

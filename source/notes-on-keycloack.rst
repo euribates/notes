@@ -1,18 +1,20 @@
 Keycloak
 ========================================================================
 
-.. tags:: devops
+.. tags:: devops, foss, server
 
 Sobre :index:`Keycloak`
 ------------------------------------------------------------------------
 
-**Keycloak** es un software de código abierto para permitir
-el inicio de sesión único con la gestión de identidades y accesos
-dirigido a aplicaciones y servicios modernos. Hasta abril de 2023, este
-proyecto comunitario de WildFly estaba bajo la administración de Red
-Hat, que lo utiliza como el proyecto upstream para su construcción Red
-Hat de Keycloak. En abril de 2023, Keycloak fue donado a la CNCF y se
-unió a la fundación como un proyecto de incubación. 2]
+**Keycloak** es un software de código abierto para permitir el inicio de
+sesión único con la gestión de identidades y accesos dirigido a
+aplicaciones y servicios modernos.
+
+Hasta abril de 2023, este proyecto comunitario de WildFly estaba bajo la
+administración de Red Hat, que lo utiliza como el proyecto upstream para
+su construcción Red Hat de Keycloak. En abril de 2023, Keycloak fue
+donado a la CNCF y se unió a la fundación como un proyecto de
+incubación. 2]
 
 Keycloak es compatible con varios protocolos como OpenID, OAuth versión
 2.0 y SAML y proporciona características como la gestión de usuarios,
@@ -20,6 +22,7 @@ autenticación de dos factores, gestión de permisos y roles, creación de
 servicios de tokens, etc. Es posible integrar Keycloak con otras
 tecnologías, como los marcos front-end como React o Angular, así como
 soluciones de contenedores como :doc:`notes-on-docker`.
+
 
 Definiciones
 ------------------------------------------------------------------------
@@ -165,29 +168,32 @@ Connect and SAML 2.0. This support means that any tool or application
 that supports integration with the above protocols can be plugged into
 with Keycloak
 
-Preparing to integrate with Keycloak
+Preparándose para integrarse con Keycloak
 ------------------------------------------------------------------------
 
-Once you’re ready to integrate your apps, tools, and services with
-Keycloak, you have decisions to make:
+Lo primero que hay que hacer es tomar ciertas decisiones:
 
-1) You need to decide which protocol you intend to use, such as:
+1) Qué protocolo vamos a usar:
 
--  OAuth2
--  OpenID Connect
--  Security Assertion Markup Language (SAML).
+  -  OAuth 2.0
 
-2) Are you looking for authentication or authorization?
+  -  OpenID Connect (OIDC)
 
-OAuth 2 != Authentication, only Authorization
+  -  Security Assertion Markup Language (SAML).
 
-OpenID Connect = Identity + Authentication + Authorization
+2) ¿Necesitamos solo autenticación, o también autorización, o las dos?
 
-3) regarding the application:
+  Con OAuth 2 solo tenemos autorización, no autenticación.
 
+  Con OpenID tenemos autenticación y autorizatión.
+
+3) Respecto al despliegue:
+
+  - Va a ejecutarse sobre un contenedor (sin estado) o en 
 Is it running on a container (stateless) or is it in a legacy clustered
 (shared state) environment? What does the architecture consist of, such
 as single-page applications (SPA), microservices, serverless, or MVC?
+
 Identify the resources and endpoints you want to secure. Is your
 integration between, for example, client and server, service-to-service,
 or API endpoints. Identify which adapter will be suited for your

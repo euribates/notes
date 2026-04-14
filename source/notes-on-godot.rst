@@ -1,7 +1,7 @@
 Godot
 ========================================================================
 
-.. tags:: godot,gamedev
+.. tags:: godot, game development, framework, ide
 
 .. contents:: Relación de contenidos
     :depth: 3

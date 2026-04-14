@@ -1,7 +1,7 @@
 Game development
 ========================================================================
 
-.. tags:: gamedev
+.. tags:: game development
 
 .. contents:: Relación de contenidos
     :depth: 3

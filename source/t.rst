@@ -11,6 +11,7 @@ T
    notes-on-telegram
    notes-on-telemetry
    notes-on-tmux
+   notes-on-togaf
    notes-on-totp
    notes-on-typer
    notes-on-typesense

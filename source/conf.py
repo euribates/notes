@@ -19,6 +19,7 @@ extensions = [
     'myst_parser',
     'sphinx_tags',
     'sphinx_copybutton',
+    'sphinx_design',
     'sphinxcontrib.mermaid',
     'sphinx.ext.todo',
     'sphinx.ext.graphviz',
@@ -34,6 +35,9 @@ master_doc = 'index'
 
 # -- Tags options ------------------------------------------------------------
 tags_create_tags = True
+tags_page_title = "Etiquetas"
+tags_page_header = "Notas con esta etiqueta"
+tags_create_badges = True
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
