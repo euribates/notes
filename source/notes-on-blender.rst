@@ -679,3 +679,15 @@ Blender, seleccione el padre, luego presione :keys:`shift+G` y elija Hijos
 Alternativamente, en el árbol de la escena, hacer doble clic en el objeto
 padre para seleccionarlo a él y a todos sus hijos anidados.
 
+Cómo establecer una foto como fondo globl en Blender
+------------------------------------------------------------------------
+
+Para establecer una foto como fondo del mundo en Blender, cambia al 
+espacio de trabajo de *Shading*, selecciona el tipo de editor *World* y
+añade un nodo *EnvironmentTexture*, conectándolo al nodo *Background*.
+
+Para obtener mejores resultados, utiliza una imagen de alto rango
+dinámico (HDRI_) para asegurar que se ajuste correctamente a la escena,
+permitiendo que funcione como fondo visual y también como fuente de luz.
+
+.. _HDRI: https://es.wikipedia.org/wiki/Im%C3%A1genes_de_alto_rango_din%C3%A1mico 

@@ -7,6 +7,7 @@ D
    :maxdepth: 2
 
    notes-on-data-governance
+   notes-on-databases
    notes-on-datastar
    notes-on-dbt.rst
    notes-on-dir3
