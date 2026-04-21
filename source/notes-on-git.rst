@@ -797,9 +797,9 @@ son los álias que suelo usar:
 
 .. code:: shell
 
-git config --global alias.co checkout
-git config --global alias.sw switch
-git config --global alias.st status
+    git config --global alias.co checkout
+    git config --global alias.sw switch
+    git config --global alias.st status
 
 Fuente: `Git - Git
 Aliases <https://git-scm.com/book/en/v2/Git-Basics-Git-Aliases>`__
