@@ -610,7 +610,7 @@ Resumen:
 
 -  Usar el compositer
 
-Esta todoo explicado en la fuente:
+Esta todo explicado en la fuente:
 
 Fuente: https://www.youtube.com/watch?v=deUyhukYzwI
 
