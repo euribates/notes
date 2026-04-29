@@ -1581,6 +1581,39 @@ Escenario 2: No queremos descartar la base de datos
 
 Fuente: `Django Reset Migrations`_
 
+Cómo usar la base de datos actual y librarme de migraciones anteriores
+------------------------------------------------------------------------
+
+Si sabe que sus modelos coinciden **totalmente** con el esquema
+existente, y que no hay migraciones generadas que necesiten ser
+contabilizadas (es decir, no ha creado ninguna migración de datos u
+otras migraciones a mano):
+
+- Haga una copia de seguridad de todo (incluida su base de datos de
+  producción)
+
+- eliminar todos los archivos de migración (pero mantener el directorio
+  y los archivos ``__init__.py``),
+
+- Crear una nueva base de datos
+
+- Cambie su proyecto para referirse a esa base de datos.
+
+- Ejecute ``makemigrations`` para crear un conjunto de migraciones que
+  describan sus modelos actuales.
+
+- Cambie su proyecto para consultar la base de datos de producción
+  original
+
+- Vacíe la tabla ``django_migrations`` de su base de datos de
+  producción
+
+- ejecutar migrar con la opción ``--fake`` (esta actualizará la tabla
+  ``django_migrations``)
+
+- Ejecute ``showmigrations`` para verificar que todas sus nuevas
+  migraciones iniciales se muestren como aplicadas.
+
 
 Cómo saber que base de datos se corresponde con cada modelo
 -----------------------------------------------------------

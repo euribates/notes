@@ -223,7 +223,26 @@ total a escala mundial** del infractor durante el ejercicio financiero
 anterior, si este importe fuera superior.
 
 Noticias sobre mal uso de IA
-------------------------------------------------------------------------
+-----------------------------------------------------------------------
+
+AI coding agent deletes entire company database in 9 seconds  27/4/2026
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+El agente de codificación de IA impulsado por Claude elimina toda la
+base de datos de la compañía en 9 segundos: las copias de seguridad se
+destrozaron, después de que la herramienta Cursor impulsada por Claude
+de Anthropic se rebela.
+
+    > "Yesterday afternoon, an AI coding agent — Cursor running Anthropic's
+    > flagship Claude Opus 4.6 — deleted our production database and all
+    > volume-level backups in a single API call to Railway, our
+    > infrastructure provider,” sums up the PocketOS boss. “It took 9
+    > seconds.”
+
+https://www.tomshardware.com/tech-industry/artificial-intelligence/claude-powered-ai-coding-agent-deletes-entire-company-database-in-9-seconds-backups-zapped-after-cursor-tool-powered-by-anthropics-claude-goes-rogue
+
+
+
 
 Ayudas a un museo canceladas por ChatGPT
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
