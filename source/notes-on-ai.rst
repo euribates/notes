@@ -225,6 +225,42 @@ anterior, si este importe fuera superior.
 Noticias sobre mal uso de IA
 -----------------------------------------------------------------------
 
+Experimento con 2.245 currículums reales escritos por humanos
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Agarraron 2.245 currículum reales escritos por humanos y le pidieron a
+ChatGPT, DeepSeek y otros modelos que los reescriban. Mismo currículum,
+experiencia, estudios... Todo igual, solo que reescrito.
+
+Después, le mostraron pares al azar a cada IA y le pidieron que eligiera
+el mejor: el suyo contra el del humano. Todos se eligieron a sí mismos más
+del 95% de las veces. Incluso después de controlar por calidad
+(asegurándose de que el CV humano no fuera objetivamente peor) seguían
+eligiendo el suyo.
+
+Después, simularon procesos reales de selección en 24 industrias y
+descubrieron que, si usaste el mismo modelo que el reclutador, tienes entre
+un 23% y un 60% más posibilidades de pasar el primer filtro.
+
+¿Por qué pasa esto? Los autores tienen una hipótesis fuerte: cuando le
+pides a un modelo que te mejore el CV, te lo reescribe con su huella
+estilística: sus palabras favoritas, su ritmo, su forma de armar
+oraciones... Cada IA tiene un estilo propio, como cada escritor tiene una
+letra. Después, cuando esa misma IA evalúa, se reconoce del otro lado y se
+pone un diez. Cuanto más capaz es el modelo, más afilada es su capacidad
+de reconocerse.
+
+Ahora buscar trabajo es como el test de Turing pero al revés: en lugar de
+una máquina intentando convencerte de que es humana, ahora somos nosotros
+los que tenemos que convencer a los robots que somos uno de ellos.
+
+Fuentes: 
+
+- https://fixupx.com/i/status/2053083179221708855
+- https://arxiv.org/abs/2509.00462
+
+
+
 AI coding agent deletes entire company database in 9 seconds  27/4/2026
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
