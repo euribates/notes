@@ -225,6 +225,28 @@ anterior, si este importe fuera superior.
 Noticias sobre mal uso de IA
 -----------------------------------------------------------------------
 
+Silicon Valley enciende el debate sobre el coste real de la IA...
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Silicon Valley enciende el debate sobre el coste real de la IA: un solo
+empleado de OpenAI ha gastado 1,3 millones de dólares en tokens en solo 30
+días
+
+> El magnate se había gastado más de 20.000 dólares al día. Es decir, en
+> 20 días, Steinberger había gastado 1,3 millones de dólares en tokens
+> en la API de OpenAI, según la imagen recogida por Business Insider.
+
+> Los billetes de tokens altos también están de moda mientras la cultura
+> _tokenmaxxing_ sigue arrasando en Silicon Valley. OpenAI es una de las
+> muchas empresas que, según se informa, tiene una tabla de clasificación
+> competitiva en tokens.
+
+Enlaces:
+
+- https://www.huffingtonpost.es/sociedad/silicon-valley-enciende-debate-sobre-coste-real-ia-empleadoopenaiha-gastado-13-millones-dolares-tokens-30-dias-f202605.html
+
+- https://www.huffingtonpost.es/economia/llega-tokenmaxxing-como-empleados-grandes-tecnologicas-compiten-gastar-millones-consultas-ia-dia-mas-productivos-f202605.html#int=modulo_rel
+
 Experimento con 2.245 currículums reales escritos por humanos
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

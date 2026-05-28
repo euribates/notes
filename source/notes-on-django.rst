@@ -1639,7 +1639,8 @@ escribir ese modelo.
    assert router.db_for_read(ModelAlfa) == 'default'
    assert router.db_for_write(ModelAlfa) == 'default'
 
-Cómo prevenir que el método ``save`` de un ModelForm modifique la BD
+
+Cómo prevenir que el ``save`` de un ModelForm modifique la BD
 --------------------------------------------------------------------
 
 A veces queremos hacer un tratamiento previo a una instancia de un
