@@ -14,6 +14,61 @@ generar documentos equivalentes en HTML, LaTeX, docbook, etc.
 
 A menudo, el término Restructured Text es abreviado a ReST o reST [1]_.
 
+Imágenes y figuras con ReestructuredText
+------------------------------------------------------------------------
+
+La directiva ``image`` se utiliza con un argumento obligatorio: el
+directorio o dirección donde se ubica la imagen. Por ejemplo, aquí
+debajo incluyo mi logo personal, alojado en mi dominio:
+
+.. image:: reestructured-text/incredibles.jpg
+
+Con eso basta para que reST pueda ir por la imagen y colocarla en
+el HTML final. No obstante, y dependiendo del ancho de la pantalla, el
+editor en línea puede mostrar el contenido desbordado. Esto pasa porque
+reST no le hace ningún tipo de procesamiento o escalado a la imagen por
+defecto. 
+
+La directiva acepta varias opciones que permiten darle formato a la imagen:
+
+- ``height``: es el alto de la imagen, utilizado para reservar espacio
+  vertical para la imagen. Cuando se utiliza en conjunto con la opción
+  de ``scale``, ambos se aplican (por ejemplo, escala al 40% de 100px da
+  40px). 
+
+- ``width``: es el ancho de la imagen, y puede ser en términos absolutos
+  o en porcentaje. De manera análoga a la altura, se combina con la opción
+  de escala.
+
+- ``scale``: es un factor de escalamiento, en porcentaje, que se aplicará a
+  la imagen (el símbolo de porcentaje puede omitirse). El valor
+  predeterminado es 100% (sin escalamiento).
+
+- ``align``: la alineación de la imagen, puede tener los siguientes
+  valores: ``top``, ``middle``, ``bottom``, ``left``, ``center``, o
+  ``right``. Los primeros tres valores hacen referencia a la alineación
+  vertical, mientras que los últimos tres hacen referencia a su posición
+  horizontal.
+
+- ``alt``: es un texto alternativo a utilizar en caso de que no se pueda
+  desplegar la imagen. También es el texto que se lee por aplicaciones de
+  asistencia visual.
+
+- ``target``: convierte la imagen en un enlace hacia la URL especificada.
+
+Una **figura** es una imagen con una leyenda debajo. Su sintaxis es
+similar a la de ``image``, y acepta las mismas opciones, solo que agrega
+el contenido de la directiva, que corresponde a la leyenda que se
+colocará debajo de la imagen:
+
+```
+    .. figure:: img/nombre-de-imagen.png
+
+       Leyenda de la figura.
+```
+
+
+
 
 Matemáticas en reStructuredText con LaTeX
 ------------------------------------------------------------------------
