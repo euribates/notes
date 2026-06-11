@@ -1,7 +1,137 @@
 Django: Migrando de versión
 ========================================================================
 
-A la version 1.5 (last version in this branch is 1.5.12)
+Migrar a la versión 1.7 (last version in this branch is 1.6.11)
+------------------------------------------------------------------------
+
+The Django 1.6 series is the last to support Python 2.6. Django 1.7 is
+the first release to support Python 3.4. Add built-in support for schema
+migrations. New concept of Django Applicastions
+
+-  Django applications
+
+   As the concept of `Django
+   applications <https://docs.djangoproject.com/en/2.2/ref/applications/>`__
+   matured, this code showed some shortcomings. It has been refactored
+   into an “app registry” where models modules no longer have a central
+   role and where it’s possible to attach configuration data to
+   applications.
+
+   Improvements thus far include:
+
+   -  Applications can run code at startup, before Django does anything
+      else, with the ``ready()`` method of their configuration.
+
+   -  Application labels are assigned correctly to models even when
+      they’re defined outside of ``models.py``. You don’t have to set
+      ``app_label`` explicitly any more.
+
+   -  It is possible to omit ``models.py`` entirely if an application
+      doesn’t have any models.
+
+   -  Applications can be relabeled with the label attribute of
+      application configurations, to work around label conflicts.
+
+   -  The name of applications can be customized in the admin with the
+      ``verbose_name`` of application configurations.
+
+   -  The admin automatically calls ``autodiscover()`` when Django
+      starts. **You can consequently remove this line from your
+      URLconf**.
+
+   -  Django imports all application configurations and models as soon
+      as it starts, through a deterministic and straightforward process.
+      This should make it easier to diagnose import issues such as
+      import loops.
+
+-  Improvements to Form error handling
+
+   Previously there were two main patterns for handling errors in forms:
+
+   -  Raising a ``ValidationError`` from within certain functions
+      (e.g. ``Field.clean()``, ``Form.clean_<fieldname>()``, or
+      ``Form.clean()`` for non-field errors.)
+
+   -  Fiddling with ``Form._errors`` when targeting a specific field in
+      ``Form.clean()`` or adding errors from outside of a “clean” method
+      (e.g. directly from a view).
+
+   Using the former pattern was straightforward since the form can guess
+   from the context (i.e. which method raised the exception) where the
+   errors belong and automatically process them. This remains the
+   canonical way of adding errors when possible. However the latter was
+   fiddly and error-prone, since the burden of handling edge cases fell
+   on the user.
+
+   The new ``add_error()`` method allows adding errors to specific form
+   fields from anywhere without having to worry about the details such
+   as creating instances of ``django.forms.utils.ErrorList`` or dealing
+   with Form.cleaned_data. This new API replaces manipulating
+   Form._errors which now becomes a private API.
+
+   See Cleaning and validating fields that depend on each other for an
+   example using Form.add_error().
+
+..
+
+   ⚠️ Files affected:
+
+   -  api3.py ❓
+   -  admin.py
+   -  view.py
+
+More information in `Django 1.7 release
+notes <https://docs.djangoproject.com/en/2.2/releases/1.7/>`__
+Migrar a la versión 3.1.1
+------------------------------------------------------------------------
+
+**NullBooleanField** está obsoleto, ha sido reemplazado por
+   ``BooleanField(null=True)``
+
+Tanto ``load staticfiles`` como ``load admin_static`` están obsoletos desde
+Django 2.1, deprecado en Django 3.0.
+
+Cambiar este tipo de referencias en las plantilla:
+
+.. code:: django
+
+   {% load staticfiles %}
+   {% load static from staticfiles %}
+   {% load admin_static %}
+
+a:
+
+.. code:: django
+
+   {% load static %}
+
+
+Migrar a la versión 4.xx
+------------------------------------------------------------------------
+
+Ya no se puede usar la funcion ``url`` para especificar patrones, hay
+que usar obligatoriamente ``path`` o ``path_re``.
+
+Si da problemas con CSRF, hay que añadir la siguiente variable al
+``settings.py``:
+
+.. code:: python
+
+   CSRF_TRUSTED_ORIGINS = [
+           'https://subdomain.example.com',
+           'https://*.blob.com',
+           ...
+       ]
+
+Por defecto es una lista vacía. Los valores en las versiones
+anteriores a la 4 puede que estuvieran sin el esquema, y seguramente
+sin poder usar asteriscos.
+
+Fuente: `CSRF_TRUSTED_ORIGINS - Django
+   settings <https://docs.djangoproject.com/en/4.0/ref/settings/#csrf-trusted-origins>`__
+
+
+Migrar a la versión 1.5 (last version in this branch is 1.5.12)
 ------------------------------------------------------------------------
 
 First release to be compatible with Python3. Also add `configurable User
@@ -122,84 +252,66 @@ Things to consider:
 More information in `Django 1.6 release
 notes <https://docs.djangoproject.com/en/2.2/releases/1.6/>`__
 
-To version 1.7 (last version in this branch is 1.6.11)
+
+
+Migrar a 6.xx
 ------------------------------------------------------------------------
 
-The Django 1.6 series is the last to support Python 2.6. Django 1.7 is
-the first release to support Python 3.4. Add built-in support for schema
-migrations. New concept of Django Applicastions
+Since Django’s inception, the web has gradually moved from HTTP to
+HTTPS, a welcome move for security. But the history has meant older
+parts of Django have had a lingering HTTP bias. Many of these have been
+migrated to default to HTTPS instead in previous versions. Django 5.0
+starts the migration of another, tiny HTTP bias in forms.URLField.
 
--  Django applications
+The old behaviour: when URLField is provided a URL without a scheme, it
+assumes it to be “http”:
 
-   As the concept of `Django
-   applications <https://docs.djangoproject.com/en/2.2/ref/applications/>`__
-   matured, this code showed some shortcomings. It has been refactored
-   into an “app registry” where models modules no longer have a central
-   role and where it’s possible to attach configuration data to
-   applications.
+.. code:: python
 
-   Improvements thus far include:
+   from django import forms
 
-   -  Applications can run code at startup, before Django does anything
-      else, with the ``ready()`` method of their configuration.
+   assert forms.URLField().to_python('example.com') == 'http://example.com'
 
-   -  Application labels are assigned correctly to models even when
-      they’re defined outside of ``models.py``. You don’t have to set
-      ``app_label`` explicitly any more.
+Django 5.0 has started a deprecation process to change this default to
+"https"
 
-   -  It is possible to omit ``models.py`` entirely if an application
-      doesn’t have any models.
+Here’s that warning message in a more readable format:
 
-   -  Applications can be relabeled with the label attribute of
-      application configurations, to work around label conflicts.
+>   RemovedInDjango60Warning: The default scheme will be changed from
+>   ‘http’ to ‘https’ in Django 6.0. Pass the
+>   ``forms.URLField.assume_scheme argument`` to silence this warning, or
+>   set the ``FORMS_URLFIELD_ASSUME_HTTPS`` transitional setting to True
+>   to opt into using ‘https’ as the new default scheme.
 
-   -  The name of applications can be customized in the admin with the
-      ``verbose_name`` of application configurations.
+Django 5.1 lo trata como un ``DeprecationWarning`` pero en Django 6.0
+cambiará el valor por defecto y eliminara el aviso.
 
-   -  The admin automatically calls ``autodiscover()`` when Django
-      starts. **You can consequently remove this line from your
-      URLconf**.
+Hasta Django 6.0, seguirá existiendo el aviso. Esto se puede controlar
+de dos maneras:
 
-   -  Django imports all application configurations and models as soon
-      as it starts, through a deterministic and straightforward process.
-      This should make it easier to diagnose import issues such as
-      import loops.
+-  Adoptar el comportamiento futuro con el valor de configuración
+   ``FORMS_URLFIELD_ASSUME_HTTPS``.
 
--  Improvements to Form error handling
+   .. code:: python
 
-   Previously there were two main patterns for handling errors in forms:
+      FORMS_URLFIELD_ASSUME_HTTPS = True
 
-   -  Raising a ``ValidationError`` from within certain functions
-      (e.g. ``Field.clean()``, ``Form.clean_<fieldname>()``, or
-      ``Form.clean()`` for non-field errors.)
+   Esto hará que **todos** los campos de tipo ``URLField`` asumen que el
+   esquema por defecto es ``https``.
 
-   -  Fiddling with ``Form._errors`` when targeting a specific field in
-      ``Form.clean()`` or adding errors from outside of a “clean” method
-      (e.g. directly from a view).
+-  Migrar individualmente los campos de tipo ``forms.URLField``
+   añadiendo el esquema por defecto.
 
-   Using the former pattern was straightforward since the form can guess
-   from the context (i.e. which method raised the exception) where the
-   errors belong and automatically process them. This remains the
-   canonical way of adding errors when possible. However the latter was
-   fiddly and error-prone, since the burden of handling edge cases fell
-   on the user.
+   Con esta opción, hay que añadir el parámetro opcional
+   ``assume_schema`` a cada instancia de ``URL Field``. Se puede ajustar
+   el valor a ``https``, que el el comportamiento futuro por defecto, o
+   ``http`` para mantener el comportamiento anterior.
 
-   The new ``add_error()`` method allows adding errors to specific form
-   fields from anywhere without having to worry about the details such
-   as creating instances of ``django.forms.utils.ErrorList`` or dealing
-   with Form.cleaned_data. This new API replaces manipulating
-   Form._errors which now becomes a private API.
+De cualquiera de las dos maneras desactivaremos el aviso.
 
-   See Cleaning and validating fields that depend on each other for an
-   example using Form.add_error().
+Fuente: `Fix version 5.0’s URLField.assume_scheme warnings`_ - `Adam Johnson`_
 
-..
+.. _Fix version 5.0’s URLField.assume_scheme warnings: https://adamj.eu/tech/2023/12/07/django-fix-urlfield-assume-scheme-warnings/
+.. _Adam Johnson: https://adamj.eu/
 
-   ⚠️ Files affected:
 
-   -  api3.py ❓
-   -  admin.py
-   -  view.py
-
-More information in `Django 1.7 release
-notes <https://docs.djangoproject.com/en/2.2/releases/1.7/>`__

