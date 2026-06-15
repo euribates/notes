@@ -42,6 +42,138 @@ Si no lo estuviera, arrancarlo con:
 
     sudo systemctl start postgresql.service
 
+Qué es un esquema en PostgreSQL
+------------------------------------------------------------------------
+
+Un **esquema** es un contenedor de nivel superior que agrupa tablas,
+vistas, funciones y otros objetos de base de datos relacionados. Los
+esquemas ayudan a organizar tu base de datos de forma lógica y facilitan
+la gestión de permisos, evitan conflictos de nombres y separan las
+partes de una aplicación grande.
+
+PostgreSQL admite varios esquemas dentro de una misma base de datos, lo
+que te proporciona una forma potente de estructurar sistemas complejos.
+
+En el mundo de Postgresql, el término «esquema» podría entenderse mejor
+como un *espacio de nombres*.
+
+Dentro de una base de datos, los nombres de los esquemas deben ser
+únicos. Además, cada base de datos debe incluir al menos un esquema.
+Cada vez que se instala una nueva base de datos, se crea un esquema por
+defecto llamado *public*.
+
+El comando más simple para crear un esquema dentro de una base de datos es
+
+.. code:: sql
+
+    CREATE SCHEMA pokemon;
+
+Este comando requiere privilegios de creación en la base de datos, y el
+esquema recién creado, *pokemon*, será propiedad del usuario que invoca
+el comando. Una invocación más compleja puede incluir elementos
+opcionales que especifiquen un propietario diferente, e incluso puede
+incluir sentencias DDL que instancien objetos de base de datos dentro
+del esquema.
+
+Los objetos adicionales de la base de datos se pueden crear
+posteriormente de forma directa, por ejemplo, se añadiría una tabla
+adicional al esquema con
+
+.. code:: sql
+
+    CREATE TABLE pokemon.monster (
+        name text,
+        generation int,
+        attack int,
+        defense int
+        );
+
+Nótese el prefijo del nombre de la tabla con el nombre del esquema. Esto
+es necesario porque por defecto, es decir, sin especificación explícita
+del esquema, los nuevos objetos de la base de datos se crean dentro de
+lo que es el esquema actual, que cubriremos a continuación.
+
+El esquema actual
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Si no cualificamos el nombre de un objeto (tabla, vista, índice, etc.)
+se entenderá que está en el esquema que esté definidocomo **esquema
+actual**. Los objetos en el esquema actual pueden ser referenciados sin
+calificar, pero referirse a objetos con nombres similares en otros
+esquemas requiere calificar el nombre anteponiendo el nombre del esquema
+como arriba.
+
+El esquema actual se deriva del parámetro de configuración
+*search_path*. Este parámetro almacena una lista separada por comas de
+nombres de esquemas y puede examinarse con el comando
+
+.. code:: sql
+
+    SHOW search_path;
+
+o establecer un nuevo valor con
+
+.. code:: sql
+
+    SET search_path TO schema ;
+
+El primer nombre de esquema de la lista es el *esquema actual* y es
+donde se crean los nuevos objetos si se especifican sin calificar el
+nombre del esquema. La lista de nombres de esquemas separada por comas
+también sirve para determinar el orden de búsqueda por el que el sistema
+localiza los objetos existentes sin calificar. 
+
+En la configuración por defecto, la consulta de la variable de
+configuración ``search_path`` revela este valor:
+
+
+.. code:: sql
+
+    SHOW search_path; Search_path-------------- "$user", public
+
+El sistema interpreta el primer valor mostrado arriba como **el nombre
+del usuario actual conectado** y acomoda el caso habitual donde cada
+usuario tiene asignado un esquema con el mismo nombre que el nombre del
+usuario. Si no se ha creado tal esquema con nombre de usuario, esa
+entrada se ignora y el esquema «público» se convierte en el esquema
+actual en el que se crean los nuevos objetos.
+
+También hay una función de información del sistema que devuelve el
+esquema actual con una consulta
+
+.. code:: sql
+
+    select current_schema();
+
+El propietario de un esquema puede cambiar el nombre, siempre que el
+usuario también tenga privilegios de creación para la base de datos,
+con:
+
+.. code:: sql
+
+    ALTER SCHEMA pokemon RENAME TO pokedb;
+
+Por último, para eliminar un esquema de una base de datos, existe un
+comando ``drop``:
+
+.. code:: sql
+
+    DROP SCHEMA pokemon;
+
+El comando ``DROP`` fallará si el esquema contiene algún objeto, por lo
+que éste debe ser eliminado primero, u opcionalmente se puede eliminar
+recursivamente un esquema todo su contenido con la opción ``CASCADE``:
+
+.. code:: sql
+
+    DROP SCHEMA pokemon CASCADE;
+
+Fuentes: 
+
+- `Fundamentos de la gestión de esquemas en PostgreSQL`_
+
+.. _Fundamentos de la gestión de esquemas en PostgreSQL: https://lilinguas.com/es/fundamentos-de-la-gesti%C3%B3n-de-esquemas-en-postgresql/
+
 Entender los roles de PostgreSQL
 ------------------------------------------------------------------------
 
