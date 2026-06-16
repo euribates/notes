@@ -19,15 +19,15 @@ Imágenes y figuras con ReestructuredText
 
 La directiva ``image`` se utiliza con un argumento obligatorio: el
 directorio o dirección donde se ubica la imagen. Por ejemplo, aquí
-debajo incluyo mi logo personal, alojado en mi dominio:
+debajo se muestra una imagen:
 
-.. image:: reestructured-text/incredibles.jpg
+.. image:: reestructured-text/incredibles.jpeg
 
-Con eso basta para que reST pueda ir por la imagen y colocarla en
-el HTML final. No obstante, y dependiendo del ancho de la pantalla, el
-editor en línea puede mostrar el contenido desbordado. Esto pasa porque
-reST no le hace ningún tipo de procesamiento o escalado a la imagen por
-defecto. 
+Con eso basta para que reST pueda ir por la imagen y colocarla en el HTML
+final. No obstante, y dependiendo del ancho de la salida, el contenido
+puede desbordar los márgenes disponibles. Esto pasa porque reST no le hace
+ningún tipo de procesamiento o escalado a la imagen por defecto. 
+
 
 La directiva acepta varias opciones que permiten darle formato a la imagen:
 
@@ -61,12 +61,26 @@ similar a la de ``image``, y acepta las mismas opciones, solo que agrega
 el contenido de la directiva, que corresponde a la leyenda que se
 colocará debajo de la imagen:
 
-```
-    .. figure:: img/nombre-de-imagen.png
+Veamos la misma imagen anterior, pero con un ancho limitado a 500 píxeles:
 
-       Leyenda de la figura.
-```
 
+
+.. figure:: reestructured-text/incredibles.jpeg
+    :width: 50%
+    :align: center
+
+    Los Increibles
+
+Qué en ReST sería:
+
+
+.. code::
+
+    .. figure:: reestructured-text/incredibles.jpeg
+       :width: 50%
+       :align: right
+
+       Los Increibles
 
 
 
@@ -107,7 +121,7 @@ Fuentes:
 
 - StackOverflow: `Math in restructured text with Latex <https://stackoverflow.com/questions/3610551/math-in-restructuredtext-with-latex>`_
 
-.. _[1]: NO confunfir con el acrónimo REST: *Representational State
+.. [1] NO confunfir con el acrónimo REST: *Representational State
    Transfer*, con el que no tiene nada que ver.
 
 .. _DocUtils: https://www.docutils.org/

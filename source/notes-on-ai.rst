@@ -225,6 +225,23 @@ anterior, si este importe fuera superior.
 Noticias sobre mal uso de IA
 -----------------------------------------------------------------------
 
+Oficial de policía acusado de crear pruebas usando la IA
+------------------------------------------------------------------------
+
+La policía ha iniciado una investigación penal contra un agente acusado de
+utilizar sistemas de inteligencia artificial (IA) para "crear pruebas
+falsas en varios casos".
+
+El agente de la policía de Derbyshire ha sido apartado de sus funciones
+operativas, a la espera del resultado de la investigación, según informó
+la fuerza policial.
+
+Se alega que el agente obstruyó la justicia, pero no se han producido
+detenciones, añadió la policía.
+
+- https://www.bbc.com/news/articles/cy8wppwdxl6o
+
+
 Silicon Valley enciende el debate sobre el coste real de la IA...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
