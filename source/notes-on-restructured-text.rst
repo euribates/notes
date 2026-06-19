@@ -127,3 +127,19 @@ Fuentes:
 .. _DocUtils: https://www.docutils.org/
 
 
+Parsear texto reST para obtener un documento
+------------------------------------------------------------------------
+
+Docutils representa un fichero ``.rst`` internamente como un árbol,
+(similar al DOM), donde cada nodo es una instancia derivada de
+``docutils.nodes.Node``. La raíz del árbol se representa mediante un
+objeto de tipo ``document``.
+
+.. note::
+
+    Docutils usa nombres de clases en minúsculas, contraio a lo que
+    sugiere el PEP-8, para que los nombres de los tipos coincidan
+    con los de los elementos/etiquetas a los que se refieren.
+    
+
+
