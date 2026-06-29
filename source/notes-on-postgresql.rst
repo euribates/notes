@@ -45,31 +45,44 @@ Si no lo estuviera, arrancarlo con:
 Qué es un esquema en PostgreSQL
 ------------------------------------------------------------------------
 
-Un **esquema** es un contenedor de nivel superior que agrupa tablas,
-vistas, funciones y otros objetos de base de datos relacionados. Los
-esquemas ayudan a organizar tu base de datos de forma lógica y facilitan
-la gestión de permisos, evitan conflictos de nombres y separan las
+PostgreSQL usa el término **esquema** (de forma confusa) para dos cosas
+diferentes: la estructura general de la base de datos y los espacios de
+nombres de esquema.
+
+Un **esquema** (en el segundo sentido) es un contenedor de nivel
+superior que agrupa tablas, vistas, funciones y otros objetos de base de
+datos relacionados lógicamente entre sí.
+
+PostgreSQL soporta varios esquemas dentro de una misma base de datos, lo
+que ayuda a organizar la base de datos de forma lógica y facilitan la
+gestión de permisos, evitando conflictos de nombres y separando las
 partes de una aplicación grande.
 
-PostgreSQL admite varios esquemas dentro de una misma base de datos, lo
-que te proporciona una forma potente de estructurar sistemas complejos.
+Por defecto, todas las tablas viven en el esquema ``public``. En
+aplicaciones más grandes, se pueden usar espacios de nombres para
+organizar tablas, como por ejemplo: ``auth.users``,
+``billing.invoices``, ``analytics.events``. Esto mantiene limpio el
+espacio de nombres público y permite administrar permisos a nivel de
+espacio de nombres como:
 
-En el mundo de Postgresql, el término «esquema» podría entenderse mejor
-como un *espacio de nombres*.
+.. code:: sql
 
-Dentro de una base de datos, los nombres de los esquemas deben ser
+    GRANT USAGE ON SCHEMA billing TO billing_role.
+
+Dentro de una base de datos, los nombres de los esquemas deben ser:
 únicos. Además, cada base de datos debe incluir al menos un esquema.
-Cada vez que se instala una nueva base de datos, se crea un esquema por
-defecto llamado *public*.
+Cada vez que se instala una nueva base de datos, se crea el esquema por
+defecto ya mencionado, ``public``.
 
-El comando más simple para crear un esquema dentro de una base de datos es
+El comando más simple para crear un esquema dentro de una base de datos
+es:
 
 .. code:: sql
 
     CREATE SCHEMA pokemon;
 
 Este comando requiere privilegios de creación en la base de datos, y el
-esquema recién creado, *pokemon*, será propiedad del usuario que invoca
+esquema recién creado, ``pokemon``, será propiedad del usuario que invoca
 el comando. Una invocación más compleja puede incluir elementos
 opcionales que especifiquen un propietario diferente, e incluso puede
 incluir sentencias DDL que instancien objetos de base de datos dentro
@@ -88,7 +101,7 @@ adicional al esquema con
         defense int
         );
 
-Nótese el prefijo del nombre de la tabla con el nombre del esquema. Esto
+El prefijo del nombre de la tabla indica el nombre del esquema. Esto
 es necesario porque por defecto, es decir, sin especificación explícita
 del esquema, los nuevos objetos de la base de datos se crean dentro de
 lo que es el esquema actual, que cubriremos a continuación.
@@ -97,21 +110,21 @@ El esquema actual
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Si no cualificamos el nombre de un objeto (tabla, vista, índice, etc.)
-se entenderá que está en el esquema que esté definidocomo **esquema
+se entenderá que está en el esquema que esté definido como **esquema
 actual**. Los objetos en el esquema actual pueden ser referenciados sin
 calificar, pero referirse a objetos con nombres similares en otros
 esquemas requiere calificar el nombre anteponiendo el nombre del esquema
-como arriba.
+como se vio antes.
 
 El esquema actual se deriva del parámetro de configuración
-*search_path*. Este parámetro almacena una lista separada por comas de
+``search_path``. Este parámetro almacena una lista separada por comas de
 nombres de esquemas y puede examinarse con el comando
 
 .. code:: sql
 
     SHOW search_path;
 
-o establecer un nuevo valor con
+Y establecer un nuevo valor con:
 
 .. code:: sql
 
@@ -132,8 +145,8 @@ configuración ``search_path`` revela este valor:
     SHOW search_path; Search_path-------------- "$user", public
 
 El sistema interpreta el primer valor mostrado arriba como **el nombre
-del usuario actual conectado** y acomoda el caso habitual donde cada
-usuario tiene asignado un esquema con el mismo nombre que el nombre del
+del usuario actual conectado** y se amolda al caso habitual donde cada
+usuario tiene asignado un esquema con el mismo nombre que su nombre del
 usuario. Si no se ha creado tal esquema con nombre de usuario, esa
 entrada se ignora y el esquema «público» se convierte en el esquema
 actual en el que se crean los nuevos objetos.
@@ -171,8 +184,40 @@ recursivamente un esquema todo su contenido con la opción ``CASCADE``:
 Fuentes: 
 
 - `Fundamentos de la gestión de esquemas en PostgreSQL`_
+- `Guia de diseño de Esquemas PostgreSQL`_
+
 
 .. _Fundamentos de la gestión de esquemas en PostgreSQL: https://lilinguas.com/es/fundamentos-de-la-gesti%C3%B3n-de-esquemas-en-postgresql/
+
+.. _Guia de diseño de Esquemas PostgreSQL: https://erflow.io/es/blog/postgresql-schema-design-guide
+  
+Meta Comandos de psql
+------------------------------------------------------------------------
+
+psql: el cliente que vas a usar cada día
+
+psql es el cliente de consola oficial. Es mucho más que un prompt SQL: tiene meta-comandos, ejecución de scripts, formatos de salida, variables, historial persistente y autocompletado.
+
+Meta-comandos que uso constantemente:
+
+- ``\l``               -- listar bases de datos
+- ``\c nombre``        -- conectarse a una base de datos
+- ``\dt``              -- listar tablas
+- ``\dt+``             -- con tamaños y descripciones
+- ``\d tabla``         -- describir una tabla
+- ``\d+ tabla``       -- con detalles extra
+- ``\di``              -- listar índices
+- ``\df``              -- listar funciones
+- ``\du``              -- listar roles
+- ``\dn``              -- listar schemas
+- ``\dx``              -- listar extensiones instaladas
+- ``\timing on``       -- mostrar tiempo de ejecución
+- ``\x``               -- toggle formato expandido (útil para filas anchas)
+- ``\e``               -- abrir $EDITOR para escribir la consulta
+- ``\i fichero.sql``   -- ejecutar script
+- ``\q``               -- salir
+- ``\?``               -- ayuda de meta-comandos
+
 
 Entender los roles de PostgreSQL
 ------------------------------------------------------------------------

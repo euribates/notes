@@ -156,7 +156,7 @@ escala para cada eje y una deformación de torsión o *skew*.
 
 La herencia es:
 
-.. code:: mermaid
+.. mermaid::
 
     graph LR
     
@@ -198,7 +198,7 @@ El nodo ``CanvasItem``
 
 La herencia es:
 
-.. code:: mermaid
+.. mermaid::
 
     graph LR
 
