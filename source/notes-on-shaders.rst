@@ -9,7 +9,7 @@ Shaders (Godot)
 Vectores
 ------------------------------------------------------------------------
 
-En el lenguaje de *shaders* de Godots tenemos vectores de 2, 3 y 4 
+En el lenguaje de *shaders* de Godot tenemos vectores de 2, 3 y 4 
 dimensiones. Cada uno de los valores del vector es un *float*.
 
 .. code:: c

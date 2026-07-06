@@ -23,6 +23,7 @@ extensions = [
     'sphinxcontrib.mermaid',
     'sphinx.ext.todo',
     'sphinx.ext.graphviz',
+    'metapensiero.sphinx.d2',
     'sphinx_immaterial.kbd_keys',
     ]
 
