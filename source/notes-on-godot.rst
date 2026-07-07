@@ -1221,6 +1221,152 @@ creación de diseños muy complejos que cambian de tamaño sin esfuerzo.
 Hay un tutorial en la documentación de Godot específico sobre este tipo
 de contenedores: `Usar Contenedores`_.
 
+Recursor (*resources*)
+------------------------------------------------------------------------
+
+Hemos visto que los nodos nos permiten implementar comportamiento:
+dibjujar *sprites* y modelos 3D, simular físicas, gestionar interfaces de
+usuarios, etc. Los recursos son **contenedores de datos**. No hacen nada
+por si mismos. Son los nodos los que usan los contenedores para almacenar
+su información.
+
+Otra forma de verlo es que todo lo que Godot puede leer o almacenar en un
+disco es un **Recurso**.
+
+Entre los tipos de recursos que Godot reconoce están:
+
+- Imágenes (*Texture*)
+
+- Programas (*Script*)
+
+- Modelos 3d (*Mesh*)
+
+- Animaciones (*Animation*)
+
+- Audio (*AudioStream*)
+
+- Tipografías (*Font*)
+
+- Ficheros de traducción (*Translation*)
+
+Cuando Godot carga un recurso desde el disco, solo lo carga una vez. Si
+una copia de ese recurso está en la memoria, intentar cargar el recurso de
+nuevo devolverá siempre la misma copia. Como los recursos solo contienen
+datos, no hay necesidad de duplicarlos.
+
+Godot lleva la cuenta de las veces que se ha usado un recurso, y cuando
+esta cuenta llega a cero, el recurso se libera de la memoria
+automáticamente
+
+Cualquier objeto, ya sea un nodo o un Recurso, puede exportar propiedades.
+Hay muchos tipos de propiedades, como cadenas de texto, números enteros,
+Vectores, etc., y cualquiera de estos tipos puede convertirse en un
+recurso. Esto significa que tanto los nodos como los recursos pueden
+contener recursos como propiedades:
+
+Los recursos se pueden leer desde el almacenamiento con la función
+``load``. También se puede usar ``preload``. Al contrario que ``load``, el
+compilador leerá el recurso **en tiempo de compilación**. Por esa razón
+``preload`` no acepta una cadena de texto variable, debe ser una
+constante.
+
+.. code:: gd
+
+    func _ready():
+        # Godot loads the Resource when it reads this very line.
+        var imported_resource = load("res://robi.png")
+        $sprite.texture = imported_resource
+
+Las escenas son un recurso también, pero la carga resulta un poco más
+complicada. Las escenas se salvan a disco como recursos de tipo
+``PackedScane``. Para volver a cargar la escena hay que usar
+``packeScene.instantiate()``:
+
+.. code:: gd
+
+    func _on_shoot():
+        var bullet = preload("res://bullet.tscn").instantiate()
+        add_child(bullet)
+
+Este método crea el nodo en forma de jerarquía de nodos, lo configura y
+devuelve el nodo raíz de la jerarquía. Una vez tenemos este nodo, podemos,
+por ejemplo, añadirlo al árbol de nodos de la escena actual, como se hace
+en el ejemplo.
+
+Esta aproximación ofrece varias ventajas. Al estar el recurso precargado,
+la operación de ensamblado es muy rápida. Además, no importa el número de
+sitios donde se use el recurso, solo estará cargado en memoria una vez.
+
+Se pueden crear recursos propios. Todos los recursos heredan de la case
+`Resource`_ la capacidad de:
+
+- ser usado dentro de cualquier nodo
+
+- Almacenar y recuperar datos, ya sea en modo texto o binario (Extensiones
+  ``.tres`` o ``.res``)
+
+- Gestión automática de la memoria
+
+En nuestro recursos, podemos:
+
+- Definir constantes.
+
+- Definir métodos, incluidos métodos de tipo *setter/getter* de
+  propiedades. Esto permite la abstracción y la encapsulación de
+  los datos subyacentes. Si la estructura del *script* de recurso
+  necesita cambiar, el juego que usa el recurso no necesita
+  cambiar también.
+
+- Definir señales, por lo que los recursos pueden desencadenar
+  respuestas a los cambios en los datos que administran.
+
+Nuestro recursos tienen propiedades definidas, por lo que los usuarios
+saben al 100% que sus datos existirán.  La serialización y
+deserialización de recursos es una característica incorporada del motor de
+Godot. Los usuarios no necesitan implementar una lógica personalizada para
+importar / exportar los datos de un archivo de recursos.
+
+Los recursos pueden incluso serializar subrecursos de forma recursiva, lo
+que significa que los usuarios pueden diseñar estructuras de datos aún más
+sofisticadas.
+
+Los usuarios pueden guardar Recursos como archivos de texto amigables con
+el control de versiones (*.res). Al exportar un juego, Godot serializa los
+archivos de recursos como archivos binarios (*.res) para aumentar la
+velocidad y la compresión.
+
+Diccionarios
+------------------------------------------------------------------------
+
+Los diccionarios (``Dictionary``) son una estructura de datos
+incorporada que contiene pares clave-valor. En otros lenguajes se les
+conoce también como *hash map* o *associative array*. Los diccionarios de
+Godot preservan el orden de inserción.
+
+Para definir un diccionario, usamos las llaves ``{`` y ``}``, con cada
+entrada en forma de pares ``key``: ``value``, como en el siguiente
+ejemplo.
+
+.. code:: gd
+
+    var my_dict = {} # Creates an empty dictionary.
+
+    var dict_variable_key = "Another key name"
+    var dict_variable_value = "value2"
+    var another_dict = {
+	    "Some key name": "value1",
+    	dict_variable_key: dict_variable_value,
+    }
+
+    var points_dict = { "White": 50, "Yellow": 75, "Orange": 100 }
+
+Se accede a los valores del diccionario usando los caracteres
+``[`` y ``]`` con la clave deseada. En el ejemplo anterior,
+``points_dict["White"]`` devuelve 50.
+
+Iterar un diccionario con un bucle ``for`` nos ira iterando por los
+valores de las claves.
+
 
 
 Opciones de tamaño
