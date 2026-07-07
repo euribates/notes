@@ -6,6 +6,8 @@ serve:
 SOURCEDIR := "source"
 BUILDDIR := "build"
 
+html: docs
+
 docs:
     sphinx-build -M html {{SOURCEDIR}} {{BUILDDIR}}
 

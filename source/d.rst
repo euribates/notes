@@ -6,6 +6,7 @@ D
 .. toctree::
    :maxdepth: 2
 
+   notes-on-d2 
    notes-on-data-governance
    notes-on-databases
    notes-on-datastar
