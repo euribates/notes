@@ -225,8 +225,40 @@ anterior, si este importe fuera superior.
 Noticias sobre mal uso de IA
 -----------------------------------------------------------------------
 
+
+La gran guerra legal de la IA: el mapa de las 100 demandas que acorralan a las big tech
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Más de 100 demandas, miles de millones en juego.
+
+Para que ChatGPT, Gemini o Meta AI respondan bien a la ingente cantidad de
+preguntas que sus usuarios y usuarias le hacemos cada día, años antes las
+empresas que hay detrás tomaron una decisión: conseguir datos a toda costa
+y de donde fuera. Libros, artículos periodísticos, letras de canciones,
+ilustraciones, código fuente. Su premisa era clara: era mejor pedir perdón
+que pedir permiso (Pero sin pedir perdón).
+
+
+
+
+https://www.xataka.com/servicios/quien-esta-demandando-a-quien-ia-mapa-100-juicios-que-explica-todo
+
+Why did this journal retract two 1940s papers by Max Planck?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+> The journal’s current editor-in-chief, Suzanne Scarlata of the Worcester
+> Polytechnic Institute, told Science reporter Sam Kean that she had not
+> known the papers had been retracted prior to Kean contacting her for
+> comment. “That’s crazy,” she said. “I don’t understand why they were
+> flagged. I think it just happened with their algorithm. It’s a mistake
+> they should probably rectify.”
+
+Enlaces:
+
+- https://arstechnica.com/science/2026/06/why-did-this-journal-retract-two-1940s-papers-by-max-planck/
+
 Oficial de policía acusado de crear pruebas usando la IA
-------------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 La policía ha iniciado una investigación penal contra un agente acusado de
 utilizar sistemas de inteligencia artificial (IA) para "crear pruebas

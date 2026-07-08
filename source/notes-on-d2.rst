@@ -460,6 +460,7 @@ Pero la gente de D2 mantiene una serie de iconos de uso habitual en
 <https://icons.terrastruct.com/>, por ejemplo:
 
 .. image:: https://icons.terrastruct.com/dev%2Fapache.svg
+   :width: 200
 
 
 

@@ -25,6 +25,7 @@ extensions = [
     'sphinx.ext.graphviz',
     'metapensiero.sphinx.d2',
     'sphinx_immaterial.kbd_keys',
+    'metapensiero.sphinx.d2',
     ]
 
 
