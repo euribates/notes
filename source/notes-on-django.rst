@@ -1965,7 +1965,71 @@ del fichero ``settings``, y luego podemos acceder desde la platilla:
 Fuente: `How to get URL of current page, including parameters`_ - StackOverflow
 
 
-Hacer un campo obligatorio, pero solo si no es nulo
+Evitar sobrecargar de contantes el fichero ``settings.py``
+------------------------------------------------------------------------
+
+Al definir un valor de configuración personal, debemos comprobar si
+tiene sentido que el valor sea modificable. Si no lo es, entonces no se
+trata de una configuración propiamente dicha, sino de una constante, y
+sería mejor definirla en el módulo que la utiliza.
+
+Esto permite mantener el archivo de configuración más pequeño y
+ordenado.
+
+Por ejemplo, considere este valor:
+
+.. code:: python
+
+    EXAMPLE_API_BASE_URL = "https://api.example.com"
+
+Esta variable define que el código utiliza una URL base constante, por
+lo que no es configurable. Por lo tanto, no es necesario que sea parte
+de la configuración. Puede colocarse perfectamente dentro del módulo
+apropiado, manteniendo así el archivo de configuración conciso.
+
+
+Cómo modificar un ajuste en el fichero ``settings`` de forma temporal
+------------------------------------------------------------------------
+
+Gracias a la flexibilidad de Python, es posible modificar una
+configuración en tiempo de ejecución estableciéndola directamente.
+Un caso típico es para realizar pruebas. **No** se recomiendo cambiar
+directamente los ajustes, es decir, **NO SE RECOMIENDA** hacer
+esto:
+
+
+.. code:: python 
+
+    from django.conf import settings
+
+    settings.DEBUG = True
+
+    def test_whatever(request):
+        # testing code asuming settings.DEBUG is true
+        ...
+
+
+Esta forma no activa la señal `django.test.signals.setting_changed` y
+los receptores de señales no recibirán ninguna notificación. La
+documentación de Django advierte contra este patrón. En vez de esto, hay
+que usar el decorador ``django.test.override_settings`` y otras uitilidades relacionadas:
+
+.. code:: python 
+
+    from django.conf import settings
+    from django.test import override_settings
+
+    @override_settings(DEBUG=True)
+    def test_whatever(self):
+        # testing code asuming settings.DEBUG is true
+        ...
+
+Fuentes:
+
+- `Django settings patterns to avoid`_ - `Adam Johnson`_
+
+
+Hacer un campo del modelo obligatorio, pero solo si no es nulo
 ------------------------------------------------------------------------
 
 Django soporta el crear restricciones de tipo único
@@ -2004,11 +2068,13 @@ Fuente: `Django unique=True except for blank values`_ - StackOverflow
 
 
 
+.. _Adam Johnson: https://adamj.eu/
+.. _atributos de datos: https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
 .. _Django Reset Migrations: https://simpleisbetterthancomplex.com/tutorial/2016/07/26/how-to-reset-migrations.html
+.. _Django settings patterns to avoid: https://adamj.eu/tech/2022/11/24/django-settings-patterns-to-avoid/
 .. _Django unique=True except for blank values: https://stackoverflow.com/questions/9808202/
 .. _How to get URL of current page, including parameters: https://stackoverflow.com/questions/3248682/
 .. _inyección de código: https://es.wikipedia.org/wiki/Inyecci%C3%B3n_de_c%C3%B3digo,
 .. _natural_key: https://docs.djangoproject.com/fr/4.2/topics/serialization/#natural-keys
 .. _plantillas literales de javascript: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
-.. _atributos de datos: https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
 .. _Serializing Django objects: https://docs.djangoproject.com/en/4.2/topics/serialization/#natural-keys

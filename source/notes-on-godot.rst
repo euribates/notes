@@ -136,7 +136,7 @@ Un aspecto muy importante de los nodos es que, además de las
 propiedades, podemos **asignarles un script o programa** que controle su
 comportamiento.
 
-Como eliminar un nodo de una escena
+Cómo eliminar un nodo de una escena
 ------------------------------------------------------------------------
 
 **tl/dr**: ``self.queue_free()``
@@ -145,7 +145,7 @@ La forma correcta es llamando al método ``queue_free()`` del propio
 nodo. Si el nodo no está en una escena (lo cual es raro, pero podría
 pasar) se puede eliminar simplemente con el método ``free()``.
 
-Como convertir una rama del árbol de nodos en una escena
+Cómo convertir una rama del árbol de nodos en una escena
 ------------------------------------------------------------------------
 
 Simplemente hay que arrastrar el nodo de la rama que queremos que sea la
@@ -227,9 +227,9 @@ El siguiente muestra un diagrama simplificado de alguno de los nodos
 disponibles en GDScript:
 
 .. d2::
-   :scale: 0.8
+   :scale: 0.5
 
-    direction: right
+    direction: left
 
     Object <- Node
     Node <- Node3D
@@ -238,7 +238,6 @@ disponibles en GDScript:
     Node <- AnimationMixer
     AnimationMixer <- AnimationPlayer
     Node <- CanvasItem
-    CanvasItem <- Control
     CanvasItem <- CollisionObject2D
     CollisionObject2D <- PhysicsBody2D
     PhysicsBody2D <- RigidBody2D
@@ -248,9 +247,71 @@ disponibles en GDScript:
     Object <- InputMap
 
 
+.. _Object
+.. index:: single:Object; Goodt
+El objeto ``Object``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+La clase ``Object`` es la base de la jerarquía de objetos de GDScript, y
+en en esencia una top de dato `Variante`_. Gracias a las variantes, las
+variables son capaces de cambiar el tipo de valor que contienen
+libremente.
+
+La función global ``typeof()`` devuelve el valor enumerado del tipo de
+variante almacenado en la variable actual.
+
+.. code:: gd
+
+    var foo = 2
+    match typeof(foo):
+        TYPE_NIL:
+            print("foo es nulo (null)")
+        TYPE_INTEGER:
+            print("foo es un entero")
+        TYPE_OBJECT:
+            # Ten en cuenta que los objetos son su propia categoría
+            # especial. Para obtener el nombre del tipo de objeto
+            # subyacente, necesitas el método ``get_class()``.
+
+Una variante sólo ocupa 20 bytes y puede almacenar casi cualquier tipo
+de dato del motor en su interior. Las variantes rara vez se utilizan
+para mantener información durante largos periodos de tiempo. En cambio,
+se utilizan principalmente para la comunicación, la edición, la
+serialización y el desplazamiento de datos.
+
+Una variante:
+
+- Puede almacenar casi cualquier tipo de datos.
+
+- Puede realizar operaciones entre muchas variantes. GDScript las
+  utiliza como su tipo de dato atómico/nativo.
+
+- Puede ser *hashed*, por lo que puede ser comparado rápidamente con
+  otras variantes.
+
+- Puede ser usado para convertir con seguridad entre tipos de datos.
+
+- Puede ser usado para abstraer métodos que están siendo llamados
+  y sus argumentos. Godot exporta todas sus funciones a través de
+  variantes.
+
+- Puede utilizarse para diferir llamadas o mover datos entre hilos.
+
+- Puede ser serializado como binario, y ser almacenado en el disco, o
+  transferido a través de la red.
+
+- Puede ser serializado como texto y ser usado para imprimir valores
+  y configuraciones editables.
+
+- Puede funcionar como una propiedad exportada, de modo que el editor
+  puede editarla globalmente.
+
+- Puede ser usado por diccionarios, *arrays*, *parsers*, etc.
+
 .. _Node:
-El node :index:`Node`
-------------------------------------------------------------------------
+.. index:: single:Node; Goodt
+El nodo ``Node``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Herencia: `Object`_ ← `Node`_
 
@@ -266,11 +327,10 @@ al instanciar escenas dentro de otras), se puede asignar un
 quién instanció qué nodo, lo cual es útil principalmente al escribir
 editores y herramientas.
 
-.. index::
-   single:Node2D; Godot
 .. _Node2D:
-El nodo `Node2D`
-------------------------------------------------------------------------
+.. index:: single:Node2D; Godot
+El nodo ``Node2D``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Un nodo ``Node2d`` representa un objeto pensado para ser usado en un
 juego 2D. Tiene una posición, una rotación (aplicada en el eje ``Z``), una
@@ -304,10 +364,10 @@ Métodos de ``Node2D``:
   :math:`x` del nodo se oriente hacia el punto indicado, que debe estar
   expresado en el espacio global de coordenadas.
 
-.. index:: single: Node3D;Godot
 .. _Node3D:
-El nodo `Node3D`
-------------------------------------------------------------------------
+.. index:: single: Node3D;Godot
+El nodo ``Node3D``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Herencia: `Object`_ ← `Node`_ ← `Node3D`_
 
@@ -331,10 +391,10 @@ Los nodos 3D almacenan su rotación en una matriz llamada ``basis``.
     los métodos que necesiten ángulos deben recibirlos
    en radianes.
 
-.. index:: single:CanvasItem; Godot
 .. _CanvasItem:
-El nodo `CanvasItem`
-------------------------------------------------------------------------
+.. index:: single:CanvasItem; Godot
+El nodo ``CanvasItem``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Herencia: `Object`_ ← `Node`_ ← `CanvasItem`_
 
@@ -360,10 +420,10 @@ método especial ``_draw()``, ``_notificacion()`` (con el valor
 - `draw_circle()
   <https://docs.godotengine.org/en/stable/classes/class_canvasitem.html#class-canvasitem-method-draw-circle>`_
 
-.. index:: single:CanvasLayer; Godot
 .. _CanvasLayer:
-El nodo `CanvasLayer`
------------------------------------------------------------------------
+.. index:: single:CanvasLayer; Godot
+El nodo ``CanvasLayer``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Herencia: `Object`_ ← `Node`_ ← `CanvasLayer`_
 
@@ -401,10 +461,10 @@ con una ``CanvasLayer`` en la capa :math:`-10`. La pantalla con los
 puntos, el contador de vida y el botón de pausa se pueden crear en la
 capa :math:`10`.
 
-.. index:: single:Area2D; Godot
 .. _Area2D:
+.. index:: single:Area2D; Godot
 El nodo ``Area2D``
-------------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Herencia: `Object`_ ← `Node`_ ← `CanvasItem`_ ← `Node2D`_ ←
 `CollisionObject2D`_ ← `Area2D`_
@@ -415,11 +475,10 @@ Para ellos requiere de un ``CollisionShape`` que define la superficie o
 área de colisión estática, ``Area2D`` está buscando activamente
 colisiones que se produzcan en esa área.
 
-.. index:: 
-    single: RigidBody2D; Godot
 .. _RigidBody2D:
+.. index:: single: RigidBody2D; Godot
 El nodo ``RigidBody2D``
-------------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Herencia: `Object`_ ← `Node`_ ← `CanvasItem`_ ← `CollisionObject2D`_
 ← `PhysicsBody2D`_ ← `RigidBody2D`_
@@ -449,9 +508,11 @@ que cualquier fuerza aplicada provoca un movimiento continuo.
 Podemos usar el método ``apply_force`` para aplicar una fuerza sobre el
 cuerpo.
 
+
 .. CollisionShape2D:
-El nodo :index:`CollisionShape2D`
-------------------------------------------------------------------------
+.. index:: single:CollisionShape2D; Godot
+El nodo ``CollisionShape2D``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Herencia: `Object`_ ← `CanvasItem`_ ← `Node2D`_ <-
 `CollisionShape2D`_
@@ -464,11 +525,10 @@ incluye formas geométricas como rectángulos, círculos y polígonos, entre
 otras.
 
 
-.. index::
-   single: _PhysicsBody2D;Godot
 .. _PhysicsBody2D:
+.. index:: single: _PhysicsBody2D;Godot
 El nodo ``PhysicsBody2D``
-------------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Herencia: `Object`_ ← `Node`_ ← `CanvasItem`_ ← `Node2d`_ ← `CollisionObject3d`_ ← `PhysicsBody2D`_
 
@@ -500,11 +560,10 @@ Algunos de sus métodos más importantes son:
   la recuperación de colisiones.
 
 
-.. index::
-   single: _AnimationPlayer;Godot
 .. _AnimationPlayer:
-El nodo :index:`AnimationPlayer`
-------------------------------------------------------------------------
+.. index:: single: _AnimationPlayer;Godot
+El nodo ``AnimationPlayer``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Herencia: `Object`_ ← `Node` ← `AnimationMixer`_ ← `AnimationPlayer`_
 
@@ -556,12 +615,11 @@ que las que se pueden hacer usando solo `tweens`_. Puede ser también
 más cómodo usar la pista de animaciones, que es un entorno interactivo,
 que definir la animación en código.
 
-.. index:: 
-    single: CharacterBody2D; Godot
-.. _CharacterBody2D:
 
+.. _CharacterBody2D:
+.. index:: single:CharacterBody2D;Godot
 El nodo ``CharacterBody2D``
-------------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Herencia: `Object`_ ← `Node`_ ← `CanvasItem`_ ← `Node2D`_ ←
 `CollisionObject2D`_ ← `PhysicsBody2D`_ ← `CharacterBody2D`_
@@ -935,7 +993,7 @@ permitiéndonos saber que se ha capturado la moneda.
 Las señales se pueden conectar desde el editor, o mediante código.
 
 Cómo conectar una señal con una función mediante código
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Se pueden conectar una función con una señal (En términos del patrón
 *Observer*, una suscripción). Un caso habitual es cuando se crean o
@@ -1167,21 +1225,14 @@ al presionarlo, sin solicitar confirmación al usuario.
 Al heredar de ``BaseButton``, tiene todas las propiedades y métodos comunes
 asociados a este nodo.
 
-Como usar HSplitContainer
+
+.. _HSplitContainer
+.. index:: single:HSplitContainer;Godot
+Cómo usar HSplitContainer
 ------------------------------------------------------------------------
 
-.. mermaid::
+Herencia: `Object`_ ← `Node`_ ← `ConvasItem`_ ← `Control`_ ← `Container` ← `HSplitContainer`_
    
-   treeView-beta
-
-   Object
-     Node
-       CanvasItem
-         Control
-           Container
-             SplitConpainer
-                
-
 Un contenedor que acepta dos (y solo dos) controles secundarios, los
 dispone horizontalmente y proporciona un control divisor para ajustar la
 proporción de la división. El divisor se puede arrastrar para cambiar la
@@ -1234,12 +1285,13 @@ control que sea un contenedor.
 .. _AnimatableBody2D: https://docs.godotengine.org/en/stable/classes/class_animatablebody2d.html#class-animatablebody2d
 .. _Collision Layers and Masks in Godot 4: https://www.gotut.net/collision-layers-and-masks-in-godot-4/
 .. _Curva de Bézier: https://es.wikipedia.org/wiki/Curva_de_B%C3%A9zier
+.. _DisplayServer: https://docs.godotengine.org/en/stable/classes/class_displayserver.html
+.. _GDScript - Annotations: https://docs.godotengine.org/en/4.7/classes/class_@gdscript.html#annotations
 .. _move_and_slide: https://docs.godotengine.org/en/stable/classes/class_characterbody2d.html#class-characterbody2d-method-move-and-slide
 .. _Patrón Observador (Observer): https://es.wikipedia.org/wiki/Observer_(patr%C3%B3n_de_dise%C3%B1o)
 .. _SceneTree: https://docs.godotengine.org/en/4.4/classes/class_scenetree.html
-.. _DisplayServer: https://docs.godotengine.org/en/stable/classes/class_displayserver.html
 .. _torque: https://es.wikipedia.org/wiki/Momento_de_fuerza
 .. _Usar Contenedores: https://docs.godotengine.org/es/4.x/tutorials/ui/gui_containers.html
 .. _UX: https://es.wikipedia.org/wiki/Experiencia_de_usuario
-.. _GDScript - Annotations: https://docs.godotengine.org/en/4.7/classes/class_@gdscript.html#annotations
+.. _Variante: https://en.wikipedia.org/wiki/Variant_type_(COM)
 .. _árbol jerárquico: https://es.wikipedia.org/wiki/%C3%81rbol_(inform%C3%A1tica)
