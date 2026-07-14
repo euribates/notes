@@ -198,6 +198,7 @@ console.trace()
 
 Outputs a stack trace.
 
+
 Cómo copiar texto de una página web que lo haya deshabilitado 
 ------------------------------------------------------------------------
 
@@ -232,7 +233,7 @@ Overflow <https://stackoverflow.com/questions/55315209/enable-copy-and-paste-for
 Cómo reactivar el menú derecho del ratón
 ------------------------------------------------------------------------
 
-Usa el siguiente código JavaScript en la consola del navegador
+Usa el siguiente código JavaScript en la consola del navegador:
 
 .. code:: js
 
@@ -241,3 +242,92 @@ Usa el siguiente código JavaScript en la consola del navegador
 Fuente: `javascript - How to re-enable right click so that I can inspect
 HTML elements in Chrome? - Stack
 Overflow <https://stackoverflow.com/questions/21335136/how-to-re-enable-right-click-so-that-i-can-inspect-html-elements-in-chrome>`_
+
+
+Cómo usar la API de almacenamiento web
+------------------------------------------------------------------------
+
+La API de almacenamiento web permite almacenar información de tipo
+clave/valor, que se almacena en el espacio local del usuario, gestionado
+por el navegador. Es similar a ``SessionStorage``, pero este último guarda
+la información mientras el navegador esté abierto, incluyendo recargas de
+página y restablecimientos, mientras que ``LocalStorage`` persiste
+incluso cuando el navegador se cierra.
+
+Estos mecanismos están disponibles mediante las propiedades
+``Window.sessionStorage`` y ``Window.localStorage``. Al invocar uno de
+éstos, se creará una instancia del objeto ``Storage``, a través del cual
+los datos pueden ser creados, recuperados y eliminados. Son objetos de
+almacenamiento diferente según su origen; funcionan y son controlados
+por separado.
+
+.. note:: 
+
+    Esta API está disponible en las versiones actuales de todos los
+    navegadores principales. Una prueba de disponibilidad es necesaria sólo
+    para navegadores muy antiguos, como Internet Explorer 6 o
+    7.
+
+Dependiendo del navegador, su configuración, etc, comprobar si esta API
+está disponible puede resultar conflictivo. Por ejemplo, solo intentar
+acceder a la propiedad ``LocalStorage`` puede provocar una excepción. El
+siguiente código intenta resolver este problema:
+
+.. code:: js
+
+    function storageAvailable(type) {
+        try {
+            var storage = window[type],
+            x = "__storage_test__";
+            storage.setItem(x, x);
+            storage.removeItem(x);
+            return true;
+        } catch (e) {
+            return (
+            e instanceof DOMException &&
+            // everything except Firefox
+            (e.code === 22 ||
+                // Firefox
+                e.code === 1014 ||
+                // test name field too, because code might not be present
+                // everything except Firefox
+                e.name === "QuotaExceededError" ||
+                // Firefox
+                e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            storage.length !== 0
+            );
+        }
+    }
+
+Que se puede usar así:
+
+.. code::
+
+    if (storageAvailable("localStorage")) {
+        // Yippee! We can use localStorage awesomeness
+    } else {
+        // Too bad, no localStorage for us
+    }
+
+El método ``Storage.getItem(clave)`` se usa para obtener un dato de la
+memoria; el método ``storage.setItem(clave, valor)``. Tanto las claves
+como los valores son siempre cadenas de texto. Si se usa un número como
+clave, se convierte a texto. Con ``storage.removeItem(clave)`` borramos la
+entrada. También se puede usar ``Storage.length`` para probar si el objeto
+de almacenamiento está vació o no. El método ``Storage.clear()`` no recibe
+argumentos; vacía todo el objeto de almacenamiento de ese dominio.
+
+Cómo se comentó, los valores almacenados son siempre cadenas de texto.
+Podemos almacenar valores más complejos usando JSON y las llamadas
+a ``JSON.stringify()`` y ``JSON.parse``
+
+Responder a cambios en la memoria con el evento ``StorageEvent``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Se dispara un eveno ``StorageEvent`` siempre que se hace un cambio al
+objeto ``LocalStorage``. Este evento es una manera para que las otras
+páginas del dominio que usan la memoria sincronicen los cambios que se
+están haciendo. Las páginas en otros dominios no pueden acceder a los
+mismos objetos de almacenamiento.
+
