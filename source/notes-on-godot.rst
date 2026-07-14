@@ -877,7 +877,7 @@ interpolando su valor hasta llegar a un valor final. El nombre proviene
 de *in betweening*, una técnica de animación en la que se especifican
 valores claves y el ordenador calcula los *frames* intermedios.
 
-Su uso es habitual cuando desconocemos los valores finales con
+Su uso es habitual cuando conocemos los valores finales con
 antelación. Por ejemplo, interpolar el nivel de zoom de una cámara es
 sencillo con un *Tween*, y más complicado usando un ``AnimationPlayer``.
 Además, consumen menos recursos que ``AnimationPlayer``, por lo que
@@ -1027,7 +1027,7 @@ Cómo crear y trabajar con tus propias señales
 ------------------------------------------------------------------------
 
 Se pueden crear señales personales en un *script*. Supongamos que queremos
-mostrar una pantalla de “*Game over*” cuando la salud del jugador llegue a
+mostrar una pantalla de “**Game over**” cuando la salud del jugador llegue a
 cero. Podríamos crear una señal propia, por ejemplo ``died`` o
 ``amochado`` (o el nombre que se nos ocurra), y emitir esa señal cuando
 la salud llegue a cero. Lo primero será definir la señal usando la palabra
