@@ -220,6 +220,19 @@ ejecuta. También podemos fijar la semilla con ``seed(int)``.
 - La función ``randi_range(int from, int to) -> int`` devuelve un entero
   comprendido entre los valores ``from`` y ``to``, ambos inclusive.
 
+Qué son las partículas
+------------------------------------------------------------------------
+
+Las **partículas** (*Particles*) son una herramienta que nos permite
+crear efectos visuales relativamente complicados. Con ella podemos crear
+y animar cientos o miles de elementos, las partículas a la vez. Con
+estas partículas podemos representar explosiones, fuego, polvo, chispas
+y muchos efectos más.
+
+Para ello se usa un nodo en particular, ``GPUParticles3D``. Podemos
+hacer que este objeto emita o deja de emitir partículas con la propiedad
+``emitting``.
+
 Herencia de nodos
 ------------------------------------------------------------------------
 
@@ -231,20 +244,27 @@ disponibles en GDScript:
 
     direction: left
 
+    Object <- InputMap
     Object <- Node
+    Node <- AnimationMixer
+    AnimationMixer <- AnimationPlayer
     Node <- Node3D
     Node3D <- GridMap
     Node3D <- Camera3D
-    Node <- AnimationMixer
-    AnimationMixer <- AnimationPlayer
+    Node3D <- Path3D
+    Node3D <- PathFollow3D
     Node <- CanvasItem
+    CanvasItem <- Node2D
     CanvasItem <- CollisionObject2D
     CollisionObject2D <- PhysicsBody2D
     PhysicsBody2D <- RigidBody2D
-    CanvasItem <- Node2D
     Node2D <- CollisionShape2D
     CanvasItem <- Control
-    Object <- InputMap
+    Control <- Container
+    Container <- HSplitContainer
+    Control <- BaseButton
+    BaseButton <- Button
+    Button <- CheckButton
 
 
 .. _Object
@@ -867,19 +887,62 @@ oculta el objeto. La propiedad y el método están definidos en la clase
 Solo hay que configurar la visibilidad del nodo raíz, todos los nodos
 descendientes heredan la visibilidad del padre.
 
+
+.. _RefCounted:
+RefCounted
+------------------------------------------------------------------------
+
+Herencia: `Object`_ ← `RefCounted`_
+
+**RefCounted** es la clase base, para cualquier objeto que mantenga un
+contador de referencias, como por ejemplo los objetos de tipo
+`Resource`_ y muchos otros.
+
+Los objetos ``RefCounted`` mantienen un contador de referencias interno
+para liberarse automáticamente cuando ya no se utilizan, y solo entonces.
+Por lo tanto, no es necesario liberarlos manualmente con
+``Object.free()``.
+
+.. note::
+
+    Las instancias de ``RefCounted`` atrapadas en una referencia cíclica
+    no se liberarán automáticamente. Por ejemplo, si un nodo mantiene
+    una referencia a la instancia ``A``, que directa o indirectamente
+    mantiene una referencia a ``A``, el contador de referencias de ``A``
+    será 2. La destrucción del nodo dejará a ``A`` con un contador de
+    referencias de 1, lo que provocará una fuga de memoria. Para evitar
+    esto, se puede debilitar una de las referencias del ciclo con
+    ``@GlobalScope.weakref()``.
+
+En la gran mayoría de los casos de uso, basta con instanciar y utilizar
+tipos derivados de ``RefCounted``. Los métodos proporcionados en esta
+clase son por lo general solo para usuarios avanzados y pueden causar
+problemas si se utilizan incorrectamente.
+
+Métodos:
+
+ - ``get_reference_count() -> int``: Devuelve el contador de
+   referencias.
+
+
+.. index:: single:Tweens;Godot
 .. _tweens:
 Cómo hacer animaciones sencillas con *tweens*
 ------------------------------------------------------------------------
 
-Un **``Tween``** es un objeto ligero usado para crear desde programación
+Herencia: `Object`_ ← `RefCounted`_ ← `Tween`_
+
+Un *``Tween``* es un objeto ligero usado para crear desde programación
 animaciones sencillas. Funciona modificando un valor numérico e
 interpolando su valor hasta llegar a un valor final. El nombre proviene
 de *in betweening*, una técnica de animación en la que se especifican
 valores claves y el ordenador calcula los *frames* intermedios.
 
-Su uso es habitual cuando conocemos los valores finales con
-antelación. Por ejemplo, interpolar el nivel de zoom de una cámara es
+Su uso es habitual cuando **no** conocemos los valores finales **con
+antelación**. Por ejemplo, interpolar el nivel de zoom de una cámara
+cuando ese nivel es ajustado por el usuario durante el juego es muy
 sencillo con un *Tween*, y más complicado usando un ``AnimationPlayer``.
+
 Además, consumen menos recursos que ``AnimationPlayer``, por lo que
 están orientados a animaciones sencillas. Se usan con un patrón de
 **dispara y olvídate** (*Fire and forget*).
@@ -1142,15 +1205,7 @@ Cómo usar un GridMap
 
 Un **``GridMap``** es el equivalente en 3D del ``TimeMap``.
 
-La herencia de este nodo es:
-
-.. mermaid::
-
-    graph LR
-
-    Node --> Object;
-    Node3D --> Node;
-    GridMap --> Node3D;
+Herencia: `Object`_ ← `Node`_ ← `Node3D`_ ← `GridMap`_
 
 Para usar un ``GridMap``, se debe crear un recurso llamado
 ``MeshLibrary``, que básicamente es el conjunto de elementos que podemos
@@ -1162,28 +1217,22 @@ se definan en la escena también se conservan en la librería.
 
 Al exportar, debemos usar la extensión ``.tres`` (*text resource*).
 
+.. _Path3D:
 Qué es y para que sirve el nodo ``Path3D``
 ------------------------------------------------------------------------
 
-.. mermaid::
-
-    graph LR
-    Node3d --> Node;
-    Node --> Object;
+Herencia: `Object`_ ← `Node`_ ← `Node3D` ← `Path3D`_
 
 Un objeto de tipo **``Path3D``** almacena una `curva de Bézier`_ en tres
 dimensiones. Tiene muchos usos: definir rutas que seguir, sitios de
 generación de elementos, combinarse con un ``CSG Shape`` para construir
 una carretera, etc.
 
+.. _PathFollow3D:
 Que es y para que sirve el nodo ``PathFollow3D``
 ------------------------------------------------------------------------
 
-.. mermaid::
-
-    graph LR
-    Node3d --> Node;
-    Node --> Object;
+Herencia: `Object`_ ← `Node`_ ← `Node3D` ← `PathFollow3D`_
 
 Muy vinculado con el nodo anterior, ``Path3d``, el nodo ``PathFollow3D``
 nos permite **mover cosas a lo largo de una curva** descrita por un
@@ -1200,19 +1249,13 @@ el uno el final.
 Si hacemos que un nodo sea hijo de un ``PathFollow3D``, este nodo se
 moverá siguiendo la curva.
 
+.. _CheckButton:
+.. index:: single:CheckButton;Godot
 CheckButton
 ------------------------------------------------------------------------
 
-.. mermaid::
-
-    graph LR
-
-    Node --> Object;
-    CanvasItem --> Node;
-    Control --> CanvasItem;
-    BaseButton --> Control;
-    Button --> BaseButton;
-
+Herencia: `Object`_ ← `Node`_ ← `CanvasItem`_ ← `Control` ← `BaseButton`
+← `Button`_ <- `CheckButton`_
 
 **``CheckButton``** es un botón que representa una selección binaria que se
 muestra como una casilla de verificación. Funciona de forma similar a la
@@ -1228,7 +1271,7 @@ asociados a este nodo.
 
 .. _HSplitContainer
 .. index:: single:HSplitContainer;Godot
-Cómo usar HSplitContainer
+HSplitContainer
 ------------------------------------------------------------------------
 
 Herencia: `Object`_ ← `Node`_ ← `ConvasItem`_ ← `Control`_ ← `Container` ← `HSplitContainer`_
@@ -1239,20 +1282,19 @@ proporción de la división. El divisor se puede arrastrar para cambiar la
 relación de tamaño entre los controles secundarios.
 
 
+.. _Container:
+.. index:: single:Container;Godot
 Cómo usar contenedores para la interfaz de usuario
 ------------------------------------------------------------------------
+
+Herencia: `Object`_ ← `Node`_ ← `CanvasItem` ← `Control` ← `Container`_
 
 Los *containers* o :index:`contenedores` proporcionan un control
 enorme sobre la disposición de los controles en la pantalla. A modo de
 ejemplo, el interfaz de Godot utiliza contenedores para su interfaz.
 
-
-Container ▶ Control ▶ CanvasItem ▶ Node ▶ Object
-
-
-
-Cuando se utiliza un Contenedor (Cualquier clase que derive de
-``Container``), todos los hijos que contiene renuncian a su capacidad de
+Cuando se utiliza un Contenedor (o cualquier clase que derive de
+`Container`_), todos los hijos que contiene renuncian a su capacidad de
 posicionarse o de cambiar de tamaño, y delegan esa responsabilidad al
 propio contenedor. Esto significa que el contenedor controlara tanto su
 posición como su tamaño, y cualquier intento de modificar estas
@@ -1272,12 +1314,13 @@ creación de diseños muy complejos que cambian de tamaño sin esfuerzo.
 Hay un tutorial en la documentación de Godot específico sobre este tipo
 de contenedores: `Usar Contenedores`_.
 
-Recursor (*resources*)
+.. _Resource:
+Recursos (*resources*)
 ------------------------------------------------------------------------
 
 Hemos visto que los nodos nos permiten implementar comportamiento:
 dibjujar *sprites* y modelos 3D, simular físicas, gestionar interfaces de
-usuarios, etc. Los recursos son **contenedores de datos**. No hacen nada
+usuarios, etc. Los **recursos** son **contenedores de datos**. No hacen nada
 por si mismos. Son los nodos los que usan los contenedores para almacenar
 su información.
 

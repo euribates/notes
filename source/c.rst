@@ -13,6 +13,7 @@ C
    notes-on-chip8
    notes-on-cookiecutter
    notes-on-cra
+   notes-on-creativity
    notes-on-ckan
    notes-on-css-for-printers
    notes-on-css
