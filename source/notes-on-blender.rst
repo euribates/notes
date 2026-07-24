@@ -20,6 +20,7 @@ Activar, en ``Preferencias`` -> ``Interfaz``, las opciones de
 
 .. figure:: ./blender/developers-preference.png
    :alt: Preferencias -> Interfaz
+   :align: center
 
    Preferencias -> Interfaz
 
@@ -69,6 +70,7 @@ la opción de aplicarlos todos.
 
 .. figure:: blender/apply-menu.png
    :alt: Menú de aplicar transformaciones
+   :align: center
 
    Menú de aplicar transformaciones
 
@@ -242,9 +244,12 @@ caso solo hay un único y claro punto de control. Además, es más
 eficiente desde el punto de vista computacional. Si es un objeto
 completo, usará el origen del objeto.
 
-.. image:: blender/track-to.png
-   width: 314
-   height: 375
+.. figure:: blender/track-to.png
+   :width: 314
+   :height: 375
+   :align: center
+
+   Track camera to object
 
 
 
@@ -323,6 +328,7 @@ This values are a good example:
 
 .. figure:: ./blender/blender-noise.png
    :alt: Ajustes de blender para fondo de estrellas
+   :align: center
 
    Ajustes de blender para fondo de estrellas
 
@@ -627,6 +633,55 @@ Distintos usos del compositor
 
 Fuente: https://www.youtube.com/watch?v=8x2qfWNHedM
 
+Nomenclatura y convenciones de nombres para esqueletos (*bones*)
+------------------------------------------------------------------------
+
+Blender proporciona ciertas utilidades para trabajar con huesos si
+seguimos ciertas reglas para indicar la simetría izquierda/derecha.
+
+En el caso muy común de que el esqueleto o armadura (*armature*)
+presente simetría bilateral, es decir, izquierda/derecha. En estos
+casos, lo recomendado es:
+
+- Primero, darle a cada hueso un nombre significativo, como ``pierna`` o
+  ``leg``, ``arm`` o ``brazo``, etc.
+
+- Para cada hueso que sea un reflejo de otro, a cada uno de los dos
+  huesos se le añade un indicador. Estos indicadores pueden aplicarse
+  como prefijos (por ejemplo ``L_calf_bone``) o sufijos
+  (``calf_bone.R``). Con estos indicadores, BLender sabrá que los dos
+  huesos son simétricos uno respecto al otro y los tratará como tales.
+
+- Se pueden usar diferentes tipos de separadores (incluyendo no usar
+  ninguno), los siguientes son ejemplos válidos usando diferentes
+  separadores:
+
+  - ninguno: ``handLeft`` <–> ``handRight``
+
+  - subrayado: ``hand_L`` <–> ``hand_R``
+
+  - punto: ``hand.l`` <–> ``hand.r``
+
+  - guión: ``hand-l`` <–> ``hand-r``
+
+  - espacio: ``hand LEFT`` <–> ``hand RIGHT``
+
+  Los ejemplo anteriores siguen siendo válidos si usamos la forma
+  prefija, ``r.hand``. Además se pueden usar las abreviaturas ``L``
+  para ``Left`` y ``R``, para ``RIGHT``, así que ``hand_L`` también es
+  válido. Pero si usamos la abreviatura, entonces el separador es
+  obligatorio, no puede suprimirse (Es decir ``LHand`` no es válido).
+
+.. figure:: blender/bones_naming.png
+   :width: 480
+   :height: 290
+   :align: center
+   
+   Ejemplo de nomenclatura de huesos
+
+Fuente: `Naming`_ : Blender Manual
+
+
 Blender API
 ------------------------------------------------------------------------
 
@@ -679,7 +734,7 @@ Blender, seleccione el padre, luego presione :keys:`shift+G` y elija Hijos
 Alternativamente, en el árbol de la escena, hacer doble clic en el objeto
 padre para seleccionarlo a él y a todos sus hijos anidados.
 
-Cómo establecer una foto como fondo globl en Blender
+Cómo establecer una foto como fondo global en Blender
 ------------------------------------------------------------------------
 
 Para establecer una foto como fondo del mundo en Blender, cambia al 
@@ -691,3 +746,4 @@ dinámico (HDRI_) para asegurar que se ajuste correctamente a la escena,
 permitiendo que funcione como fondo visual y también como fuente de luz.
 
 .. _HDRI: https://es.wikipedia.org/wiki/Im%C3%A1genes_de_alto_rango_din%C3%A1mico 
+.. _Naming: https://docs.blender.org/manual/en/latest/animation/armatures/bones/editing/naming.html

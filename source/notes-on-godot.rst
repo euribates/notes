@@ -6,7 +6,8 @@ Godot
 .. contents:: Relación de contenidos
     :depth: 3
 
-Sobre :index:`Godot`
+.. index:: single:Godot
+Sobre Godot
 ------------------------------------------------------------------------
 
 **Godot** es un motor de vídeo juegos 2D y 3D multiplataforma, libre y
@@ -136,21 +137,6 @@ Un aspecto muy importante de los nodos es que, además de las
 propiedades, podemos **asignarles un script o programa** que controle su
 comportamiento.
 
-Cómo eliminar un nodo de una escena
-------------------------------------------------------------------------
-
-**tl/dr**: ``self.queue_free()``
-
-La forma correcta es llamando al método ``queue_free()`` del propio
-nodo. Si el nodo no está en una escena (lo cual es raro, pero podría
-pasar) se puede eliminar simplemente con el método ``free()``.
-
-Cómo convertir una rama del árbol de nodos en una escena
-------------------------------------------------------------------------
-
-Simplemente hay que arrastrar el nodo de la rama que queremos que sea la
-raíz de la nueva escena a la sección de Recursos (``FileSystem``), en la
-esquina inferior izquierda.
 
 La función ``get_tree()``
 ------------------------------------------------------------------------
@@ -256,8 +242,11 @@ disponibles en GDScript:
     Node <- CanvasItem
     CanvasItem <- Node2D
     CanvasItem <- CollisionObject2D
+    CollisionObject2D <- Area2D
     CollisionObject2D <- PhysicsBody2D
     PhysicsBody2D <- RigidBody2D
+    PhysicsBody2D <- StaticBody2D
+    PhysicsBody2D <- CharacterBody2D
     Node2D <- CollisionShape2D
     CanvasItem <- Control
     Control <- Container
@@ -327,6 +316,7 @@ Una variante:
   puede editarla globalmente.
 
 - Puede ser usado por diccionarios, *arrays*, *parsers*, etc.
+
 
 .. _Node:
 .. index:: single:Node; Goodt
@@ -440,6 +430,48 @@ método especial ``_draw()``, ``_notificacion()`` (con el valor
 - `draw_circle()
   <https://docs.godotengine.org/en/stable/classes/class_canvasitem.html#class-canvasitem-method-draw-circle>`_
 
+.. _CollisionObject2D:
+.. index:: single:CollisionObject2D; Godot
+El nodo ``CollisionObject2D``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Herencia: `Object`_ ← `Node`_ ← `CanvasItem`_ ← `Node2d`_ ← `CollisionObject2d`_
+
+
+El nodo ``CollisionObject2D`` es una clase abstracta para todos los
+objetos afectados por la física 2D. Un objeto de este tipo puede
+almacenar una serie de objetos de tipo `Shape2D`_, que sirven para
+detectar colisiones. Cada forma debe tener asignado un propietario, (que
+no son nodos y no aparecen el en editor) pero que son accesibles desde
+el código con una serie de métodos ``shape_owner_*``.
+
+.. warning::
+   Con una escala no uniforme, es probable que este nodo no se comporte
+   como se espera. Se recomienda mantener la misma escala en todos los
+   ejes y ajustar su(s) forma(s) de colisión.
+
+
+Las propiedades más relevantes son:
+
+- ``collision_later (int)``: Por defecto ``1``
+- ``collision_mask (int)`` : Por defecto ``1``
+- ``collision_priority (float)`` : Por defecto ``1.0``
+- ``disable_mode (DisableMode)`` : Por defecto ``0``
+- ``input_capture_on_flag (bool)``: Por defecto ``false``
+- ``input_ray_pickable (bool)``: Por defecto ``true``
+
+Los métodos más relevantes son:
+
+- ``_input_event(camera: Camera3D, event: InputEvent, event_position:
+  Vector3, normal: Vector3, shape_idx: int) virtual``
+
+- ``_mouse_enter()``
+
+= ``_mouse_exit``
+
+
+
+
 .. _CanvasLayer:
 .. index:: single:CanvasLayer; Godot
 El nodo ``CanvasLayer``
@@ -481,6 +513,7 @@ con una ``CanvasLayer`` en la capa :math:`-10`. La pantalla con los
 puntos, el contador de vida y el botón de pausa se pueden crear en la
 capa :math:`10`.
 
+
 .. _Area2D:
 .. index:: single:Area2D; Godot
 El nodo ``Area2D``
@@ -494,6 +527,60 @@ Para ellos requiere de un ``CollisionShape`` que define la superficie o
 área de colisión. Mientras que ``CollisionShape`` simplemente define un
 área de colisión estática, ``Area2D`` está buscando activamente
 colisiones que se produzcan en esa área.
+
+
+.. _PhysicsBody2D:
+.. index:: single: PhysicsBody2D; Godot
+El nodo ``PhysicsBody2D``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Herencia: `Object`_ ← `Node`_ ← `CanvasItem`_ ← `Node2D`_ ←
+`CollisionObject2D`_ <- `PhysicsNode2D`_
+
+La clase ``PhysicsBody2D`` es una clase abstracta de la que derivan todos
+los objetos que se ven afectados por el motor de físicas. Todos los objetos que responden a fuerzas físicas, como `CharacterBody2D`_, `RigidBody2D`_ o `StaticBody2D`_ derivan de esta clase.
+
+Métodos:
+
+- ``get_gravity() -> Vector2D``: Devuelve el vector de gravedad
+  calculado a partir de todas las fuentes que pueden afectar al cuerpo,
+  incluidas todas las anulaciones de gravedad de los nodos ``Area2D`` y la
+  gravedad global del mundo.
+
+
+- ``move_and_collide(motion: Vector2, test_only: bool = false,
+  safe_margin: float = 0.08, recovery_as_collision: bool = false) ->
+  KinematicCollision2D``: Mueve el cuerpo siguiendo el movimiento
+  vectorial indicado por ``motion``. Para que sea independiente de la
+  velocidad de fotogramas en ``_physics_process()`` o
+  ``_process()``, el movimiento debe calcularse usando ``delta``.
+
+  Devuelve un ``KinematicCollision2D``, que contiene información sobre la
+  colisión cuando el cuerpo se detiene o cuando toca otro cuerpo durante
+  el movimiento.
+
+  Si ``test_only`` es verdadero, el cuerpo no se mueve, pero se
+  proporciona la información de la posible colisión.
+
+  El valor de ``safe_margin`` es el margen adicional utilizado para la
+  recuperación de colisiones.
+
+  Si ``recovery_as_collision`` es verdadero, cualquier despenetración
+  durante la fase de recuperación también se informa como una colisión;
+  esto se utiliza, por ejemplo, por ``CharacterBody2D`` para mejorar la
+  detección del suelo durante el ajuste al suelo.
+
+- ``test_move(from: Transform2D, motion: Vector2, collision:
+  KinematicCollision2D = null, safe_margin: float = 0.08,
+  recovery_as_collision: bool = false)``: Comprueba posibles colisiones
+  sin mover realmente el cuerpo. Para ser independiente de los FPS se
+  debe usar el parámetro ``delta``.
+
+- Los métodos ``get_collision_exceptions()``,
+  ``add_collision_exception_with(body: Node)`` y
+  ``remove_collision_exception_with(body: Node)`` permiten gestionar
+  excepciones a las colisiones.
+
 
 .. _RigidBody2D:
 .. index:: single: RigidBody2D; Godot
@@ -529,8 +616,8 @@ Podemos usar el método ``apply_force`` para aplicar una fuerza sobre el
 cuerpo.
 
 
-.. CollisionShape2D:
-.. index:: single:CollisionShape2D; Godot
+.. _CollisionShape2D:
+.. index:: single:CollisionShape2D;Godot
 El nodo ``CollisionShape2D``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -581,7 +668,7 @@ Algunos de sus métodos más importantes son:
 
 
 .. _AnimationPlayer:
-.. index:: single: _AnimationPlayer;Godot
+.. index:: single:AnimationPlayer;Godot
 El nodo ``AnimationPlayer``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -659,6 +746,95 @@ Para elementos del juego que no requieran movimientos complicados ni
 detección de colisiones, como por ejemplo, plataformas móviles en un juego
 de plataformas, es más sencillo de usar y configurar el nodo
 `AnimatableBody2D`_.
+
+.. _GridMap:
+.. index:: single:GridMap;Godot
+El nodo ``GridMap``
+------------------------------------------------------------------------
+
+Herencia: `Object`_ ← `Node`_ ← `Node3D`_ ← `GridMap`_
+
+El nodo ``GridMap`` nos permite posicionar objetos de tipo *Mesh3d*
+disponiéndolos como si fuera una parrilla. Es el equivalente en 3D del
+``TileMap``. Es muy útil para bloquear un nivel con formas pre
+existentes.
+
+Para usar un ``GridMap``, se debe crear un recurso llamado
+``MeshLibrary``, que básicamente es el conjunto de elementos que podemos
+usar para posicionar usando el *Grid Map*. Para crear un
+``MeshLibrary``, creamos una escena nueva, conteniendo los *Mesh*
+válidos. Para convertir la escena en un ``MeshLibrary`` solo tenemos que
+usar la opción de exportar. Los materiales y las formas de colisión que
+se definan en la escena también se conservan en la librería.
+
+Al exportar, debemos usar la extensión ``.tres`` (*text resource*).
+
+.. _Path3D:
+.. index:: single:Path3D;Godot
+El nodo ``Path3D``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Herencia: `Object`_ ← `Node`_ ← `Node3D` ← `Path3D`_
+
+Un objeto de tipo **``Path3D``** almacena una `curva de Bézier`_ en tres
+dimensiones. Tiene muchos usos: definir rutas que seguir, sitios de
+generación de elementos, combinarse con un ``CSG Shape`` para construir
+una carretera, etc.
+
+
+.. _PathFollow3D:
+.. index:: single:PathFollow3D;Godot
+El nodo ``PathFollow3D``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Herencia: `Object`_ ← `Node`_ ← `Node3D` ← `PathFollow3D`_
+
+Muy vinculado con el nodo anterior, ``Path3d``, el nodo ``PathFollow3D``
+nos permite **mover cosas a lo largo de una curva** descrita por un
+``Path3D``. Los nodos ``PathFollow3D`` deben ser obligatoriamente
+**hijos** de un nodo ``Path3D``. Este nodo calcula, a partir de su nodo
+padre Path3D , las coordenadas de un punto dentro de él, dada una
+distancia desde el primer vértice.
+
+Tienen una propiedad ``progress`` que determina la posición dentro de la
+curva, en metros. También podemos usar ``progress_ratio``, que es un valor
+que va de :math:`0` a :math:`1`, siendo el cero el principio de la curva y
+el uno el final.
+
+Si hacemos que un nodo sea hijo de un ``PathFollow3D``, este nodo se
+moverá siguiendo la curva.
+
+.. _CheckButton:
+.. index:: single:CheckButton;Godot
+El nodo ``CheckButton``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Herencia: `Object`_ ← `Node`_ ← `CanvasItem`_ ← `Control` ← `BaseButton`
+← `Button`_ <- `CheckButton`_
+
+**``CheckButton``** es un botón que representa una selección binaria que se
+muestra como una casilla de verificación. Funciona de forma similar a la
+de una casilla de verificación, pero la apariencia es diferente. Para
+seguir los patrones de `UX`_ establecidos, se recomienda usar el Botón de
+selección cuando su activación **tenga un efecto inmediato**. Por
+ejemplo, se puede usar para mostrar u ocultar la configuración avanzada
+al presionarlo, sin solicitar confirmación al usuario.
+
+Al heredar de ``BaseButton``, tiene todas las propiedades y métodos comunes
+asociados a este nodo.
+
+
+.. _HSplitContainer
+.. index:: single:HSplitContainer;Godot
+El nodo ``HSplitContainer``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Herencia: `Object`_ ← `Node`_ ← `ConvasItem`_ ← `Control`_ ← `Container` ← `HSplitContainer`_
+   
+Un contenedor que acepta dos (y solo dos) controles secundarios, los
+dispone horizontalmente y proporciona un control divisor para ajustar la
+proporción de la división. El divisor se puede arrastrar para cambiar la
+relación de tamaño entre los controles secundarios.
 
 
 Cuándo usar ``StaticBody2D``, ``RigidBody2D`` o ``CharacterBody2D``
@@ -844,36 +1020,6 @@ aviones estarían en la capa 2 pero su máscara tendría solo la capa 1
 
 -  Fuente: `Collision Layers and Masks in Godot 4`_ - Tutorial de Godot
 
-
-Cómo ver las áreas de colisión de forma fácil
-------------------------------------------------------------------------
-
-Solo hay que ir al menú de *Debug* y habilitar el *checkbox* de *Visible
-Collision Shapes*.
-
-Cómo usar los *Timers* en Godot
-------------------------------------------------------------------------
-
-Un **Timer** en Godot es un nodo que realiza una cuenta atrás a partir de
-un valor predeterminado, y que cuando llega a cero emite una señal, que
-nosotros podemos capturar para realizar cualquier acción en nuestro juego.
-
-Usos típicos son:
-
-- Una cuenta atrás antes de empezar una carrera
-
-- Retrasar la activación de un *power-up*
-
-- Activar oleadas de enemigos de una forma estructurada
-
-Después de que un nodo tipo *Timer* entra en el árbol, puede ser
-arrancado manualmente llamando al método ``start()``. También puede
-arrancar automáticamente si se ha puesto el atributo ``autostart`` a
-``true``.
-
-Sin necesidad de escribir código, desde el editor podemos añadir el
-nodo, especificar el valor de la cuenta atrás y vincular el evento de
-fin de cuenta atrás con una función.
 
 
 Cómo hacer un nodo visible / invisible
@@ -1200,86 +1346,7 @@ Algunas de las otras formas de exportar son:
 Más información en `GDScript - Annotations`_
 
 
-Cómo usar un GridMap
-------------------------------------------------------------------------
 
-Un **``GridMap``** es el equivalente en 3D del ``TimeMap``.
-
-Herencia: `Object`_ ← `Node`_ ← `Node3D`_ ← `GridMap`_
-
-Para usar un ``GridMap``, se debe crear un recurso llamado
-``MeshLibrary``, que básicamente es el conjunto de elementos que podemos
-usar para posicionar usando el *Grid Map*. Para crear un
-``MeshLibrary``, creamos una escena nueva, conteniendo los *Mesh*
-válidos. Para convertir la escena en un ``MeshLibrary`` solo tenemos que
-usar la opción de exportar. Los materiales y las formas de colisión que
-se definan en la escena también se conservan en la librería.
-
-Al exportar, debemos usar la extensión ``.tres`` (*text resource*).
-
-.. _Path3D:
-Qué es y para que sirve el nodo ``Path3D``
-------------------------------------------------------------------------
-
-Herencia: `Object`_ ← `Node`_ ← `Node3D` ← `Path3D`_
-
-Un objeto de tipo **``Path3D``** almacena una `curva de Bézier`_ en tres
-dimensiones. Tiene muchos usos: definir rutas que seguir, sitios de
-generación de elementos, combinarse con un ``CSG Shape`` para construir
-una carretera, etc.
-
-.. _PathFollow3D:
-Que es y para que sirve el nodo ``PathFollow3D``
-------------------------------------------------------------------------
-
-Herencia: `Object`_ ← `Node`_ ← `Node3D` ← `PathFollow3D`_
-
-Muy vinculado con el nodo anterior, ``Path3d``, el nodo ``PathFollow3D``
-nos permite **mover cosas a lo largo de una curva** descrita por un
-``Path3D``. Los nodos ``PathFollow3D`` deben ser obligatoriamente hijos de
-un nodo ``Path3D``. Este nodo calcula, a partir de su nodo padre Path3D
-, las coordenadas de un punto dentro de él, dada una distancia desde el
-primer vértice.
-
-Tienen una propiedad ``progress`` que determina la posición dentro de la
-curva, en metros. También podemos usar ``progress_ratio``, que es un valor
-que va de :math:`0` a :math:`1`, siendo el cero el principio de la curva y
-el uno el final.
-
-Si hacemos que un nodo sea hijo de un ``PathFollow3D``, este nodo se
-moverá siguiendo la curva.
-
-.. _CheckButton:
-.. index:: single:CheckButton;Godot
-CheckButton
-------------------------------------------------------------------------
-
-Herencia: `Object`_ ← `Node`_ ← `CanvasItem`_ ← `Control` ← `BaseButton`
-← `Button`_ <- `CheckButton`_
-
-**``CheckButton``** es un botón que representa una selección binaria que se
-muestra como una casilla de verificación. Funciona de forma similar a la
-de una casilla de verificación, pero la apariencia es diferente. Para
-seguir los patrones de `UX`_ establecidos, se recomienda usar el Botón de
-selección cuando su activación **tenga un efecto inmediato**. Por
-ejemplo, se puede usar para mostrar u ocultar la configuración avanzada
-al presionarlo, sin solicitar confirmación al usuario.
-
-Al heredar de ``BaseButton``, tiene todas las propiedades y métodos comunes
-asociados a este nodo.
-
-
-.. _HSplitContainer
-.. index:: single:HSplitContainer;Godot
-HSplitContainer
-------------------------------------------------------------------------
-
-Herencia: `Object`_ ← `Node`_ ← `ConvasItem`_ ← `Control`_ ← `Container` ← `HSplitContainer`_
-   
-Un contenedor que acepta dos (y solo dos) controles secundarios, los
-dispone horizontalmente y proporciona un control divisor para ajustar la
-proporción de la división. El divisor se puede arrastrar para cambiar la
-relación de tamaño entre los controles secundarios.
 
 
 .. _Container:
@@ -1313,6 +1380,14 @@ creación de diseños muy complejos que cambian de tamaño sin esfuerzo.
 
 Hay un tutorial en la documentación de Godot específico sobre este tipo
 de contenedores: `Usar Contenedores`_.
+
+Opciones de tamaño
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Cuando se añade un control a un contenedor, la forma en que este los
+dispone depende principalmente de las opciones de redimensionado, que
+pueden ser inspeccionadas en el panel lateral de propiedades de cualquier
+control que sea un contenedor.
 
 .. _Resource:
 Recursos (*resources*)
@@ -1462,14 +1537,107 @@ Iterar un diccionario con un bucle ``for`` nos ira iterando por los
 valores de las claves.
 
 
+Cómo ...
+------------------------------------------------------------------------
 
-Opciones de tamaño
+Cómo ver las áreas de colisión de forma fácil
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Cuando se añade un control a un contenedor, la forma en que este los
-dispone depende principalmente de las opciones de redimensionado, que
-pueden ser inspeccionadas en el panel lateral de propiedades de cualquier
-control que sea un contenedor.
+Solo hay que ir al menú de *Debug* y habilitar el *checkbox* de *Visible
+Collision Shapes*.
+
+Cómo usar los *Timers* en Godot
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Un **Timer** en Godot es un nodo que realiza una cuenta atrás a partir de
+un valor predeterminado, y que cuando llega a cero emite una señal, que
+nosotros podemos capturar para realizar cualquier acción en nuestro juego.
+
+Usos típicos son:
+
+- Una cuenta atrás antes de empezar una carrera
+
+- Retrasar la activación de un *power-up*
+
+- Activar oleadas de enemigos de una forma estructurada
+
+Después de que un nodo tipo *Timer* entra en el árbol, puede ser
+arrancado manualmente llamando al método ``start()``. También puede
+arrancar automáticamente si se ha puesto el atributo ``autostart`` a
+``true``.
+
+Sin necesidad de escribir código, desde el editor podemos añadir el
+nodo, especificar el valor de la cuenta atrás y vincular el evento de
+fin de cuenta atrás con una función.
+
+Cómo eliminar un nodo de una escena
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**tl/dr**: ``self.queue_free()``
+
+La forma correcta es llamando al método ``queue_free()`` del propio
+nodo. Si el nodo no está en una escena (lo cual es raro, pero podría
+pasar) se puede eliminar simplemente con el método ``free()``.
+
+Cómo convertir una rama del árbol de nodos en una escena
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Simplemente hay que arrastrar el nodo de la rama que queremos que sea la
+raíz de la nueva escena a la sección de Recursos (``FileSystem``), en la
+esquina inferior izquierda.
+
+Cómo formatear una cadena de texto
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Podemos formatear texto usando el operador ``%``, muy similar a como
+lo hace Python:
+
+.. code:: gd
+
+    print("%-10d" % 12345678)
+    # Output: "12345678  "
+    # 2 trailing spaces
+
+Podemos usar el modificador ``*`` (asterisco) para definir de forma
+dinámica el relleno o la posición. Si se usar un asterisco en el elugar
+de uno de los valores numéricos, podemos pasar este valor a la hora de
+realizar la operación:
+
+.. code:: gd
+
+    var format_string = "%*.*f"
+    # Pad to length of 7, round to 3 decimal places:
+    print(format_string % [7, 3, 8.8888])
+    # Output: "  8.889"
+    # 2 leading spaces
+
+También es posible rellenar con ceros, precediendo el asterisco del
+carácter ``0``:
+
+.. code:: gd
+
+    print("%0*d" % [4, 3])
+    # Output: "0003"
+    
+Otra posibilidad es usar el método ``format`` de las cadenas de texto,
+que reemplaza todas las ocurrencias de una clave con su valor
+correspondiente. Las parejas de claves/valor poueden ser pasadas
+mediante una lista o un diccionario:
+
+.. code::
+
+    var format_string = "We're waiting for {str}"
+    var actual_string = format_string.format({"str": "Godot"})
+    print(actual_string)
+    # Output: "We're waiting for Godot"
+
+.. note:: 
+
+   Muy similar al ``format`` de Python, con pequeñas diferencias
+   en la forma de expresar el formato.
+
+
+
 
 .. _AnimatableBody2D: https://docs.godotengine.org/en/stable/classes/class_animatablebody2d.html#class-animatablebody2d
 .. _Collision Layers and Masks in Godot 4: https://www.gotut.net/collision-layers-and-masks-in-godot-4/

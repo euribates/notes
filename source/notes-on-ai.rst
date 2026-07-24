@@ -222,8 +222,108 @@ los **35 millones de euros** o el **7% del volumen de negocios anual
 total a escala mundial** del infractor durante el ejercicio financiero
 anterior, si este importe fuera superior.
 
+Manifiesto abierto READ para la convivencia ética del diseño y la IA
+------------------------------------------------------------------------
+
+El presente manifiesto ha sido elaborado por el Grupo de Trabajo de
+Buenas Prácticas de la Red Española de Asociaciones de Diseño (READ)
+durante los años 2024 y 2025 en numerosas jornadas de trabajo virtuales
+y presenciales, entre las que destaca la celebrada en el Encuentro
+Nacional de Diseño (ENAD) que tuvo lugar en Cuenca en octubre de 2024.
+
+El espíritu de este documento, vivo y abierto a una evolución constante
+en forma de versiones temporales, es sentar bases éticas que permitan un
+apropiado uso y desarrollo profesional en el entorno del diseño en
+convivencia con la inteligencia artificial. 
+
+
+Fuente: https://designread.es/manifiesto-ia/
+
+Iconos de la UE para el etiquetado de contenidos generados por IA
+------------------------------------------------------------------------
+
+Conjunto de iconos de la UE para etiquetar determinados contenidos
+generados por IA, de conformidad con las normas de transparencia de la
+Ley de IA.
+
+Los creadores, editores y otros implementadores de sistemas de IA
+generativa pueden utilizar para etiquetar sus contenidos generados por
+IA. Estos iconos están disponibles gratuitamente y forman parte
+integrante de la sección 2 del Código de buenas prácticas sobre marcado
+y etiquetado de contenidos generados por IA.
+
+.. figure:: ai/ai.png
+   :align: center
+   :width: 256
+   :height: 256
+   :alt: Icono básico
+
+   Cuando la IA estuvo involucrada en la creación de contenido falso
+   profundo (imagen, audio, video) o texto publicado o cuando se
+   implementa una etiqueta de texto personalizada o una segunda capa
+   interactiva
+
+.. figure:: ai/ai-generated.png
+   :align: center
+   :width: 256
+   :height: 64
+   :alt: Totalmente generado por IA
+
+   Cuando todo el contenido falso profundo (imagen, audio, video) o
+   texto es completamente generado por IA sin elementos creados por
+   humanos o control editorial humano (aparte de incitar)
+
+.. figure:: ai/ai-modified.png
+   :align: center
+   :width: 256
+   :height: 64
+   :alt: Parcialmente modificado por IA
+
+   Cuando el contenido preexistente hecho por el hombre se modificó
+   parcialmente con IA convirtiéndolo en una falsificación profunda o
+   texto sobre asuntos de interés público 
+
+El uso de estos iconos de la UE es opcional, pero no lo son los
+requisitos de etiquetado establecidos en el artículo 50 de la Ley de IA.
+El uso de estos iconos no establece el cumplimiento legal por sí mismo.
+Los implementadores siguen siendo responsables de garantizar que
+cualquier divulgación cumpla los requisitos del artículo 50 de la Ley de
+IA. Los signatarios del Código de buenas prácticas sobre marcado y
+etiquetado de contenidos generados por IA deben aplicar debidamente las
+medidas que contiene.
+
+
+Enlace: https://digital-strategy.ec.europa.eu/es/policies/eu-icons-labelling-ai-generated-content
+
 Noticias sobre mal uso de IA
 -----------------------------------------------------------------------
+
+
+OpenAI afirma que su IA se descontroló y lanzó un ciberataque "sin precedentes".
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2026-07-23
+
+OpenAI ha revelado que algunos de sus modelos de IA más avanzados se
+descontrolaron y hackearon una startup tras perder el control de ellos
+durante una prueba de seguridad.
+
+El creador de ChatGPT afirmó que su agente —un sistema de IA capaz de
+operar de forma autónoma tras recibir instrucciones humanas— estaba
+siendo probado en un entorno controlado, pero, tras detectar
+vulnerabilidades, logró escapar de los límites de la prueba.
+
+El objetivo fue Hugging Face, una de las mayores plataformas mundiales
+para compartir modelos de IA, accediendo a algunos sistemas internos de
+la empresa.
+
+OpenAI declaró que el incidente era "sin precedentes" y que estaba
+llevando a cabo una investigación junto con Hugging Face. Su director,
+Clement Delangue, afirmó en una publicación en X que era "increíble que
+todo esto hubiera ocurrido de forma autónoma".
+
+Fuente: https://www.bbc.com/news/articles/c3ek3gvdnj3o
+
 
 
 La gran guerra legal de la IA: el mapa de las 100 demandas que acorralan a las big tech

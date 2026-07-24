@@ -2066,6 +2066,224 @@ luego negamos el resultado (operador ``~``).
 
 Fuente: `Django unique=True except for blank values`_ - StackOverflow
 
+Ejecutar Django con un certificado TLS/SSL para conexiones HTTPS
+------------------------------------------------------------------------
+
+Algunos navegadores exigen, para determinadas funcionalidades, que la
+conexión sea o bien local o bien mediante HTTPS_ (Acceso al porta papeles,
+a la cámara y/o al micrófono, *Web sockets*, geolocalización, etc.).
+Pero el servidor de desarrollo siempre corre sobre `HTTP`_. Podemos hacer
+que nuestro servidor se ejecute sobre HTTPS siguiendo los siguientes
+pasos.
+
+
+Cómo funcionan los certificados TLS/SSL
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+HTTPS protege los datos de los visitantes de una web, como contraseñas o 
+información de tarjetas de crédito.
+
+El protocolo criptográfico `TLS`_ (*Transport Layer Security*) -que
+reemplazó a `SSL`_ (*Secure Sockets Layer*)- permite crear una conexión
+segura entre un cliente (como un navegador) y un servidor, cifrando los
+datos intercambiados.
+
+Funcionan mediante una clave pública (compartida a través del
+certificado) y una clave privada (mantenida en secreto por el servidor)
+para establecer conexiones cifradas. Estas claves suelen almacenarse en
+archivos codificados en `BASE64`_ con extensiones como ``.pem``.
+
+Una **Autoridad de Certificación** (CA, *Certification Authority*) es
+una organización de confianza responsable de emitir y gestionar los
+certificados digitales utilizados en el cifrado TLS/SSL.  Las
+Autoridades de Certificación de confianza verifican la identidad de los
+propietarios de los sitios web y firman sus certificados para garantizar
+su autenticidad.
+
+Una Autoridad de Certificación de confianza firma el certificado para
+verificar la identidad del servidor, y los clientes (como los
+navegadores) lo validan comparándolo con el certificado raíz de la
+Autoridad de Certificación para garantizar que la conexión sea auténtica
+y segura. Los certificados raíz de la CA suelen almacenarse en el
+sistema operativo o el navegador y se actualizan periódicamente con las
+actualizaciones de software.
+
+Algunas autoridades de certificación conocidas son:
+
+- Let’s Encrypt (certificados gratuitos y automatizados),
+- DigiCert,
+- GlobalSign,
+- Sectigo (anteriormente Comodo).
+
+Para el desarrollo local, se puede usar la sencilla herramienta
+``mkcert`` para crear certificados TLS de confianza local y proteger los
+entornos de desarrollo sin necesidad de autoridades de certificación
+externas. Pronto veremos cómo hacerlo.
+
+Los certificados TLS/SSL se utilizan también para proteger otros
+protocolos de comunicación, como :doc:`WebSockets <notes-on-websockets>`
+(wss://), FTPS, conexiones a bases de datos, protocolos de correo
+electrónico (SMTP, IMAP, POP3) y agentes de mensajería (por ejemplo,
+:doc:`Redis <notes-on-redis>`, :doc:`RabbitMQ <notes-on-rabbit-mq>`,
+:doc:`Kafka <notes-on-kafka>`).
+
+Instalar ``mkcert``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Para instalar ``mkcert``, en sistemas basados en Debian:
+
+.. code:: shell
+
+    sudo apt install mkcert
+
+Podemos crear una carpeta `certs` en la carpeta del proyecto Django,
+cambiar a esa carpeta y crear las claves públicas y privadas. Es **muy
+recomendable** incluir la ruta `certs/` en el fichero ``.gitignore`` (O
+cualquier otro mecanismo que tenga nuestro sistema de control de
+versiones) para que se ignoren estos ficheros.
+
+.. code:: shell
+
+    mkdir certs
+    echo 'certs/' >> .gitignore
+    cd certs
+    mkcert issi.local
+
+Este debe crear dos ficheros en la carpeta `certs/`:
+
+- ``issi.local.pem`` : Certificado público
+- ``issi.local-key.pem`` : Clave privada
+
+Ajustes en el fichero de configuración de Django para usar HTTPS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Actualizamos los siguientes valores en el fichero ``settings.py``:
+
+.. code:: python
+
+    CSRF_TRUSTED_ORIGINS = [
+        "https://issi.local:8000",
+        "http://issi.local:8000",
+        ]
+
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+
+Fichero de arranque con WSGI
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Debemos reescribir el fichero `wsgi` que usamos para desplegar Django:
+
+.. code:: python
+
+    import os
+    import ssl
+    from pathlib import Path
+    from django.core.servers.basehttp import get_internal_wsgi_application
+    from wsgiref.simple_server import make_server
+    from watchfiles import run_process
+
+    def run_server():
+        # Set Django environment
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "issi.settings")
+        application = get_internal_wsgi_application()
+
+        # Set certificate paths
+        cert_path = Path(__file__).parent / "certs"
+        ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        ssl_context.load_cert_chain(
+            certfile=cert_path / "issi.local.pem",
+            keyfile=cert_path / "issi.local-key.pem",
+        )
+
+        # Run server with TLS
+        with make_server("djangotricks.local", 8000, application) as httpd:
+            httpd.socket = ssl_context.wrap_socket(httpd.socket, server_side=True)
+            print("Serving on https://issi.local:8000")
+            try:
+                httpd.serve_forever()
+            except KeyboardInterrupt:
+                print("Server stopped.")
+
+    if __name__ == "__main__":
+        # Watch directories for changes
+        watched_dirs = [
+            str(Path(__file__).parent), # Current directory
+        ]
+
+        # Start watching and run the server with auto-reload
+        run_process(
+            *watched_dirs,            # Paths to watch
+            target=run_server,        # Function to run
+            debounce=1600,            # Debounce changes (milliseconds)
+            recursive=True,           # Watch directories recursively
+            debug=True                # Enable debug logging
+        )
+
+Este *script* de Python ejecuta el servidor web predeterminado de Python
+con Django WSGI bajo HTTPS, monitoriza los archivos del proyecto en
+busca de cambios y reinicia el servidor cada vez que se actualiza algo.
+
+.. note::
+
+   La dependencia `watchfiles` es un monitor de cambios en archivos basado
+   en Rust. Podemos instalarlo con:
+
+   .. code::
+
+        pip install watchfiles
+
+Esto me permitió ejecutar el script del servidor web con:
+
+.. code:: python
+
+    python run_https_wsgi_server.py
+
+Fichero de arranque con ASGI
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Si ejecutamos el servidor con ASGI y vunicorn, por ejemplo, los cambios
+son parecidos:
+
+.. code:: shell
+
+    pip install uvicorn
+    pip install watchfiles
+
+Y su *script* de arranque:
+
+.. code:: python
+
+    import os
+    from pathlib import Path
+    import uvicorn
+
+    if __name__ == "__main__":
+        # Set Django environment
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "issi.settings")
+
+        # Set certificate paths
+        project_root = Path(__file__).parent
+        ssl_keyfile = project_root / "certs" / "issi.local-key.pem"
+        ssl_certfile = project_root / "certs" / "issi.local.pem"
+
+        # Run server with TLS
+        uvicorn.run(
+            "issi.asgi:application",
+            host="issi.local",
+            port=8000,
+            ssl_keyfile=str(ssl_keyfile),
+            ssl_certfile=str(ssl_certfile),
+            reload=True,  # Enable autoreload
+            reload_dirs=[
+                str(project_root),
+            ],
+            reload_includes=["*.py", "*.html", "*.js", "*.css", "*.txt"],
+            workers=1,
+        )
+
+Fuente: <https://www.djangotricks.com/blog/2024/12/https-for-django-development-environment/>
+
 
 
 .. _Adam Johnson: https://adamj.eu/
@@ -2074,7 +2292,12 @@ Fuente: `Django unique=True except for blank values`_ - StackOverflow
 .. _Django settings patterns to avoid: https://adamj.eu/tech/2022/11/24/django-settings-patterns-to-avoid/
 .. _Django unique=True except for blank values: https://stackoverflow.com/questions/9808202/
 .. _How to get URL of current page, including parameters: https://stackoverflow.com/questions/3248682/
+.. _HTTPS: https://es.wikipedia.org/wiki/Protocolo_seguro_de_transferencia_de_hipertexto
+.. _HTTP: https://es.wikipedia.org/wiki/Protocolo_de_transferencia_de_hipertexto
 .. _inyección de código: https://es.wikipedia.org/wiki/Inyecci%C3%B3n_de_c%C3%B3digo,
 .. _natural_key: https://docs.djangoproject.com/fr/4.2/topics/serialization/#natural-keys
 .. _plantillas literales de javascript: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
+.. _TLS: https://es.wikipedia.org/wiki/Seguridad_de_la_capa_de_transporte
+.. _SSL: https://es.wikipedia.org/wiki/Seguridad_de_la_capa_de_transporte
 .. _Serializing Django objects: https://docs.djangoproject.com/en/4.2/topics/serialization/#natural-keys
+.. _BASE64: https://es.wikipedia.org/wiki/Base64   
