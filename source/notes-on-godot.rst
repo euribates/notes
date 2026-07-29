@@ -24,6 +24,7 @@ Godot es si está escrito en **C++**, y es posible escribir extensiones
 en este lenguaje para conseguir aun más rendimiento y control del motor,
 pero en general esto no es necesario, especialmente al principio.
 
+
 .. _Object:
 Qué es :index:`Object`, la base de la jerarquía de objetos de Godot
 ------------------------------------------------------------------------
@@ -96,6 +97,32 @@ En un contexto booleano, todo ``Object`` se evaluará como falso si es
 igual a ``null`` o si se ha liberado. De lo contrario siempre se
 evaluará como verdadero. Consulte también
 ``@GlobalScope.is_instance_valid()``.
+
+
+Propiedades (properties)
+------------------------------------------------------------------------
+
+Godot permite que las variables definida en el *script* tegan un
+comportamiento reactivo, algo similar a las properties de
+:doc:<Python<notes-on-python>'. Podemos definir dentro de la variable un
+método ``set`` -y opcionalmente, un método ``get``- que se ejecutan cada
+vez que asignamos un valor a una variable, o lo leemos de esta.
+
+Esto **obliga** a que determinado código se ejecute **siempre** cuando
+el valor de una variable se modifica. Por ejemplo, si la variable
+``health`` cae por debajo de cero, hay que llamar a la función
+``death()``.
+
+.. code:: gd
+
+    var health: int = 100:
+        set(new_health):
+            health = new_health
+            print("Helath is now {health}", {'health': health})
+            death()
+        get():
+            return health
+
 
 
 Nodos
@@ -179,32 +206,93 @@ Cómo cambiar el gris oscuro de fondo por defecto de las escenas
 En ``Project`` –> ``Settings``, ir a ``Environemnt`` y cambiar el color
 etiquetado como ``Default Clear Color``.
 
-
-Cómo trabajar con números aleatorios
+Trabajar con colores en Godot
 ------------------------------------------------------------------------
 
-En el espacio global tenemos el método ``randomize()``. Este método solo
-debe ser ejecutado al principio, para inicializar el generador de numero
-pseudo-aleatorios con una semilla diferente, basado en el momento en que
-ejecuta. También podemos fijar la semilla con ``seed(int)``.
+Godot tiene su propia clase para trabajar con colores, ``Color``. Los
+colores se pueden crear de diferentes maneras:
 
-- La función ``randi() -> int`` devuelve un número entero al azar entre
-  :math:`0` y :math:`2^{32-1}`.
+- A partir de un código hexadecimal, como en HTML: ``Color('#FF0000')``
 
-- La función ``randf() -> float`` devuelve un número flotante al azar
-  entre :math:`0` y :math:`1`.
+- A partir de un conjunto de colores predefinidos: ``Color.ORANGE``.
 
-- La función ``randfn(float mean, float deviation) -> float`` devuelve
-  un número flotante basado en una distribución normal, con media
-  ``mean`` (Por defecto :math:`0`) y desviación estándar ``deviation``
-  (Por defecto :math:`1.0`).
+- Usando valores RGB, en el rango [0..1]: ``Color(1.0, 0.5, 0.0)``
 
-- La función ``randf_range(float from, float to) -> float`` devuelve un
-  valor en coma flotante comprendido entre los valores ``from`` y
-  ``to``, ambos inclusive.
+  También se ouede usar un cuarto parámetro para definir el valor
+  de *alpha*.
 
-- La función ``randi_range(int from, int to) -> int`` devuelve un entero
-  comprendido entre los valores ``from`` y ``to``, ambos inclusive.
+Propiedades:
+
+=============  ======================================================
+``a``          Valor de *alpha* (float, entre 0.0 y 1.0)
+``r``          Valor de rojo (float, entre 0.0 y 1.0)
+``g``          Valor de verde (float, entre 0.0 y 1.0)
+``b``          Valor de azul (float, entre 0.0 y 1.0)
+``a8``         Valor de *alpha* (int, entre 0 y 255)
+``r8``         Valor de rojo (int, entre 0 y 255)
+``g8``         Valor de verde (int, entre 0 y 255)
+``b8``         Valor de azul (int, entre 0 y 255)
+``s``          Saturación HSV (float, entre 0.0 y 1.0)
+``v``          Brillo (*brightness*) HSV (float, entre 0.0 y 1.0)
+=============  ======================================================
+
+Métodos:
+
+- ``blend(over: Color) -> Color``
+
+  Devuelve un nuevo color mezclado con
+  el pasado como parámetro.
+
+  .. code:: gd
+
+      var bg = Color(0.0, 1.0, 0.0, 0.5) # Green with alpha of 50%
+      var fg = Color(1.0, 0.0, 0.0, 0.5) # Red with alpha of 50%
+      var blended_color = bg.blend(fg) # Brown with alpha of 75%
+
+- ``from_hsv(h: float, s: float, v: float, alpha: float = 1.0) -> Color``
+
+  Construye un color a partir de los valores HSV, que normalmente deben
+  indicarse con valores entre 0.0 y 1.0. Es un método estático.
+
+- ``darkened(amount: float) -> Color``
+
+  A partir de un color, obtiene uno nuevo más oscuro, basándose en
+  la cantidad pasado en el parámetro ``amount``, que debe variar entre
+  0.0 y 1.0.
+
+- ``lightened(amount: float) -> Color``
+
+  A partir de un color, obtiene uno nuevo más luminoso, basándose en la
+  cantidad pasado en el parámetro ``amount``, que debe variar entre 0.0
+  y 1.0.
+
+- ``from_rgba8(r8, g8, b8: int, a8: int = 255)``
+
+  Construye el color usando valores para RGB enteros -entre 0 y 255). Es
+  un método estático.
+
+- ``float get_luminance() -> float``
+
+  Devuelve la intensidad luminosa del color, en el rango [0.0..1.0].
+  Esto resulta útil para determinar si un color es claro u oscuro. Los
+  colores con una luminancia inferior a :math:`0.5` se consideran
+  generalmente oscuros.
+
+- ``inverted() -> Color``
+
+  A partir de un color, Devuelve otro nuevo, con los valores de RBG
+  invertidos.
+
+- ``lerp(to: Color, weight: float) -> Color``
+
+  Devuelve la interpolación lineal entre los componentes de este color y
+  los componentes de otro. El factor de interpolación debe estar entre
+  0,0 y 1,0 (inclusive).
+
+Más información: `La clase Color`_ en la documentación oficial.
+
+
+
 
 Qué son las partículas
 ------------------------------------------------------------------------
@@ -239,6 +327,9 @@ disponibles en GDScript:
     Node3D <- Camera3D
     Node3D <- Path3D
     Node3D <- PathFollow3D
+    Node3D <- VisualInstance3D
+    VisualInstance3D <- GeometryInstance3D
+    GeometryInstance3D <- Label3D
     Node <- CanvasItem
     CanvasItem <- Node2D
     CanvasItem <- CollisionObject2D
@@ -526,7 +617,8 @@ El objetivo de ``Area3D`` es principalmente reaccionar a colisiones.
 Para ellos requiere de un ``CollisionShape`` que define la superficie o
 área de colisión. Mientras que ``CollisionShape`` simplemente define un
 área de colisión estática, ``Area2D`` está buscando activamente
-colisiones que se produzcan en esa área.
+colisiones que se produzcan en esa área. Se usa principalmente para
+detectar, no para representar un objeto físico.
 
 
 .. _PhysicsBody2D:
@@ -573,8 +665,8 @@ Métodos:
 - ``test_move(from: Transform2D, motion: Vector2, collision:
   KinematicCollision2D = null, safe_margin: float = 0.08,
   recovery_as_collision: bool = false)``: Comprueba posibles colisiones
-  sin mover realmente el cuerpo. Para ser independiente de los FPS se
-  debe usar el parámetro ``delta``.
+  sin mover realmente el cuerpo. Para ser independiente de los
+  :term:`FPS` se debe usar el parámetro ``delta``.
 
 - Los métodos ``get_collision_exceptions()``,
   ``add_collision_exception_with(body: Node)`` y
@@ -653,7 +745,7 @@ Algunos de sus métodos más importantes son:
         )``
 
   Mueve el cuerpo siguiendo el ventor ``motion``. Para que sea
-  independiente de los FPS, en `Node._physics_process()` o
+  independiente de los :term:`FPS`, en `Node._physics_process()` o
   `Node._process()` el movimiento debe calcularse usando ``delta``.
 
   Devuelve un `KinematicCollision2D`_, que contiene información
@@ -747,10 +839,62 @@ detección de colisiones, como por ejemplo, plataformas móviles en un juego
 de plataformas, es más sencillo de usar y configurar el nodo
 `AnimatableBody2D`_.
 
+.. _RayCast3D:
+.. index:: single:RayCasy3D;Godot
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Herencia: `Object`_ ← `Node`_ ← `Node3D` ← `RayCast3D`_
+
+Un objeto `RayCast3D`` representa una línea que se define entre dos
+puntos, desde la posición propia del objeto hasta el ``Vector3D`` indicador
+en el atributo ``target_potition``. El rayo se puede usar para
+detectar el primer objeto con el que colisione. Nos indicará no solo el
+objeto, sino la posición exacta donde se ha producido la colisión.
+
+
+.. figure:: godot/RayCast3D.png
+   :alt: Godot RayCast3D
+
+   Ejemplo de uso de RayCast3D
+
+En caso de colisión, el resultado es un diccionario con la siguiente
+
+estructura:
+
+.. code:: gd
+
+    {
+        'position': Vector2 # point in world space for collision
+        'normal': Vector2 # normal in world space for collision
+        'collider': Object # Object collided or null (if unassociated)
+        'collider_id': ObjectID # Object it collided against
+        'rid': RID # RID it collided against
+        'shape': int # shape index of collider
+        'metadata': Variant() # metadata of collider
+    }
+
+Se pueden seleccionar varios objetos para que no sean detectables por
+`RatCast3D```, incluyéndolos en una lista de excepciones.
+
+Un truco habitual es usar un ``RayCast3D`` situado en el origen de la
+cámara, proyectado a través de la pantalla virtual mediante las
+coordenadas del ratón, y usarlo para detectar objetos en el entorno 3D.
+
+.. warning::
+
+   Aunque se puede usar esta técnica para seleccionar objetos en
+   pantalla, muchas veces será innecesario, ya que todos los objetos
+   ``CollisionObject3D`` tiene un ``input_event`` que se activa cada vez
+   que el objeto es *clickado*.
+
+
+Tutorial: https://docs.godotengine.org/en/4.x/tutorials/physics/ray-casting.html
+
+
 .. _GridMap:
 .. index:: single:GridMap;Godot
 El nodo ``GridMap``
-------------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Herencia: `Object`_ ← `Node`_ ← `Node3D`_ ← `GridMap`_
 
@@ -803,6 +947,27 @@ el uno el final.
 
 Si hacemos que un nodo sea hijo de un ``PathFollow3D``, este nodo se
 moverá siguiendo la curva.
+
+.. _Label3D:
+.. index:: single:Label3D;Godot
+El nodo ``Label3D``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Herencia: `Object`_ ← `Node`_ ← `Node3D`_ ← `VisualInstance3D`_ ← `GeometryInstance3D`_ ← `Label3D` 
+
+
+El nodo ``Label3D`` nos permite representar texto en un entorno 3D.
+La propiedad ``billboard`` nos permite definir como se orientará el
+texto, de forma que el jugador siempre pueda leerlo. Si está
+desabilitado ``DISABLED`` la etiqueta no se reorientara, se queda en la
+orientación inicial. Si tiene el valor ``ENABLED``, la etiqueta se
+orientará automáticamente para que sea visible desde la cámara por
+defecto. Otra opción especial es ``BILLBOARD_FIXED_Y``, que reorienta la
+etiqueta hacia la cámara, pero solo modificando los valores :math:`X` e
+:math:`Z`, sin afectar al eje :math:`Z`.
+
+Para facilitar la lectura, se puede especificar, aparte del tamaño del
+texto, el grosor de un reborde.
 
 .. _CheckButton:
 .. index:: single:CheckButton;Godot
@@ -917,7 +1082,27 @@ por uno mismo, por ejemplo así:
         if Input.is_action_pressed("ui_right"):
             # Move right
             pass
- 
+
+Diferencia entre ``_process(delta)`` y ``_physics_process(delta)``
+------------------------------------------------------------------------
+
+La llamada a ``_process(delta)`` se realiza cada *frame*, Si no se
+puede, se llama lo más a menudo que se pueda.
+
+La llamada a ``_physics_process(delta)`` se llama con una frecuencia
+fija determinada por el motor de físicas, que por defecto es 60 :term:`FPS`.
+Esto ayuda a mantener la simulación física estable. Todos las llamadas a
+``_physics_process`` se realizan **después** de realizar todos los
+cálculos físicos necesarios.
+
+Atajos de teclado
+------------------------------------------------------------------------
+
+- :keys:`ctrl-shift-o` - Abrir rápido una escena
+- :keys:`ctrl-alt-o` - Abrir rápido un *script*
+- :keys:`ctrl-shift-p` - Abrir la paleta do comandos para encontrar
+  atajos
+
 
 Qué ficheros de Godot debemos mantener bajo control de versiones
 ------------------------------------------------------------------------
@@ -1022,17 +1207,6 @@ aviones estarían en la capa 2 pero su máscara tendría solo la capa 1
 
 
 
-Cómo hacer un nodo visible / invisible
-------------------------------------------------------------------------
-
-Se puede usar o bien el método ``set_visible(false|true)`` o bien
-asignar a la propiedad ``visible``. Por ejemplo ``visible = false``
-oculta el objeto. La propiedad y el método están definidos en la clase
-``CanvasItem``, que es base de cualquier nodo que se pinte en 3D.
-
-Solo hay que configurar la visibilidad del nodo raíz, todos los nodos
-descendientes heredan la visibilidad del padre.
-
 
 .. _RefCounted:
 RefCounted
@@ -1135,7 +1309,7 @@ de una animación lineal (por defecto) a otro tipo:
     tween.tween_property($Sprite, "scale", Vector2(), 1).set_trans(Tween.TRANS_BOUNCE)
     tween.tween_callback($Sprite.queue_free)
 
-Figure: Esta imagen está sacada de este proyecto: `godotTweeningCheatSheet
+Esta imagen está sacada de este proyecto: `godotTweeningCheatSheet
 <https://github.com/wandomPewlin/godotTweeningCheatSheet>`_
 
 .. figure:: godot/godot_tween_cheatsheet_v4.png
@@ -1157,6 +1331,7 @@ usando ``bind`` en la función:
     tween.tween_callback(print.bind(self.transform))
 
 
+.. index:: single:signals;Godot
 Cómo usar las señales (*signals*) en Godot
 ------------------------------------------------------------------------
 
@@ -1232,8 +1407,8 @@ En el caso propuesto de ejemplo:
         timer.timeout.connect(_on_timer_timeout)
 
 
-Cómo crear y trabajar con tus propias señales
-------------------------------------------------------------------------
+Crear y trabajar con tus propias señales
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Se pueden crear señales personales en un *script*. Supongamos que queremos
 mostrar una pantalla de “**Game over**” cuando la salud del jugador llegue a
@@ -1297,6 +1472,7 @@ adicionales a la llamada a ``emit``:
         health -= amount
         health_changed.emit(old_health, health)
 
+.. index:: single:export;Godot
 Qué son las anotaciones (*annotations*) y como se usan
 ------------------------------------------------------------------------
 
@@ -1317,23 +1493,24 @@ Por ejemplo:
     ## Force to be appliend to the rocket
     @export var thrust: float = 1000.0
 
-Si ponemos un comentario en la línea justa anterior a la declaración,
-usando dos veces el carácter `#`, el texto del comentario
-servirá como texto de ayuda en el inspector.
+.. node::
+
+   Si ponemos un comentario en la línea justa anterior a la declaración,
+   usando dos veces el carácter `#`, el texto del comentario servirá
+   como texto de ayuda en el inspector.
 
 Para cada tipo de datos podemos usar unas versiones más específicas que
 facilitan el uso. Por ejemplo, podemos exportar una ruta a un fichero a
 partir de una variable de texto normal, pero también podemos usar
 ``@export_file``. Ahora, como Godot sabe que estamos hablando de una
-ruta a un fichero, no de una cadena de texto normal, nos da la
-posiblidad de abrir el navegador de archovos para seleccionar el
-fichero, por ejemplo.
+ruta a un fichero, y no otra cosa, nos da la posibilidad de abrir el
+navegador de archivos para seleccionar el fichero, por ejemplo.
 
-Algunas de las otras formas de exportar son:
+Otras formas de exportar son:
 
 - ``export_file``: Trata la variable como una ruta de un fichero
 
-- ``export_dir``: Trata la variable como una ruta de un diretorio
+- ``export_dir``: Trata la variable como una ruta de un directorio
 
 - ``@export_custom(PROPERTY_HINT_INPUT_NAME)``: Los valores de la
   variable son los definidos en el mapa de entradas.
@@ -1346,12 +1523,9 @@ Algunas de las otras formas de exportar son:
 Más información en `GDScript - Annotations`_
 
 
-
-
-
 .. _Container:
 .. index:: single:Container;Godot
-Cómo usar contenedores para la interfaz de usuario
+Usar contenedores para la interfaz de usuario
 ------------------------------------------------------------------------
 
 Herencia: `Object`_ ← `Node`_ ← `CanvasItem` ← `Control` ← `Container`_
@@ -1369,7 +1543,7 @@ propiedades del objeto hijo sera o bien ignorada o invalidad la siguiente
 vez que el contenedor cambie de tamaño o posición.
 
 Igualmente, si el contenedor cambia de tamaño o posición, todos los hijos
-serán reposicionados y transformados de acuerdo al nuevo estado del
+serán posicionados y transformados de acuerdo al nuevo estado del
 contenedor.
 
 La forma en que el contenedor decide los tamaños y posiciones de sus hijos
@@ -1389,12 +1563,13 @@ dispone depende principalmente de las opciones de redimensionado, que
 pueden ser inspeccionadas en el panel lateral de propiedades de cualquier
 control que sea un contenedor.
 
+.. index:: single:resource;Godot
 .. _Resource:
 Recursos (*resources*)
 ------------------------------------------------------------------------
 
 Hemos visto que los nodos nos permiten implementar comportamiento:
-dibjujar *sprites* y modelos 3D, simular físicas, gestionar interfaces de
+dibujar *sprites* y modelos 3D, simular físicas, gestionar interfaces de
 usuarios, etc. Los **recursos** son **contenedores de datos**. No hacen nada
 por si mismos. Son los nodos los que usan los contenedores para almacenar
 su información.
@@ -1540,11 +1715,25 @@ valores de las claves.
 Cómo ...
 ------------------------------------------------------------------------
 
+Cómo alinear la cámara con la vista actual 3D
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Se puede hacer con el menú de perspectiva etiquetado **Align Transform
+To View**, pero la forma más rápida es usar el atajo de teclado
+:keys:`ctrl+alt+m`.
+
+En el mismo menú existe también una opción, **Align Rotation with
+View**, que permite alinear un objeto seleccionado con respecto a la
+orientación de la cámara, sin afectar a su posición. El atajo de teclado
+para esta opción es :keys:`ctrl-alt-f`.
+
+
 Cómo ver las áreas de colisión de forma fácil
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Solo hay que ir al menú de *Debug* y habilitar el *checkbox* de *Visible
 Collision Shapes*.
+
 
 Cómo usar los *Timers* en Godot
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1570,6 +1759,7 @@ Sin necesidad de escribir código, desde el editor podemos añadir el
 nodo, especificar el valor de la cuenta atrás y vincular el evento de
 fin de cuenta atrás con una función.
 
+
 Cómo eliminar un nodo de una escena
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1579,12 +1769,53 @@ La forma correcta es llamando al método ``queue_free()`` del propio
 nodo. Si el nodo no está en una escena (lo cual es raro, pero podría
 pasar) se puede eliminar simplemente con el método ``free()``.
 
+
 Cómo convertir una rama del árbol de nodos en una escena
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Simplemente hay que arrastrar el nodo de la rama que queremos que sea la
 raíz de la nueva escena a la sección de Recursos (``FileSystem``), en la
 esquina inferior izquierda.
+
+
+Cómo trabajar con números aleatorios
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+En el espacio global tenemos el método ``randomize()``. Este método solo
+debe ser ejecutado al principio, para inicializar el generador de numero
+pseudo-aleatorios con una semilla diferente, basado en el momento en que
+ejecuta. También podemos fijar la semilla con ``seed(int)``.
+
+- La función ``randi() -> int`` devuelve un número entero al azar entre
+  :math:`0` y :math:`2^{32-1}`.
+
+- La función ``randf() -> float`` devuelve un número flotante al azar
+  entre :math:`0` y :math:`1`.
+
+- La función ``randfn(float mean, float deviation) -> float`` devuelve
+  un número flotante basado en una distribución normal, con media
+  ``mean`` (Por defecto :math:`0`) y desviación estándar ``deviation``
+  (Por defecto :math:`1.0`).
+
+- La función ``randf_range(float from, float to) -> float`` devuelve un
+  valor en coma flotante comprendido entre los valores ``from`` y
+  ``to``, ambos inclusive.
+
+- La función ``randi_range(int from, int to) -> int`` devuelve un entero
+  comprendido entre los valores ``from`` y ``to``, ambos inclusive.
+
+
+Cómo hacer un nodo visible / invisible
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Se puede usar o bien el método ``set_visible(false|true)`` o bien
+asignar a la propiedad ``visible``. Por ejemplo ``visible = false``
+oculta el objeto. La propiedad y el método están definidos en la clase
+`CanvasItem`_, que es base de cualquier nodo que se pinte en 3D.
+
+Solo hay que configurar la visibilidad del nodo raíz, todos los nodos
+descendientes heredan la visibilidad del padre.
+
 
 Cómo formatear una cadena de texto
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1644,6 +1875,7 @@ mediante una lista o un diccionario:
 .. _Curva de Bézier: https://es.wikipedia.org/wiki/Curva_de_B%C3%A9zier
 .. _DisplayServer: https://docs.godotengine.org/en/stable/classes/class_displayserver.html
 .. _GDScript - Annotations: https://docs.godotengine.org/en/4.7/classes/class_@gdscript.html#annotations
+.. _La clase Color: https://docs.godotengine.org/en/stable/classes/class_color.html
 .. _move_and_slide: https://docs.godotengine.org/en/stable/classes/class_characterbody2d.html#class-characterbody2d-method-move-and-slide
 .. _Patrón Observador (Observer): https://es.wikipedia.org/wiki/Observer_(patr%C3%B3n_de_dise%C3%B1o)
 .. _SceneTree: https://docs.godotengine.org/en/4.4/classes/class_scenetree.html

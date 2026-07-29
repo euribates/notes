@@ -58,6 +58,31 @@ pruebas o para consultar la documentación.
 
 Otra forma posible es al invocar a Blender desde la línea de comandos.
 
+Cuál es la diferencia entre los formatos .OBJ, .FBX, .STL y .GLTF
+------------------------------------------------------------------------
+
+- ``.OBJ`` es un formato antiguo que almacena un modelo estático y tiene un
+  archivo de material aparte. No tiene mucho uso en la actualidad, solo
+  como cortesía para trabajar con software antiguo o cuando solo se
+  necesitan exportaciones muy sencillas. No tiene concepto de huesos,
+  pesos de vértices ni nada parecido.
+
+- ``.STL`` solo almacena vértices para triángulos. Nada más. Se usa en
+  imágenes médicas y para impresión 3D. Es inútil para cualquier otra
+  cosa.
+
+- ``.FBX`` es un formato propietario, complejo y controlado por
+  Autodesk. Blender siempre está jugando al gato y al ratón intentando
+  adaptarse a los pequeños cambios que Autodesk hace para sabotearlo.
+  Úsalo solo si es absolutamente necesario.
+
+- ``.GLTF`` es un formato de archivo abierto adecuado para exportar
+  materiales, esqueletos, animaciones y modelos. Es bastante sencillo y
+  funciona casi sin problemas. Debería ser tu primera y única opción
+  cuando puedas usarlo.
+
+Fuente: https://www.reddit.com/r/blender/s/h21uxiBSZr
+
 Cómo aplicar la escala/desplazamiento/rotaciones de un objeto
 ------------------------------------------------------------------------
 

@@ -14,6 +14,7 @@ G
    notes-on-go
    notes-on-gocardless
    notes-on-godot
+   notes-on-godot-csg
    notes-on-google-flexible-environment
    notes-on-greasemonkey
    notes-on-gulp

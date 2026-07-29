@@ -7,7 +7,7 @@ Glosario de términos
     FPS
 
         La **tasa de fotogramas** (en inglés *frame rate*), expresada como
-        **fotogramas por segundo** (sigla FPS, *Frames per second*,
+        **fotogramas por segundo** (*Frames per second*,
         símbolo f/s, también conocida como *frames por segundo* o
         *cuadros por segundo*) es la frecuencia (tasa) a la cual un
         dispositivo muestra imágenes llamadas fotogramas o cuadros. El

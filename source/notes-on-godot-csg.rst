@@ -1,4 +1,4 @@
-Godot Engine ´- CSG (*Constructive Solid Geometry*)
+Godot Engine CSG (*Constructive Solid Geometry*)
 ========================================================================
 
 
@@ -41,10 +41,29 @@ Todos ellos soportan tres tipos de operaciones booleanas:
 
 - **Union**
 
+.. figure:: godot/union.png
+   :align: center
+   :scale: 50 %
+
+   Ejemplo de uso de la operación **Unión**. 
+
+
 - **Intersección**
+
+.. figure:: godot/intersection.png
+   :align: center
+   :scale: 50 %
+
+   Ejemplo de uso de la operación **Intersección**. 
+
 
 - **Diferencia**
 
+.. figure:: godot/difference.png
+   :align: center
+   :scale: 50 %
+
+   Ejemplo de uso de la operación **Diferencia**. 
 
 
 
