@@ -40,22 +40,87 @@ Cómo ver los detalles de un usuario
     sudo sas-viya identities show-user --id <username>
 
 
+.. index:: single:caslib; SAS
 ¿Qué es un CASLIB?
 ------------------------------------------------------------------------
 
-Una **CASLIB** es una biblioteca que puede contener cero o más tablas
-CAS.
+Una biblioteca CAS, o **CASLIB**, es un contenedor con dos áreas
+principales: un área para tablas en memoria y otra área para archivos
+de origen de datos. Los archivos de origen de datos pueden ser
+SAS, CSV, Hadoop, Microsoft Excel y una variedad de bases de datos.
 
-Una CASLIB está asociado a una fuente de datos desde la cual el servidor
+Una **CASLIB** puede contener cero o más tablas.
+
+Toda CASLIB está asociada a una fuente de datos desde la cual el servidor
 puede acceder a los datos. Proporciona información de conexión a la
 fuente de datos, y tiene controles de acceso asociados que definen qué
 grupos y usuarios individuales pueden usar el CASLIB.
 
-La arquitectura del servidor añade automáticamente las CASlibs
-personales. Además, cada usuario autenticado tiene dos CASlibs: una para
-su directorio personal (``CASUSER``) y otra para el directorio
-``/user/userid`` en HDFS (CASUSERHDFS), si se trata de un CAS
-distribuido.
+La arquitectura del servidor añade automáticamente las CASlibs personales.
+Además, cada usuario autenticado tiene otras dos: una para su directorio
+personal (``CASUSER``) y otra para el directorio ``/user/userid`` en HDFS
+(CASUSERHDFS), si se trata de un CAS distribuido.
+
+El atributo ``LOCAL`` de un CASLIB indica su alcance, que puede ser local
+o global. Cuando se define ``LOCAL=YES``, el ámbito del CASLIB es el de la
+sesión. En este caso, solo está accesible desde la sesión CAS donde se
+creó, y cuando la sesión CAS termine, se eliminará también el CASLIB.
+Estos CASLIBS son útiles cuando **no se necesita compartir datos**.
+
+Si, por el contrario, definimos ``LOCAL=NO``, el ámbito del CASLIB sera global.
+Estos CASLIBS estarán siempre disponibles,  y están compartidos por todos
+los usuarios y aplicaciones que inicien sesión. Lógicamente, no son
+borrados cuando termina la sesión.
+
+
+Cómo crear una CASLIB de conexión a PostgreSQL
+------------------------------------------------------------------------
+
+Solo pueden crear estas CASLIB los usuarios que pertenezcan al grupo *SAS
+Administrators*.
+
+- Crear una nueva conexión pinchando con botón derecho sobre *cas-shared-
+  default*:
+
+- Dentro de la pestaña *All* seleccionar el Data Source *PostgreSQL*
+
+- Especificar los parámetros de conexión:
+
+  * Nombre de la conexión (El que queramos)
+  * Nombre corto
+  * Dirección o nombre del servidor
+  * Puerto
+  * Nombre de la base de datos
+  * Nombre del esquema
+  * Usuario y *password*
+
+  Se puede probar lo conexión con *Test connection*.
+
+Cómo crear una CASLIB de conexión a Oracle
+------------------------------------------------------------------------
+
+Solo pueden crear estas CASLIB los usuarios que pertenezcan al grupo *SAS
+Administrators*.
+
+- Crear una nueva conexión pinchando con botón derecho sobre *cas-shared-
+  default*:
+
+- Dentro de la pestaña *All* seleccionar *Oracle Database*
+
+- Especificar los parámetros de conexión:
+
+  * Nombre de la conexión (El que queramos)
+  * Nombre corto
+  * Marcar la opción de *Global (Shared)*
+  * Dirección o nombre del servidor
+  * Puerto
+  * Nombre de la base de datos
+  * Nombre del esquema
+  * Usuario y *password*
+
+  Se puede probar lo conexión con *Test connection*.
+
+
 
 Qué nodos de SAS-Viya necesitan acceso a las servidores de bases de datos
 -------------------------------------------------------------------------
