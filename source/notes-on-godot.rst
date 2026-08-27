@@ -320,6 +320,9 @@ disponibles en GDScript:
 
     Object <- InputMap
     Object <- Node
+    Object <- RefCounted
+    RefCounted <- Resource
+    RefCounted <- Curve
     Node <- AnimationMixer
     AnimationMixer <- AnimationPlayer
     Node <- Node3D
@@ -341,6 +344,7 @@ disponibles en GDScript:
     Node2D <- CollisionShape2D
     CanvasItem <- Control
     Control <- Container
+    Container <- CenterContainer
     Container <- HSplitContainer
     Control <- BaseButton
     BaseButton <- Button
@@ -348,7 +352,7 @@ disponibles en GDScript:
 
 
 .. _Object
-.. index:: single:Object; Goodt
+.. index:: single:Object; Godot
 El objeto ``Object``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -758,6 +762,18 @@ Algunos de sus métodos más importantes son:
   Con ``safe_margin`` podemos definir el margen utilizado para
   la recuperación de colisiones.
 
+.. _CharacterBody3D:
+.. index:: single:CharacterBody3D;Godot
+El nodo ``CharacterBody3D``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Sirve para representar un objeto físico en tres dimensiones pensado para
+ser manejado por el usuario. Al contrario que los objetos de tipo
+`RigidBody3d`_, este no se ve afectado por el motor de físicas, y la
+gravedad tiene que ser aplicada específicamente. En vez de aplicar
+fuerzas, lo que hacemos es modificar la propiedad ``velocity`` y llamar
+al método ``move_and_slide()`` para que se mueva.
+
 
 .. _AnimationPlayer:
 .. index:: single:AnimationPlayer;Godot
@@ -988,6 +1004,37 @@ al presionarlo, sin solicitar confirmación al usuario.
 Al heredar de ``BaseButton``, tiene todas las propiedades y métodos comunes
 asociados a este nodo.
 
+.. _CenterContainer
+.. index:: single:CenterContainer;Godot
+El nodo ``ContainerContainer``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Herencia: `Object`_ ← `Node`_ ← `ConvasItem`_ ← `Control`_ ← `Container` ← `CenterContainer`_
+   
+Un contenedor que encoge todos los controles que contiene al máximo que
+pueda, y los alinea en el centro.
+
+.. figure:: godot/center-container.png
+   :width: 640
+   :height: 254
+
+   Ejemplo de ``CenterContainer``.` 
+
+.. _PanelContainer
+.. index:: single:PanelContainer;Godot
+El nodo ``PanelContainer``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Este contenedor añade un fondo que se puede parametrizar.
+
+
+.. _VBoxContainer
+.. index:: single:VBoxContainer;Godot
+VBoxContainer
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Presenta los controles hijos apilándolos de forma vertical
+
 
 .. _HSplitContainer
 .. index:: single:HSplitContainer;Godot
@@ -1001,6 +1048,26 @@ dispone horizontalmente y proporciona un control divisor para ajustar la
 proporción de la división. El divisor se puede arrastrar para cambiar la
 relación de tamaño entre los controles secundarios.
 
+.. _Curve:
+.. index:: single:Curve; Godot
+El objeto ``Curve``
+------------------------------------------------------------------------
+
+Herencia: `Object`_ ← `RefCounted`_ ← `Curve`_ 
+
+Una curva, es decir, un objeto de la clase `Curve`_ es un recurso (Es
+decir, que se puede almacenar y recuperar desde un fichero), y que se
+puede exportar (Ver `export`_).
+
+Almacena una curva descrita entre dos ejes, :math:`X` e :math:`Y`. Su
+uso es utilizar un valor de :math:`x` para obtener el valor de :math:`y`
+correspondiente.
+
+.. figure:: godot/curve.png
+   :width: 311
+   :height: 398
+
+   Ejemplo de curva
 
 Cuándo usar ``StaticBody2D``, ``RigidBody2D`` o ``CharacterBody2D``
 ------------------------------------------------------------------------
@@ -1082,6 +1149,8 @@ por uno mismo, por ejemplo así:
         if Input.is_action_pressed("ui_right"):
             # Move right
             pass
+
+
 
 Diferencia entre ``_process(delta)`` y ``_physics_process(delta)``
 ------------------------------------------------------------------------
@@ -1472,6 +1541,8 @@ adicionales a la llamada a ``emit``:
         health -= amount
         health_changed.emit(old_health, health)
 
+
+.. _export:
 .. index:: single:export;Godot
 Qué son las anotaciones (*annotations*) y como se usan
 ------------------------------------------------------------------------

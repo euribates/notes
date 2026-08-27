@@ -3,6 +3,47 @@ find
 
 .. tags:: linux,development
 
+Cómo encontrar ficheros dependiendo de los permisos
+------------------------------------------------------------------------
+
+Podemos usar el *flag* ``-perm``. Hay dos formas:
+
+- Búsqueda por permisos octales
+
+Para encontrar todos los archivos con permisos ``644`` en el directorio
+actual y sus subdirectorios:
+
+.. code:: shell
+
+   find . -perm 644
+
+Búsqueda por permisos simbólicos
+
+También puede buscar usando permisos simbólicos. Por ejemplo, para
+encontrar todos los archivos donde el propietario tiene permiso de
+escritura:
+
+.. code:: shell
+
+   find . -perm /u+w
+
+La barra inclinada (``/``) antes de ``u+w`` indica que se
+seleccionará cualquier parte del conjunto de permisos que cumpla con
+el criterio.
+
+Para encontrar todos los archivos con permisos de escritura para
+todos los usuarios puede usar:
+
+.. code::
+
+   find . -perm -o+w
+
+El guion (``-``) antes de ``o+w`` indica que todas las partes del
+conjunto de permisos deben cumplir con el criterio.
+
+Fuente: https://linuxvox.com/blog/find-file-permissions-linux/
+
+
 Cómo encontrar ficheros modificados en las últimas 24 horas
 ------------------------------------------------------------------------
 
