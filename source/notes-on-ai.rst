@@ -293,7 +293,73 @@ etiquetado de contenidos generados por IA deben aplicar debidamente las
 medidas que contiene.
 
 
-Enlace: https://digital-strategy.ec.europa.eu/es/policies/eu-icons-labelling-ai-generated-content
+Fuente: https://digital-strategy.ec.europa.eu/es/policies/eu-icons-labelling-ai-generated-content
+
+Qué es y para qué sirve un fichero ``AGENTS.md``
+------------------------------------------------------------------------
+
+Un archivo ``AGENTS.md`` le da a un agente IA el contexto que necesita
+para escribir código ajustado a las pautas de tu proyecto. Es un archivo
+Markdown en la raíz de su proyecto donde se puede fijar, entre otras
+cosas, la versión de Python, dependencias, convenciones de codificación y
+restricciones.
+
+El archivo ``AGENTS.md`` debe residir en la raíz del proyecto, y se carga
+en la ventana contextual del agente al inicio de cada sesión.  El formato
+es deliberadamente mínimo. Es Markdown estándar sin campos requeridos,
+administrado como estándar abierto por la Fundación Agentic AI y ya leído
+por más de veinte agentes, incluidos Codex, Cursor y Copilot CLI.
+
+Cosas que podemos definir:
+
+- **Contexto general / dominio del problema**. Lo primero que necesita tu
+  agente es una idea de en qué está trabajando.
+
+- **Gestión del proyecto**: Versión de Python, Cómo añadir dependencias, como
+  ejecutar la aplicación, reglas para el control de versiones, como por
+  ejemplo, nunca hacer un *commit* a la rama ``main``.
+
+- **Reglas y convenviones de codificación**: Reglas que son obvias para ti
+  pero invisibles para el agente: qué modismos favoreces, cómo formateas
+  las cadenas, cómo se ven tus *docstrings*. Escribirlos convierte el
+  conocimiento tácito del equipo en algo explícito, que el agente puede
+  usar.
+
+- **Estructura del proyecto**: Para determinar el diseño del proyecto,
+  marcar los límites de los módulo y decirle al agente qué archivos puede
+  tocar.  Es recomendable seguir el principio de **privilegio mínimo**:
+  dar acceso a los archivos que necesitan para la tarea, no a todo el
+  repositorio del proyecto. Así se mantiene al agente dentro de los
+  límites seguros.
+
+- **Definir criterios de calidad**: Sin ellos, el agente se detiene tan
+  pronto como el código se ejecuta una vez. Con ellos, “hecho” significa
+  pasar una lista de verificación que el agente puede ejecutar por sí
+  mismo.  Agregue un bloque de líneas que enumere los comandos exactos que
+  deben pasar.
+
+- **Definir restricciones**: Definir las líneas que el agente nunca debe
+  cruzar, ni siquiera para pasar un test o terminar
+  una tarea más rápido. Estas son sus reglas estrictas y no negociables.
+
+  La mayoría de estas reglas deberían decirle al agente **qué hacer, no
+  qué evitar**, y eso es deliberado. Plantea cada restricción como una
+  acción, si se puede, y usar la versión negativa "No hagas tal cosa" solo
+  cuando no haya una forma positiva limpia y clara.
+
+  Las restricciones deben ser cortas y contundentes. Vale la pena
+  revisarlas cada vez que un agente te sorprende.
+
+- **Establecer reglas de ignorar**: Cada archivo que el agente lee cuesta
+  *tokens* y agrega ruido que puede desplazar las reglas que importan.
+  Estas reglas son para mantener la atención del agente en los archivos que
+  cuentan.
+
+  No hay que enumerar todos los ficheros, la mayoría de lo que quieres omitir
+  ya está en tu fichero ``.gitignore``, así que remite al agente allí y mantén
+  una lista explícita para los extras,
+
+Fuente: https://realpython.com/agents-md/
 
 Noticias sobre mal uso de IA
 -----------------------------------------------------------------------
