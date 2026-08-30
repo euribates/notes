@@ -331,3 +331,19 @@ páginas del dominio que usan la memoria sincronicen los cambios que se
 están haciendo. Las páginas en otros dominios no pueden acceder a los
 mismos objetos de almacenamiento.
 
+Cambiar el tipo de entrada de un elemento ``input``
+------------------------------------------------------------------------
+
+SUpongamos este código html:
+
+.. code::html
+
+   <input id="hybrid" type="text" name="password" />
+
+Con javascript haríamos:
+
+.. code::javascript
+
+   <script type="text/javascript">
+      document.getElementById('hybrid').type = 'password';
+   </script>

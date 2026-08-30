@@ -770,9 +770,10 @@ El nodo ``CharacterBody3D``
 Sirve para representar un objeto físico en tres dimensiones pensado para
 ser manejado por el usuario. Al contrario que los objetos de tipo
 `RigidBody3d`_, este no se ve afectado por el motor de físicas, y la
-gravedad tiene que ser aplicada específicamente. En vez de aplicar
-fuerzas, lo que hacemos es modificar la propiedad ``velocity`` y llamar
-al método ``move_and_slide()`` para que se mueva.
+gravedad tiene que ser aplicada específicamente.
+
+En vez de aplicar fuerzas, lo que hacemos es modificar la propiedad
+``velocity`` y llamar al método ``move_and_slide()`` para que se mueva.
 
 
 .. _AnimationPlayer:
@@ -1150,8 +1151,80 @@ por uno mismo, por ejemplo así:
             # Move right
             pass
 
+Eventos de entrada
+------------------------------------------------------------------------
 
+En vez de comprobar si ha sucedifo alg un evento en cada llamada a
+``_process()``, que se ejecuta cada *frame*, podemos manejar las
+entradas usando la función ``_input()``, con esta signatura:
 
+.. code:: gdscript
+
+    func _input(event: InputEvent) -> void:
+        ...
+
+Hay muchos subtipos de ``InputEvent``, así que normalmente es necesario
+identificarlos dentro de la función. Algunos de los subtipos son
+``InputEventMouseMotio`` o ``InputEventMouseButton``. Lo clase tiene
+también el método ``is_action`` que nos permite detectar los eventos que
+hay definidos en el mapa de entradas.
+
+La función ``_draw()``
+------------------------------------------------------------------------
+
+Todos los nodos `CanvasItem`_, como `Node2D`_, `Control` y resto de
+clases derivados, usan la función virtual ``_draw`` para pintarse en a
+si mismas en 2D.
+
+La función se llama una vez, y el resultado se cachea, pero si se hace
+necesario volver a dibujarlo, porque se cambio algún valor
+del que dependa el dibujo, se puede forzar una nueva llamada con la
+función ``queue_redraw()``.
+
+Dentro de esta función podemos realizar varias llamadas a primitivas,
+con funciones que empiezan por ``draw_``. Algunas de ellas son:
+
+- ``draw_line(
+        from: Vector2,
+        to: Vector2,
+        col: Color,
+        width: float = -1.0,
+        antializased: bool=False,
+        )``
+
+- ``draw_circle(
+        position: Vector2,
+        radius: float,
+        color: Color,
+        filled: boot = true,
+        width: float = -1,
+        antialiased: bool = false,
+        )``
+
+- ``draw_arc(
+        center: Vector2,
+        radius: float,
+        start_angle: float,
+        end_angle: float,
+        point_count: int,
+        color: Color,
+        width: float = -1.0,
+        antialiased: bool = false,
+        )``` 
+
+- ``draw_dashed_line(
+        from: Vector2,
+        to: Vector2,
+        color: Color,
+        width: float = -1.0,
+        dash: float = 2.0,
+        aligned: bool = true,
+        antialiased: bool = false,
+        )``
+
+Ver `Dibujos personalizados en 2D`_
+
+ 
 Diferencia entre ``_process(delta)`` y ``_physics_process(delta)``
 ------------------------------------------------------------------------
 
@@ -1163,6 +1236,22 @@ fija determinada por el motor de físicas, que por defecto es 60 :term:`FPS`.
 Esto ayuda a mantener la simulación física estable. Todos las llamadas a
 ``_physics_process`` se realizan **después** de realizar todos los
 cálculos físicos necesarios.
+
+La anotación ``@tool``
+------------------------------------------------------------------------
+
+La anotación ``@tool`` permite escribir código que se ejecuta en el
+editor. Podemos usar la llamada a ``Engine.is_editor_hint() -> bool``
+para comprobar que el código se esta ejecutando dentro del editor.
+
+.. wwarning::
+
+   Hay que ser muy cuidadoso con este código, yq que se corre el riesgo
+   de romper el editor.
+
+Cuando un *script* se está ejecutando en el editor, el IDE lo muestra en
+azul en el árbol de escenas.
+
 
 Atajos de teclado
 ------------------------------------------------------------------------
@@ -1944,6 +2033,7 @@ mediante una lista o un diccionario:
 .. _AnimatableBody2D: https://docs.godotengine.org/en/stable/classes/class_animatablebody2d.html#class-animatablebody2d
 .. _Collision Layers and Masks in Godot 4: https://www.gotut.net/collision-layers-and-masks-in-godot-4/
 .. _Curva de Bézier: https://es.wikipedia.org/wiki/Curva_de_B%C3%A9zier
+.. _Dibujos personalizados en 2D: https://docs.godotengine.org/es/4.x/tutorials/2d/custom_drawing_in_2d.html
 .. _DisplayServer: https://docs.godotengine.org/en/stable/classes/class_displayserver.html
 .. _GDScript - Annotations: https://docs.godotengine.org/en/4.7/classes/class_@gdscript.html#annotations
 .. _La clase Color: https://docs.godotengine.org/en/stable/classes/class_color.html
