@@ -14,6 +14,60 @@ Podemos usar la propiedad ``selectionStart`` del control. Este propiedad
 nos informa de la primera posición del texto seleccionado, pero si no
 hay texto seleccionado, informa de la posición actual del cursor.
 
+Programación asíncrona con Javascript
+------------------------------------------------------------------------
+
+La programación asíncrona es una técnica que permite a su programa iniciar
+una tarea potencialmente de larga duración y aún así poder responder a
+otros eventos mientras esa tarea se ejecuta, en lugar de tener que esperar
+hasta que esa tarea haya terminado. Una vez que esa tarea ha terminado, su
+programa se presenta con el resultado.
+
+Muchas funciones proporcionadas por los navegadores, algunas muy
+interesantes, pueden llevar mucho tiempo y, por lo tanto, es conveniente
+ejecutarlas de forma asíncrona:
+
+- Realizar solicitudes HTTP usando ``fetch()``
+
+- Acceso a la cámara o micrófono de un usuario con ``getUserMedia()``
+
+- Pedir a un usuario que seleccione los archivos usando ``showOpenFilePicker()``
+
+En principio, un programa Javascipt es *single-thread*, es decir, que solo
+tiene un hilo de ejecución, por lo que si se realiza una operación que
+lleva mucho tiempo, el programa no puede seguir ejecutandose hasta que
+esta termina.
+
+Una forma de resolver esto es mediante **funciones asíncronas**:
+
+- Se Llama a una función que realiza una tarea potencialmente larga.
+
+- La función empieza la tarea, pero retorna inmediatamente. Esto permite
+  que la ejecución continúe (Aunque la tarea potencialmente larga no ha
+  terminado, quizá ni siquiera ha empezado).
+
+- La función ahora realiza la tarea sin bloquear el hilo principal, por
+  ejemplo empezando un nuevo *thread*.
+
+- Cuando la tarea ha terminado, se notifica el resultado.
+
+La descripción que acabamos de ver de funciones asíncronas puede recordar
+a los manejadores de eventos. De hecho, los manejadores de eventos son
+realmente una forma de programación asíncrona: proporcionas una función
+(el manejador de eventos) que se llamará, no de inmediato, sino siempre
+que ocurra el evento. Si el evento fuera «la operación asíncrona se ha
+completad», entonces se podría usar dicho evento para notificar a la
+persona que llama sobre el resultado de una llamada de función asíncrona.
+
+Algunas API asíncronas tempranas utilizaron eventos de esta manera. La API
+XMLHttpRequest le permite realizar solicitudes HTTP a un servidor remoto
+con JavaScript. Dado que esto puede llevar mucho tiempo, es una API
+asíncrona, y se le notifica sobre el progreso y la eventual finalización
+de una solicitud adjuntando oyentes de eventos al objeto XMLHttpRequest.
+
+Fuente: https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Async_JS
+
+
 Cómo copiar texto al/desde porta papeles con Javascript
 ------------------------------------------------------------------------
 
