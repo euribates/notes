@@ -4,6 +4,16 @@ Glosario de términos
 .. glossary::
     :sorted:
 
+    Camel case
+
+        **Camel case** (a veces estilizado como *camelCase*) es la
+        práctica de escribir frases o palabras compuestas sin espacios
+        ni signos de puntuación, indicando la separación entre palabras
+        con una letra mayúscula al inicio de cada palabra interior. El
+        nombre se debe a que las mayúsculas a lo largo de una palabra en
+        *camelCase* se asemejan a las jorobas de un camello. 
+
+
     FPS
 
         La **tasa de fotogramas** (en inglés *frame rate*), expresada como

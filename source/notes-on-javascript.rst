@@ -31,12 +31,13 @@ ejecutarlas de forma asíncrona:
 
 - Acceso a la cámara o micrófono de un usuario con ``getUserMedia()``
 
-- Pedir a un usuario que seleccione los archivos usando ``showOpenFilePicker()``
+- Pedir a un usuario que seleccione los archivos usando
+  ``showOpenFilePicker()``
 
-En principio, un programa Javascipt es *single-thread*, es decir, que solo
-tiene un hilo de ejecución, por lo que si se realiza una operación que
-lleva mucho tiempo, el programa no puede seguir ejecutandose hasta que
-esta termina.
+En principio, un programa JavaScript es *single-thread*, es decir, que
+solo tiene un hilo de ejecución, por lo que si se realiza una operación
+que lleva mucho tiempo, el programa no puede seguir ejecutándose hasta
+que esta termina.
 
 Una forma de resolver esto es mediante **funciones asíncronas**:
 
@@ -51,19 +52,88 @@ Una forma de resolver esto es mediante **funciones asíncronas**:
 
 - Cuando la tarea ha terminado, se notifica el resultado.
 
-La descripción que acabamos de ver de funciones asíncronas puede recordar
-a los manejadores de eventos. De hecho, los manejadores de eventos son
-realmente una forma de programación asíncrona: proporcionas una función
-(el manejador de eventos) que se llamará, no de inmediato, sino siempre
-que ocurra el evento. Si el evento fuera «la operación asíncrona se ha
-completad», entonces se podría usar dicho evento para notificar a la
-persona que llama sobre el resultado de una llamada de función asíncrona.
+La descripción que acabamos de ver de funciones asíncronas puede
+recordar a los manejadores de eventos. De hecho, los manejadores de
+eventos son realmente una forma de programación asíncrona: proporcionas
+una función (el manejador de eventos) que se llamará, no de inmediato,
+sino siempre que ocurra el evento. Si el evento fuera «la operación
+asíncrona se ha completad», entonces se podría usar dicho evento para
+notificar a la persona que llama sobre el resultado de una llamada de
+función asíncrona.
 
-Algunas API asíncronas tempranas utilizaron eventos de esta manera. La API
-XMLHttpRequest le permite realizar solicitudes HTTP a un servidor remoto
-con JavaScript. Dado que esto puede llevar mucho tiempo, es una API
-asíncrona, y se le notifica sobre el progreso y la eventual finalización
-de una solicitud adjuntando oyentes de eventos al objeto XMLHttpRequest.
+Algunas API asíncronas tempranas utilizaron eventos de esta manera. La
+API ``XMLHttpRequest`` permite realizar solicitudes HTTP a un servidor
+remoto con JavaScript. Dado que esto puede llevar mucho tiempo, es una
+API asíncrona, y se le notifica sobre el progreso y la eventual
+finalización de una llamada *callback*.
+
+*Callbacks*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Un manejador de eventos es un tipo particular de función de
+**callback**. Un *callback* es una función que se pasa como parámetro a
+otra función, con la expectativa de que se llame en el momento adecuado.
+Como acabamos de ver, las funciones *callback* solían ser
+la principal forma de implementar funciones asíncronas en JavaScript.
+
+Sin embargo, este código puede resultar difícil de entender cuando la
+propia función de devolución de llamada debe llamar a funciones que
+aceptan una función de devolución de llamada. Esta es una situación
+común si se necesita realizar alguna operación que se descompone en una
+serie de funciones asíncronas. Por ejemplo, considere lo siguiente:
+
+Supongamos que tenemos que realizar un proceso que implica tres pasos,
+donde cada uno de ellas depende de la anterior. Como código síncrono,
+esto no representa ningún problema, pero con funciones asíncronas es más
+complicado.
+
+.. code:: js
+
+   function doStep1(init, callback) {
+     const result = init + 1;
+     callback(result);
+   }
+   
+   function doStep2(init, callback) {
+     const result = init + 2;
+     callback(result);
+   }
+   
+   function doStep3(init, callback) {
+     const result = init + 3;
+     callback(result);
+   }
+   
+   function doOperation() {
+     doStep1(0, (result1) => {
+       doStep2(result1, (result2) => {
+         doStep3(result2, (result3) => {
+           console.log(`result: ${result3}`);
+         });
+       });
+     });
+   }
+   
+   doOperation();
+
+Debido a este patrón de *callbacks* dentro de *callbacks*, la función
+``doOperation()`` tiene un alto nivel de anidado, lo que la hace difícil
+de entender y de depurar. Este se denomina a veces «Infierno de
+callbacks» (*callback hell*) o «Pirámide de la perdición» (*Pyramid of
+Doom*), por la apariencia del código indentado.
+
+Con este tipo de código, se hace muy difícil el depurado de los errores;
+a menudo hay que gestionar errores en cada nivel de la *pirámide*, en
+vez de tener una única gestión de errores en al nivel superior. Además,
+hay un fuerte acoplamiento entre las funciones, cada una de ellas sabe de la
+existencia y parámetros de entrada de la siguiente. 
+
+Pare resolver estos y otros problemas, el paradigma de programación
+asíncrona más moderno es el uso de las promesas (*promises*).
+
+Promesas o *promises*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 Fuente: https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Async_JS
 
@@ -170,8 +240,8 @@ La forma más usada es ``console.log()``, pero hay más posibilidades:
 
 - ``console.error()`` Para mensajes de error
 
-Adding styles
-~~~~~~~~~~~~~
+Añadiendo estilos al debug
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Además la salida de ``console.log`` puede usar estilos, especificados
 como segundo parámetro de la llamada.
@@ -183,15 +253,15 @@ como segundo parámetro de la llamada.
 Es importante incluir la marca ``%c`` al principio del mensaje.
 
 String substitutions
-~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When passing a string to one of the console object’s methods that accept
 a string (such as log()), you may use these substitution strings:
 
--  ``%s`` – string
--  ``%i`` or ``%d`` – integer
--  ``%o`` or ``%O`` – object
--  ``%f`` – float
+-  ``%s`` : texto
+-  ``%i`` o ``%d`` : Números enteros
+-  ``%o`` o ``%O`` : Objectos
+-  ``%f`` : Números decimales
 
 .. code:: js
 
@@ -199,8 +269,9 @@ a string (such as log()), you may use these substitution strings:
         console.log("Hello %s. You've called me %d times", 'Marko', i+1);
     }
 
+
 ``console.assert()``
-~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Log a message and stack trace to the console if the first argument is
 ``false``.
@@ -401,3 +472,154 @@ Con javascript haríamos:
    <script type="text/javascript">
       document.getElementById('hybrid').type = 'password';
    </script>
+
+Como acceder a los atributos de tipo data desde Javascript
+------------------------------------------------------------------------
+
+Solo hace falta acceder a la propiedad ``dataset``. Se usacomo un
+diccionario, siendo las claves los definidos pero sin el prefijo
+``data-``.
+
+Si tenemos este código html:
+
+.. code:: html
+
+   <span data-typeId="123"
+         data-type="topic"
+         data-points="-1"
+         data-important="true"
+         id="the-span"></span>
+
+Podemos hacer:
+
+.. code:: js
+
+   document.getElementById("the-span").addEventListener("click", function() {
+     var json = JSON.stringify({
+       id: parseInt(this.dataset.typeid),
+       subject: this.dataset.type,
+       points: parseInt(this.dataset.points),
+       user: "Luïs"
+     });
+   });
+
+.. note::
+
+   Además, también
+   funciona con los atributos definidos en SVG.
+
+
+Reescritura de funciones comunes de jQuery
+------------------------------------------------------------------------
+
+Selección de elementos
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+En jQuery, la selección de elementos se realiza normalmente con la
+función ``$()`` o ``jQuery()``. En JavaScript puro, puede usar el método
+``document.querySelector()`` para obtener el mismo resultado. Devuelve
+el primer elemento que coincide con el selector especificado.
+
+El método ``querySelectorAll(selector)`` se puede usar para seleccionar
+**todos** los elementos que coinciden con el selector dado.
+
+Por ejemplo, si tienes un código jQuery que selecciona todos los
+párrafos de la página usando ``$("p")``, puedes reescribirlo en
+JavaScript puro como ``document.querySelectorAll("p")``. Esto devolverá
+una *NodeList* que contiene todos los elementos del párrafo.
+
+Si quieres localizar el elemento por su ``id``, es mejor usar
+``document.getElementById()``, pasando como parámetro el identificador.
+
+Manipulación de CSS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Para manipular las propiedades CSS de un elemento, jQuery proporciona el
+método ``.css()``. En JavaScript puro, puede acceder directamente a la
+propiedad ``style`` de un elemento y asignar valores a propiedades CSS
+específicas. Por ejemplo, ``$(element).css(propiedad, valor)`` se puede
+reescribir como ``element.style[propiedad] = valor``.
+
+Gestión de eventos
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+En jQuery, la gestión de eventos se realiza normalmente mediante el
+método ``.on()``. En JavaScript puro, se puede usar el método
+``addEventListener()`` para obtener el mismo resultado. Por ejemplo,
+``$(element).on(evento, manejador)`` se puede reescribir como
+``element.addEventListener(evento, manejador)``.
+
+Realización de solicitudes AJAX
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+jQuery proporciona el método ``.ajax()`` muy útil para realizar
+solicitudes AJAX. En JavaScript puro, puedes usar la función ``fetch()``
+para lograr el mismo resultado. Por ejemplo, ``$.ajax(options)`` se
+puede reescribir como ``fetch(url, options)``.
+
+Animación de elementos
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+En jQuery, la animación de elementos se suele realizar con el método
+``.animate()``. En JavaScript puro, puedes lograr efectos similares usando
+transiciones CSS o la API de animaciones web. Por ejemplo,
+``$(element).animate(properties, duration, easing, complete)`` se puede
+reescribir usando transiciones CSS.
+
+En el siguiente ejemplo se convierte desde el código en jQuery:
+
+.. code:: js
+
+   // jQuery code
+   $(element).animate({ opacity: 0.5, left: '+=100px' }, 500, 'easeInOut', function() {
+      console.log('Animation complete!');
+      });
+
+A JS puro:
+
+.. code::
+
+   // Equivalent JavaScript code using CSS transitions
+   element.style.transition = 'opacity 0.5s ease-in-out, left 0.5s ease-in-out';
+   element.style.opacity = '0.5';
+   element.style.left = parseInt(element.style.left) + 100 + 'px';
+
+   element.addEventListener('transitionend', function() {
+      console.log('Animation complete!');
+      });
+
+Otra opción es usar la API de Animaciones Web, que ofrece una forma más
+potente y flexible de animar elementos. Permite crear animaciones
+basadas en fotogramas clave y controlar diversos aspectos de la
+animación, como la duración, la velocidad de reproducción y la
+iteración.
+
+Pasaríamos de este código jQuery:
+
+.. code:: js
+   
+   // Código jQuery
+   $(element).animate({ opacity: 0.5, left: '+=100px' }, 500, 'easeInOut', function() {
+      console.log('¡Animación completada!');
+      });
+
+a:
+
+.. code::
+
+   // Código JavaScript equivalente usando la API de animaciones web
+   var animation = element.animate(
+      [
+          { opacity: 1, left: getComputedStyle(element).left },
+          { opacity: 0.5, left: parseInt(getComputedStyle(element).left) + 100 + 'px' }
+      ],
+      {
+         duration: 500,
+         easing: 'ease-in-out'
+      }
+      );
+   animation.onfinish = function() {
+      console.log('¡Animación completada!');
+   };
+
+Fuente: https://fmennen.de/post/converting-j-query-code-to-pure-java-script

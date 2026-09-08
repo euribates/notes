@@ -107,6 +107,119 @@ nombre de la variable y el nuevo valor:
 Fuente: `Learn CSS Variables in 5 minutes - A tutorial for
 beginners <https://www.freecodecamp.org/news/learn-css-variables-in-5-minutes-80cf63b4025d>`_
 
+La propiedad ``position``
+------------------------------------------------------------------------
+
+El posicionamiento CSS se refiere al control de la ubicación de los
+elementos dentro de una página web. Con el posicionamiento CSS, se puede
+modificar el flujo normal del documento.
+
+La propiedad ``position`` especifica el tipo de posicionamiento de un
+elemento.  Esta propiedad puede tener uno de los siguientes valores:
+
+- ``static``: Este es el valor predeterminado. El elemento se posiciona
+  según el flujo normal del documento.
+
+- ``relative``: El elemento se posiciona en relación con su posición
+  normal en el flujo del documento.
+
+- ``fixed``: El elemento se posiciona en relación con el área visible de
+  la página.
+
+- ``absolute``: El elemento se posiciona en relación con el ancestro
+  posicionado más cercano.
+
+- ``sticky``: El elemento alterna entre una posición relativa y fija,
+  según la posición de desplazamiento.
+
+Los elementos se posicionan en su ubicación final con las propiedades
+``top``, ``bottom``, ``left`` y ``right``.
+
+``position: relative``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Un elemento con ``position: relative;`` se posiciona en relación con su
+posición normal en el flujo del documento. Al establecer las propiedades
+``top``, ``right``, ``bottom`` e ``left``, el elemento se desplazará de su
+posición normal. El resto del contenido no se ajustará para ocupar el
+espacio que deje el elemento.
+
+Ejemplo de uso de ``relative``:
+
+.. code:: html
+
+   <h2>Using position: relative;</h2>
+
+   <p>An element with position: relative; is positioned
+   relative to its normal position:</p>
+
+   <p style="position: relative; left: 30px; border: 1px solid red;">
+   This div element has position: relative;
+   </p>
+
+   <p>Otro párrafo.</p>
+
+``position: fixed``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Un elemento con `position: fixed;` se posiciona en relación a la ventana
+gráfica, lo que significa que **siempre permanece en el mismo sitio**,
+incluso si se desplaza la página. Las propiedades ``top``, ``right``,
+``bottom`` y ``left`` se utilizan para establecer la posición final del
+elemento.
+
+Un elemento fijo no deja un espacio en la página donde normalmente se
+ubicaría.
+
+Ejemplo de uso de ``position: fixed``
+
+Supuesto esta hoja de estilos:
+
+.. code:: css
+
+   div.fixed {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      width: 300px;
+      height: 200px;
+      border: 3px solid #73AD21;
+      }
+
+Y el código Html:
+
+.. code:: html
+
+   
+    <h2>Using position: fixed;</h2>
+
+    <p>An element with position: fixed; is positioned relative
+    to the viewport, which means it always stays in the same place
+    even if the page is scrolled:</p>
+
+    <div class="fixed">
+    This div element has position: fixed;
+    </div>
+
+
+
+La propiedad ``z-index``
+------------------------------------------------------------------------
+
+La propiedad ``z-index`` especifica el orden de apilamiento de un
+elemento. Un elemento con mayor orden de apilamiento siempre se muestra
+delante de un elemento con menor orden de apilamiento.
+
+.. note:: 
+
+   La propiedad ``z-index`` solo funciona con elementos posicionados
+   (Aquellos cuyo valor de ``position`` sea ``absolute``, ``relative``,
+   ``fixed`` o ``sticky``) y con elementos flexibles (elementos que son
+   hijos directos de elementos `display: flex`).
+
+Si dos elementos posicionados se superponen sin especificar un
+`z-index`, el elemento posicionado en último lugar en el código HTML se
+mostrará en primer plano.
 
 Animaciones y transiciones
 ------------------------------------------------------------------------

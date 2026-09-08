@@ -360,7 +360,7 @@ ejemplo anterior, quedaría así:
 Cómo condensar/simplificar (*squash*) las migraciones en Django
 ------------------------------------------------------------------------
 
-Existe una opción en el ``manage.py`` llamada **``squashmigrations``**
+Existe una opción en el ``manage.py`` llamada ``squashmigrations``
 que nos permite condensar todas las migraciones aplicadas (o un
 subconjunto de ellas) de forma que se sustituyan por una única
 migración. Además, intenta optimizar las migraciones al mezclarlas, de
