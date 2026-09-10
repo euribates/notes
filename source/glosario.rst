@@ -35,6 +35,22 @@ Glosario de términos
         como Graphite, InfluxDB y OpenTSDB.
 
         https://es.wikipedia.org/wiki/Grafana
+
+    JWT
+
+        Son las iniciales de *JSON Web Token*. Es un estándar abierto
+        basado en JSON y propuesto por IETF (RFC 7519) para la creación
+        de *tokens* de acceso que permiten la propagación de identidad y
+        privilegios o *claims* en inglés. Por ejemplo, un servidor
+        podría generar un *token* indicando que el usuario tiene
+        privilegios de administrador y proporcionarlo a un cliente. El
+        cliente entonces podría utilizar el *token* para probar que está
+        actuando como un administrador en el cliente o en otro sistema.
+        El *token* está firmado por la clave del servidor, así que el
+        cliente y el servidor son ambos capaces de verificar que es
+        legítimo. Los *tokens* están diseñados para ser compactos, poder
+        ser enviados en las URLs (*URL-safe*) y se suelen utilizar en
+        escenarios de ``SSO`` (*Single Sign-On*).
         
     RDF
 

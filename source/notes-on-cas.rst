@@ -29,6 +29,61 @@ Fuentes:
 - `How does single sign-on work`_
 
 
+Diferencias entre ``OAuth``, ``OIDC``, ``SAML`` y ``SSO``
+------------------------------------------------------------------------
+
+OAuth no autentica; autoriza. Muchas veces usamos un sistema de permisos
+para verificar la identidad y nos preguntábamos por qué nuestro sistema
+de autenticación tenía lagunas.
+
+La confusión: a menudo se trata a ``OAuth``, ``OIDC``, ``SAML`` y
+``SSO`` como cuatro nombres para lo mismo, pero no lo son. Dos gestionan
+la **autenticación** (quién eres). Uno gestiona la **autorización** (a
+qué puedes acceder). Y uno de ellos **ni siquiera es un protocolo**.
+
+- ``OAuth``: Gestión de permisos, sin identidad. "¿Puede esta aplicación
+  acceder a mi *Google Drive*?". Eso es ``OAuth``. Otorga un *token* que
+  indica qué acciones tienes permitidas; nunca confirma quién eres.
+
+- ``OIDC``: Identidad construida sobre ``OAuth``. Es la pieza que le
+  faltaba a ``OAuth``. Devuelve un *token* de identidad (:term':`JWT`) que
+  realmente indica quién es el usuario: nombre, correo electrónico,
+  roles. ``OIDC`` existe porque todo el mundo usaba ``OAuth``
+  incorrectamente para la autenticación. En lugar de luchar contra el
+  uso indebido, la industria creó una solución adecuada sobre él. Si tu
+  aplicación necesita saber quién es alguien Y a qué puede acceder,
+  ``OIDC`` te proporciona ambas cosas.
+
+- ``SAML``: Para empresas y sistemas heredados (*legacy*). Sigue
+  funcionando en la mayoría de las grandes organizaciones. Cuando
+  inicias sesión en las herramientas internas de tu empresa a través de
+  Okta o ADFS, probablemente haya ``SAML`` de fondo. Realiza la misma
+  función que ``OIDC`` —demostrar la identidad—, pero utilizando
+  aserciones XML en lugar de tokens JSON. No es tan amigable para los
+  desarrolladores.
+
+• ``SSO``: No es un protocolo, sino una **experiencia**. Inicias sesión
+una vez y accedes a múltiples aplicaciones sin tener que volver a
+autenticarte. El ``SSO`` es el resultado; ``OIDC``, ``SAML`` (o ambos) son los
+mecanismos que lo hacen posible.
+
+La decisión en la práctica:
+
+- Necesitas saber a qué puede acceder un usuario: ``OAuth`` 2.0.
+
+- Necesitas saber quién es un usuario (aplicación moderna): ``OIDC``.
+
+- Necesitas saber quién es un usuario (entorno empresarial o sistemas
+  heredados): ``SAML``.
+
+- Necesitas un único inicio de sesión para varias aplicaciones: ``SSO``,
+  impulsado por ``OIDC`` o ``SAML``.
+
+- Necesitas identidad Y autorización: ``OIDC`` (que incluye ``OAuth`` en
+  su base).
+
+
+
 Cómo funciona CAS
 ------------------------------------------------------------------------
 
