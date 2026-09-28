@@ -65,6 +65,9 @@ Glosario de términos
 
         https://es.wikipedia.org/wiki/Resource_Description_Framework
 
+    Recursividad
+
+        Vease *Recursividad*.
 
     linaje de datos:
 

@@ -364,6 +364,58 @@ Fuente: https://realpython.com/agents-md/
 Noticias sobre mal uso de IA
 -----------------------------------------------------------------------
 
+Personas contratadas para alimentar la IA despedidas por usar IA
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+23/Sep/2026
+
+OpenAI tiene un ejército de contratistas que revisan los *prompts* de
+usuarios reales de ChatGPT y otros datos para ayudar a mejorar las
+respuestas. La idea es que estos contratistas aporten un toque
+—evidentemente— humano a los modelos de OpenAI. Sin embargo, no todos
+cumplen con esta función. 404 Media ha descubierto que varios
+contratistas fueron despedidos por utilizar IA para entrenar a la propia
+IA. Esto no beneficia a los modelos, pero también resulta sumamente
+irónico que empresas dedicadas al entrenamiento de IA para OpenAI
+despidan a personas por usar IA, cuando el objetivo fundamental de
+OpenAI es precisamente fomentar el uso de esta tecnología en el ámbito
+laboral.
+
+Algunos modelos de IA ya muestran indicios de "colapso del modelo", un
+fenómeno en el que la calidad de los modelos se deteriora
+progresivamente al ser entrenados con textos generados por IA.
+
+https://www.404media.co/people-training-openais-ai-fired-for-using-ai-to-train-the-ai/
+
+
+Las alucinaciones de una IA casi provocan una guerra en China
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+18/09/2026
+
+Según la CNN, una alucinación de un *IA Chatbot* hizo que el ejercito
+americano se preparara para interceptar un barco chino que supuestamente
+transportaría componentes de armas nucleares. 
+
+Esto podría haber desencadenado una guerra con China, pero los oficiales
+al mando detectaron el error justo antes de empezar la operación, con lo
+que se evitó una confrontación potencialmente muy peligrosa.
+
+Este caso constituye uno de los ejemplos más contundentes y
+trascendentales de cómo una IA que alucina puede arruinar la fiabilidad
+de un informe profesional. Desde que el término "alucinar"
+(*hallucinating*) fue elegido palabra del año 2023 por el Diccionario
+Cambridge, hemos sido testigos de casos notables en los que autores de
+obras de no ficción, periodistas, investigadores académicos, jueces,
+médicos, cuerpos policiales, centros de atención telefónica corporativos
+y otros sectores se han dejado engañar por estas herramientas. Las IA se
+inventan información cuando sus datos de entrenamiento no les
+proporcionan un contexto adecuado. A pesar de algunos intentos ingenuos,
+como instrucciones del tipo "no alucines", algunas investigaciones
+sugieren que podría resultar imposible evitar por completo que los
+modelos de lenguaje de gran tamaño (LLM) alucinen.
+
+- https://edition.cnn.com/2026/09/18/politics/us-military-ai-false-intelligence-china-ship
+
+- https://arstechnica.com/ai/2026/09/report-us-almost-boarded-chinese-ship-over-hallucinated-ai-arms-report/
 
 OpenAI afirma que su IA se descontroló y lanzó un ciberataque "sin precedentes".
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

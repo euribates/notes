@@ -95,7 +95,7 @@ Entonces:
 - ``j`` se mapea a ``gg``.
 
 - ``Q`` también se mapea ``gg``, porque ``j`` será expendido ya que se
-  aplica recursividad.
+  aplica :term:`recursividad`.
 
 - ``W`` se mapea a ``j`` (y no a ``gg``) porque ``j`` **no** será
   expandido, ya que se ha hecho un mapeo no recursivo.

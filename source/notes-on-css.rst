@@ -1180,3 +1180,50 @@ navegador es igual o menor que 1250px:
     @media (max-width: 1250px) {
       /* ... */
     }
+
+
+Cosas qué hay que saber del tamaño de las fuentes en CSS
+------------------------------------------------------------------------
+
+En la época en que los caracteres se creaban en metal, la medida ``em``
+hacía referencia al tamaño del bloque sobre el que se grababa la letra;
+dicho tamaño venía determinado por la letra «M» mayúscula, ya que suele
+ser la que ocupa más espacio.
+
+.. figure:: css/ntg5f.png
+
+   Las diferentes medidas descriptivas usadas en tipografía.
+
+Hoy en día, los diseñadores de tipografías crean sus fuentes en
+ordenadores, sin las limitaciones de las piezas metálicas físicas. Por
+ello, aunque la medida ``em`` sigue existiendo, no es más que un límite
+imaginario dentro del software, susceptible de ser
+manipulada o incluso ignorada por completo.
+
+En una fuente OpenType, el tamaño ``em`` suele establecerse en 1000
+unidades. En las fuentes TrueType, dicho tamaño suele ser de 1024 o 2048
+unidades.
+
+La forma más precisa de definir el estilo de una fuente es utilizar la
+unidad ``em``; de este modo, al definir el tamaño de uso de la fuente,
+la dimensión no se refiere a la altura en píxeles del carácter, sino a
+la «altura de la x» (*x-height*), determinada por la distancia entre la
+línea base y la línea media de la fuente.
+
+A modo de referencia: 1 punto (``pt``) equivale aproximadamente a 0,35136
+mm. Por su parte, el píxel (``px``) representa un «punto» en la pantalla; su
+tamaño depende de la resolución (puntos por pulgada cuadrada) de la
+pantalla —variando así de un dispositivo a otro—, por lo que constituye
+la peor forma de definir el tamaño de una fuente.
+
+El tamaño real de los glifos de una fuente frente a los de otra siempre
+variará dependiendo de:
+
+- Cómo diseñó el desarrollador los glifos al crear la fuente, y cómo el
+  navegador renderiza dichos caracteres (no hay dos navegadores
+  exactamente iguales),
+
+- la resolución y los ppp (píxeles por pulgada) de la pantalla donde se
+  visualiza la fuente.
+
+Fuente: https://stackoverflow.com/questions/25520410/when-setting-a-font-size-in-css-what-is-the-real-height-of-the-letters

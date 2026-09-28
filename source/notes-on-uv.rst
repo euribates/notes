@@ -108,3 +108,25 @@ UV el que debe encargarse de su mantenimiento.
    si lo hace uv add.
 
 Fuente: https://realpython.com/python-uv/
+
+Cómo cambiar la versión de Python de un proyecto uv
+------------------------------------------------------------------------
+
+Para cambiar la versión de Python de un proyecto uv, por ejemplo a 3.12,
+ejecuta ``uv python pin 3.12``; esto actualizará el archivo
+``.python-version``. A continuación, ejecutar ``uv sync`` para
+reconstruir el entorno virtual con el nuevo intérprete.
+
+Si también deseas modificar las versiones que admite el proyecto, hay
+que editar el campo ``requires-python`` en ``pyproject.toml`` y ejecuta
+``uv lock && uv sync``.
+
+Uv registra las versiones de Python en dos lugares: el archivo
+``.python-version`` fija el intérprete de desarrollo (p. ej., 3.12),
+mientras que la entrada ``requires-python`` en ``pyproject.toml``
+declara qué versiones admite el proyecto (p. ej., ``>=3.12``). La
+versión fijada debe cumplir con la restricción definida en
+`requires-python`; de lo contrario, se notificará un error de
+incompatibilidad.
+
+Fuente: https://pydevtools.com/handbook/how-to/how-to-change-the-python-version-of-a-uv-project/

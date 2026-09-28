@@ -134,6 +134,68 @@ asíncrona más moderno es el uso de las promesas (*promises*).
 Promesas o *promises*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Una **Promesa** (*Promise*) es un representante (*proxy*) de un valor
+que no se conoce necesariamente en el momento de crear la promesa.
+Permite asociar controladores (*handlers*) al valor resultante de un
+éxito o a la razón de un fallo de una acción asíncrona. Esto permite que
+los métodos asíncronos devuelvan valores de forma similar a los métodos
+síncronos: en lugar de devolver inmediatamente el valor final, el método
+asíncrono devuelve una promesa de proporcionar dicho valor en algún
+momento futuro.
+
+Una Promesa se encuentra en uno de estos estados:
+
+- **pendiente** (*pending*): estado inicial; no se ha cumplido ni rechazado. 
+
+- **cumplida** (*fulfilled*): significa que la operación se completó con éxito. 
+
+- **rechazada** (*rejected*): significa que la operación falló.
+
+Se dice que una promesa está **resuelta definitivamente** (*settled*) si
+ha sido cumplida o rechazada, pero no está pendiente.  En cualquiera de
+estas situaciones, se invocan los controladores asociados que fueron
+puestos en cola mediante el método ``then`` de la promesa (O las funciones
+hermanas ``finally`` y ``catch``).
+
+.. note:: 
+
+   Si la promesa ya hubiera sido cumplida o rechazada cuando se asigna
+   el controlador correspondiente, dicho controlador se ejecutará
+   igualmente; por tanto, no existe condición de carrera entre la
+   finalización de la operación asíncrona y la asignación de sus
+   controladores.
+
+
+Una promesa pendiente puede pasar a estar cumplida o rechazada. Si se
+cumple, se ejecuta el controlador de cumplimiento (*on fulfillment*)
+--el primer parámetro del método ``then()`` o el parámetro de
+``finally``--, el cual lleva a cabo acciones asíncronas adicionales. Si
+se rechaza, se ejecuta el controlador de errores, ya sea el pasado como
+segundo parámetro del método ``then()`` o como único parámetro del método
+``catch()``.
+
+El ejemplo anterior usando promesas:
+
+..code:: js
+
+   async function doStep1(init) { return init + 1; }
+     
+   async function doStep2(value) { return value + 2; }
+     
+   async function doStep3(value) { return value + 3; }
+     
+   async function doOperation() {
+       var result = doStep1(1)
+           .then((value) => doStep2(value))
+           .then((value) => doStep3(value))
+           .then((value) => console.log("value is:", value))
+           .catch((err) => console.error(err));
+       return result;
+       };
+
+   var r = doOperation(); 
+   assert(r == 7)
+
 
 Fuente: https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Async_JS
 
@@ -369,7 +431,7 @@ HTML elements in Chrome? - Stack
 Overflow <https://stackoverflow.com/questions/21335136/how-to-re-enable-right-click-so-that-i-can-inspect-html-elements-in-chrome>`_
 
 
-Cómo usar la API de almacenamiento web
+Cómo usar la API de almacenamiento web (*web storage*)
 ------------------------------------------------------------------------
 
 La API de almacenamiento web permite almacenar información de tipo
@@ -378,6 +440,10 @@ por el navegador. Es similar a ``SessionStorage``, pero este último guarda
 la información mientras el navegador esté abierto, incluyendo recargas de
 página y restablecimientos, mientras que ``LocalStorage`` persiste
 incluso cuando el navegador se cierra.
+
+La API de *web Storage* es muy fácil de usar: almacenas pares simples de
+nombre y valor (limitados a cadenas de texto, números, etc.) y recuperas
+dichos valores cuando los necesitas.
 
 Estos mecanismos están disponibles mediante las propiedades
 ``Window.sessionStorage`` y ``Window.localStorage``. Al invocar uno de

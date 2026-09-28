@@ -69,7 +69,7 @@ Se puede ejecutar:
 
 
 Cómo saber que version de nginx tengo instalada
------------------------------------------------
+------------------------------------------------------------------------
 
 Desde la línea de comandos:
 
@@ -79,7 +79,7 @@ Desde la línea de comandos:
 
 
 Como instalar php con nginx
----------------------------
+------------------------------------------------------------------------
 
 Suponemos instalado nginx, si no:
 
@@ -124,3 +124,71 @@ Y si todo ha ido bien, lo activamos:
     sudo systemctl enable php7.4-fpm
 
 Fuente: | `How to install PHP 7.4 With Nginx on Ubuntu 20.04 - RoseHosting <https://www.rosehosting.com/blog/how-to-install-php-7-4-with-nginx-on-ubuntu-20-04/>`_
+
+Como configurar Nginx junto con *Let's Encrypt* para servir HTTPS
+------------------------------------------------------------------------
+
+Primero hay que instalar el programa ``certbot`` de *Let's Encrypt*.
+Afortunadamente, esto es muy fácil con Linux:
+
+.. code:: bash
+
+    $ apt install certbot
+
+Solicitar los certtificados por primera vez con certbot
+
+.. code:: bash
+
+    $ sudo certbot --nginx -d pythoncanarias.es -d www.pythoncanarias.es
+
+Si vamos a servir varios dominios con el mismo certificado, usamos el
+*flag* ``-d`` las veces que haga falta.
+
+Podemos comprobar la validez de los certificados y las fechas de validez
+con:
+
+.. code:: bash
+
+    sudo openssl x509 -in /etc/letsencrypt/live/beta.pythoncanarias.es/fullchain.pem \
+         -noout -dates -subject -issue
+
+Ahora tenemos que modificar el fichero de configuración de nginx como en
+el siguiente ejemplo:
+
+.. code::
+
+    server {
+        listen 443 ssl http2;
+        server_name example.com www.example.com;
+
+        ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+
+        client_max_body_size 20M;
+
+        location /static/ {
+            alias /srv/myapp/staticfiles/;
+        }
+
+        location /media/ {
+            alias /srv/myapp/media/;
+        }
+
+        location / {
+            proxy_pass http://unix:/run/gunicorn-myapp.sock:;
+            proxy_set_header Host $host;
+            proxy_set_header X-Forwarded-Host $host;
+            proxy_set_header X-Forwarded-Port $server_port;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_redirect off;
+        }
+    }
+    
+Cómo tener varios certificados por servidor con Let's encrypt
+----------------------------------------------------------------------------------
+
+Se puede hacer sin ningún problema gracias a `SNI`_.
+
+.. _SNI: https://en.m.wikipedia.org/wiki/Server_Name_Indication 

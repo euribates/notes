@@ -2284,20 +2284,197 @@ Y su *script* de arranque:
 
 Fuente: <https://www.djangotricks.com/blog/2024/12/https-for-django-development-environment/>
 
+El sistema de comprobaciones de Django (*checks*)
+------------------------------------------------------------------------
+
+El sistema de comprobaciones es una funcionalidad de Django que nos permite
+validar el sistema. La idea es detectar problemas comunes y ofrecer
+sugerencias sobre cómo solucionarlos. Es extensible, por lo que podemos
+añadir fácilmente nuestras propias comprobaciones.
+
+Las comprobaciones se ejecutan mediante el comando ``check``.
+
+También se ejecutan implícitamente antes de la mayoría de los comandos,
+incluidos ``runserver`` y ``migrate``. Por rendimiento, las
+comprobaciones **no se ejecutan** como parte de la pila WSGI en el
+despliegue. No pasa nada porque si queremos incluirlas en nuestro
+despliegue, solo hay que invocar las comprobaciones manualmente mediante
+la orden ``check``.
+
+Los errores graves impedirán que se ejecuten los comandos de Django
+(como `runserver`). Los problemas menores se notifican en la consola. 
+
+La lista de comprobaciones incluidas por defecto se pueden consultar
+aquí: `System check framework`_.
+
+
+Cómo escribir tus propias comprobaciones¶
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+El *framework* es flexible y  permite escribir funciones que realicen
+cualquier otro tipo de comprobación que queramos. Un ejemplo de
+estructura básica para una función de comprobación podría ser:
+
+.. code:: python
+
+   from django.core.checks import Error, register
+
+   @register()
+   def example_check(app_configs, **kwargs):
+       errors = []
+       # ... your check logic here
+       if check_failed:
+           errors.append(
+               Error(
+                   "an error",
+                   hint="A hint.",
+                   obj=checked_object,
+                   id="myapp.E001",
+               )
+           )
+       return errors
+
+
+La función ``check`` debe aceptar un parámetro obligatorio,
+``app_configs``. Es una lista de las aplicaciones (*apps*) que deben ser
+inspeccionadas. Si es ``None``, debemos ejecutar las comprobaciones para
+todas las *apps*. 
+
+Entre los parámetros opcionales, por nombre, puede ser que venga una
+entrada ``databases``. Si viene, es una lista de las bases de datos que
+podemos usar para las comprobaciones, si es ``None``, las comprobaciones
+no deben intentar conectarse con la base de datos.
+
+Es necesario aceptar los parámetros ``**kwargs`` para futuras
+ampliaciones.
+
+Mensajes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Las funciones de comprobaciones deben devolver una lista de mensajes. Si
+no hay ningún problema, se debe devolver una lista vacía. Los
+mensajes deben ser instancias de ``CheckMessage``. Esta clase encapsula
+el mensaje de error, así como información de contexto y pistas de como
+resolver el problema, así como un identificador único.
+
+El concepto es similar a usado en el sistema de mensajes o en el módulo
+de ``logging`` de Python, los mensajes incluyen un atributo ``level```,
+que indica la gravedad del mensaje. Hay clases especializadas de
+``CheckMessage``, definidas para cada nivel. Si se usan estas clases, no
+hay que especificar ``level``, va implícito en el nombre de la clase:
+
+- ``Debug``
+- ``Info``
+- ``Warning``
+- ``Error``
+- ``Critical``
+
+Registrando y etiquetado de las comprobaciones
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Por último, las funciones de comprobación deben registrarse de forma
+explícita. Esto se debe realizar en un fichero que se cargue cuando se
+carga la aplicación, por ejemplo en el método ``AppConfir.ready()``. Se
+registran con el decorador ``register(tags)(function)``.
+
+Las etiquetas usadas en el decorador nos permiten clasificar las
+funciones de comprobación. En Django 6, las etiquetas predefinidas
+son las siguientes:
+
+- ``admin``
+- ``async_support``
+- ``caches``
+- ``commands``
+- ``compatibility``
+- ``database``
+- ``files``
+- ``mail``
+- ``models``
+- ``security``
+- ``signals``
+- ``sites``
+- ``staticfiles``
+- ``templates``
+- ``translation``
+- ``url``
+
+Además, el decorador acepta un parámetro por nombre, ``deploy``. Es un
+*booleano*, con valor por defecto ``False``. Si lo ajustamos a ```True``,
+estas comprobaciones solo se realizaran si se llama a la orden
+``check`` con el parámetro ``--deploy``.
+
+En algunos casos, no es necesario registrar la función de comprobación
+porque se puede aprovechar un registro existente.
+
+Tanto los campos (``Fields``), las restricciones (``constraints``, desde
+Django 6.0), los modelos (``Models``), los gestores de modelos (``model
+managers``), los motores de plantillas, los *backends* de tareas y los
+*backends* de bases de datos implementan un método ``check()`` que ya
+está registrado.
+
+Si pueden añadir comprobaciones adicionales extendiendo la
+implementación de la clase base, realizando las comprobaciones extra que
+necesites y añadiendo los mensajes resultantes a los generados por la
+clase base. Es recomendable delegar cada comprobación en métodos
+separados.
+
+Considera un ejemplo en el que se implementa un campo especializado
+llamado ``RangedIntegerField``. Este campo añade argumentos ``min`` y
+``max`` al constructor de ``IntegerField``. Es posible añadir una
+comprobación para asegurarse de que los usuarios proporcionen un valor
+coherente para un rango válido (es decir, que el valor mínimo sea menor
+que el máximo). El siguiente fragmento de código muestra una posible
+implementación:
+
+.. code:: python
+
+    from django.core import checks
+    from django.db import models
+
+    class RangedIntegerField(models.IntegerField):
+        def __init__(self, min=None, max=None, **kwargs):
+            super().__init__(**kwargs)
+            self.min = min
+            self.max = max
+
+        def check(self, **kwargs):
+            # Call the superclass
+            errors = super().check(**kwargs)
+            # Do some custom checks and add messages to `errors`:
+            errors.extend(self._check_min_max_values(**kwargs))
+            # Return all errors and warnings
+            return errors
+
+        def _check_min_max_values(self, **kwargs):
+            if self.min is not None and self.max is not None and self.min > self.max:
+                return [
+                    checks.Error(
+                        f"min value [{self.min}} is greater than max value [{self.mac}].",
+                        hint="Empty/Invalid range. Decrease min or increase max.",
+                        obj=self,
+                        id="myapp.E001",
+                    )
+                ]
+            return []  # no error, return an empty list
+
+Para añadir una comprobación a un modelo, el enfoque es esencialmente el
+mismo, siendo la única diferencia que la comprobación es un método de
+clase, no un método de instancia.
 
 
 .. _Adam Johnson: https://adamj.eu/
 .. _atributos de datos: https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
+.. _BASE64: https://es.wikipedia.org/wiki/Base64   
 .. _Django Reset Migrations: https://simpleisbetterthancomplex.com/tutorial/2016/07/26/how-to-reset-migrations.html
 .. _Django settings patterns to avoid: https://adamj.eu/tech/2022/11/24/django-settings-patterns-to-avoid/
 .. _Django unique=True except for blank values: https://stackoverflow.com/questions/9808202/
 .. _How to get URL of current page, including parameters: https://stackoverflow.com/questions/3248682/
-.. _HTTPS: https://es.wikipedia.org/wiki/Protocolo_seguro_de_transferencia_de_hipertexto
 .. _HTTP: https://es.wikipedia.org/wiki/Protocolo_de_transferencia_de_hipertexto
+.. _HTTPS: https://es.wikipedia.org/wiki/Protocolo_seguro_de_transferencia_de_hipertexto
 .. _inyección de código: https://es.wikipedia.org/wiki/Inyecci%C3%B3n_de_c%C3%B3digo,
 .. _natural_key: https://docs.djangoproject.com/fr/4.2/topics/serialization/#natural-keys
 .. _plantillas literales de javascript: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
-.. _TLS: https://es.wikipedia.org/wiki/Seguridad_de_la_capa_de_transporte
-.. _SSL: https://es.wikipedia.org/wiki/Seguridad_de_la_capa_de_transporte
 .. _Serializing Django objects: https://docs.djangoproject.com/en/4.2/topics/serialization/#natural-keys
-.. _BASE64: https://es.wikipedia.org/wiki/Base64   
+.. _SSL: https://es.wikipedia.org/wiki/Seguridad_de_la_capa_de_transporte
+.. _System check framework: https://docs.djangoproject.com/es/6.1/ref/checks/
+.. _TLS: https://es.wikipedia.org/wiki/Seguridad_de_la_capa_de_transporte
