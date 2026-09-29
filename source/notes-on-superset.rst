@@ -12,7 +12,6 @@ of data sources.
 Ventajas de Superset
 ------------------------------------------------------------------------
 
-
 - Posibilidad de crear gráficas con una interfaz visual, sin código.
 
 - Un editor web, basado en SQL, para consultas avanzadas.
@@ -48,4 +47,40 @@ Para crear un usuario administrador:
 .. code::
 
     superset fab create-admin
+
+Usar plantillas para el código SQL
+------------------------------------------------------------------------
+
+Se puede usar el sistema de plantillas de Jinja2 para personalizar las
+consultas SQL tanto en el SQl Lab como en *datasets* virtuales. Esta
+capacidad debe ser activada/permitida el *flag*
+``ENABLE_TEMPLATE_PROCESSING``. Existen funciones predefinidas que
+podemos usar desde Jinja2, como por ejemplo ``current_username()``, que
+nos devuelve el ``username`` del usuario conectado, o
+``current_user_roles()``, que devuelve una lista Python con los roles
+que tiene habilitados.
+
+.. code:: jinja2
+
+    {% if 'Finance' in current_user_roles() %}revenue{% else %}NULL{% endif %} AS finance_revenue
+
+Se pueden definir parámetros personalizados en SQL Lab mediante el menú
+de parámetros, especificandolo en JSON:
+
+
+.. code:: json
+
+   {
+     "my_table": "sales",
+     "start_date": "2024-01-01"
+   }
+
+Que despues pueden ser referencias en la consulta:
+
+.. code:: sql
+
+   SELECT *
+     FROM {{ my_table }}
+    WHERE order_date >= '{{ start_date }}'
+
 
