@@ -84,3 +84,28 @@ Que despues pueden ser referencias en la consulta:
     WHERE order_date >= '{{ start_date }}'
 
 
+Podemos usar los bloques lógicos de Jinja:
+
+.. code:: sql
+
+   SELECT *
+     FROM orders
+    WHERE 1 = 1
+     {% if start_date %}
+      AND order_date >= '{{ start_date }}'
+     {% endif %}
+     {% if end_date %}
+      AND order_date < '{{ end_date }}'
+     {% endif %}
+    ...
+
+
+Pass custom values via URL query strings:
+
+.. code:: slq
+
+   SELECT *
+     FROM orders
+    WHERE country = '{{ url_param('country') }}'
+
+Acederiamos, por ejemplo, con ``superset.example.com/sqllab?country=US``
