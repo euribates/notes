@@ -33,6 +33,7 @@ Notas
   u.rst 
   v.rst 
   w.rst
+  x.rst
 
   meta-notes
   glosario
