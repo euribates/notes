@@ -14,7 +14,7 @@ Python, como pip, y ofrece mejoras significativas en velocidad,
 fiabilidad y resolución de dependencias.
 
 Ver las instalaciones de Python, instaladas o disponibles
----------------------------------------------------------
+------------------------------------------------------------------------
 
 Para ver las versiones de Python disponibles o instaladas:
 
@@ -25,7 +25,7 @@ uv python list
 Crear un entorno virtual con uv
 -------------------------------
 
-Para crrear un entorno virtual en el directorio ``.venv``:
+Para crear un entorno virtual en el directorio ``.venv``:
 
 .. code:: shell
 
@@ -36,23 +36,23 @@ en ``myname``:
 
 .. code:: shell
 
-uv venv my-name
+uv venv myname
 
-También se puede especificar una versión cncreta de Python:
+También se puede especificar una versión concreta de Python:
 
 .. code:: shell
 
 uv venv --python 3.11
 
 Esto requiere que la versión indicada esté instalada en el sistema. En
-caso de no estar instalado, uv descargará e instalará esa versión por
+caso de no estar instalado, ``uv`` descargará e instalará esa versión por
 nosotros.
 
 Cómo añadir dependencias usando UV
 ------------------------------------------------------------------------
 
-Para añadir una dependencia uasmos el subcomendo ``add``,  por ejemplo, 
-para incluir la librería ``requests`` como dependicia, hariemos:
+Para añadir una dependencia usamos el subcomendo ``add``,  por ejemplo, 
+para incluir la librería ``requests`` como dependencia:
 
 .. code:: shell
 
@@ -75,7 +75,7 @@ también instala la biblioteca en el entorno virtual. Se puede ver la dependenci
    ]
 
 La orden ``uv add`` actualiza automáticamente la lista de dependencias en
-el archivo ``pyproject.toml``. En el ejempl, se indica que la la versión
+el archivo ``pyproject.toml``. En el ejemplo, se indica que la la versión
 instalada debe ser mayor o igual a 2.32.3.
 
 Si está trabajando en un proyecto existente y desea migrar desde un
@@ -85,10 +85,9 @@ archivo ``requirements.txt``, se puede ejecutar el siguiente comando:
 
    uv add -r requirements.txt
 
-Esta orden instala e importa las dependencias declaradas en el archivo ``requirements.txt``
-dentro de la UV.
-
-Además, actualiza el archivo ``uv.lock`` con la siguiente información:
+Esta orden instala e importa las dependencias declaradas en el archivo
+``requirements.txt`` dentro de la UV.  Además, actualiza el archivo
+``uv.lock`` con la siguiente información:
 
 - **Dependencias directas**: Paquetes de los que depende el proyecto
   directamente. En el ejemplo, ``requests``.
@@ -98,7 +97,7 @@ Además, actualiza el archivo ``uv.lock`` con la siguiente información:
   de ``urllib3``, y por tanto se instala como una dependencia transitiva.
 
 No hay que preocuparse por el contenido uv.lock y no debería editarse. Es
-UV el que debe encargarse de su mantenimiento.
+``uv`` el que debe encargarse de su mantenimiento.
 
 .. warning:: 
 
