@@ -16,7 +16,7 @@ fiabilidad y resolución de dependencias.
 Ver las instalaciones de Python, instaladas o disponibles
 ---------------------------------------------------------
 
-Para ver las versiones de pYthon dispoonibles o instaladas:
+Para ver las versiones de Python disponibles o instaladas:
 
 .. code:: shell
 
@@ -31,7 +31,7 @@ Para crrear un entorno virtual en el directorio ``.venv``:
 
 uv venv
 
-Se puede especificar un nombr, por ejemplo para crear el entorno virtual
+Se puede especificar un nombre, por ejemplo para crear el entorno virtual
 en ``myname``:
 
 .. code:: shell
