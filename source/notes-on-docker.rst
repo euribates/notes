@@ -84,7 +84,13 @@ Para resumir, un contenedor:
 ¿Qué es una imagen en Docker?
 ------------------------------------------------------------------------
 
-Un contenedor en ejecución utiliza un sistema de archivos aislado. Este sistema de archivos aislado es proporcionado por una imagen, y la imagen debe contener todo lo necesario para ejecutar una aplicación: todas las dependencias, configuraciones, scripts, binarios, etc. La imagen también contiene otras configuraciones para el contenedor, como variables de entorno, un comando predeterminado para ejecutar y otros metadatos.
+Un contenedor en ejecución utiliza un sistema de archivos aislado. Este
+sistema de archivos es proporcionado por una imagen, y la imagen
+debe contener todo lo necesario para ejecutar una aplicación: todas las
+dependencias, configuraciones, *scripts*, binarios, etc. La imagen también
+contiene otras configuraciones para el contenedor, como variables de
+entorno, un comando predeterminado para ejecutar y otros
+:term:`metadatos`.
 
 
 Redes en Docker
@@ -522,7 +528,7 @@ Vamos a explicar cada uno de estas instrucciones:
   instrucción, ya que se usa para indicar la imagen base sobre la cual
   se construirá nuestra nueva imagen.
 
-- La orden ``MAINTAINER`` nos permite añadir metadatos sobre la persona
+- La orden ``MAINTAINER`` nos permite añadir :term:`metadatos` sobre la persona
   que mantiene la imagen, normalmente nombre y email. Su uso no es
   obligatoria, pero si recomendable.
 

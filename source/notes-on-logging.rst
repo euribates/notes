@@ -32,7 +32,7 @@ enrutan y formatean los mensajes.
   uno puede tener su propio formateador y su propio nivel de gravedad.
 
 - Los formateadores controlan cómo se representan los mensajes de registro
-  y pueden incluir metadatos (por ejemplo, marcas de tiempo, módulo,
+  y pueden incluir :term:`metadatos` (por ejemplo, marcas de tiempo, módulo,
   número de línea, hilo o ID de proceso). También permiten plantillas de
   cadena personalizadas o formatos estructurados como JSON. Cada
   *handler* puede usar un formateador diferente para producir múltiples
@@ -47,7 +47,7 @@ del *logger*, por ejemplo ``info("hola, mundo")``. El *logger* en primer
 lugar determina el nivel del mensaje. Si el nivel del mensaje es igual o
 superior a su propio nivel, el mensaje es aceptado, si no, se descarta.
 En caso de ser aceptado, se crea un registro de tipo ``LogRecord`` que
-contiene el mensaje y los metadatos.
+contiene el mensaje y los :term:`metadatos`.
 
 Este objeto de tipo ``LogRecord`` se le pasa a todos los *handlers* que
 estén vinculados con el *logger*. Como los *handlers* tienen sus propios
@@ -327,9 +327,9 @@ Cómo usar los formateadores (``Formatters``)
 ------------------------------------------------------------------------
 
 Los formateadores definen cómo se muestra un registro de log (clase
-``LogRecord``), y pueden enriquecer el mensaje con metadatos.  Estos
-metadatos pueden aportar información adicional útil  para la detección de
-errores. Algunos de los metadatos disponibles son:
+``LogRecord``), y pueden enriquecer el mensaje con :term:`metadatos`.  Estos
+:term:`metadatos` pueden aportar información adicional útil  para la detección de
+errores. Algunos de los :term:`metadatos` disponibles son:
 
 - **Marcas temporales** ``(%(asctime)s)`` almacenan el momento en en ocurre el evento.
  

@@ -169,7 +169,7 @@ Crear el fichero .OPF
 ~~~~~~~~~~~~~~~~~~~~~
 
 El fichero de contenidos (``content.opf`` en nuestro ejemplo) es el que
-explica o define el libro en si. Incluye una serie de metadatos, como el
+explica o define el libro en si. Incluye una serie de :term:`metadatos`, como el
 autor, la fecha de publicación, genero… El ejemplo siguiente vale como
 patrón, realizando los cambios oportunos:
 

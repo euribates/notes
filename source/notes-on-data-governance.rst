@@ -143,7 +143,7 @@ necesarias.
 
 - **Linaje de datos**. Un pilar esencial de la gobernanza de datos es el
   uso del linaje de datos para comprender las fuentes y el consumo de
-  datos. Este proceso automatizado captura metadatos y eventos
+  datos. Este proceso automatizado captura :term:`metadatos` y eventos
   relevantes a lo largo del ciclo de vida de los datos, lo que
   proporciona a los usuarios una mejor comprensión de cualquier error en
   los datos y prepara el sistema para auditorías sin el coste de

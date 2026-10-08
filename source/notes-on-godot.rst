@@ -77,10 +77,10 @@ existe en un objeto con el operador ``in``:
     print("unknown" in node) # Imprime false
 
 
-Cada objeto también puede contener **metadatos** (datos sobre
+Cada objeto también puede contener **:term:`metadatos`** (datos sobre
 datos). ``set_meta()`` puede ser útil para almacenar información de la
 que el objeto en sí no depende. Para mantener el código limpio, se
-desaconseja el uso excesivo de metadatos.
+desaconseja el uso excesivo de :term:`metadatos`.
 
 .. note:: A diferencia de las referencias a un RefCounted, las
    referencias a un objeto almacenado en una variable pueden volverse

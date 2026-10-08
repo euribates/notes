@@ -1349,7 +1349,7 @@ La finalidad del fichero ``apps.py`` es permitir configurar y definir
 determinados parámetros o atributos de la aplicación. Según la
 documentación:
 
-   Los objetos de tipo ``AppConfig`` almacenan *metadatos* relativos a
+   Los objetos de tipo ``AppConfig`` almacenan :term:`metadatos` relativos a
    una aplicación. Algunos de estos valores pueden ser modificados
    definiendo una subclase de ``AppConfig``, mientras que otros se
    definen por Django y son de solo lectura.

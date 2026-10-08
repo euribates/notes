@@ -1,0 +1,35 @@
+[project]
+name = "notes"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fpdf2==2.8.4",
+    "markdown>=3.10.3",
+    "markdown-extensions>=0.0.1",
+    "meilisearch>=0.43.0",
+    "metapensiero-sphinx-d2==0.10",
+    "mkdocs>=1.6.1",
+    "mkdocs-autolinks-plugin>=0.7.1",
+    "mkdocs-material>=9.7.7",
+    "mkdocs-table-reader-plugin>=4.0.1",
+    "myst-parser>=5.1.0",
+    "pygments>=2.21.0",
+    "python-markdown-math>=0.9",
+    "pyyaml>=6.0.3",
+    "requests>=2.34.2",
+    "sphinx-copybutton>=0.5.2",
+    "sphinx-design==0.7.0",
+    "sphinx-immaterial[keys]>=0.13.9",
+    "sphinx-nefertiti==0.9.8",
+    "sphinx-tags>=0.4",
+    "sphinxcontrib-mermaid>=2.1.1",
+    "typer[all]>=0.27.2",
+]
+
+[dependency-groups]
+dev = [
+    "setuptools>=84.0.0",
+    "zimply>=1.1.4",
+]

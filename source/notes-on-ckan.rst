@@ -51,12 +51,12 @@ usuario siempre son *datasets*.
 
 Un *dataset* consta de dos partes:
 
-- Los **Metadatos**, es decir, la información acerca de los datos.
+- Los **:term:`Metadatos`**, es decir, la información acerca de los datos.
   Ejemplos pueden ser el autor, la fecha, el formato o formatos en los
   que están disponibles los datos, la licencia que regula su uso, etc.
 
-  Todos los metadatos en CKAN se almacenan versionados. A cada versión se
-  la llama **revisión**.
+  Todos los :term:`metadatos` en CKAN se almacenan versionados. A cada
+  versión se la llama **revisión**.
 
 - Un número de **recursos** (*resources*) que contiene los datos en si.
   A CKAN no le importa demasiado el formato que se haya usado:

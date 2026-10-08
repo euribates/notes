@@ -10,7 +10,7 @@ como tablas, vistas, esquemas, etc. Su flexibilidad es adecuada para
 quienes siguen el principio *DRY* (*Do Not Repeat Yourself*).
 
 La plantilla dbt que aparece a continuación es una simple definición de
-una tabla, pero lleva metadatos que indican al usuario qué base de datos
+una tabla, pero lleva :term:`metadatos` que indican al usuario qué base de datos
 y esquema debe utilizar:
 
 .. code::

@@ -457,7 +457,8 @@ meta-command or its shortcut ``\c``:
     You are now connected to database "sales" as user "ubuntu".
     sales=#
 
-Cómo ver el esquema / lista de tablas *Postgres*
+
+Cómo ver una lista de tablas desde el cliente 
 ------------------------------------------------------------------------
 
 Con la orden ``\dt``.
@@ -472,7 +473,123 @@ Con la orden ``\dt``.
     (1 row)
     sales=#
 
-Source: `Listing Databases and Tables in PostgreSQL Using psql <https://chartio.com/resources/tutorials/how-to-list-databases-and-tables-in-postgresql-using-psql/>`_
+
+¿Qué es el ``information_schema``?
+------------------------------------------------------------------------
+
+Es un esquema de solo lectura en cada RDBMS compatible con SQL (incluido
+PostgreSQL), que contiene :term:`metadatos` sobre la base de datos. A
+diferencia del ``pg_catalog`` de PostgreSQL, ``information_schema`` sigue
+los estándares SQL, lo que lo hace portátil en MySQL, MariaDB, SQL Server
+y Oracle.
+
+La tabla ``information_schema.tables`` nos proporciona información sobre
+todas las tablas y vistas de la base de datos actual.
+
+Fuentes:
+
+
+Obtener información sobre las tabla existentes usando el esquema
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+La siguiente consulta muestra todas las tablas y esquemas:
+
+.. code:: sql
+
+   SELECT table_schema, table_name, table_type
+     FROM information_schema.tables
+    WHERE table_schema NOT IN ('information_schema', 'pg_catalog')
+    ORDER BY table_name;
+
+El campo ``table_type`` es interesante, los posibles valores son
+``BASE_TABLE`` y ``VIEW``. Con este campo podemos diferenciar las
+tablas reales de las vistas.
+
+
+Obtener información sobre los campos de una tabla
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+La siguiente consulta nos devuelve información de los campos de una tabla:
+
+.. code:: sql
+
+    SELECT table_name, column_name, ordinal_position, data_type,
+           is_nullable, column_default
+      FROM information_schema.columns
+     WHERE table_schema = 'public'
+       AND table_name = 'users';
+
+Podemos ver si un campo acepta valores nulos (``is_nullable``), si tiene
+un valor por defecto, y el orden en que fue definido. También el tipo de
+datos (``data_type``), y el máximo de caracteres permitidos para los
+campos de tipos ``char`` o ``varvhar``, en ``character_maximun_length``,
+precisión en los campos de tipo numérico, etc.
+
+Obtener información de las restricciones (*constraints*)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Tenemos que consultar la tabla ``information_schema.table_constraints``
+que nos da información de cualquier restricción o *constraint** que afecte
+a una tabla, como ``PRIMARY KEY``, ``UNIQUE``, ``CHECK`` y/o ``FOREIGN
+KEY``.  Esto nos permite:
+
+* Identificar las reglas de integridad referencial aplicadas a la base de
+  datos.
+
+* Obtener información muy útil cuando se producen errores de inserción o
+  actualización de los datos.
+
+La consulta sería:
+
+.. code:: sql
+
+    SELECT constraint_name, table_name, constraint_type
+      FROM information_schema.table_constraints
+     WHERE table_schema = 'public';
+
+
+También podemos usar ``information_schema.key_column_usage`` que nos da
+información sobre Qué columnas están involucradas en *constraints*, como
+claves primarias o claves foráneas.
+
+
+Esto nos viene muy bien para representar diagramas E/R, por ejemplo.
+
+La consulta:
+
+.. code:: sql
+
+    SELECT table_name, column_name, constraint_name
+      FROM information_schema.key_column_usage
+     WHERE table_schema = 'public'
+       AND table_name = 'users';
+
+
+La table ``information_schema.referential_constraints`` se centra solo en
+las relaciones de tipo *foreing key* o claves foráneas. Es útil también
+para realizar diagramas y para poder determinar relaciones de dependencia
+entre tablas. Por ejemplo, si tenemos una tabla de municipios que depende
+de una tabla de islas, eso significa que tenemos que actualizar primero la
+tabla de islas, antes de actualizar la de municipios. Si lo hiciéramos al
+revés, podría llegar un municipio de una isla nueva y daría error al
+insertarla, ya que se rompería la integridad referencia.
+
+Un ejemplo de consulta:
+
+.. code::
+
+    SELECT constraint_name, unique_constraint_name
+      FROM information_schema.referential_constraints
+     WHERE unique_constraint_schema = 'public';
+
+
+Fuentes:
+
+- https://www.postgresql.org/docs/current/information-schema.html
+
+- https://chartio.com/resources/tutorials/how-to-list-databases-and-tables-in-postgresql-using-psql/
+
+- https://www.cybrosys.com/research-and-development/postgres/how-to-use-postgresqls-information-schema-to-explore-your-database-structure-in-depth
 
 
 How do you describe a table in PostgreSQL

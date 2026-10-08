@@ -52,6 +52,14 @@ Glosario de términos
         ser enviados en las URLs (*URL-safe*) y se suelen utilizar en
         escenarios de ``SSO`` (*Single Sign-On*).
         
+    Metadatos
+
+        Los metadatos (del griego *μετα*, meta, "después de, más allá de" y 
+        latín *datum*, "lo que se da"), literalmente "sobre los
+        datos", son datos que describen otros datos. En general, un grupo
+        de metadatos se refiere a un grupo de datos que describen el
+        contenido informativo de un objeto al que se denomina recurso.
+
     RDF
 
         El Marco de Descripción de Recursos (del inglés *Resource

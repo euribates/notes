@@ -205,7 +205,7 @@ Cumplimiento del Esquema Nacional de Interoperabilidad (ENI)
   garantizan la compatibilidad de los datos y documentos intercambiados
   entre administraciones
 
-- Utiliza metadatos y formatos de archivo reconocidos (XML, PDF/A,
+- Utiliza :term:`metadatos` y formatos de archivo reconocidos (XML, PDF/A,
   XAdES, etc.) para documentos electrónicos
 
 Integración con la Red SARA
