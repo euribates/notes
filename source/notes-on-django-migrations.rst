@@ -76,20 +76,23 @@ compara con los ficheros de migraciones almacenados en las carpetas
 Schema Migrations vs Data Migration
 ------------------------------------------------------------------------
 
-There are two fundamentally different kinds of migrations:
+Hay dos tipos muy diferentes de migraciones:
 
-**Schema migrations** alter the database structure: adding or removing
-tables, adding or removing columns, creating indexes, changing column
-types. These are generated automatically by ``makemigrations``.
+- **Migraciones del Schema**: Modifican la estructura de la base de
+  datos. Añadír u eliminar columnas, crear índices, tablas,  modificar
+  los tipos de las columnas, etc. Son generadas automáticamente por la
+  orden ``makemigrations``.
 
-**Data migrations** modify the data inside existing tables: backfilling
-a new column, transforming existing values, splitting one table into
-two. These must be written by hand using ``RunPython`` or ``RunSQL``.
+- **Migraciones de datos**: Modifican los datos que hay dentro de las
+  tablas.  Cosas como copiar datos de una columna a otra, dividir una
+  tabla en dos, tranformar determinado valores, etc. Estas migraciones
+  **se escriben a mano** y usan las clases ``RunPython`` o ``RunSQL``.
 
-The golden rule: **always separate schema migrations from data
-migrations**. One migration should do one thing.
+La regla de oro es: **Siempre separa las migraciones de esquema de las
+migraciones de datos**. Una migración debería hacer solo una cosa.
 
-The Migration Graph
+
+El grafo de migraciones
 ------------------------------------------------------------------------
 
 Migration files are not executed linearly by file name. Django builds a
@@ -99,10 +102,11 @@ dependencies declarations, then executes them in topological order.
 This graph is what allows Django to handle branch merges, detect
 conflicts, and squash migrations without losing history.
 
-Architecture Design - The Five Internal Components
+Arquitectura y diseño del sistema de migraciones - Los cinco conponentes
 ------------------------------------------------------------------------
 
-Django's migration system has five key internal components that work together:
+El sistema de migraciones de Django tiene cinco componentes principales
+que funciona conjuntamente:
 
 .. code::
 

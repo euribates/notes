@@ -129,3 +129,28 @@ versión fijada debe cumplir con la restricción definida en
 incompatibilidad.
 
 Fuente: https://pydevtools.com/handbook/how-to/how-to-change-the-python-version-of-a-uv-project/
+
+uv frente a uvx frente a pip
+------------------------------------------------------------------------
+
+- ``pip`` — El instalador de paquetes clásico de Python. Instala,
+  desinstala, lista y actualiza paquetes en el entorno que esté activo
+  en ese momento. 
+
+- ``uv`` — La cadena de herramientas rápida de Astral, desarrollada en
+  Rust. Está diseñada como un reemplazo directo para ``pip``,
+  ``pip-tools`` y ``virtualenv``, y además añade gestión de proyectos y
+  de versiones de Python. 
+
+- ``uvx`` — Un comando incluido con ``uv``; es un alias de ``uv tool
+  run``.  Ejecuta una herramienta de línea de comandos (CLI) de Python
+  en un entorno aislado y con caché, sin instalar la herramienta de
+  forma permanente.
+
+Si solo recuerdas una frase: ``pip`` instala paquetes, ``uv`` gestiona
+todo el flujo de trabajo de Python y ``uvx`` ejecuta herramientas de
+línea de comandos bajo demanda.
+
+Fuente: https://docs.bswen.com/blog/2025-05-16-uv-uvx-pip/
+
+

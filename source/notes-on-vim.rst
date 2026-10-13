@@ -849,7 +849,8 @@ donde está guardad la sesión.
 
 Fuentes:
 
-- All drops: `Vim Sessions <https://alldrops.info/posts/vim-drops/2020-11-15_vim-sessions/>`_
+- https://alldrops.info/posts/vim-drops/2020-11-15_vim-sessions/
+- https://www.baeldung.com/linux/save-restore-vim-sessions
 
 
 Cómo plegar/desplegar secciones de texto manualmente

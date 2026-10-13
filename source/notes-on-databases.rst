@@ -1,6 +1,11 @@
 Databases
 =======================================================================
 
+.. tags:: database, devops
+
+.. contents:: Relación de contenidos
+   :depth: 3
+
 Qué son las bases de datos
 -----------------------------------------------------------------------
 

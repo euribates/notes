@@ -364,6 +364,30 @@ Fuente: https://realpython.com/agents-md/
 Noticias sobre mal uso de IA
 -----------------------------------------------------------------------
 
+Utah permitirá a la IA examinar y prescribir pacientes sin supervisión
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+07/Oct/2026
+
+El estado norteamericano de Utah se convertirá en el primero en permitir
+que la IA examine a pacientes y prescriba medicamentos sin supervisión
+humana directa.
+
+Un párrafo del artículo:
+
+    Hemos visto repetidamente los peligros de confiar en la IA para
+    obtener consejos médicos. Uno de los casos más conocidos
+    ocurrió el año pasado, cuando un hombre de 60 años siguió una
+    recomendación de ChatGPT y sustituyó la sal de su dieta por bromuro
+    de sodio, lo que le provocó bromismo, un trastorno psiquiátrico que
+    no se veía comúnmente desde el siglo XIX.
+
+Fuentes:
+
+- https://www.techspot.com/news/114111-utah-become-first-state-ai-examine-patients-prescribe.html
+- https://es.wikipedia.org/wiki/Bromismo
+- https://www.acpjournals.org/doi/10.7326/aimcc.2024.1260
+
+
 Personas contratadas para alimentar la IA despedidas por usar IA
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 23/Sep/2026
