@@ -109,18 +109,17 @@ máquinas en el subdominio ``cs.foo.edu``.
 
 - IP networks
 
-You can also export directories to all hosts on an IP (sub-) network
-simultaneously. This is done by specifying an IP address and netmask
-pair as address/netmask where the netmask can be specified in
-dotted-decimal format, or as a contiguous mask length.
+Se pueden exportar directorios a todos los nodos de una subred IP
+simultáneamente, usando una pareja de dirección IP y máscara de red, en
+la forma *dirección/máscara*, donde la máscara se puede expresar o bien
+en formato de dígitos decimales con puntos, o usando la longitud de la
+máscara.
 
-For example, either ``'/255.255.252.0'`` or ``'/22'`` appended to the
-network base IPv4 address results in identical subnetworks with 10
-bits of host. IPv6 addresses must use a contiguous mask length and
-must not be inside square brackets to avoid confusion with
-character-class wildcards. Wildcard characters generally do not work
-on IP addresses, though they may work by accident when reverse DNS
-lookups fail.
+Por ejemplo, tanto la máscara ``255.255.252.0`` como añadir ``/22`` a la
+dirección IP4 base producen idéntico resultado: una subred con 10 bits
+en el campo del *hosts*. Las direcciones IP6 deben usar siempre la longitud de
+la máscara contigua y, para evitar confusiones con los comodines de caracteres,
+nunca debeni ir entre corchetes. 
 
 Ejecutar un servidor NFS con Docker
 ------------------------------------------------------------------------

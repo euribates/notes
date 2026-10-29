@@ -32,28 +32,31 @@ Source: `The C4 model for visualising software
 architecture <https://c4model.com/>`__.
 
 Cómo documentar la infraestrutura
----------------------------------
+------------------------------------------------------------------------
 
-First, start with a **high level summary** of what the thing is does, as
-well as what it is supposed to do. The second part should outline things
-like the problem it’s solving, the challenges faced, the assumptions
-made. This way the reader can understand the why better
+Debemos empezar con un **resumen de alto nivel** donde se explique lo
+que hace el sistema, y también lo que debería hacer. La segunda parte
+deba explicar los detalles del problema que se está intenitando
+solucionar, los desafios que suponen, y las suposiciones realizadas. El
+objetivo de la sección es que el lector entienda «el porqué».
 
-I then go through the **major components at a high level** - here I used
-an relational data as because xyz requirement, here I used a firewall
-with xyz ports open because requirements, I used xyz for DNS, etc
+A continuación iriamos describiendo todos los **componentes de alto
+nivel**: Aquí he usado esta base de datos relacional par cubrir el
+requerimiento xyz, aquí usamos un *firewall* con los puertos xyx, para
+este otro requerimiento, usamos xyz para el :term:`DNS`, etc.
 
-Then tackle **lower level stuff** - database designs, throughout
-requirement, record sizes, service discovery, failover strategies
+Después vendría los **detalles de nivel inferior**: Esquemas de la base
+de datos, tamaños de registro, estimación de capacidades, descubrimiento
+de servicios, estrategias de recuperación ante fallos, etc.
 
-Then a **config section** where I document any touchy or special configs
-that are relevant
+Si hace falta, una sección de **configuración**, donde se debe
+especificar detalles especiales o que puedan resultar confusos acerca de
+la configuración.
 
-Then a **section on operations** - what are some common operations tasks
-this thing may need, or things the oncall folks may need (how to
-stop/start. Where logs are, how to access things, how to scale, what the
-limits are of the system), any caveats or ugliness that exists, where
-the code is, how to deploy with teraform etc.
+A continuaucíón, una sección de **operaciones**, con todas las
+operaciones habituales que se pueden / deben realizar en el sistema.
+Como parar y arrancar servcios, como inspeccionar los *logs*, como
+escalar el sistema. como se despliegan los cambios, etc.
 
 Finally, I include **some test results that are relevant** - how many
 writes you can do, how fast we reconverge on failover, how many things

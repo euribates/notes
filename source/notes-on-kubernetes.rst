@@ -263,3 +263,63 @@ se vean afectados por la carga de trabajo.
 
 .. _What on earth is Kubernetes?: https://kylejeong.com/blog/what-is-kubernetes
 .. _Cloud Native Computing Foundation (CNCF): https://www.cncf.io/
+
+Qué es Consul?
+------------------------------------------------------------------------
+
+**HashiCorp Consul** es una solución de redes de servicios que permite a
+los equipos gestionar una conectividad de red segura entre servicios
+—tanto en entornos locales como en entornos multinube y
+diversos entornos de ejecución. Consul ofrece descubrimiento de
+servicios, malla de servicios (service mesh), gestión de tráfico y
+actualizaciones automatizadas para los dispositivos de la
+infraestructura de red. Estas funcionalidades pueden utilizarse de forma
+individual o conjunta dentro de una misma implementación de Consul.
+
+Consul proporciona un plano de control que permite registrar, consultar
+y proteger los servicios implementados en toda la red. El plano de
+control es la parte de la infraestructura de red que mantiene un
+registro central para realizar un seguimiento de los servicios y sus
+respectivas direcciones IP. Se trata de un sistema distribuido que se
+ejecuta en clústeres de nodos, tales como servidores físicos, instancias
+en la nube, máquinas virtuales o contenedores.
+
+Consul interactúa con el plano de datos a través de proxies. El plano de
+datos es la parte de la infraestructura de red que procesa las
+solicitudes de datos.
+
+El flujo de trabajo principal de Consul consta de las siguientes etapas:
+
+- **Registro**: Los equipos añaden servicios al catálogo de Consul, un
+  registro centralizado que permite a los servicios descubrirse entre sí
+  automáticamente, sin necesidad de que un operador humano modifique el
+  código de la aplicación, implemente balanceadores de carga adicionales
+  o configure direcciones IP de forma estática. Este catálogo constituye
+  la fuente de información definitiva en tiempo de ejecución para todos
+  los servicios y sus respectivas direcciones.
+
+  Los equipos pueden realizar el registro manualmente mediante la CLI o
+  la API, o bien automatizar el proceso en Kubernetes utilizando la
+  sincronización de servicios (*service sync*). Asimismo, los servicios
+  pueden incluir comprobaciones de estado (*health checks*), lo que
+  permite a Consul supervisar si algún servicio presenta problemas. 
+
+- **Consulta**: El sistema DNS de Consul, basado en la identidad,
+  permite localizar servicios en buen estado dentro del catálogo. Los
+  servicios registrados en Consul proporcionan información sobre su
+  estado, puntos de acceso y otros datos que facilitan el control del
+  flujo de información a través de la red. Los servicios solo acceden a
+  otros servicios a través de su *proxy* local, siguiendo las políticas
+  basadas en la identidad que se hayan definido. 
+
+- **Seguridad**: Una vez que los servicios localizan a sus dependencias
+  (*upstreams*), Consul garantiza que la comunicación entre ellos esté
+  autenticada, autorizada y cifrada. La malla de servicios (*service
+  mesh*) de Consul protege las arquitecturas de microservicios mediante
+  mTLS, permitiendo o restringiendo el acceso en función de la identidad
+  de cada servicio, independientemente de las diferencias en los
+  entornos de computación o los entornos de ejecución.
+
+Fuentes:
+
+- https://www.youtube.com/watch?v=mxeMdl0KvBI&t=914s

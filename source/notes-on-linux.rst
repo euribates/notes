@@ -426,7 +426,7 @@ La forma más recomendada de uso es:
 
 Donde:
 
-- ``-n``: Se salta la resolución de nombres por DNS.
+- ``-n``: Se salta la resolución de nombres por :term:`DNS`.
 
 - ``-PN``: Se salta la fase de descubrimiento, asumiendo que el *host*
 objetivo esta activo sin necesidad de comprobarlo.
@@ -484,7 +484,7 @@ Donde:
 - ``-t``: Muestra los puertos TCP
 - ``-u``: Muestra los puertos UDP
 - ``-l``: Muestra los puertos abiertos en modo ``LISTEN``
-- ``-n``: No resuelve los nombres mediante DNS
+- ``-n``: No resuelve los nombres mediante :term:`DNS`
 
 Con ``ss``:
 ~~~~~~~~~~~

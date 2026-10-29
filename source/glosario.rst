@@ -13,6 +13,18 @@ Glosario de términos
         nombre se debe a que las mayúsculas a lo largo de una palabra en
         *camelCase* se asemejan a las jorobas de un camello. 
 
+    DNS
+
+        El **sistema de nombres de dominio** (*Domain Name System* o
+        DNS, por sus siglas en inglés) es un sistema de nomenclatura
+        jerárquico descentralizado para dispositivos conectados a redes
+        IP como Internet o una red privada. Este sistema asocia
+        información variada con nombres de dominio asignados a cada uno
+        de los participantes. Su función más importante es la resolución
+        de nombres, *traducir* nombres inteligibles para las personas en
+        identificadores binarios asociados con los equipos conectados a
+        la red con el propósito de poder localizar y direccionar estos
+        equipos mundialmente.
 
     FPS
 

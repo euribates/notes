@@ -2,7 +2,7 @@ Systemd
 ========================================================================
 
 
-Qué es Systemd
+Qué es *Systemd*
 ------------------------------------------------------------------------
 
 `Systemd <https://es.wikipedia.org/wiki/Systemd>`__ es un sistema de
@@ -144,33 +144,107 @@ Or, to see only log messages for the current boot:
 
     journalctl -u service-name.service -b
 
+Cómo saber cuanto espacio en disco utilizan los logs de *systemd*
+------------------------------------------------------------------------
+
+El *journal* de systemd es el sistema de registro (*logging*) propio de
+systemd. Es equivalente al *syslog* en el sistema *init*. Recopila y
+almacena datos de registro del núcleo (*kernel*), mensajes de registro
+del sistema, salida estándar y errores de diversos servicios de *systemd*.
+
+Linux escribe los registros en el directorio ``/var/log/journal``.
+
+Se puede consultar el espacio ocupado de dos formas: 
+
+Usando el comando ``du`` (*disj usage*):
+
+.. code:: shell
+
+    du -sh /var/log/journal/
+
+O podemos usar el comando ``journalctl``:
+
+.. code::
+
+    journalctl --disk-usage
+
+Los dos deberían arrojar un resultado similar.
 
 Cómo limpiar el tamaño de los registros de archivo de systemd
 ------------------------------------------------------------------------
 
-Para limitar el tamaño de los archivos de registro, systemd ofrece una
-función de limpieza que elimina la información antigua. Los parámetros
-permitidos son:
+El comando ``journalctl`` es la manera adecuada de gestionar los
+registros antiguos.
 
-- ``--vacuum-size=BYTES``: Reduce el uso del disco por debajo del tamaño
-  especificado.
+Primero debemos rotar los archivos del *journal*. Esto marcará los
+registros activos como archivados y creará otros nuevos. Es opcional,
+pero resulta una buena práctica hacerlo.
 
-- ``--vacuum-files=INT``: Conserva solo el número especificado de
-  archivos de registro.
+.. code:: shell
 
-- ``--vacuum-time=TIME``: Elimina los archivos de registro con una
-  antigüedad superior a la especificada.
+    sudo journalctl --rotate
 
-Por ejemplo, para reducir el consumo de 312 MB a 200 MB (o menos),
-utilice:
+Hoy tres formas de eliminar los registros antiguos. Las opciones son:
 
-.. code::
-    
-   journalctl --vacuum-size=200M
+- Borrar registros anteriores a un momento determinado.
+
+- Borrar archivos de registro antiguos para que el tamaño total se
+  ajuste a un límite de espacio en disco predefinido.
+
+- Limitar el número de archivos de registro.
+
+1. Eliminar registros del *journal* anteriores a *x* días
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Supongamos que se desea conservar el historial de registros de solo dos
+días. Para eliminar las entradas anteriores a dos días, usaríamos:
+
+.. code:: shell
+
+    sudo journalctl --vacuum-time=2d
+
+También se puede definir el intervalo de tiempo en otras unidades: horas
+(por ejemplo, ``2h``), minutos (``2m``) o segundos (``2s``). Para
+unidades de tiempo mayores, también se puede usar ``2weeks`` (semanas) o
+``2months`` (meses).
+
+2. Limitar el tamaño de los registros
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Esto eliminará archivos del *journal* hasta que el espacio en disco
+ocupado por ellos sea inferior al límite que hayas especificado.
+
+.. code:: shell
+
+    sudo journalctl --vacuum-size=100M
+
+Esto reducirá el tamaño de los registros a aproximadamente 100 MB.
+
+Se puede especificar el tamaño utilizando sufijos como ``G`` para
+gigabytes, ``M`` para megabytes, ``K`` para kilobytes, etc.
+
+3. Limitar el número de archivos de registro
+------------------------------------------------------------------------
+
+La tercera forma consiste en limitar la cantidad de archivos de
+registro. ``journalctl`` suele contener archivos de registro (logs)
+tanto del sistema como de los usuarios. A medida que estos registros
+envejecen, se archivan en diversos archivos.
+
+Es posible limitar la cantidad de archivos de registro archivados. Por
+ejemplo, si deseas conservar únicamente cinco archivos de registro:
+
+.. code:: shell
+
+    journalctl --vacuum-files=5
+
+Esto eliminará los archivos de registro archivados más antiguos, dejando
+solo la cantidad especificada.
 
 Fuentes:
 
 - `Systemd logs are too large and slow`_ - Ask Ubuntu
+- `How to Clear Systemd Journal Logs`_ - Linux Handbook
 
-
+.. _How to Clear Systemd Journal Logs: https://linuxhandbook.com/clear-systemd-journal-logs/
 .. _Systemd logs are too large and slow: https://askubuntu.com/questions/1012912/systemd-logs-journalctl-are-too-large-and-slow

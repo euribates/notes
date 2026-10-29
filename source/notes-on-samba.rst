@@ -98,7 +98,7 @@ En Windows 8, 10, 11, también se puede conectar al servidor usado su
 nombre ``mDNS``, que es solo el *host name* con el sufijo ``.local``
 (``\\nova.local``).
 
-Para hacer el sistema "descubrible" y accesible para MaxOS hay que
+Para hacer el sistema "descubrible" y accesible para MacOS hay que
 instalar:
 
 .. code:: shell
