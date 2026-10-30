@@ -67,8 +67,8 @@ Un *dataset* consta de dos partes:
 CKAN puede almacenar los datos localmente, o solo guardar el
 enlace a los mismos, residiendo los datos, por tanto, en otro sitio.
 
-Un *dataset* puede contener un número arbitrario de recursos. Por
-ejemplo, puede usar diferentes recursos para segmentar los datos por
+Un *dataset* puede contener un número arbitrario de recursos. Un
+ejemplo habitual es usar diferentes recursos para segmentar los datos por
 año, o pueden usarse también para almacenar los mismo datos, pero en
 diferentes formatos.
 
