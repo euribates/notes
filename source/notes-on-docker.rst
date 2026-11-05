@@ -858,6 +858,71 @@ absolutas**.
     docker run -t sandbox -v $(pwd)/sandbox:/sandbox
 
 
+Iniciar contenedores automáticamente
+------------------------------------------------------------------------
+
+Docker ofrece políticas de reinicio (*restart policies*) para controlar
+si los contenedores se inician automáticamente al finalizar su ejecución
+o cuando Docker se reinicia. Docker recomienda utilizar estas políticas
+de reinicio en lugar de recurrir a gestores de procesos para iniciar los
+contenedores.
+
+Para configurar la política de reinicio se utiliza el
+parámetro ``--restart`` al ejecutar el comando `docker run`. El valor de este parámetro puede ser cualquiera de los siguientes:
+
++-----------------------+---------------------------------------------+
+| Parámetro             | Descripción                                 |
++=======================+=============================================+
+| ``no``                | No reiniciar el contenedor automáticamente. |
+|                       | (Valor predeterminado)                      |
++-----------------------+---------------------------------------------+
+| ``on-failure[:rets]`` | Reiniciar el contenedor si finaliza         |
+|                       | debido a un error (indicado por un código   |
+|                       | de salida distinto de cero). Opcionalmente, |
+|                       | es posible limitar el número de intentos de |
+|                       | reinicio mediante la opción ``:rets``. La   |
+|                       | política ``on-failure`` solo activa el      |
+|                       | reinicio si el contenedor finaliza con un   |
+|                       | error; no lo reinicia si el demonio de      |
+|                       | Docker se reinicia.                         |
++-----------------------+---------------------------------------------+
+| ``always``            | Reiniciar siempre el contenedor si se       |
+|                       | detiene. Si se detiene manualmente, solo    |
+|                       | volverá a iniciarse cuando el demonio de    |
+|                       | Docker se reinicie o si el propio           |
+|                       | contenedor se inicia de nuevo de forma      |
+|                       | manual. (Consulta el segundo punto en los   |
+|                       | detalles sobre las políticas de reinicio).  |
++-----------------------+---------------------------------------------+
+| ``unless-stopped``    | Similar a ``always``, con la diferencia de  |
+|                       | que, si el contenedor se detiene (ya sea    |
+|                       | manualmente o por otro motivo), no se       |
+|                       | reiniciará ni siquiera tras el reinicio del |
+|                       | demonio de Docker.                          |
++-----------------------+---------------------------------------------+
+
+El siguiente comando inicia un contenedor Redis con la política de
+reinicio ``unless-stopped``. Docker reiniciará el contenedor si este
+finaliza o si el demonio de Docker se reinicia, pero no si tú mismo has
+detenido el contenedor. 
+
+.. code:: shell
+
+   $ docker run -d --name redis --restart unless-stopped redis
+
+El siguiente comando modifica la política de reinicio de un contenedor
+llamado ``redis`` que ya se encuentra en ejecución. 
+
+.. code:: shell
+
+    $ docker update --restart unless-stopped redis
+
+El siguiente comando garantiza que todos los contenedores en ejecución se reinicien. 
+
+.. code:: shell
+
+    $ docker update --restart unless-stopped $(docker ps -q)
+
 
 Cómo acceder desde el contenedor al *host*
 ------------------------------------------------------------------------
